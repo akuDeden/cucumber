@@ -41,6 +41,22 @@ export class PlotPage {
   }
 
   /**
+   * Select reserved status filter
+   */
+  async selectReservedFilter(): Promise<void> {
+    this.logger.info('Selecting reserved filter option');
+    // In filter dialog, Reserved is the second status option after Vacant
+    const statusOptions = await this.page.locator('[data-testid^="statuses-div-control-button"]').all();
+    if (statusOptions.length > 1) {
+      await statusOptions[1].click(); // Index 1 is Reserved
+      await this.page.waitForTimeout(500);
+      this.logger.success('Reserved filter selected');
+    } else {
+      throw new Error('Reserved filter option not found');
+    }
+  }
+
+  /**
    * Apply filter by clicking Done button
    */
   async applyFilter(): Promise<void> {
@@ -112,6 +128,37 @@ export class PlotPage {
     
     this.logger.info(`Found first vacant plot: ${plotName}`);
     this.logger.success(`First vacant plot name retrieved: ${plotName}`);
+    return plotName;
+  }
+
+  /**
+   * Get the first reserved plot name from the list and click it
+   * Returns the plot name
+   */
+  async selectFirstReservedPlot(): Promise<string> {
+    this.logger.info('Getting first reserved plot name from the list');
+    // Wait for plots to load
+    await this.page.waitForTimeout(3000);
+    
+    // Use getByText to find elements containing "Reserved"
+    const reservedPlots = await this.page.getByText(/\w+\s+\w+\s+\d+\s+Reserved$/).all();
+    
+    if (reservedPlots.length === 0) {
+      throw new Error('No reserved plots found in the list');
+    }
+    
+    // Get the first plot
+    const firstPlot = reservedPlots[0];
+    const plotText = await firstPlot.textContent();
+    const plotName = plotText?.replace(/\s*Reserved\s*$/, '').trim() || 'Unknown';
+    
+    this.logger.info(`Found first reserved plot: ${plotName}`);
+    
+    // Click the plot to navigate to plot detail page
+    await firstPlot.click();
+    await this.page.waitForTimeout(3000);
+    
+    this.logger.success(`First reserved plot selected: ${plotName}`);
     return plotName;
   }
 

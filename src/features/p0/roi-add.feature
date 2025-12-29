@@ -105,3 +105,19 @@ Feature: ROI Management
     And I save the ROI
     Then the plot status should be "RESERVED"
     And I should see both ROI holder "John Doe" and applicant "Jane Smith"
+
+  @edit-roi @roi-edit
+  Scenario: Edit ROI details on reserved plot
+    When I navigate to all plots page
+    And I open the filter dialog
+    And I select reserved filter
+    And I apply the filter plot
+    And I expand section "a"
+    And I select the first reserved plot
+    And I click Edit ROI button
+    And I fill ROI form with following details
+      | fee             | 2000            |
+      | certificateNumber | CERT-EDIT-001 |
+      | notes           | Updated ROI details |
+    And I save the ROI
+    Then the plot status should be "RESERVED"

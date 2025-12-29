@@ -22,6 +22,10 @@ When('I select vacant filter', async function () {
   await plotPage.selectVacantFilter();
 });
 
+When('I select reserved filter', async function () {
+  await plotPage.selectReservedFilter();
+});
+
 When('I apply the filter plot', { timeout: 10000 }, async function () {
   await plotPage.applyFilter();
 });
@@ -43,6 +47,15 @@ When('I click Add ROI button', { timeout: 15000 }, async function () {
   await roiPage.clickAddRoi();
 });
 
+When('I click ROI tab', async function () {
+  await roiPage.clickRoiTab();
+});
+
+When('I click Edit ROI button', { timeout: 15000 }, async function () {
+  // EDIT ROI button is at bottom of plot detail page, no need to click ROI tab first
+  await roiPage.clickEditRoi();
+});
+
 When('I fill ROI form with following details', { timeout: 30000 }, async function (dataTable: any) {
   const roiData = dataTable.rowsHash(); // For vertical tables with key-value pairs
   await roiPage.fillRoiForm(roiData);
@@ -54,6 +67,11 @@ When('I select the first vacant plot', { timeout: 15000 }, async function () {
   // Click the plot to navigate to plot detail page
   await plotPage.page.getByText(`${plotName} Vacant`).click();
   await plotPage.page.waitForTimeout(3000);
+});
+
+When('I select the first reserved plot', { timeout: 15000 }, async function () {
+  const plotName = await plotPage.selectFirstReservedPlot();
+  this.selectedPlotName = plotName; // Store for later reference
 });
 
 When('I add ROI holder person with following details', { timeout: 15000 }, async function (dataTable: any) {

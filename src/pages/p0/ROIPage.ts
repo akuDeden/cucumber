@@ -55,11 +55,22 @@ export class ROIPage {
     this.logger.info('Filling ROI form');
     
     // Wait for ROI form to be fully loaded
+    // For add page: check roiFormTitle, for edit page: check URL contains "edit"
+    const currentUrl = this.page.url();
+    const isEditMode = currentUrl.includes('/edit/');
+    
     try {
-      await this.page.waitForSelector(RoiSelectors.roiFormTitle, { state: 'visible', timeout: 10000 });
-      this.logger.info('ROI form loaded successfully');
+      if (isEditMode) {
+        // Edit mode: wait for page to load by checking for form elements
+        await this.page.waitForSelector('mat-select', { state: 'visible', timeout: 10000 });
+        this.logger.info('ROI edit form loaded successfully');
+      } else {
+        // Add mode: wait for form title
+        await this.page.waitForSelector(RoiSelectors.roiFormTitle, { state: 'visible', timeout: 10000 });
+        this.logger.info('ROI form loaded successfully');
+      }
     } catch (e) {
-      this.logger.error('ROI form title not found - form may not have loaded');
+      this.logger.error(`ROI form failed to load (${isEditMode ? 'edit' : 'add'} mode)`);
       throw new Error('ROI form failed to load');
     }
     
@@ -97,7 +108,19 @@ export class ROIPage {
     // Fill Fee if provided
     if (roiData.fee) {
       this.logger.info(`Entering fee: ${roiData.fee}`);
-      await this.page.fill(RoiSelectors.feeInput, roiData.fee);
+      try {
+        // Try data-testid selector first (for add page)
+        await this.page.fill(RoiSelectors.feeInput, roiData.fee, { timeout: 5000 });
+      } catch (e) {
+        // Fallback: use aria-label or placeholder for edit page
+        try {
+          await this.page.getByLabel(/fee/i).fill(roiData.fee, { timeout: 5000 });
+        } catch (e2) {
+          // Last resort: find input with type="number" near "Fee" text
+          await this.page.locator('input[type="number"]').first().fill(roiData.fee);
+        }
+      }
+      this.logger.info('Fee entered successfully');
     }
 
     // Fill Payment Date if provided
@@ -109,13 +132,37 @@ export class ROIPage {
     // Fill Certificate Number if provided
     if (roiData.certificateNumber) {
       this.logger.info(`Entering certificate number: ${roiData.certificateNumber}`);
-      await this.page.fill(RoiSelectors.certificateNumberInput, roiData.certificateNumber);
+      try {
+        // Try data-testid selector first
+        await this.page.fill(RoiSelectors.certificateNumberInput, roiData.certificateNumber, { timeout: 5000 });
+      } catch (e) {
+        // Fallback: use label or placeholder
+        try {
+          await this.page.getByLabel(/certificate/i).fill(roiData.certificateNumber, { timeout: 5000 });
+        } catch (e2) {
+          // Last resort: find input near "Certificate" text
+          await this.page.locator('input[type="text"]').filter({ hasText: /certificate/i }).fill(roiData.certificateNumber);
+        }
+      }
+      this.logger.info('Certificate number entered successfully');
     }
 
     // Fill Notes if provided
     if (roiData.notes) {
       this.logger.info(`Entering notes: ${roiData.notes}`);
-      await this.page.fill(RoiSelectors.notesInput, roiData.notes);
+      try {
+        // Try data-testid selector first
+        await this.page.fill(RoiSelectors.notesInput, roiData.notes, { timeout: 5000 });
+      } catch (e) {
+        // Fallback: use label or placeholder for edit page
+        try {
+          await this.page.getByLabel(/notes/i).fill(roiData.notes, { timeout: 5000 });
+        } catch (e2) {
+          // Last resort: find textarea
+          await this.page.locator('textarea').first().fill(roiData.notes);
+        }
+      }
+      this.logger.info('Notes entered successfully');
     }
 
     this.logger.success('ROI form filled successfully');
@@ -236,11 +283,24 @@ export class ROIPage {
   }
 
   /**
-   * Save ROI form
+   * Save ROI form (works for both add and edit)
    */
   async saveRoi(): Promise<void> {
     this.logger.info('Saving ROI');
-    await this.page.click(RoiSelectors.saveButton);
+    
+    try {
+      // Try data-testid selector first (for add page)
+      await this.page.click(RoiSelectors.saveButton, { timeout: 5000 });
+    } catch (e) {
+      // Fallback: look for any button with "Save" text (for edit page)
+      try {
+        await this.page.getByRole('button', { name: /save/i }).first().click({ timeout: 5000 });
+      } catch (e2) {
+        // Last resort: look for button with save icon or similar
+        await this.page.locator('button:has-text("Save")').first().click();
+      }
+    }
+    
     // Wait for save to complete and redirect back to plot detail
     await this.page.waitForURL(`**${RoiUrls.plotDetailPattern}**`, { timeout: 30000 });
     await this.page.waitForTimeout(2000); // Wait for status update
@@ -255,6 +315,34 @@ export class ROIPage {
     await this.page.getByRole('tab', { name: /roi/i }).click();
     await this.page.waitForTimeout(1000);
     this.logger.success('ROI tab opened');
+  }
+
+  /**
+   * Click Edit ROI button at bottom of plot detail page
+   * This is the "EDIT ROI" button shown below the ROI tab content
+   */
+  async clickEditRoi(): Promise<void> {
+    this.logger.info('Clicking Edit ROI button');
+    
+    try {
+      // Wait for plot detail page to fully load
+      await this.page.waitForTimeout(2000);
+      
+      // Look for "EDIT ROI" button (uppercase) at bottom of plot detail
+      // This is different from the general "Edit" button
+      await this.page.waitForSelector('button:has-text("EDIT ROI")', { state: 'visible', timeout: 5000 });
+      this.logger.info('EDIT ROI button found');
+      
+      await this.page.getByRole('button', { name: /EDIT ROI/i }).click();
+      await this.page.waitForTimeout(3000);
+      
+      const currentUrl = this.page.url();
+      this.logger.info(`Current URL after click: ${currentUrl}`);
+      this.logger.success('EDIT ROI button clicked');
+    } catch (e) {
+      this.logger.error('EDIT ROI button not found or not clickable');
+      throw new Error('Failed to click EDIT ROI button');
+    }
   }
 
   /**

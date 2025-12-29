@@ -11,6 +11,7 @@ export const RoiSelectors = {
   // Plots page - Filter
   filterButton: '[data-testid="perfect-scrollbar-button-filter"]',
   vacantFilterOption: '[data-testid="statuses-div-control-button"]',
+  reservedFilterOption: '[data-testid="statuses-div-control-button-0"]',
   filterDoneButton: '[data-testid="filter-button-submit-button"]',
   
   // Plots page - List

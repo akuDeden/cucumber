@@ -274,20 +274,33 @@ export class ROIPage {
     const personCards = await this.page.locator(`text=${personName}`).locator('..').all();
     
     if (personCards.length === 0) {
-      this.logger.info(`ROI ${personType} not found: ${personName}`);
+      this.logger.info(`❌ ROI ${personType} not found: "${personName}" - No elements with this name found on page`);
+      
+      // Get all visible text to help debug
+      const pageText = await this.page.locator('body').textContent();
+      const roiSection = pageText?.substring(0, 500) || 'Unable to get page text';
+      this.logger.info(`Page content preview: ${roiSection}`);
+      
       return false;
     }
     
+    this.logger.info(`✓ Found ${personCards.length} element(s) with name "${personName}"`);
+    
     // Check each card to find one that has the correct type label
-    for (const card of personCards) {
+    for (let i = 0; i < personCards.length; i++) {
+      const card = personCards[i];
       const cardText = await card.textContent();
+      this.logger.info(`Checking card ${i + 1}/${personCards.length}: "${cardText?.trim()}"`);
+      
       if (cardText && cardText.includes(typeLabel)) {
-        this.logger.success(`ROI ${personType} verified: ${personName} with label "${typeLabel}"`);
+        this.logger.success(`✓ ROI ${personType} verified: "${personName}" with label "${typeLabel}"`);
         return true;
       }
     }
     
-    this.logger.info(`Person name found but ${typeLabel} label not found below the name`);
+    this.logger.info(`❌ Person name "${personName}" found but label "${typeLabel}" not found in any card`);
+    this.logger.info(`Expected label: "${typeLabel}" but none of the ${personCards.length} card(s) contain it`);
+    
     return false;
   }
 

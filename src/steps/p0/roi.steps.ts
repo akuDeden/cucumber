@@ -72,15 +72,21 @@ When('I save the ROI', { timeout: 35000 }, async function () {
 
 Then('I should see ROI holder {string} in the ROI tab', { timeout: 15000 }, async function (holderName: string) {
   const isVisible = await roiPage.verifyRoiPerson(holderName, 'holder');
-  expect(isVisible).toBeTruthy();
+  if (!isVisible) {
+    throw new Error(`❌ Verification failed: ROI holder "${holderName}" not found or label "ROI HOLDER" missing. Check logs above for details.`);
+  }
 });
 
 Then('I should see ROI applicant {string} in the ROI tab', { timeout: 15000 }, async function (applicantName: string) {
   const isVisible = await roiPage.verifyRoiPerson(applicantName, 'applicant');
-  expect(isVisible).toBeTruthy();
+  if (!isVisible) {
+    throw new Error(`❌ Verification failed: ROI applicant "${applicantName}" not found or label "ROI APPLICANT" missing. Check logs above for details.`);
+  }
 });
 
 Then('I should see both ROI holder {string} and applicant {string}', { timeout: 15000 }, async function (holderName: string, applicantName: string) {
   const isVisible = await roiPage.verifyRoiHolderAndApplicant(holderName, applicantName);
-  expect(isVisible).toBeTruthy();
+  if (!isVisible) {
+    throw new Error(`❌ Verification failed: Either holder "${holderName}" or applicant "${applicantName}" not found with correct labels. Check logs above for details.`);
+  }
 });

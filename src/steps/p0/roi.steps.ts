@@ -90,7 +90,32 @@ When('I search and select ROI holder {string}', { timeout: 15000 }, async functi
 });
 
 When('I save the ROI', { timeout: 35000 }, async function () {
+  const page = this.page;
+  
   await roiPage.saveRoi();
+  
+  // After save, we're redirected to plot detail page
+  // Wait for tab list to be visible
+  await page.locator('[role="tablist"]').waitFor({ state: 'visible', timeout: 8000 });
+  
+  // Click ROI tab explicitly (same as search scenario)
+  const roiTab = page.getByRole('tab', { name: 'ROI' });
+  await roiTab.waitFor({ state: 'visible', timeout: 5000 });
+  await roiTab.click();
+  
+  // Verify ROI tab is actually selected after click (with retry)
+  await page.waitForTimeout(500);
+  const isSelected = await roiTab.getAttribute('aria-selected');
+  
+  if (isSelected !== 'true') {
+    // Tab click didn't work, try again
+    console.log('ROI tab not selected, clicking again...');
+    await roiTab.click();
+    await page.waitForTimeout(500);
+  }
+  
+  // Wait 2 seconds for ROI data to load completely
+  await page.waitForTimeout(2000);
 });
 
 Then('I should see ROI holder {string} in the ROI tab', { timeout: 20000 }, async function (holderName: string) {

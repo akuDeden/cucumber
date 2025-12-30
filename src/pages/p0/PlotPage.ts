@@ -57,6 +57,16 @@ export class PlotPage {
   }
 
   /**
+   * Select occupied status filter
+   */
+  async selectOccupiedFilter(): Promise<void> {
+    this.logger.info('Selecting occupied filter option');
+    await this.page.locator('label').filter({ hasText: 'Occupied' }).click();
+    await this.page.waitForTimeout(500);
+    this.logger.success('Occupied filter selected');
+  }
+
+  /**
    * Apply filter by clicking Done button
    */
   async applyFilter(): Promise<void> {
@@ -160,6 +170,37 @@ export class PlotPage {
     
     this.logger.success(`First reserved plot selected: ${plotName}`);
     return plotName;
+  }
+
+  /**
+   * Get the first occupied plot name from the list and click it
+   * Returns the plot name
+   */
+  async selectFirstOccupiedPlot(): Promise<string> {
+    this.logger.info('Getting first occupied plot from the list');
+    // Wait for plots to load
+    await this.page.waitForTimeout(3000);
+    
+    // Find occupied plots - they show deceased name instead of status
+    // Pattern: "A A 1 Ahmad Setiawan" (plot name + deceased name)
+    const plotItems = await this.page.locator('[role="treeitem"] li').all();
+    
+    if (plotItems.length === 0) {
+      throw new Error('No occupied plots found in the list');
+    }
+    
+    // Get the first plot item
+    const firstPlot = plotItems[0];
+    const plotText = await firstPlot.textContent();
+    
+    this.logger.info(`Found first occupied plot: ${plotText}`);
+    
+    // Click the plot to navigate to plot detail page
+    await firstPlot.click();
+    await this.page.waitForTimeout(3000);
+    
+    this.logger.success(`First occupied plot selected`);
+    return plotText?.trim() || 'Unknown';
   }
 
   /**

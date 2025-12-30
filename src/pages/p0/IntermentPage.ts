@@ -228,4 +228,79 @@ export class IntermentPage {
     await this.page.waitForTimeout(1000);
     this.logger.success('Next of kin form opened');
   }
+
+  /**
+   * Click INTERMENTS tab on plot detail page (for edit flow)
+   */
+  async clickIntermentTab(): Promise<void> {
+    this.logger.info('Clicking INTERMENTS tab');
+    await this.page.getByRole('tab', { name: /INTERMENTS/i }).click();
+    await this.page.waitForTimeout(2000);
+    this.logger.success('INTERMENTS tab opened');
+  }
+
+  /**
+   * Click Edit Interment button from INTERMENTS tab
+   */
+  async clickEditIntermentButton(): Promise<void> {
+    this.logger.info('Clicking Edit Interment button');
+    await this.page.getByTestId('interment-item-button-edit-interment').click();
+    
+    // Wait for edit form to load
+    await this.page.waitForURL('**/manage/edit/interment/**', { timeout: 10000 });
+    await this.page.waitForTimeout(3000); // Wait for form to fully load
+    this.logger.success('Edit Interment form loaded');
+  }
+
+  /**
+   * Update interment form with new data (for edit flow)
+   * @param data - Interment data object with fields to update
+   */
+  async updateIntermentForm(data: Partial<IntermentData>): Promise<void> {
+    this.logger.info('Updating interment form');
+
+    // Click "Deceased person" tab to access the form fields
+    await this.page.getByRole('button', { name: 'Deceased person' }).click();
+    await this.page.waitForTimeout(1000);
+
+    // Update first name if provided
+    if (data.firstName) {
+      this.logger.info(`Updating first name to: ${data.firstName}`);
+      const firstNameField = this.page.getByLabel('First name').first();
+      await firstNameField.click();
+      await firstNameField.clear();
+      await firstNameField.fill(data.firstName);
+      await this.page.waitForTimeout(500);
+    }
+
+    // Update last name if provided
+    if (data.lastName) {
+      this.logger.info(`Updating last name to: ${data.lastName}`);
+      const lastNameField = this.page.getByLabel('Last name').first();
+      await lastNameField.click();
+      await lastNameField.clear();
+      await lastNameField.fill(data.lastName);
+      await this.page.waitForTimeout(500);
+    }
+
+    // Update middle name if provided
+    if (data.middleName) {
+      this.logger.info(`Updating middle name to: ${data.middleName}`);
+      const middleNameField = this.page.getByLabel('Middle name').first();
+      await middleNameField.click();
+      await middleNameField.clear();
+      await middleNameField.fill(data.middleName);
+    }
+
+    // Click "Interment details" tab if interment type needs to be updated
+    if (data.intermentType) {
+      await this.page.getByRole('button', { name: 'Interment details' }).click();
+      await this.page.waitForTimeout(1000);
+      
+      this.logger.info(`Updating interment type to: ${data.intermentType}`);
+      await this.selectIntermentType(data.intermentType);
+    }
+
+    this.logger.success('Interment form updated');
+  }
 }

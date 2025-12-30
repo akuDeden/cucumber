@@ -27,6 +27,10 @@ When('I select reserved filter', async function () {
   await plotPage.selectReservedFilter();
 });
 
+When('I select occupied filter', async function () {
+  await plotPage.selectOccupiedFilter();
+});
+
 When('I apply the filter plot', { timeout: 10000 }, async function () {
   await plotPage.applyFilter();
 });
@@ -72,6 +76,11 @@ When('I select the first vacant plot', { timeout: 15000 }, async function () {
 
 When('I select the first reserved plot', { timeout: 15000 }, async function () {
   const plotName = await plotPage.selectFirstReservedPlot();
+  this.selectedPlotName = plotName; // Store for later reference
+});
+
+When('I select the first occupied plot', { timeout: 15000 }, async function () {
+  const plotName = await plotPage.selectFirstOccupiedPlot();
   this.selectedPlotName = plotName; // Store for later reference
 });
 

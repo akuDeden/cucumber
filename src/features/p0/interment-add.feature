@@ -27,3 +27,19 @@ Feature: Interment Management
     And I save the Interment
     Then I should see deceased "John Doe" in the Interment tab
     And I should see interment type "Burial"
+
+  @edit-interment @smoke @p0
+  Scenario: Edit existing Interment in occupied plot and verify changes
+    When I navigate to all plots page
+    And I open the filter dialog
+    And I select occupied filter
+    And I apply the filter plot
+    And I expand section "a"
+    And I select the first occupied plot
+    And I click on Interments tab
+    When I click Edit Interment button
+    And I update interment form with following details
+      | firstName     | Jane    |
+      | lastName      | Smith   |
+      | intermentType | Cremated |
+    And I save the Interment

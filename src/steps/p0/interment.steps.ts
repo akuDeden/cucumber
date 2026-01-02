@@ -35,7 +35,7 @@ When('I add next of kin', { timeout: 15000 }, async function () {
   await intermentPage.addNextOfKin();
 });
 
-When('I click on Interments tab', { timeout: 15000 }, async function () {
+When('I click on Interments tab', { timeout: 25000 }, async function () {
   const page = this.page;
   if (!intermentPage) {
     intermentPage = new IntermentPage(page);

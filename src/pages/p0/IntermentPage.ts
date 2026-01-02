@@ -181,8 +181,18 @@ export class IntermentPage {
   async verifyDeceasedInTab(fullName: string): Promise<void> {
     this.logger.info(`Verifying deceased "${fullName}" appears in INTERMENTS tab`);
     
-    // Click INTERMENTS tab first
-    await this.clickIntermentsTab();
+    // Check if we're already on INTERMENTS tab by looking for the tab
+    const intermentsTab = this.page.getByRole('tab', { name: /INTERMENTS/i });
+    const isSelected = await intermentsTab.getAttribute('aria-selected');
+    
+    // If not already selected, click it
+    if (isSelected !== 'true') {
+      this.logger.info('Clicking INTERMENTS tab');
+      await this.clickIntermentsTab();
+    } else {
+      this.logger.info('Already on INTERMENTS tab');
+      await this.page.waitForTimeout(2000); // Wait for content to stabilize
+    }
     
     // Wait for page to load (longer for production)
     await this.page.waitForTimeout(3000);
@@ -283,13 +293,22 @@ export class IntermentPage {
       await this.page.waitForTimeout(500);
     }
 
-    // Update middle name if provided
-    if (data.middleName) {
+    // Clear middle name if both firstName and lastName are provided (full name replacement)
+    if (data.firstName && data.lastName) {
+      this.logger.info('Clearing middle name for clean full name');
+      const middleNameField = this.page.getByLabel('Middle name').first();
+      await middleNameField.click();
+      await middleNameField.clear();
+      await this.page.waitForTimeout(500);
+    } else if (data.middleName !== undefined) {
+      // Only update middle name if explicitly provided
       this.logger.info(`Updating middle name to: ${data.middleName}`);
       const middleNameField = this.page.getByLabel('Middle name').first();
       await middleNameField.click();
       await middleNameField.clear();
-      await middleNameField.fill(data.middleName);
+      if (data.middleName) {
+        await middleNameField.fill(data.middleName);
+      }
     }
 
     // Click "Interment details" tab if interment type needs to be updated

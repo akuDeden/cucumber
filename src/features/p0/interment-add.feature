@@ -43,3 +43,5 @@ Feature: Interment Management
       | lastName      | Smith   |
       | intermentType | Cremated |
     And I save the Interment
+    Then I should see deceased "Jane Smith" in the Interment tab
+    And I should see interment type "Cremated"

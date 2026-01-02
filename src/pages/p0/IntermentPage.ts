@@ -245,7 +245,8 @@ export class IntermentPage {
   async clickIntermentTab(): Promise<void> {
     this.logger.info('Clicking INTERMENTS tab');
     await this.page.getByRole('tab', { name: /INTERMENTS/i }).click();
-    await this.page.waitForTimeout(2000);
+    this.logger.info('Waiting 20 seconds for INTERMENTS tab to load...');
+    await this.page.waitForTimeout(20000); // Wait for tab content to fully load
     this.logger.success('INTERMENTS tab opened');
   }
 

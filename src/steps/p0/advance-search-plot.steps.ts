@@ -10,8 +10,9 @@ const logger = new Logger('AdvanceSearchPlotSteps');
 // Background step
 Given('I am on the Chronicle home page', { timeout: 10000 }, async function () {
   const page: Page = this.page;
-  logger.info('Navigating to Chronicle home page');
-  await page.goto('https://staging.chronicle.rip/');
+  const baseUrl = process.env.BASE_URL || 'https://staging.chronicle.rip';
+  logger.info(`Navigating to Chronicle home page: ${baseUrl}`);
+  await page.goto(baseUrl);
   await page.waitForTimeout(3000); // Wait for page to load
   logger.success('Chronicle home page loaded');
 });
@@ -226,7 +227,8 @@ When('I click close advance search button', { timeout: 20000 }, async function (
   await page.locator(AdvanceSearchPlotSelectors.closeAdvanceSearchButton).click();
 
   // Wait for navigation back to home page with increased timeout
-  await page.waitForURL('https://staging.chronicle.rip/', { timeout: 15000 });
+  const baseUrl = process.env.BASE_URL || 'https://staging.chronicle.rip';
+  await page.waitForURL(baseUrl, { timeout: 15000 });
   await page.waitForTimeout(1500);
 
   logger.success('Advance search closed, navigated to home page');
@@ -237,7 +239,8 @@ Then('I should be on the home page', { timeout: 10000 }, async function () {
   logger.info('Verifying on home page');
 
   // Check URL
-  expect(page.url()).toBe('https://staging.chronicle.rip/');
+  const baseUrl = process.env.BASE_URL || 'https://staging.chronicle.rip';
+  expect(page.url()).toBe(baseUrl);
 
   logger.success('Verified on home page');
 });

@@ -23,3 +23,21 @@ Feature: Advanced Search Plot public access
     And I click close advance search button
     Then I should be on the home page
     And I should not see advance search results sidebar
+
+  @advance-search-public @advance-search-status @p0
+  Scenario Outline: Advanced search plot by status without login
+    When I click Advanced search button without login
+    And I select cemetery "Astana Tegal Gundul" in advanced search
+    And I select Plot tab in advanced search
+    And I select status "<status>" in advanced search without login
+    And I click Search button in advanced search without login
+    Then I should be navigated to advance search results page
+    And I should see search results information
+    And I should see status icon "<status>" in first result
+
+    Examples:
+      | status   |
+      | For Sale |
+      | Vacant   |
+      | Reserved |
+      | Occupied |

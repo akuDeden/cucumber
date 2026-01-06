@@ -45,6 +45,7 @@ export const AdvanceSearchPlotSelectors = {
   plotDetailContainer: 'div[data-testid="search-advance-advance-search-result-div-content-title"]',
   plotDetailText: 'div[data-testid="search-advance-advance-search-result-div-content-title"] > span:first-child',
   cemeteryNameText: 'div[data-testid="search-advance-advance-search-result-div-content-title"] > span:last-child',
+  firstResultIcon: 'div[data-testid="search-advance-advance-search-result-div-search-list"]:nth-child(1) mat-icon',
 
   // No results message
   noResultsMessage: 'generic:has-text("No results at this place")',

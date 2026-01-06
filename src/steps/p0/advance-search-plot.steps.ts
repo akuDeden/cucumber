@@ -103,6 +103,25 @@ When('I enter plot number {string} in advanced search without login', { timeout:
   logger.success(`Plot number ${number} entered`);
 });
 
+When('I select status {string} in advanced search without login', { timeout: 10000 }, async function (status: string) {
+  const page: Page = this.page;
+  logger.info(`Selecting status: ${status}`);
+
+  // Click status combobox
+  await page.getByRole('combobox', { name: 'Status' }).click();
+  await page.waitForTimeout(500);
+
+  // Select the status option
+  await page.getByRole('option', { name: status, exact: true }).click();
+  await page.waitForTimeout(500);
+
+  // Close the dropdown by pressing Escape
+  await page.keyboard.press('Escape');
+  await page.waitForTimeout(300);
+
+  logger.success(`Status ${status} selected`);
+});
+
 When('I click Search button in advanced search without login', { timeout: 15000 }, async function () {
   const page: Page = this.page;
   logger.info('Clicking Search button in advanced search');
@@ -177,6 +196,27 @@ Then('I should see cemetery name {string} in sidebar results', { timeout: 10000 
   expect(text).toBe(cemeteryName);
 
   logger.success(`Cemetery name ${cemeteryName} verified in sidebar`);
+});
+
+Then('I should see status icon {string} in first result', { timeout: 10000 }, async function (expectedStatus: string) {
+  const page: Page = this.page;
+  logger.info(`Verifying status icon ${expectedStatus} in first result`);
+
+  // Get the icon element from first result
+  const icon = page.locator(AdvanceSearchPlotSelectors.firstResultIcon);
+  await expect(icon).toBeVisible({ timeout: 5000 });
+
+  // Get the class attribute
+  const className = await icon.getAttribute('class');
+
+  // Convert expected status to lowercase for class matching
+  // "For Sale" -> "for sale", "Vacant" -> "vacant", etc.
+  const expectedClass = expectedStatus.toLowerCase();
+
+  // Verify the icon has the expected class
+  expect(className).toContain(expectedClass);
+
+  logger.success(`Status icon ${expectedStatus} verified in first result (class: ${expectedClass})`);
 });
 
 When('I click close advance search button', { timeout: 20000 }, async function () {

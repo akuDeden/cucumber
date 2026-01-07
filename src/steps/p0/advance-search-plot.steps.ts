@@ -2,11 +2,13 @@ import { When, Then, Given } from '@cucumber/cucumber';
 import { Page } from '@playwright/test';
 import { expect } from '@playwright/test';
 import { AdvanceSearchPlotSelectors } from '../../selectors/p0/advance-search-plot.selectors.js';
+import { AdvanceSearchPage } from '../../pages/p0/AdvanceSearchPage.js';
 import { Logger } from '../../utils/Logger.js';
 import { replacePlaceholders } from '../../utils/TestDataHelper.js';
 
-// Initialize logger
+// Initialize logger and page object
 const logger = new Logger('AdvanceSearchPlotSteps');
+let advanceSearchPage: AdvanceSearchPage;
 
 // Background step
 Given('I am on the Chronicle home page', { timeout: 10000 }, async function () {
@@ -272,4 +274,48 @@ Then('I should not see advance search results sidebar', { timeout: 10000 }, asyn
   await expect(plotDetailText).not.toBeVisible({ timeout: 5000 });
 
   logger.success('Advance search results sidebar is not visible');
+});
+
+// ==========================================
+// LOGGED-IN USER ADVANCED SEARCH STEPS
+// ==========================================
+
+When('I click Advanced search button', { timeout: 10000 }, async function () {
+  const page = this.page;
+  if (!advanceSearchPage) {
+    advanceSearchPage = new AdvanceSearchPage(page);
+  }
+  await advanceSearchPage.clickAdvancedSearchButton();
+});
+
+When('I select section {string} in advanced search', { timeout: 10000 }, async function (section: string) {
+  await advanceSearchPage.selectSectionInAdvancedSearch(section);
+});
+
+When('I select row {string} in advanced search', { timeout: 10000 }, async function (row: string) {
+  await advanceSearchPage.selectRowInAdvancedSearch(row);
+});
+
+When('I enter plot number {string} in advanced search', { timeout: 10000 }, async function (number: string) {
+  await advanceSearchPage.enterPlotNumberInAdvancedSearch(number);
+});
+
+When('I click Search button in advanced search', { timeout: 15000 }, async function () {
+  await advanceSearchPage.clickSearchButtonInAdvancedSearch();
+});
+
+Then('I should see search results containing {string}', { timeout: 15000 }, async function (plotId: string) {
+  await advanceSearchPage.verifySearchResultsContain(plotId);
+});
+
+When('I click on plot {string} from search results', { timeout: 15000 }, async function (plotId: string) {
+  await advanceSearchPage.clickPlotFromSearchResults(plotId);
+});
+
+Then('I should see plot sidebar with plot ID {string}', { timeout: 15000 }, async function (plotId: string) {
+  await advanceSearchPage.verifyPlotSidebarWithPlotId(plotId);
+});
+
+Then('I should see plot details sidebar', { timeout: 10000 }, async function () {
+  await advanceSearchPage.verifyPlotDetailsSidebar();
 });

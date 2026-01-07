@@ -83,9 +83,48 @@ export class PlotPage {
   async expandSection(section: string): Promise<void> {
     this.logger.info(`Expanding section ${section.toUpperCase()}`);
     const selector = RoiSelectors.sectionToggleButton(section);
+    // Wait for section button to be visible before clicking (plots may be loading after filter)
+    await this.page.waitForSelector(selector, { state: 'visible', timeout: 10000 });
     await this.page.click(selector);
     await this.page.waitForTimeout(1000); // Wait for expansion animation
     this.logger.success(`Section ${section.toUpperCase()} expanded`);
+  }
+
+  /**
+   * Expand the first visible section in plots list dynamically
+   * This is more robust than hardcoding a section letter
+   * @returns The section letter that was expanded
+   */
+  async expandFirstSection(): Promise<string> {
+    this.logger.info('Expanding first visible section dynamically');
+    
+    // Wait for section toggle buttons to be visible after filter
+    await this.page.waitForTimeout(2000);
+    
+    // Find all section toggle buttons that match the pattern
+    // Pattern: [data-testid="perfect-scrollbar-button-toggle-{section}-0"]
+    const toggleButtons = await this.page.locator('button[data-testid^="perfect-scrollbar-button-toggle-"]').all();
+    
+    if (toggleButtons.length === 0) {
+      throw new Error('No section toggle buttons found after filter');
+    }
+    
+    // Get the first visible button
+    const firstButton = toggleButtons[0];
+    const testId = await firstButton.getAttribute('data-testid');
+    
+    // Extract section letter from data-testid (e.g., "perfect-scrollbar-button-toggle-a-0" -> "a")
+    const sectionMatch = testId?.match(/perfect-scrollbar-button-toggle-([a-z])-\d+/);
+    const sectionLetter = sectionMatch ? sectionMatch[1] : 'unknown';
+    
+    this.logger.info(`Found first section: ${sectionLetter.toUpperCase()}`);
+    
+    // Click the first section toggle button
+    await firstButton.click();
+    await this.page.waitForTimeout(1000); // Wait for expansion animation
+    
+    this.logger.success(`First section ${sectionLetter.toUpperCase()} expanded`);
+    return sectionLetter;
   }
 
   /**

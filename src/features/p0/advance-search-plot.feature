@@ -1,8 +1,12 @@
 @p0 @advance-search
-Feature: Advanced Search Plot public access
-  As a public user
-  I want to search for plots using advanced search without logging in
-  So that I can find plot information publicly
+Feature: Advanced Search Plot
+  As a public user or cemetery administrator
+  I want to search for plots using advanced search
+  So that I can find plot information
+
+  # ==========================================
+  # PUBLIC ACCESS (NO LOGIN) SCENARIOS
+  # ==========================================
 
   Background:
     Given I am on the Chronicle home page
@@ -42,8 +46,17 @@ Feature: Advanced Search Plot public access
       | Reserved |
       | Occupied |
 
+  # ==========================================
+  # LOGGED-IN USER SCENARIOS
+  # ==========================================
+
   @advanced-search-plot @smoke @p0
-  Scenario: Advanced search plot by Section, Row, and Number and verify plot details in sidebar
+  Scenario: Advanced search plot by Section, Row, and Number (logged-in user)
+    Given I am on the Chronicle login page
+    When I enter email "<TEST_EMAIL>"
+    And I enter password "<TEST_PASSWORD>"
+    And I click the login button
+    Then I should be logged in successfully
     When I click Advanced search button
     And I select section "A" in advanced search
     And I select row "A" in advanced search

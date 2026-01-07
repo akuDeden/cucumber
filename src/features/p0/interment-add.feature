@@ -17,7 +17,7 @@ Feature: Interment Management
     And I open the filter dialog
     And I select vacant filter
     And I apply the filter plot
-    And I expand section "a"
+    And I expand the first section
     And I select the first vacant plot
     When I click Add Interment button
     And I fill interment form with following details
@@ -34,7 +34,7 @@ Feature: Interment Management
     And I open the filter dialog
     And I select occupied filter
     And I apply the filter plot
-    And I expand section "a"
+    And I expand the first section
     And I select the first occupied plot
     And I click on Interments tab
     When I click Edit Interment button
@@ -45,15 +45,3 @@ Feature: Interment Management
     And I save the Interment
     Then I should see deceased "<TEST_INTERMENT_EDIT_FIRSTNAME> <TEST_INTERMENT_EDIT_LASTNAME>" in the Interment tab
     And I should see interment type "<TEST_INTERMENT_EDIT_TYPE>"
-
-  @advanced-search-plot @smoke @p0
-  Scenario: Advanced search plot by Section, Row, and Number and verify plot details in sidebar
-    When I click Advanced search button
-    And I select section "A" in advanced search
-    And I select row "A" in advanced search
-    And I enter plot number "1" in advanced search
-    And I click Search button in advanced search
-    Then I should see search results containing "A A 1"
-    When I click on plot "A A 1" from search results
-    Then I should see plot sidebar with plot ID "A A 1"
-    And I should see plot details sidebar

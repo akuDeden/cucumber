@@ -1,6 +1,7 @@
 import { Page } from '@playwright/test';
 import { Logger } from '../../utils/Logger.js';
 import { Config } from '../../utils/Config.js';
+import { NetworkHelper } from '../../utils/NetworkHelper.js';
 import { LoginSelectors, LoginUrls } from '../../selectors/p0/login.selectors.js';
 
 export class LoginPage {
@@ -23,6 +24,7 @@ export class LoginPage {
     this.logger.info(`Entering email: ${email}`);
     // Click first to enable the input (it's readonly initially)
     await this.page.locator(LoginSelectors.emailInput).click();
+    await this.page.waitForTimeout(200); // Small wait for input to become editable
     await this.page.locator(LoginSelectors.emailInput).fill(email);
   }
 
@@ -30,6 +32,7 @@ export class LoginPage {
     this.logger.info('Entering password');
     // Click first to enable the input (it's readonly initially)
     await this.page.locator(LoginSelectors.passwordInput).click();
+    await this.page.waitForTimeout(200); // Small wait for input to become editable
     await this.page.locator(LoginSelectors.passwordInput).fill(password);
   }
 
@@ -60,7 +63,9 @@ export class LoginPage {
     // Wait for redirect to dashboard (production needs more time)
     await this.page.waitForURL(new RegExp(LoginUrls.dashboardPattern), { timeout: 45000 });
     await this.page.waitForLoadState('domcontentloaded', { timeout: 20000 });
-    await this.page.waitForTimeout(2000);
+    // Wait for API requests to complete and dashboard to fully load
+    await NetworkHelper.waitForApiRequestsComplete(this.page, 5000);
+    this.logger.success('Successfully logged in and dashboard loaded');
   }
 
   async isLoggedIn(): Promise<boolean> {

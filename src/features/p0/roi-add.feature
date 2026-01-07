@@ -17,7 +17,7 @@ Feature: ROI Management
     And I open the filter dialog
     And I select vacant filter
     And I apply the filter plot
-    And I expand section "a"
+    And I expand the first section
     And I select the first vacant plot
     When I click Add ROI button
     And I fill ROI form with following details
@@ -35,7 +35,7 @@ Feature: ROI Management
     And I open the filter dialog
     And I select vacant filter
     And I apply the filter plot
-    And I expand section "a"
+    And I expand the first section
     And I select the first vacant plot
     When I click Add ROI button
     And I fill ROI form with following details
@@ -59,7 +59,7 @@ Feature: ROI Management
     And I open the filter dialog
     And I select vacant filter
     And I apply the filter plot
-    And I expand section "a"
+    And I expand the first section
     And I select the first vacant plot
     When I click Add ROI button
     And I fill ROI form with following details
@@ -83,7 +83,7 @@ Feature: ROI Management
     And I open the filter dialog
     And I select vacant filter
     And I apply the filter plot
-    And I expand section "a"
+    And I expand the first section
     And I select the first vacant plot
     When I click Add ROI button
     And I fill ROI form with following details
@@ -112,7 +112,7 @@ Feature: ROI Management
     And I open the filter dialog
     And I select reserved filter
     And I apply the filter plot
-    And I expand section "a"
+    And I expand the first section
     And I select the first reserved plot
     And I click Edit ROI button
     And I fill ROI form with following details
@@ -134,7 +134,7 @@ Feature: ROI Management
     And I open the filter dialog
     And I select reserved filter
     And I apply the filter plot
-    And I expand section "a"
+    And I expand the first section
     And I select the first reserved plot
     And I click Edit ROI button
     # First, add a note that we will edit later

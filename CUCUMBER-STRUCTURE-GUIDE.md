@@ -278,6 +278,31 @@ Gunakan selector dengan prioritas berikut:
 - **Background**: Untuk setup yang specific ke feature (visible dalam feature file)
 - **Hooks**: Untuk setup global (browser initialization, screenshot, dll)
 
+### 7. Dynamic Steps vs Parameterized Steps
+Untuk step yang bergantung pada hasil filter atau kondisi runtime:
+- ✅ **GUNAKAN** dynamic steps tanpa parameter (e.g., `I expand the first section`)
+- ✅ **HINDARI** hardcoded values dalam step (e.g., `I expand section "a"`)
+- ✅ **BUAT** method Page Object yang mengambil element pertama secara dinamis
+
+**Contoh:**
+```gherkin
+# ❌ Bad: Hardcoded section
+And I expand section "a"
+
+# ✅ Good: Dynamic, ambil section pertama dari hasil filter
+And I expand the first section
+```
+
+```typescript
+// Page Object Method
+async expandFirstSection(): Promise<string> {
+  const sections = await this.page.locator('[data-testid^="section-toggle-"]').all();
+  const firstSection = sections[0];
+  await firstSection.click();
+  return firstSection.getAttribute('data-section');
+}
+```
+
 ---
 
 ## 📝 Contoh Lengkap: Menambah Scenario Plot Management

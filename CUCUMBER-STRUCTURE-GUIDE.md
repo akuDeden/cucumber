@@ -3,7 +3,9 @@
 ## 📋 Daftar Isi
 - [Struktur Project](#struktur-project)
 - [Centralized Test Data](#centralized-test-data)
+- [Pemisahan Skenario Public vs Authenticated](#pemisahan-skenario-public-vs-authenticated)
 - [Flow Penambahan Skenario Baru](#flow-penambahan-skenario-baru)
+- [Debugging dengan MCP Playwright](#debugging-dengan-mcp-playwright)
 - [Best Practices](#best-practices)
 
 ---
@@ -51,6 +53,116 @@ automation_web/
 ├── .env.example           # Template untuk environment variables
 ├── .env                   # ⭐ File untuk override test data (tidak di-commit)
 └── cucumber.js            # Cucumber configuration
+```
+
+---
+
+## 🔐 Pemisahan Skenario Public vs Authenticated
+
+### Konsep Pemisahan
+Untuk memudahkan testing dan maintenance, skenario **public** (tanpa login) dan **authenticated** (dengan login) **HARUS DIPISAH** dalam file feature yang berbeda.
+
+### Naming Convention
+
+#### 1. Feature Files
+- **Public scenarios**: `{feature-name}.public.feature`
+- **Authenticated scenarios**: `{feature-name}.authenticated.feature`
+
+**Contoh:**
+```
+src/features/p0/
+├── advanceSearch.public.feature          # Scenario tanpa login
+├── advanceSearch.authenticated.feature    # Scenario dengan login
+├── searchBox.public.feature
+├── searchBox.authenticated.feature
+└── login.feature                          # Login only
+```
+
+#### 2. Tags untuk Filtering
+```gherkin
+# Public scenario
+@p0 @advance-search @public
+Feature: Advance Search (Public Access)
+  As a visitor (not logged in)
+  I want to search records
+  
+  Scenario: Search without login
+    Given I am on the Chronicle homepage
+    When I perform search
+    # ... no login required
+
+# Authenticated scenario
+@p0 @advance-search @authenticated
+Feature: Advance Search (Authenticated Access)
+  As a logged in user
+  I want to access advanced features
+  
+  Background:
+    Given I am logged in as valid user
+  
+  Scenario: Search with advanced filters
+    When I navigate to advance search
+    # ... requires authentication
+```
+
+### Kapan Menggunakan Public vs Authenticated?
+
+#### ✅ Public Scenarios (`*.public.feature`)
+- Basic search functionality
+- View public records
+- Navigation tanpa login
+- Read-only operations yang tidak memerlukan authentication
+
+#### ✅ Authenticated Scenarios (`*.authenticated.feature`)
+- CRUD operations (Create, Update, Delete)
+- Access restricted data
+- User-specific features
+- Advanced filters yang hanya tersedia setelah login
+
+### Background Setup
+
+#### Public Scenarios
+```gherkin
+Feature: Search (Public Access)
+  
+  # No background atau minimal setup
+  Scenario: Basic search
+    Given I am on the Chronicle homepage
+    When I search for "John Doe"
+    Then I should see search results
+```
+
+#### Authenticated Scenarios
+```gherkin
+Feature: Search (Authenticated Access)
+  
+  Background:
+    Given I am on the Chronicle login page
+    When I enter email "<TEST_EMAIL>"
+    And I enter password "<TEST_PASSWORD>"
+    And I click the login button
+    Then I should be redirected to the dashboard
+  
+  Scenario: Advanced search
+    When I navigate to advance search page
+    And I apply advanced filters
+    Then I should see filtered results
+```
+
+### Running Tests by Type
+
+```bash
+# Run only public scenarios
+npm test -- --tags "@public"
+
+# Run only authenticated scenarios
+npm test -- --tags "@authenticated"
+
+# Run specific feature with authentication
+npm test -- --tags "@authenticated and @advance-search"
+
+# Run all p0 public scenarios
+npm test -- --tags "@p0 and @public"
 ```
 
 ---
@@ -240,6 +352,227 @@ npm test -- --tags "@p0"
 
 ---
 
+## 🐛 Debugging dengan MCP Playwright
+
+### Apa itu MCP Playwright?
+MCP (Model Context Protocol) Playwright adalah tools untuk debugging dan explorasi actual flow browser secara interaktif. Gunakan MCP Playwright untuk:
+- 🔍 **Debug actual flow**: Melihat langkah-langkah sebenarnya yang terjadi di browser
+- 🎯 **Inspect elements**: Mencari dan verify selectors yang tepat
+- 📸 **Capture state**: Mengambil screenshot dan melihat console logs
+- 🔄 **Test interactions**: Mencoba klik, fill, navigate secara manual
+
+### Kapan Menggunakan MCP Playwright?
+
+#### ✅ Gunakan MCP Playwright ketika:
+- ❌ Test gagal dan perlu investigasi kenapa
+- 🤔 Tidak yakin selector yang tepat untuk element
+- 🔍 Perlu verify actual behavior di browser
+- 🐛 Ada unexpected behavior yang perlu di-debug
+- 📊 Ingin melihat network requests/responses
+- 🖼️ Perlu screenshot untuk bug report
+
+#### 📋 Workflow Debug dengan MCP Playwright
+
+**1. Test Gagal → Open Browser**
+```bash
+# Jalankan test yang gagal
+npm test -- --tags "@advance-search"
+
+# Test gagal? Use MCP Playwright untuk debug
+```
+
+**2. Navigate ke URL yang Bermasalah**
+```typescript
+// Via MCP Playwright
+mcp_playwright_browser_navigate({
+  url: "https://chronicle-staging.rip/advance-search"
+})
+```
+
+**3. Inspect Element yang Bermasalah**
+```typescript
+// Ambil snapshot untuk lihat struktur page
+mcp_playwright_browser_snapshot()
+
+// Coba klik element
+mcp_playwright_browser_click({
+  element: "Submit button",
+  ref: "button[data-testid='submit']"
+})
+```
+
+**4. Check Console & Network**
+```typescript
+// Lihat console messages
+mcp_playwright_browser_console_messages({
+  level: "error"
+})
+
+// Lihat network requests
+mcp_playwright_browser_network_requests({
+  includeStatic: false
+})
+```
+
+**5. Take Screenshot untuk Evidence**
+```typescript
+// Ambil screenshot state saat ini
+mcp_playwright_browser_screenshot()
+```
+
+**6. Fix Test & Re-run**
+```bash
+# Update selector/step definition berdasarkan temuan
+# Re-run test
+npm test -- --tags "@advance-search"
+```
+
+### Contoh Debugging Session
+
+#### Problem: Login button tidak bisa diklik
+
+**Step 1: Buka browser dan navigate**
+```typescript
+// Navigate to login page
+mcp_playwright_browser_navigate({
+  url: "https://chronicle-staging.rip/login"
+})
+```
+
+**Step 2: Ambil snapshot page**
+```typescript
+// Lihat struktur page dan available elements
+mcp_playwright_browser_snapshot()
+```
+
+**Step 3: Test selector**
+```typescript
+// Coba selector yang berbeda
+mcp_playwright_browser_click({
+  element: "Login button",
+  ref: "button[type='submit']"  // Test selector 1
+})
+
+// atau
+mcp_playwright_browser_click({
+  element: "Login button",
+  ref: "//button[contains(text(), 'Login')]"  // Test selector 2
+})
+```
+
+**Step 4: Check network & console**
+```typescript
+// Cek ada error di console?
+mcp_playwright_browser_console_messages({ level: "error" })
+
+// Cek ada failed network request?
+mcp_playwright_browser_network_requests()
+```
+
+**Step 5: Update test code**
+```typescript
+// Update LoginSelectors dengan selector yang correct
+export const LoginSelectors = {
+  loginButton: 'button[type="submit"]', // Updated selector
+  // ...
+};
+```
+
+### Tips Debug dengan MCP Playwright
+
+#### 1. Selalu Ambil Snapshot First
+```typescript
+// Snapshot memberikan overview lengkap page structure
+mcp_playwright_browser_snapshot()
+```
+
+#### 2. Test Selector Secara Incremental
+```typescript
+// Test dari yang paling specific ke general
+// 1. data-testid (most reliable)
+mcp_playwright_browser_click({ ref: '[data-testid="submit"]' })
+
+// 2. getByRole
+mcp_playwright_browser_click({ ref: 'button:has-text("Submit")' })
+
+// 3. CSS selector
+mcp_playwright_browser_click({ ref: 'button.submit-btn' })
+```
+
+#### 3. Monitor Network untuk API Issues
+```typescript
+// Lihat failed requests
+mcp_playwright_browser_network_requests()
+
+// Check response status codes
+// Cari requests dengan status 400, 500, etc.
+```
+
+#### 4. Console Logs untuk JavaScript Errors
+```typescript
+// Lihat semua level logs
+mcp_playwright_browser_console_messages({ level: "info" })
+
+// Focus pada errors
+mcp_playwright_browser_console_messages({ level: "error" })
+```
+
+#### 5. Evaluate Custom JavaScript
+```typescript
+// Run custom JS untuk inspect state
+mcp_playwright_browser_evaluate({
+  function: "() => { return document.readyState; }"
+})
+
+// Check element properties
+mcp_playwright_browser_evaluate({
+  element: "Submit button",
+  ref: "button[type='submit']",
+  function: "(element) => { return element.disabled; }"
+})
+```
+
+### Integrating Debug Findings ke Test Code
+
+**Before (Test gagal):**
+```typescript
+// login.steps.ts - Selector salah
+await this.page.click('#login-btn'); // Element tidak ada
+```
+
+**After Debug Session:**
+```typescript
+// 1. Update selectors based on snapshot
+export const LoginSelectors = {
+  loginButton: 'button[data-testid="login-submit"]', // Found via MCP
+};
+
+// 2. Update step definition
+await this.page.click(LoginSelectors.loginButton);
+
+// 3. Add wait if needed (found timing issue via MCP)
+await this.page.waitForSelector(LoginSelectors.loginButton, {
+  state: 'visible',
+  timeout: 5000
+});
+await this.page.click(LoginSelectors.loginButton);
+```
+
+### MCP Playwright Commands Reference
+
+| Command | Purpose | Example Use Case |
+|---------|---------|------------------|
+| `navigate` | Buka URL | Go to specific page for testing |
+| `snapshot` | Get page structure | Find correct selectors |
+| `click` | Click element | Test button interactions |
+| `fill` | Fill input fields | Test form inputs |
+| `screenshot` | Capture visual state | Bug report evidence |
+| `console_messages` | View console logs | Debug JS errors |
+| `network_requests` | View API calls | Debug API failures |
+| `evaluate` | Run custom JS | Check element states |
+
+---
+
 ## ✅ Best Practices
 
 ### 1. Naming Conventions
@@ -271,15 +604,41 @@ Gunakan selector dengan prioritas berikut:
 
 ### 5. Tags Organization
 ```gherkin
-@p0 @login @smoke           # Priority + Feature + Type
-@p1 @interment @negative    # Multiple tags untuk filtering
+@p0 @login @smoke @authenticated     # Priority + Feature + Type + Access Level
+@p0 @search @public                  # Public access scenarios
+@p1 @interment @negative @authenticated  # Multiple tags untuk filtering
 ```
+
+**Tag Structure:**
+- **Priority**: `@p0`, `@p1`, `@p2`
+- **Feature**: `@login`, `@search`, `@interment`, dll
+- **Type**: `@smoke`, `@regression`, `@negative`
+- **Access Level**: `@public`, `@authenticated` ← **WAJIB untuk semua scenario**
 
 ### 6. Background vs Before Hooks
 - **Background**: Untuk setup yang specific ke feature (visible dalam feature file)
 - **Hooks**: Untuk setup global (browser initialization, screenshot, dll)
 
-### 7. Dynamic Steps vs Parameterized Steps
+### 7. Pemisahan Public & Authenticated
+- ✅ **Pisahkan** file feature untuk public dan authenticated scenarios
+- ✅ **Gunakan** naming: `*.public.feature` dan `*.authenticated.feature`
+- ✅ **Tag** setiap feature dengan `@public` atau `@authenticated`
+- ❌ **Jangan** mix scenarios public dan authenticated dalam satu file
+
+### 8. Feature File Naming
+- ✅ Pisahkan public dan authenticated scenarios ke file berbeda
+- ✅ Format: `{feature-name}.public.feature` atau `{feature-name}.authenticated.feature`
+- ✅ Tambahkan tag `@public` atau `@authenticated` di level Feature
+- ❌ Jangan campur public dan authenticated scenarios dalam satu file
+
+### 9. Debug Flow
+- ✅ **Gunakan MCP Playwright** untuk debug actual flow di browser
+- ✅ Ambil snapshot page untuk find correct selectors
+- ✅ Monitor console logs dan network requests untuk troubleshoot
+- ✅ Take screenshot sebagai evidence untuk bug reports
+- ❌ Jangan guess selectors, verify dengan MCP Playwright dulu
+
+### 10. Dynamic Steps vs Parameterized Steps
 Untuk step yang bergantung pada hasil filter atau kondisi runtime:
 - ✅ **GUNAKAN** dynamic steps tanpa parameter (e.g., `I expand the first section`)
 - ✅ **HINDARI** hardcoded values dalam step (e.g., `I expand section "a"`)

@@ -1,4 +1,4 @@
-@p0 @advance-search
+@p0 @advanceSearch
 Feature: Advanced Search Plot
   As a public user or cemetery administrator
   I want to search for plots using advanced search

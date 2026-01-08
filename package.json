@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "test": "cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/**/*.feature' --import 'src/**/*.ts'",
+    "test:headless": "cross-env HEADLESS=true npm run test",
     "test:staging": "dotenv -e .env.chronicle -- cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/**/*.feature' --import 'src/**/*.ts'",
     "test:prod": "dotenv -e .env.chronicle.prod -- cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/**/*.feature' --import 'src/**/*.ts'",
     "test:p0": "cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/**/*.feature' --import 'src/**/*.ts' --tags '@p0'",
@@ -20,6 +21,7 @@
     "test:interment": "cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/**/*.feature' --import 'src/**/*.ts' --tags '@interment'",
     "test:interment:staging": "dotenv -e .env.chronicle -- cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/**/*.feature' --import 'src/**/*.ts' --tags '@interment'",
     "test:interment:prod": "dotenv -e .env.chronicle.prod -- cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/**/*.feature' --import 'src/**/*.ts' --tags '@interment'",
+    "test:advanced-search-plot": "cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/**/*.feature' --import 'src/**/*.ts' --tags '@advanced-search-plot'",
     "test:parallel": "cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/**/*.feature' --import 'src/**/*.ts' --parallel 3",
     "test:debug": "cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/**/*.feature' --import 'src/**/*.ts' --format 'html:cucumber-report.html'"
   },

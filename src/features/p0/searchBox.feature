@@ -1,4 +1,4 @@
-@p0 @search-roi-holder
+@p0 @searchBox
 Feature: Search ROI Holder
   As a public user or cemetery administrator
   I want to search for ROI holders using global search

@@ -1,4 +1,5 @@
 import { Page, expect } from '@playwright/test';
+import { AdvanceSearchSelectors } from '../../selectors/p0/advanceSearch.selectors.js';
 import { IntermentSelectors } from '../../selectors/p0/interment.selectors.js';
 import { Logger } from '../../utils/Logger.js';
 
@@ -21,7 +22,7 @@ export class AdvanceSearchPage {
    */
   async clickAdvancedSearchButton(): Promise<void> {
     this.logger.info('Clicking Advanced search button');
-    await this.page.click(IntermentSelectors.advancedSearchButton);
+    await this.page.click(AdvanceSearchSelectors.advancedSearchButton);
     await this.page.waitForTimeout(1000); // Wait for dialog to open
     this.logger.success('Advanced search dialog opened');
   }
@@ -87,7 +88,7 @@ export class AdvanceSearchPage {
   async clickSearchButtonInAdvancedSearch(): Promise<void> {
     this.logger.info('Clicking Search button in advanced search');
 
-    await this.page.click(IntermentSelectors.searchButton);
+    await this.page.click(AdvanceSearchSelectors.searchButton);
 
     // Wait for search results to load and redirect to search page
     await this.page.waitForURL('**/search/advance', { timeout: 10000 });
@@ -104,7 +105,7 @@ export class AdvanceSearchPage {
     this.logger.info(`Verifying search results contain plot: ${plotId}`);
 
     // Wait for search results heading
-    await this.page.waitForSelector(IntermentSelectors.searchResultsHeading, { timeout: 10000 });
+    await this.page.waitForSelector(AdvanceSearchSelectors.searchResultsHeading, { timeout: 10000 });
 
     // Use the specific testid for the search result div
     const searchResultDiv = this.page.getByTestId('advance-search-result-div-search-list');

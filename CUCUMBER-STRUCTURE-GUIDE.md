@@ -243,10 +243,11 @@ npm test -- --tags "@p0"
 ## ✅ Best Practices
 
 ### 1. Naming Conventions
-- **Feature files**: `kebab-case.feature` (e.g., `advance-search-plot.feature`)
-- **Page objects**: `PascalCase.ts` (e.g., `LoginPage.ts`)
-- **Step files**: `kebab-case.steps.ts` (e.g., `login.steps.ts`)
-- **Selectors**: `kebab-case.selectors.ts` (e.g., `login.selectors.ts`)
+- **Feature files**: `camelCase.feature` (e.g., `advanceSearch.feature`, `searchBox.feature`)
+- **Page objects**: `PascalCase.ts` (e.g., `LoginPage.ts`, `AdvanceSearchPage.ts`)
+- **Step files**: `camelCase.steps.ts` (e.g., `login.steps.ts`, `advanceSearch.steps.ts`)
+- **Selectors**: `camelCase.selectors.ts` (e.g., `login.selectors.ts`, `advanceSearch.selectors.ts`)
+- **Selector exports**: `PascalCase` (e.g., `LoginSelectors`, `AdvanceSearchSelectors`)
 
 ### 2. Data Management
 - ✅ **GUNAKAN** placeholder `<VARIABLE_NAME>` di feature file

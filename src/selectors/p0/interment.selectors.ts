@@ -55,17 +55,7 @@ export const IntermentSelectors = {
     unspecified: 'Unspecified'
   },
 
-  // Advanced Search
-  advancedSearchButton: 'button:has-text("Advanced")',
-  // Note: Section combobox has aria-label "Number" (it's the first field in the group)
-  // We use getByRole in the page object instead of a fixed selector
-  sectionCombobox: 'button:has-text("Section")',
-  rowCombobox: 'button:has-text("Row")',
-  // Number textbox has a placeholder attribute
-  numberTextbox: 'input[aria-label="Number"]',
-  searchButton: 'button:has-text("SEARCH")',
-  searchResultPlot: (plotId: string) => `div:has-text("${plotId}")`,
-  searchResultsHeading: 'h3:has-text("plots found")',
+  // Plot detail page sidebar (used by advance search verification)
   plotSidebarHeading: (plotId: string) => `h3:has-text("${plotId}")`,
   // Use specific testid to avoid strict mode violation with interment Edit button
   editButtonInSidebar: '[data-testid="plot-details-edit-button-edit-plot"]'

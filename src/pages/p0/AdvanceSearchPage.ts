@@ -64,8 +64,10 @@ export class AdvanceSearchPage {
     await this.page.getByTestId('filter-section-row-input-number').click();
     await this.page.waitForTimeout(500);
 
-    // Select the section option
-    await this.page.getByRole('option', { name: section, exact: true }).click();
+    // Wait for the option to be visible before clicking
+    const sectionOption = this.page.getByRole('option', { name: section, exact: true });
+    await sectionOption.waitFor({ state: 'visible', timeout: 5000 });
+    await sectionOption.click();
     await this.page.waitForTimeout(500);
 
     this.logger.success(`Section ${section} selected`);
@@ -82,8 +84,10 @@ export class AdvanceSearchPage {
     await this.page.getByRole('combobox', { name: 'Row' }).click();
     await this.page.waitForTimeout(500);
 
-    // Select the row option
-    await this.page.getByRole('option', { name: row, exact: true }).click();
+    // Wait for the option to be visible before clicking
+    const rowOption = this.page.getByRole('option', { name: row, exact: true });
+    await rowOption.waitFor({ state: 'visible', timeout: 5000 });
+    await rowOption.click();
     await this.page.waitForTimeout(500);
 
     this.logger.success(`Row ${row} selected`);
@@ -224,10 +228,16 @@ export class AdvanceSearchPage {
   async selectPlotTypeInAdvancedSearch(plotType: string): Promise<void> {
     this.logger.info(`Selecting Plot type: ${plotType}`);
 
+    // Click the plot type combobox
     await this.page.getByRole('combobox', { name: 'Plot type' }).click();
     await this.page.waitForTimeout(500);
 
-    await this.page.getByRole('option', { name: plotType, exact: true }).click();
+    // Wait for the option to be visible before clicking (important for slower environments)
+    const plotTypeOption = this.page.getByRole('option', { name: plotType, exact: true });
+    await plotTypeOption.waitFor({ state: 'visible', timeout: 5000 });
+    this.logger.info(`Plot type option "${plotType}" is visible, clicking...`);
+
+    await plotTypeOption.click();
     await this.page.waitForTimeout(500);
 
     this.logger.success(`Plot type ${plotType} selected`);
@@ -243,7 +253,10 @@ export class AdvanceSearchPage {
     await this.page.getByRole('combobox', { name: 'Status' }).click();
     await this.page.waitForTimeout(500);
 
-    await this.page.getByRole('option', { name: status, exact: true }).click();
+    // Wait for the option to be visible before clicking
+    const statusOption = this.page.getByRole('option', { name: status, exact: true });
+    await statusOption.waitFor({ state: 'visible', timeout: 5000 });
+    await statusOption.click();
     await this.page.waitForTimeout(500);
 
     this.logger.success(`Status ${status} selected`);

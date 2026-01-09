@@ -16,7 +16,7 @@ Feature: Search ROI Holder
     # First, select a cemetery to provide context for search
     When I select cemetery "<TEST_CEMETERY>" for public search
     # Search for existing ROI holder in global search
-    When I search for "sandiaga uno salahuddin" in global search without login
+    When I search for "<TEST_SEARCH_ROI_HOLDER_NAME>" in global search without login
     # Verify no results are returned due to privacy protection
     Then I should see "No results" message indicating privacy protection
 
@@ -34,10 +34,10 @@ Feature: Search ROI Holder
     # Navigate to plot list page where search is available
     When I navigate to all plots page
     # Search for existing person in global search
-    When I search for "sandiaga uno salahuddin" in global search
+    When I search for "<TEST_SEARCH_ROI_HOLDER_NAME>" in global search
     # Verify search result shows plot with person name and ROI Holder role
-    Then I should see search result with plot "B F 13"
+    Then I should see search result with plot "<TEST_SEARCH_PLOT_ID>"
     # Click on search result to navigate to plot detail
-    When I click on search result plot "B F 13"
+    When I click on search result plot "<TEST_SEARCH_PLOT_ID>"
     # Verify person exists in ROI tab with ROI HOLDER role
-    Then I should see ROI holder "Sandiaga Uno Salahuddin" in the ROI tab
+    Then I should see ROI holder "<TEST_SEARCH_ROI_HOLDER_DISPLAY>" in the ROI tab

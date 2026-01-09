@@ -47,9 +47,14 @@ After(async function(scenario) {
   // Auto-capture screenshot on failure
   if (status === 'FAILED' && this.page) {
     try {
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-      const scenarioName = scenario.pickle.name.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 50);
-      const screenshotPath = path.join(process.cwd(), 'screenshots', `FAILED_${scenarioName}_${timestamp}.png`);
+      // Clean scenario name without timestamp
+      const scenarioName = scenario.pickle.name
+        .replace(/[^a-zA-Z0-9\s]/g, '_')
+        .replace(/\s+/g, '_')
+        .toLowerCase()
+        .substring(0, 100);
+      
+      const screenshotPath = path.join(process.cwd(), 'screenshots', `FAILED_${scenarioName}.png`);
       
       await this.page.screenshot({ path: screenshotPath, fullPage: true });
       Logger.info(`Screenshot saved: ${screenshotPath}`);
@@ -69,11 +74,15 @@ After(async function(scenario) {
       await this.page.close();
       Logger.info('Page closed for scenario');
       
-      // Rename video file with scenario name, environment, and status
+      // Rename video file with scenario name, environment, and status (NO TIMESTAMP)
       if (videoPath) {
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+        // Clean scenario name
         const sanitizedName = this.scenarioName
-          ? this.scenarioName.replace(/[^a-zA-Z0-9]/g, '_').substring(0, 50)
+          ? this.scenarioName
+              .replace(/[^a-zA-Z0-9\s]/g, '_')
+              .replace(/\s+/g, '_')
+              .toLowerCase()
+              .substring(0, 100)
           : 'test';
         
         // Get environment from BASE_URL
@@ -82,7 +91,7 @@ After(async function(scenario) {
         // Get status prefix
         const statusPrefix = status === 'PASSED' ? 'pass' : 'fail';
         
-        const newVideoPath = path.join(path.dirname(videoPath), `${statusPrefix}_${env}_${sanitizedName}_${timestamp}.webm`);
+        const newVideoPath = path.join(path.dirname(videoPath), `${statusPrefix}_${env}_${sanitizedName}.webm`);
         
         // Wait a bit for video to finish writing
         await new Promise(resolve => setTimeout(resolve, 500));

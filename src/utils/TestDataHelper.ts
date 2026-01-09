@@ -22,21 +22,15 @@ const PLACEHOLDER_MAP: Record<string, string> = {
   '<TEST_NUMBER>': TEST_DATA.plot.number,
 
   // Advanced Search data
+  // Advanced Search data (minimal - most now in Scenario Outline)
   '<TEST_ADVANCE_PLOT_ID>': TEST_DATA.advanceSearch.plotId,
   '<TEST_ADVANCE_PLOT_TYPE>': TEST_DATA.advanceSearch.plotType,
   '<TEST_ADVANCE_STATUS>': TEST_DATA.advanceSearch.status,
-  '<TEST_ADVANCE_PRICE>': TEST_DATA.advanceSearch.price,
-  '<TEST_ADVANCE_BURIAL_CAPACITY>': TEST_DATA.advanceSearch.burialCapacity,
-  '<TEST_ADVANCE_ENTOMBMENT_CAPACITY>': TEST_DATA.advanceSearch.entombmentCapacity,
-  '<TEST_ADVANCE_CREMATION_CAPACITY>': TEST_DATA.advanceSearch.cremationCapacity,
-  '<TEST_ADVANCE_INTERMENTS_FROM>': TEST_DATA.advanceSearch.intermentsQtyFrom,
-  '<TEST_ADVANCE_INTERMENTS_TO>': TEST_DATA.advanceSearch.intermentsQtyTo,
-  '<TEST_ADVANCE_SECTION_B>': TEST_DATA.advanceSearch.sectionB,
-  '<TEST_ADVANCE_ROW_B>': TEST_DATA.advanceSearch.rowB,
-  '<TEST_ADVANCE_SECTION_B_ROW_A>': TEST_DATA.advanceSearch.sectionBRowA,
-  '<TEST_ADVANCE_ROW_A_ROW_A>': TEST_DATA.advanceSearch.rowARowA,
-  '<TEST_ADVANCE_SECTION_A>': TEST_DATA.advanceSearch.sectionA,
-  '<TEST_ADVANCE_ROW_A>': TEST_DATA.advanceSearch.rowA,
+
+  // Search Box data
+  '<TEST_SEARCH_ROI_HOLDER_NAME>': TEST_DATA.search.roiHolder.searchName,
+  '<TEST_SEARCH_ROI_HOLDER_DISPLAY>': TEST_DATA.search.roiHolder.displayName,
+  '<TEST_SEARCH_PLOT_ID>': TEST_DATA.search.roiHolder.plotId,
 
   // Interment data - Add
   '<TEST_INTERMENT_FIRSTNAME>': TEST_DATA.interment.add.firstName,
@@ -55,11 +49,22 @@ const PLACEHOLDER_MAP: Record<string, string> = {
   '<TEST_ROI_CERT>': TEST_DATA.roi.basic.certificateNumber,
   '<TEST_ROI_NOTES>': TEST_DATA.roi.basic.notes,
 
-  // ROI data - With Person
-  '<TEST_ROI_CERT_2>': TEST_DATA.roi.withPerson.certificateNumber,
-  '<TEST_ROI_HOLDER_FIRSTNAME>': TEST_DATA.roi.withPerson.holder.firstName,
-  '<TEST_ROI_HOLDER_LASTNAME>': TEST_DATA.roi.withPerson.holder.lastName,
-  '<TEST_ROI_HOLDER_PHONE>': TEST_DATA.roi.withPerson.holder.phone,
+  // ROI Certificate numbers for different scenarios
+  '<TEST_ROI_CERT_2>': TEST_DATA.roi.certificates.withPerson,
+  '<TEST_ROI_CERT_APPLICANT>': TEST_DATA.roi.certificates.applicant,
+  '<TEST_ROI_CERT_BOTH>': TEST_DATA.roi.certificates.both,
+
+  // ROI Holder data
+  '<TEST_ROI_HOLDER_FIRSTNAME>': TEST_DATA.roi.holder.firstName,
+  '<TEST_ROI_HOLDER_LASTNAME>': TEST_DATA.roi.holder.lastName,
+  '<TEST_ROI_HOLDER_PHONE>': TEST_DATA.roi.holder.phone,
+  '<TEST_ROI_HOLDER_EMAIL>': TEST_DATA.roi.holder.email,
+
+  // ROI Applicant data
+  '<TEST_ROI_APPLICANT_FIRSTNAME>': TEST_DATA.roi.applicant.firstName,
+  '<TEST_ROI_APPLICANT_LASTNAME>': TEST_DATA.roi.applicant.lastName,
+  '<TEST_ROI_APPLICANT_PHONE>': TEST_DATA.roi.applicant.phone,
+  '<TEST_ROI_APPLICANT_EMAIL>': TEST_DATA.roi.applicant.email,
 };
 
 /**

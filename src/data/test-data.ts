@@ -57,40 +57,17 @@ export const STATUSES = ['For Sale', 'Vacant', 'Reserved', 'Occupied'];
 // ============================================
 // ADVANCED SEARCH DATA
 // ============================================
+// NOTE: Most advanced search now uses Scenario Outline with hardcoded values in .feature files
+// These variables are kept as fallback/override options via environment variables
 export const ADVANCE_SEARCH_DATA = {
-  // Plot ID search
+  // Plot ID search - Used in authenticated scenarios
   plotId: process.env.TEST_ADVANCE_PLOT_ID || 'B A 1',
 
-  // Plot type search (based on CSV data: 1=Lawn, 2=Garden)
-  // Note: Some plot types may not have results in all cemeteries
+  // Plot type search - Fallback value
   plotType: process.env.TEST_ADVANCE_PLOT_TYPE || 'Monumental',
 
-  // Status search (1=Vacant, 2=Reserved, 3=Occupied, 6=Unavailable)
-  status: process.env.TEST_ADVANCE_STATUS || 'Vacant',
-
-  // Price search
-  price: process.env.TEST_ADVANCE_PRICE || '500',
-
-  // Capacity search (based on A A 1: burial=3, cremation=2)
-  burialCapacity: process.env.TEST_ADVANCE_BURIAL_CAPACITY || '3',
-  entombmentCapacity: process.env.TEST_ADVANCE_ENTOMBMENT_CAPACITY || '0',
-  cremationCapacity: process.env.TEST_ADVANCE_CREMATION_CAPACITY || '2',
-
-  // Interments Qty range
-  intermentsQtyFrom: process.env.TEST_ADVANCE_INTERMENTS_FROM || '0',
-  intermentsQtyTo: process.env.TEST_ADVANCE_INTERMENTS_TO || '2',
-
-  // Section B (verified to have 91 plots in staging)
-  sectionB: process.env.TEST_ADVANCE_SECTION_B || 'B',
-  rowB: process.env.TEST_ADVANCE_ROW_B || 'A',
-
-  // Section B Row A (with prices)
-  sectionBRowA: process.env.TEST_ADVANCE_SECTION_B_ROW_A || 'B',
-  rowARowA: process.env.TEST_ADVANCE_ROW_A_ROW_A || 'A',
-
-  // Section A Row A (with high capacity)
-  sectionA: process.env.TEST_ADVANCE_SECTION_A || 'A',
-  rowA: process.env.TEST_ADVANCE_ROW_A || 'A'
+  // Status search - Fallback value
+  status: process.env.TEST_ADVANCE_STATUS || 'Vacant'
 };
 
 // ============================================
@@ -110,9 +87,21 @@ export const INTERMENT_DATA = {
 };
 
 // ============================================
+// SEARCH BOX TEST DATA
+// ============================================
+const SEARCH_DATA = {
+  roiHolder: {
+    searchName: process.env.TEST_SEARCH_ROI_HOLDER_NAME || 'sandiaga uno salahuddin',
+    displayName: process.env.TEST_SEARCH_ROI_HOLDER_DISPLAY || 'Sandiaga Uno Salahuddin',
+    plotId: process.env.TEST_SEARCH_PLOT_ID || 'B F 13'
+  }
+};
+
+// ============================================
 // ROI (RECORD OF INTEREST) DATA
 // ============================================
 export const ROI_DATA = {
+  // Basic ROI data (used across all ROI scenarios)
   basic: {
     rightType: process.env.TEST_ROI_RIGHT_TYPE || 'Cremation',
     termOfRight: process.env.TEST_ROI_TERM || '25 Years',
@@ -120,17 +109,28 @@ export const ROI_DATA = {
     certificateNumber: process.env.TEST_ROI_CERT || 'CERT-TEST-001',
     notes: process.env.TEST_ROI_NOTES || 'Test ROI for automation'
   },
-  withPerson: {
-    rightType: 'Cremation',
-    termOfRight: '25 Years',
-    fee: '1000',
-    certificateNumber: process.env.TEST_ROI_CERT_2 || 'CERT-TEST-002',
-    notes: 'Test ROI with person holder',
-    holder: {
-      firstName: process.env.TEST_ROI_HOLDER_FIRSTNAME || 'John',
-      lastName: process.env.TEST_ROI_HOLDER_LASTNAME || 'Doe',
-      phone: process.env.TEST_ROI_HOLDER_PHONE || '+1234567890'
-    }
+  
+  // Certificate numbers for different scenarios (to avoid conflicts)
+  certificates: {
+    withPerson: process.env.TEST_ROI_CERT_2 || 'CERT-TEST-002',
+    applicant: process.env.TEST_ROI_CERT_APPLICANT || 'CERT-TEST-003',
+    both: process.env.TEST_ROI_CERT_BOTH || 'CERT-TEST-004'
+  },
+  
+  // ROI Holder person data
+  holder: {
+    firstName: process.env.TEST_ROI_HOLDER_FIRSTNAME || 'John',
+    lastName: process.env.TEST_ROI_HOLDER_LASTNAME || 'Doe',
+    phone: process.env.TEST_ROI_HOLDER_PHONE || '+1234567890',
+    email: process.env.TEST_ROI_HOLDER_EMAIL || 'john.doe@example.com'
+  },
+  
+  // ROI Applicant person data
+  applicant: {
+    firstName: process.env.TEST_ROI_APPLICANT_FIRSTNAME || 'Jane',
+    lastName: process.env.TEST_ROI_APPLICANT_LASTNAME || 'Smith',
+    phone: process.env.TEST_ROI_APPLICANT_PHONE || '+9876543210',
+    email: process.env.TEST_ROI_APPLICANT_EMAIL || 'jane.smith@example.com'
   }
 };
 
@@ -145,6 +145,7 @@ export const TEST_DATA = {
   statuses: STATUSES,
   advanceSearch: ADVANCE_SEARCH_DATA,
   interment: INTERMENT_DATA,
+  search: SEARCH_DATA,
   roi: ROI_DATA
 };
 

@@ -8,21 +8,26 @@ Feature: Advanced Search Plot - Public Access
         Given I am on the Chronicle home page
 
     @advance-search-public @p0
-    Scenario: Advanced search plot by Section, Row, and Number without login
+    Scenario Outline: Advanced search plot by Section, Row, and Number without login - <section> <row> <number>
         When I click Advanced search button without login
         And I select cemetery "<TEST_CEMETERY>" in advanced search
         And I select Plot tab in advanced search
-        And I select section "<TEST_SECTION>" in advanced search without login
-        And I select row "<TEST_ROW>" in advanced search without login
-        And I enter plot number "<TEST_NUMBER>" in advanced search without login
+        And I select section "<section>" in advanced search without login
+        And I select row "<row>" in advanced search without login
+        And I enter plot number "<number>" in advanced search without login
         And I click Search button in advanced search without login
         Then I should be navigated to advance search results page
         And I should see search results information
-        And I should see plot number "<TEST_NUMBER>" in sidebar results
+        And I should see plot number "<number>" in sidebar results
         And I should see cemetery name "<TEST_CEMETERY>" in sidebar results
         And I click close advance search button
         Then I should be on the home page
         And I should not see advance search results sidebar
+
+        Examples:
+            | section | row | number | description           |
+            | A       | A   | 1      | Basic public search   |
+            | B       | A   | 1      | Alternative section   |
 
     @advance-search-public @advance-search-status @p0
     Scenario Outline: Advanced search plot by status without login

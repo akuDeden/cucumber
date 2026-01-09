@@ -2,7 +2,9 @@
 
 ## 📋 Daftar Isi
 - [Struktur Project](#struktur-project)
+- [Hybrid Approach - Data Management Strategy](#hybrid-approach---data-management-strategy)
 - [Centralized Test Data](#centralized-test-data)
+- [Data-Driven Testing dengan Scenario Outline](#data-driven-testing-dengan-scenario-outline)
 - [Pemisahan Skenario Public vs Authenticated](#pemisahan-skenario-public-vs-authenticated)
 - [Flow Penambahan Skenario Baru](#flow-penambahan-skenario-baru)
 - [Debugging dengan MCP Playwright](#debugging-dengan-mcp-playwright)
@@ -52,6 +54,171 @@ automation_web/
 ├── .env.example           # Template untuk environment variables
 ├── .env                   # ⭐ File untuk override test data (tidak di-commit)
 └── cucumber.js            # Cucumber configuration
+```
+
+---
+
+## 🎯 Hybrid Approach - Data Management Strategy
+
+### Konsep Utama
+
+Framework ini menggunakan **HYBRID APPROACH** yang menggabungkan 2 strategi data management:
+
+1. **Placeholders** (`<TEST_VARIABLE>`) → Untuk data **KONSISTEN**
+2. **Scenario Outline + Examples** → Untuk data **BERVARIASI**
+
+### Decision Matrix: Kapan Pakai Apa?
+
+| Data Type | Approach | Reason | Example |
+|-----------|----------|--------|---------|
+| **Cemetery** | ✅ Placeholder | Konsisten di semua test | `<TEST_CEMETERY>` |
+| **Credentials** | ✅ Placeholder | Login data sama | `<TEST_EMAIL>`, `<TEST_PASSWORD>` |
+| **Person Names** | ✅ Placeholder | Cukup 1 nilai untuk test functionality | `<TEST_INTERMENT_FIRSTNAME>` |
+| **ROI Basic Data** | ✅ Placeholder | RightType, Fee, Term konsisten | `<TEST_ROI_RIGHT_TYPE>` |
+| **Section/Row Combinations** | ✅ Scenario Outline | Perlu test A-A, B-B, C-C | Examples table |
+| **Price Ranges** | ✅ Scenario Outline | Perlu test 500, 1000, 5000 | Examples table |
+| **Capacity Variations** | ✅ Scenario Outline | Perlu test berbagai kombinasi | Examples table |
+| **Status Types** | ✅ Scenario Outline | Perlu test Vacant, Reserved, Occupied | Examples table |
+
+### Contoh Implementasi
+
+#### ✅ Feature yang Pakai Placeholders
+
+**ROI Feature** - Data konsisten:
+```gherkin
+@p0 @roi
+Feature: ROI Management
+
+  Background:
+    When I enter email "<TEST_EMAIL>"          # Konsisten
+    And I enter password "<TEST_PASSWORD>"      # Konsisten
+
+  Scenario: Add ROI to vacant plot
+    And I fill ROI form with following details
+      | rightType   | <TEST_ROI_RIGHT_TYPE> |    # Konsisten: Cremation
+      | fee         | <TEST_ROI_FEE>        |    # Konsisten: 1000
+      | notes       | <TEST_ROI_NOTES>      |    # Konsisten
+```
+
+**Interment Feature** - Data konsisten:
+```gherkin
+  Scenario: Add Interment
+    And I fill interment form with following details
+      | firstName     | <TEST_INTERMENT_FIRSTNAME> |  # John
+      | lastName      | <TEST_INTERMENT_LASTNAME>  |  # Doe
+      | intermentType | <TEST_INTERMENT_TYPE>      |  # Burial
+```
+
+#### ✅ Feature yang Pakai Scenario Outline
+
+**AdvanceSearch Feature** - Data bervariasi:
+```gherkin
+  Scenario Outline: Search by Section Row - <section> <row>
+    When I select section "<section>"           # Bervariasi: A/B/C
+    And I select row "<row>"                    # Bervariasi: A/B/C
+    
+    Examples:
+      | section | row |  # Perlu test kombinasi berbeda
+      | A       | A   |
+      | B       | B   |
+      | C       | C   |
+```
+
+### Kenapa Hybrid?
+
+**Problem jika semua pakai Scenario Outline:**
+```gherkin
+# ❌ BAD - Cemetery harus direpeat di semua row!
+Examples:
+  | cemetery            | section | row |
+  | Astana Tegal Gundul | A       | A   |
+  | Astana Tegal Gundul | B       | B   |  # Repetitive!
+  | Astana Tegal Gundul | C       | C   |  # Susah maintain!
+```
+**Mau ganti cemetery?** → Ubah di 100+ baris! 😱
+
+**Solution dengan Hybrid:**
+```gherkin
+# ✅ GOOD - Cemetery pakai placeholder!
+Background:
+  Given I login to "<TEST_CEMETERY>"          # Placeholder (1 tempat)
+
+Scenario Outline: Search - <section> <row>
+  When I select section "<section>"
+  
+  Examples:
+    | section | row |  # Cemetery tidak direpeat!
+    | A       | A   |
+    | B       | B   |
+```
+**Mau ganti cemetery?** → Edit 1 file (`test-data.ts`) ✅
+
+### Consistency Rules
+
+#### ✅ DO - Konsisten Approach per Feature Type
+
+| Feature File | Approach | ✓ |
+|-------------|----------|---|
+| **roi.feature** | All Placeholders | ✅ |
+| **interment.feature** | All Placeholders | ✅ |
+| **searchBox.feature** | All Placeholders | ✅ |
+| **login.feature** | All Placeholders | ✅ |
+| **advanceSearch.authenticated.feature** | All Scenario Outline | ✅ |
+| **advanceSearch.public.feature** | All Scenario Outline | ✅ |
+
+#### ❌ DON'T - Mixed Approach dalam 1 Feature
+
+```gherkin
+# ❌ BAD - Mixing approaches
+Scenario: Add ROI (using placeholders)
+  And I fill form with "<TEST_ROI_FEE>"
+
+Scenario Outline: Edit ROI (using outline)  # ← Inconsistent!
+  And I fill form with "<fee>"
+  Examples:
+    | fee  |
+    | 1000 |
+```
+
+### Quick Decision Guide
+
+**Pertanyaan untuk memutuskan approach:**
+
+1. **Apakah data ini SAMA di semua test?**
+   - ✅ YES → Pakai **Placeholder**
+   - ❌ NO → Lanjut ke pertanyaan 2
+
+2. **Apakah perlu test dengan BERBAGAI NILAI?**
+   - ✅ YES → Pakai **Scenario Outline**
+   - ❌ NO → Pakai **Placeholder**
+
+3. **Apakah nilai ini sering BERUBAH antar environment?**
+   - ✅ YES → Pakai **Placeholder** (easy override via .env)
+   - ❌ NO → Consider Scenario Outline
+
+### File Structure for Hybrid Approach
+
+```
+src/data/test-data.ts           # Placeholders source
+├── LOGIN_DATA                  # For all features
+├── CEMETERY                    # For all features
+├── ROI_DATA                    # For roi.feature
+│   ├── basic { rightType, fee, term, notes }
+│   ├── certificates { withPerson, applicant, both }
+│   ├── holder { firstName, lastName, phone, email }
+│   └── applicant { firstName, lastName, phone, email }
+├── INTERMENT_DATA              # For interment.feature
+│   ├── add { firstName, lastName, type }
+│   └── edit { firstName, lastName, type }
+└── SEARCH_DATA                 # For searchBox.feature
+    └── roiHolder { searchName, displayName, plotId }
+
+src/features/p0/
+├── roi.feature                 # Uses ROI_DATA placeholders
+├── interment.feature           # Uses INTERMENT_DATA placeholders
+├── searchBox.feature           # Uses SEARCH_DATA placeholders
+├── advanceSearch.authenticated.feature   # Uses Scenario Outline
+└── advanceSearch.public.feature          # Uses Scenario Outline
 ```
 
 ---
@@ -226,7 +393,169 @@ TEST_ORG_NAME=New Organization
 
 ---
 
-## 🔄 Flow Penambahan Skenario Baru
+## � Data-Driven Testing dengan Scenario Outline
+
+### Konsep
+**Scenario Outline** adalah best practice Cucumber untuk test dengan **berbagai kombinasi data** tanpa duplikasi code. Sangat berguna untuk:
+- ✅ Test multiple input combinations
+- ✅ Maintenance lebih mudah (data terlihat jelas di feature file)
+- ✅ Tidak perlu ubah code atau environment variables
+- ✅ Dokumentasi self-explanatory
+
+### Kapan Menggunakan Scenario Outline?
+
+| Approach | Kapan Pakai | Contoh Use Case |
+|----------|-------------|-----------------|
+| **Scenario Outline** | Test dengan **variasi data berbeda** | Search dengan section A/B/C, price range, capacity combinations |
+| **Placeholder + test-data.ts** | Data **konsisten** di banyak scenario | Login credentials, organization name |
+| **Hardcode** | Data **static** yang tidak pernah berubah | UI text validation, fixed labels |
+
+### Contoh Implementasi
+
+#### ❌ BEFORE (Maintenance Susah)
+```gherkin
+@advance-search
+Scenario: Search section A
+  When I select section "<TEST_ADVANCE_SECTION_A>"
+  Then I should see results
+  
+# Mau test section B? Harus buat scenario baru atau ubah .env!
+```
+
+#### ✅ AFTER (Easy Maintenance)
+```gherkin
+@advance-search
+Scenario Outline: Search by section - <section> <row>
+  When I select section "<section>"
+  And I select row "<row>"
+  Then I should see results
+  
+  Examples:
+    | section | row | description           |
+    | A       | A   | High capacity plot    |
+    | B       | A   | Garden plot           |
+    | C       | B   | Different section     |
+    | D       | C   | Edge case testing     |
+
+# Mau tambah test untuk section E? Tinggal tambah row baru!
+```
+
+### Template Scenario Outline
+
+#### 1. Single Parameter
+```gherkin
+Scenario Outline: Test with <parameter>
+  When I perform action with "<parameter>"
+  Then I should see result
+  
+  Examples:
+    | parameter  | description      |
+    | value1     | Normal case      |
+    | value2     | Edge case        |
+    | value3     | Boundary test    |
+```
+
+#### 2. Multiple Parameters
+```gherkin
+Scenario Outline: Advanced search - <section> <row> <type>
+  When I select section "<section>"
+  And I select row "<row>"
+  And I select plot type "<type>"
+  Then I should see results
+  
+  Examples:
+    | section | row | type       | description           |
+    | A       | A   | Garden     | Section A Garden      |
+    | B       | B   | Lawn       | Section B Lawn        |
+    | C       | A   | Monumental | Section C Monumental  |
+```
+
+#### 3. Complex Combinations
+```gherkin
+Scenario Outline: Search with capacity - B:<burial> C:<cremation>
+  When I enter burial capacity "<burial>"
+  And I enter cremation capacity "<cremation>"
+  Then I should see "<expectedCount>" results
+  
+  Examples:
+    | burial | cremation | expectedCount | description           |
+    | 3      | 2         | 10            | High capacity         |
+    | 1      | 1         | 25            | Standard capacity     |
+    | 0      | 0         | 5             | No capacity filter    |
+```
+
+### Best Practices
+
+#### ✅ DO:
+- Use descriptive scenario names with parameter placeholders
+- Add description column untuk dokumentasi
+- Group related test data together
+- Keep Examples table readable (align columns)
+- Use meaningful parameter names
+
+```gherkin
+# ✅ GOOD
+Scenario Outline: Login with <userType> - <expectedResult>
+  When I login as "<userType>"
+  Then I should see "<expectedResult>"
+  
+  Examples:
+    | userType | expectedResult | description           |
+    | admin    | Dashboard      | Admin user access     |
+    | user     | Home           | Regular user access   |
+    | guest    | Error          | Unauthorized access   |
+```
+
+#### ❌ DON'T:
+```gherkin
+# ❌ BAD - No context in scenario name
+Scenario Outline: Test login
+  When I login as "<type>"
+  
+  Examples:
+    | type |
+    | a    |   # Apa maksud 'a'?
+    | b    |   # Tidak jelas!
+```
+
+### Hybrid Approach (Recommended)
+
+Gunakan kombinasi **Scenario Outline** untuk data yang bervariasi dan **Placeholder** untuk data konsisten:
+
+```gherkin
+Feature: Advanced Search
+  
+  Background:
+    Given I am on the Chronicle login page
+    When I enter email "<TEST_EMAIL>"        # ← Placeholder (konsisten)
+    And I enter password "<TEST_PASSWORD>"   # ← Placeholder (konsisten)
+    And I click the login button
+  
+  @advance-search
+  Scenario Outline: Search by section - <section> <row>
+    When I select section "<section>"        # ← From Examples (bervariasi)
+    And I select row "<row>"                 # ← From Examples (bervariasi)
+    Then I should see results
+    
+    Examples:
+      | section | row | description    |
+      | A       | A   | Section A test |
+      | B       | B   | Section B test |
+```
+
+### Benefits Summary
+
+| Benefit | Description |
+|---------|-------------|
+| 🚀 **Fast Changes** | Tambah kombinasi test baru tanpa code change |
+| 📖 **Self-Documenting** | Examples table adalah dokumentasi test cases |
+| 🔧 **Easy Maintenance** | Update data di satu tempat (feature file) |
+| ♻️ **No Duplication** | Satu scenario template untuk banyak test cases |
+| 🎯 **Clear Intent** | Langsung keliatan mau test kombinasi apa |
+
+---
+
+## �🔄 Flow Penambahan Skenario Baru
 
 ### Step-by-Step Guide
 

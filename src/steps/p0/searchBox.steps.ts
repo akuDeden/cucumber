@@ -51,6 +51,7 @@ When('I select cemetery {string} for public search', { timeout: 30000 }, async f
 
 When('I search for {string} in global search without login', { timeout: 15000 }, async function (searchQuery: string) {
   const page = this.page;
+  const actualSearchQuery = replacePlaceholders(searchQuery);
 
   // Wait for page to fully load before searching
   await page.waitForLoadState('domcontentloaded');
@@ -60,13 +61,13 @@ When('I search for {string} in global search without login', { timeout: 15000 },
   const searchInput = page.locator('input[type="text"][placeholder*="Search" i], [data-testid*="search-input" i]').first();
   await searchInput.waitFor({ state: 'visible', timeout: 10000 });
   await searchInput.click();
-  await searchInput.fill(searchQuery);
+  await searchInput.fill(actualSearchQuery);
 
   // Wait for search API call to complete
   await page.waitForTimeout(3000);
 
-  this.searchQuery = searchQuery;
-  logger.info(`Searched for: ${searchQuery}`);
+  this.searchQuery = actualSearchQuery;
+  logger.info(`Searched for: ${actualSearchQuery}`);
 });
 
 Then('I should see {string} message indicating privacy protection', { timeout: 10000 }, async function (expectedMessage: string) {
@@ -85,11 +86,12 @@ Then('I should see {string} message indicating privacy protection', { timeout: 1
 
 When('I search for {string} in global search', { timeout: 15000 }, async function (searchQuery: string) {
   const page = this.page;
+  const actualSearchQuery = replacePlaceholders(searchQuery);
 
   // Find and click search input in header
   const searchInput = page.locator('input[type="text"][placeholder*="Search" i], input[data-testid*="search" i]').first();
   await searchInput.click();
-  await searchInput.fill(searchQuery);
+  await searchInput.fill(actualSearchQuery);
 
   // Wait for search API call to complete and results to appear
   await page.waitForTimeout(3000);
@@ -98,19 +100,20 @@ When('I search for {string} in global search', { timeout: 15000 }, async functio
   const searchResultPanel = page.locator('cl-search-person-item').first();
   await searchResultPanel.waitFor({ state: 'visible', timeout: 10000 });
 
-  this.searchQuery = searchQuery;
-  logger.info(`Searched for: ${searchQuery}`);
+  this.searchQuery = actualSearchQuery;
+  logger.info(`Searched for: ${actualSearchQuery}`);
 });
 
 Then('I should see search result with plot {string}', { timeout: 10000 }, async function (plotName: string) {
   const page = this.page;
+  const actualPlotName = replacePlaceholders(plotName);
 
   // Wait for search result item containing the plot name
-  const searchResultItem = page.locator('cl-search-person-item').filter({ hasText: plotName });
+  const searchResultItem = page.locator('cl-search-person-item').filter({ hasText: actualPlotName });
   await searchResultItem.waitFor({ state: 'visible', timeout: 5000 });
 
   // Verify plot name is visible
-  const plotNameVisible = await searchResultItem.locator(`text=${plotName}`).isVisible();
+  const plotNameVisible = await searchResultItem.locator(`text=${actualPlotName}`).isVisible();
   expect(plotNameVisible).toBeTruthy();
 
   // Verify ROI Holder role is shown in search results
@@ -118,19 +121,20 @@ Then('I should see search result with plot {string}', { timeout: 10000 }, async 
   const hasRoiHolder = await roiHolderText.count() > 0;
   expect(hasRoiHolder).toBeTruthy();
 
-  this.selectedPlotFromSearch = plotName;
-  logger.info(`Search result verified with plot: ${plotName}`);
+  this.selectedPlotFromSearch = actualPlotName;
+  logger.info(`Search result verified with plot: ${actualPlotName}`);
 });
 
 When('I click on search result plot {string}', { timeout: 20000 }, async function (plotName: string) {
   const page = this.page;
+  const actualPlotName = replacePlaceholders(plotName);
 
   // Click on the search result item
-  const searchResult = page.locator('cl-search-person-item').filter({ hasText: plotName }).first();
+  const searchResult = page.locator('cl-search-person-item').filter({ hasText: actualPlotName }).first();
   await searchResult.click();
 
   // Wait for navigation to plot detail page
-  await page.waitForURL(`**/${encodeURIComponent(plotName)}**`, { timeout: 10000 });
+  await page.waitForURL(`**/${encodeURIComponent(actualPlotName)}**`, { timeout: 10000 });
   await page.waitForLoadState('domcontentloaded');
 
   // Wait for tab list to be visible
@@ -155,5 +159,5 @@ When('I click on search result plot {string}', { timeout: 20000 }, async functio
   // Wait for ROI data to load completely
   await page.waitForTimeout(2000);
 
-  logger.info(`Clicked on search result plot: ${plotName}, now at: ${page.url()}`);
+  logger.info(`Clicked on search result plot: ${actualPlotName}, now at: ${page.url()}`);
 });

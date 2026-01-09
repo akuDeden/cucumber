@@ -13,40 +13,38 @@ Feature: Advanced Search Plot - Authenticated Users
         And I navigate to organization home page
 
     @advanced-search-plot @smoke @p0
-    Scenario: Advanced search plot by Section, Row, and Number
+    Scenario Outline: Advanced search plot by Section, Row, and Number - <section> <row> <number>
         When I click Advanced search button
-        And I select section "A" in advanced search
-        And I select row "A" in advanced search
-        And I enter plot number "1" in advanced search
+        And I select section "<section>" in advanced search
+        And I select row "<row>" in advanced search
+        And I enter plot number "<number>" in advanced search
         And I click Search button in advanced search
-        Then I should see search results containing "A A 1"
-        When I click on plot "A A 1" from search results
-        Then I should see plot sidebar with plot ID "A A 1"
+        Then I should see search results containing "<section> <row> <number>"
+        When I click on plot "<section> <row> <number>" from search results
+        Then I should see plot sidebar with plot ID "<section> <row> <number>"
         And I should see plot details sidebar
+
+        Examples:
+            | section | row | number | description        |
+            | A       | A   | 1      | High capacity plot |
+            | B       | A   | 1      | Garden plot        |
 
     @advance-search-plot-id @p0
-    Scenario: Advanced search plot by Plot ID
+    Scenario Outline: Advanced search plot by Plot ID - <plotId>
         When I click Advanced search button
-        And I enter plot ID "<TEST_ADVANCE_PLOT_ID>" in advanced search
+        And I enter plot ID "<plotId>" in advanced search
         And I click Search button in advanced search
-        Then I should see search results containing "<TEST_ADVANCE_PLOT_ID>"
-        When I click on plot "<TEST_ADVANCE_PLOT_ID>" from search results
-        Then I should see plot sidebar with plot ID "<TEST_ADVANCE_PLOT_ID>"
+        Then I should see search results containing "<plotId>"
+        When I click on plot "<plotId>" from search results
+        Then I should see plot sidebar with plot ID "<plotId>"
         And I should see plot details sidebar
 
-    @advance-search-plot-type @p0
-    Scenario: Advanced search plot by Plot type (Garden) and validate detail
-        When I click Advanced search button
-        And I select plot type "<TEST_ADVANCE_PLOT_TYPE>" in advanced search
-        And I click Search button in advanced search
-        Then I should see search results information
-        When I click on first plot from search results
-        Then I should see plot details sidebar
-        When I click Edit plot button
-        Then I should see plot type "<TEST_ADVANCE_PLOT_TYPE>" in edit plot page
-        And I close edit plot page
+        Examples:
+            | plotId | description          |
+            | B A 1  | Section B Row A No 1 |
+            | A A 1  | Section A Row A No 1 |
 
-    @advance-search-plot-type-outline @p0
+    @advance-search-plot-type @p0
     Scenario Outline: Advanced search plot by Plot type and validate
         When I click Advanced search button
         And I select plot type "<plotType>" in advanced search
@@ -59,62 +57,92 @@ Feature: Advanced Search Plot - Authenticated Users
         And I close edit plot page
 
         Examples:
-            | plotType |
-            | Garden   |
-            | Lawn     |
+            | plotType   | description          |
+            | Garden     | Garden plot type     |
+            | Monumental | Monumental plot type |
 
     @advance-search-price @p0
-    Scenario: Advanced search plot by Price
+    Scenario Outline: Advanced search plot by Price - <price>
         When I click Advanced search button
-        And I enter price "<TEST_ADVANCE_PRICE>" in advanced search
+        And I enter price "<price>" in advanced search
         And I click Search button in advanced search
         Then I should see search results information
+
+        Examples:
+            | price | description        |
+            | 500   | Low price range    |
+            | 1000  | Medium price range |
 
     @advance-search-capacity @p0
-    Scenario: Advanced search plot by Capacity
+    Scenario Outline: Advanced search plot by Capacity - B:<burial> E:<entombment> C:<cremation>
         When I click Advanced search button
-        And I enter burial capacity "<TEST_ADVANCE_BURIAL_CAPACITY>" in advanced search
-        And I enter entombment capacity "<TEST_ADVANCE_ENTOMBMENT_CAPACITY>" in advanced search
-        And I enter cremation capacity "<TEST_ADVANCE_CREMATION_CAPACITY>" in advanced search
+        And I enter burial capacity "<burial>" in advanced search
+        And I enter entombment capacity "<entombment>" in advanced search
+        And I enter cremation capacity "<cremation>" in advanced search
         And I click Search button in advanced search
         Then I should see search results information
+
+        Examples:
+            | burial | entombment | cremation | description       |
+            | 3      | 0          | 2         | High capacity     |
+            | 1      | 1          | 1         | Standard capacity |
 
     @advance-search-interments-qty @p0
-    Scenario: Advanced search plot by Interments Qty
+    Scenario Outline: Advanced search plot by Interments Qty - <from> to <to>
         When I click Advanced search button
-        And I enter interments qty from "<TEST_ADVANCE_INTERMENTS_FROM>" to "<TEST_ADVANCE_INTERMENTS_TO>" in advanced search
+        And I enter interments qty from "<from>" to "<to>" in advanced search
         And I click Search button in advanced search
         Then I should see search results information
 
+        Examples:
+            | from | to | description        |
+            | 0    | 2  | Low range (0-2)    |
+            | 1    | 5  | Medium range (1-5) |
+
     @advance-search-combined @p0
-    Scenario: Advanced search plot by multiple filters combined - Section B Row A Monumental
+    Scenario Outline: Advanced search plot by multiple filters - <section> <row> <plotType>
         When I click Advanced search button
-        And I select section "<TEST_ADVANCE_SECTION_B>" in advanced search
-        And I select row "<TEST_ADVANCE_ROW_B>" in advanced search
-        And I select plot type "<TEST_ADVANCE_PLOT_TYPE>" in advanced search
+        And I select section "<section>" in advanced search
+        And I select row "<row>" in advanced search
+        And I select plot type "<plotType>" in advanced search
         And I click Search button in advanced search
         Then I should see search results information
         When I click on first plot from search results
         Then I should see plot details sidebar
         When I click Edit plot button
-        Then I should see plot type "<TEST_ADVANCE_PLOT_TYPE>" in edit plot page
+        Then I should see plot type "<plotType>" in edit plot page
         And I close edit plot page
 
+        Examples:
+            | section | row | plotType    | description           |
+            | B       | A   | Monumental  | Section B Monumental  |
+            | A       | A   | Columbarium | Section A Columbarium |
+
     @advance-search-combined-price @p0
-    Scenario: Advanced search plot by Section B Row A with Price filter
+    Scenario Outline: Advanced search plot by Section Row with Price filter - <section> <row>
         When I click Advanced search button
-        And I select section "<TEST_ADVANCE_SECTION_B_ROW_A>" in advanced search
-        And I select row "<TEST_ADVANCE_ROW_A_ROW_A>" in advanced search
-        And I enter price "<TEST_ADVANCE_PRICE>" in advanced search
+        And I select section "<section>" in advanced search
+        And I select row "<row>" in advanced search
+        And I enter price "<price>" in advanced search
         And I click Search button in advanced search
         Then I should see search results information
 
+        Examples:
+            | section | row | price | description          |
+            | B       | A   | 500   | Section B with price |
+            | A       | A   | 1000  | Section A with price |
+
     @advance-search-combined-capacity @p0
-    Scenario: Advanced search plot by Section A Row A with high Burial capacity
+    Scenario Outline: Advanced search plot by Section Row with Capacity - <section> <row>
         When I click Advanced search button
-        And I select section "<TEST_ADVANCE_SECTION_A>" in advanced search
-        And I select row "<TEST_ADVANCE_ROW_A>" in advanced search
-        And I enter burial capacity "<TEST_ADVANCE_BURIAL_CAPACITY>" in advanced search
-        And I enter cremation capacity "<TEST_ADVANCE_CREMATION_CAPACITY>" in advanced search
+        And I select section "<section>" in advanced search
+        And I select row "<row>" in advanced search
+        And I enter burial capacity "<burialCapacity>" in advanced search
+        And I enter cremation capacity "<cremationCapacity>" in advanced search
         And I click Search button in advanced search
         Then I should see search results information
+
+        Examples:
+            | section | row | burialCapacity | cremationCapacity | description        |
+            | A       | A   | 3              | 2                 | High capacity plot |
+            | B       | B   | 1              | 1                 | Standard capacity  |

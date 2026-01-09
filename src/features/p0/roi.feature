@@ -39,11 +39,11 @@ Feature: ROI Management
     And I select the first vacant plot
     When I click Add ROI button
     And I fill ROI form with following details
-      | rightType         | Cremation           |
-      | termOfRight       | 25 Years            |
-      | fee               | 1000                |
-      | certificateNumber | <TEST_ROI_CERT_2>   |
-      | notes             | Test ROI with person holder |
+      | rightType         | <TEST_ROI_RIGHT_TYPE> |
+      | termOfRight       | <TEST_ROI_TERM>       |
+      | fee               | <TEST_ROI_FEE>        |
+      | certificateNumber | <TEST_ROI_CERT_2>     |
+      | notes             | <TEST_ROI_NOTES>      |
     And I add ROI holder person with following details
       | firstName | <TEST_ROI_HOLDER_FIRSTNAME> |
       | lastName  | <TEST_ROI_HOLDER_LASTNAME>  |
@@ -63,19 +63,19 @@ Feature: ROI Management
     And I select the first vacant plot
     When I click Add ROI button
     And I fill ROI form with following details
-      | rightType       | Cremation       |
-      | termOfRight     | 25 Years        |
-      | fee             | 1000            |
-      | certificateNumber | CERT-TEST-003 |
-      | notes           | Test ROI with applicant |
+      | rightType         | <TEST_ROI_RIGHT_TYPE>      |
+      | termOfRight       | <TEST_ROI_TERM>            |
+      | fee               | <TEST_ROI_FEE>             |
+      | certificateNumber | <TEST_ROI_CERT_APPLICANT>  |
+      | notes             | <TEST_ROI_NOTES>           |
     And I add ROI applicant person with following details
-      | firstName | Jane                  |
-      | lastName  | Smith                 |
-      | phone     | +9876543210           |
-      | email     | jane.smith@example.com |
+      | firstName | <TEST_ROI_APPLICANT_FIRSTNAME> |
+      | lastName  | <TEST_ROI_APPLICANT_LASTNAME>  |
+      | phone     | <TEST_ROI_APPLICANT_PHONE>     |
+      | email     | jane.smith@example.com         |
     And I save the ROI
     Then the plot status should be "RESERVED"
-    And I should see ROI applicant "Jane Smith" in the ROI tab
+    And I should see ROI applicant "<TEST_ROI_APPLICANT_FIRSTNAME> <TEST_ROI_APPLICANT_LASTNAME>" in the ROI tab
 
   @add-roi @roi-holder-applicant @p0
   Scenario: Add ROI with both ROI holder and applicant to vacant plot
@@ -87,24 +87,24 @@ Feature: ROI Management
     And I select the first vacant plot
     When I click Add ROI button
     And I fill ROI form with following details
-      | rightType       | Cremation       |
-      | termOfRight     | 25 Years        |
-      | fee             | 1000            |
-      | certificateNumber | CERT-TEST-004 |
-      | notes           | Test ROI with holder and applicant |
+      | rightType         | <TEST_ROI_RIGHT_TYPE>      |
+      | termOfRight       | <TEST_ROI_TERM>            |
+      | fee               | <TEST_ROI_FEE>             |
+      | certificateNumber | <TEST_ROI_CERT_BOTH>       |
+      | notes             | <TEST_ROI_NOTES>           |
     And I add ROI holder person with following details
-      | firstName | John                 |
-      | lastName  | Doe                  |
-      | phone     | +1234567890          |
-      | email     | john.doe@example.com |
+      | firstName | <TEST_ROI_HOLDER_FIRSTNAME> |
+      | lastName  | <TEST_ROI_HOLDER_LASTNAME>  |
+      | phone     | <TEST_ROI_HOLDER_PHONE>     |
+      | email     | <TEST_ROI_HOLDER_EMAIL>     |
     And I add ROI applicant person with following details
-      | firstName | Jane                  |
-      | lastName  | Smith                 |
-      | phone     | +9876543210           |
-      | email     | jane.smith@example.com |
+      | firstName | <TEST_ROI_APPLICANT_FIRSTNAME> |
+      | lastName  | <TEST_ROI_APPLICANT_LASTNAME>  |
+      | phone     | <TEST_ROI_APPLICANT_PHONE>     |
+      | email     | jane.smith@example.com         |
     And I save the ROI
     Then the plot status should be "RESERVED"
-    And I should see both ROI holder "John Doe" and applicant "Jane Smith"
+    And I should see both ROI holder "<TEST_ROI_HOLDER_FIRSTNAME> <TEST_ROI_HOLDER_LASTNAME>" and applicant "<TEST_ROI_APPLICANT_FIRSTNAME> <TEST_ROI_APPLICANT_LASTNAME>"
 
   @edit-roi @p0
   Scenario: Edit ROI details on reserved plot

@@ -30,7 +30,68 @@ src/features/p0/
 └── searchBox.public.feature             # @public tag
 ```
 
-### 2. Centralized Test Data
+### 2. Hybrid Approach - Data Management Strategy ⭐
+
+**CRITICAL:** Framework uses **HYBRID APPROACH** combining:
+- **Placeholders** for CONSISTENT data
+- **Scenario Outline** for VARIABLE data
+
+#### Decision Flow for New Test Data:
+
+```
+New Test Data?
+  ↓
+  ├─ Data KONSISTEN di semua test? (cemetery, credentials, person names)
+  │   ↓ YES
+  │   └─→ Use PLACEHOLDER
+  │        1. Add to test-data.ts
+  │        2. Add to TestDataHelper.ts
+  │        3. Use <VARIABLE> in .feature
+  │
+  └─ Perlu test BERBAGAI KOMBINASI? (section A/B/C, prices, capacities)
+      ↓ YES
+      └─→ Use SCENARIO OUTLINE
+           1. Create Scenario Outline in .feature
+           2. Add Examples table with variations
+```
+
+#### Examples:
+
+**✅ Use Placeholders:**
+```gherkin
+# ROI Feature - data konsisten
+Scenario: Add ROI
+  And I fill ROI form with following details
+    | rightType | <TEST_ROI_RIGHT_TYPE> |  # Always "Cremation"
+    | fee       | <TEST_ROI_FEE>        |  # Always "1000"
+```
+
+**✅ Use Scenario Outline:**
+```gherkin
+# AdvanceSearch - data bervariasi
+Scenario Outline: Search by <section> <row>
+  When I select section "<section>"  # Test A/B/C combinations
+  
+  Examples:
+    | section | row |
+    | A       | A   |
+    | B       | B   |
+    | C       | C   |
+```
+
+#### Consistency Rules:
+
+| Feature Type | Approach | Files |
+|-------------|----------|-------|
+| ROI Management | All Placeholders | roi.feature |
+| Interment Management | All Placeholders | interment.feature |
+| Search Box | All Placeholders | searchBox.feature |
+| Login | All Placeholders | login.feature |
+| Advanced Search | All Scenario Outline | advanceSearch.*.feature |
+
+**DO NOT mix approaches within one feature!**
+
+### 3. Centralized Test Data Implementation
 - All test data lives in `src/data/test-data.ts`
 - Use environment variables with fallback defaults:
 ```typescript
@@ -42,9 +103,14 @@ export const LOGIN_DATA = {
 };
 ```
 - In feature files, use placeholders: `<TEST_EMAIL>`, `<TEST_PASSWORD>`
-- In step definitions, replace placeholders:
+- In step definitions, use TestDataHelper:
 ```typescript
-const email = emailParam.replace('<TEST_EMAIL>', LOGIN_DATA.valid.email);
+import { TestDataHelper } from '../../utils/TestDataHelper.js';
+
+When('I enter email {string}', async function (email: string) {
+  const actual = TestDataHelper.replacePlaceholders(email);
+  await page.fill('#email', actual);
+});
 ```
 
 ### 3. Adding New Scenarios - Quick Flow

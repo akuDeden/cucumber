@@ -61,6 +61,168 @@ automation_web/
   - Email: `faris+astanaorg@chronicle.rip`
   - Password: `12345`
 
+## 🔧 Test Data Management
+
+Framework ini menggunakan **Environment-Based Configuration Pattern** dengan 3 komponen utama:
+
+### 1. `.env.example` - Template File
+- **Fungsi**: Template/dokumentasi untuk environment variables
+- **Kapan dipakai**: Copy ke `.env` ketika ingin override nilai default
+- **Format**: Standard environment variables (`KEY=VALUE`)
+- **Note**: File ini TIDAK dipakai langsung oleh test!
+
+### 2. `src/data/test-data.ts` - Single Source of Truth ⭐
+- **Fungsi**: **Pusat data testing yang sebenarnya dipakai**
+- **Logika**: `process.env.VARIABLE_NAME || 'default value'`
+- **Ini yang dipakai oleh semua test!**
+- **Structure**:
+  ```typescript
+  export const ADVANCE_SEARCH_DATA = {
+    sectionA: process.env.TEST_ADVANCE_SECTION_A || 'A',
+    rowA: process.env.TEST_ADVANCE_ROW_A || 'A',
+    // ... more data
+  };
+  ```
+
+### 3. `src/utils/TestDataHelper.ts` - Placeholder Mapper
+- **Fungsi**: Converter untuk placeholder di file `.feature` (Gherkin)
+- **Contoh**: Mengubah `<TEST_ADVANCE_SECTION_A>` → nilai dari `test-data.ts`
+- **Kapan dipakai**: Di Cucumber step definitions untuk replace placeholders
+
+### 🎯 Cara Mengubah Test Data
+
+#### Cara 1: Ubah Default Values (Permanent)
+Edit [src/data/test-data.ts](src/data/test-data.ts):
+```typescript
+sectionA: process.env.TEST_ADVANCE_SECTION_A || 'B',  // Ubah 'A' → 'B'
+```
+
+#### Cara 2: Override via Environment Variable (Flexible)
+1. Copy `.env.example` → `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Edit `.env` untuk override nilai tertentu:
+   ```bash
+   # Override section A
+   TEST_ADVANCE_SECTION_A=B
+   
+   # Override untuk different environment
+   BASE_URL=https://production.chronicle.rip
+   TEST_EMAIL=different@email.com
+   ```
+
+3. Run test seperti biasa - akan otomatis pakai nilai dari `.env`
+
+### 📝 Menambah Variable Baru
+
+**Step 1**: Tambah di `src/data/test-data.ts`
+```typescript
+export const ADVANCE_SEARCH_DATA = {
+  sectionA: process.env.TEST_ADVANCE_SECTION_A || 'A',
+  sectionC: process.env.TEST_ADVANCE_SECTION_C || 'C',  // ← NEW
+};
+```
+
+**Step 2**: Tambah di `src/utils/TestDataHelper.ts` (jika pakai placeholder)
+```typescript
+const PLACEHOLDER_MAP: Record<string, string> = {
+  '<TEST_ADVANCE_SECTION_A>': TEST_DATA.advanceSearch.sectionA,
+  '<TEST_ADVANCE_SECTION_C>': TEST_DATA.advanceSearch.sectionC,  // ← NEW
+};
+```
+
+**Step 3**: Tambah di `.env.example` (optional, untuk dokumentasi)
+```bash
+# Section C (new section)
+TEST_ADVANCE_SECTION_C=C
+```
+
+### 🎯 Data-Driven Testing dengan Scenario Outline
+
+**Framework menggunakan HYBRID APPROACH** yang menggabungkan:
+- **Placeholders** untuk data **KONSISTEN** (cemetery, credentials)
+- **Scenario Outline** untuk data **BERVARIASI** (section A/B/C, price range)
+
+#### Why Hybrid?
+
+**Problem:** Jika semua pakai Scenario Outline, mau ganti cemetery harus ubah di banyak tempat!
+```gherkin
+# ❌ BAD - Cemetery repeated everywhere
+Examples:
+    | cemetery              | section | row |
+    | Astana Tegal Gundul  | A       | A   |
+    | Astana Tegal Gundul  | B       | B   |  # Must repeat!
+```
+
+**Solution:** Hybrid Approach!
+```gherkin
+Background:
+    Given I navigate to "<TEST_CEMETERY>"      # ← PLACEHOLDER (konsisten)
+
+Scenario Outline: Search by <section> <row>
+    When I select section "<section>"          # ← EXAMPLES (bervariasi)
+    
+    Examples:
+        | section | row |
+        | A       | A   |
+        | B       | B   |  # ← Cemetery not repeated!
+```
+
+#### Decision Matrix
+
+| Data Type | Approach | Where to Change |
+|-----------|----------|-----------------|
+| **Cemetery** | Placeholder | `test-data.ts` or `.env` |
+| **Credentials** | Placeholder | `test-data.ts` or `.env` |
+| **Section A/B/C** | Scenario Outline | Examples table in `.feature` |
+| **Price Range** | Scenario Outline | Examples table in `.feature` |
+
+**Benefits:**
+- ✅ Ganti cemetery: Edit 1 file (`test-data.ts`)
+- ✅ Tambah section D: Tambah 1 row di Examples
+- ✅ Best of both worlds!
+
+#### Quick Decision Guide
+
+**Pertanyaan untuk memutuskan approach:**
+
+1. **Apakah data ini SAMA di semua test?**
+   - ✅ YES → Pakai **Placeholder**
+   - ❌ NO → Lanjut ke pertanyaan 2
+
+2. **Apakah perlu test dengan BERBAGAI NILAI?**
+   - ✅ YES → Pakai **Scenario Outline**
+   - ❌ NO → Pakai **Placeholder**
+
+3. **Apakah nilai ini sering BERUBAH antar environment?**
+   - ✅ YES → Pakai **Placeholder** (easy override via .env)
+   - ❌ NO → Consider Scenario Outline
+
+**Dokumentasi lengkap:** 
+- 📖 [Hybrid Approach Guide](docs/HYBRID-APPROACH-GUIDE.md) - **⭐ READ THIS!**
+- 📖 [Data-Driven Testing Guide](docs/DATA-DRIVEN-TESTING-GUIDE.md)
+- 📖 [Cucumber Structure Guide](CUCUMBER-STRUCTURE-GUIDE.md) - Detailed architecture
+- ⚡ [Quick Reference: Add Test Data](docs/QUICK-REFERENCE-ADD-TEST-DATA.md)
+
+### 💡 Workflow Recommendations
+
+| Scenario | Action | File to Edit |
+|----------|--------|--------------|
+| **Development** | Ubah default values | `src/data/test-data.ts` |
+| **Different Environment** | Override via env vars | Create `.env` file |
+| **Regression Testing** | Use different data set | Create `.env` with new values |
+| **CI/CD Pipeline** | Set environment variables | Pipeline config (GitHub Actions, etc.) |
+
+### ✅ Best Practices
+
+- ✅ **Never commit `.env`** - Add to `.gitignore`
+- ✅ **Keep `.env.example` updated** - Document all available variables
+- ✅ **Use descriptive variable names** - `TEST_ADVANCE_SECTION_A` not `SECTION`
+- ✅ **Always provide default values** - Tests should work without `.env`
+- ✅ **Document why values exist** - Add comments in `test-data.ts`
+
 ## 🎯 Element Selectors
 
 All CSS selectors are organized in separate files under `src/selectors/` directory for better maintainability and reusability.

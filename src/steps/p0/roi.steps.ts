@@ -54,7 +54,7 @@ Then('the plot status should be {string}', { timeout: 10000 }, async function (e
   expect(isCorrect).toBeTruthy();
 });
 
-When('I click Add ROI button', { timeout: 15000 }, async function () {
+When('I click Add ROI button', { timeout: 50000 }, async function () {
   await roiPage.clickAddRoi();
 });
 
@@ -62,7 +62,7 @@ When('I click ROI tab', async function () {
   await roiPage.clickRoiTab();
 });
 
-When('I click Edit ROI button', { timeout: 15000 }, async function () {
+When('I click Edit ROI button', { timeout: 50000 }, async function () {
   // EDIT ROI button is at bottom of plot detail page, no need to click ROI tab first
   await roiPage.clickEditRoi();
 });

@@ -62,3 +62,12 @@ Then('the login button should be disabled', async function () {
   const isEnabled = await loginPage.isLoginButtonEnabled();
   expect(isEnabled).toBeFalsy();
 });
+
+When('I navigate to organization home page', { timeout: 30000 }, async function () {
+  logger.info('Navigating to organization home page');
+  const baseUrl = process.env.BASE_URL || 'https://staging.chronicle.rip';
+  // After login, navigate to the organization home page
+  await this.page.goto(baseUrl);
+  await this.page.waitForTimeout(3000); // Wait for page to load
+  logger.success('Navigated to organization home page');
+});

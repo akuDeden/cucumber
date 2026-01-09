@@ -1,0 +1,43 @@
+@p0 @advanceSearch @advance-search-public
+Feature: Advanced Search Plot - Public Access
+    As a public user (not logged in)
+    I want to search for plots using advanced search
+    So that I can find plot information without authentication
+
+    Background:
+        Given I am on the Chronicle home page
+
+    @advance-search-public @p0
+    Scenario: Advanced search plot by Section, Row, and Number without login
+        When I click Advanced search button without login
+        And I select cemetery "<TEST_CEMETERY>" in advanced search
+        And I select Plot tab in advanced search
+        And I select section "<TEST_SECTION>" in advanced search without login
+        And I select row "<TEST_ROW>" in advanced search without login
+        And I enter plot number "<TEST_NUMBER>" in advanced search without login
+        And I click Search button in advanced search without login
+        Then I should be navigated to advance search results page
+        And I should see search results information
+        And I should see plot number "<TEST_NUMBER>" in sidebar results
+        And I should see cemetery name "<TEST_CEMETERY>" in sidebar results
+        And I click close advance search button
+        Then I should be on the home page
+        And I should not see advance search results sidebar
+
+    @advance-search-public @advance-search-status @p0
+    Scenario Outline: Advanced search plot by status without login
+        When I click Advanced search button without login
+        And I select cemetery "<TEST_CEMETERY>" in advanced search
+        And I select Plot tab in advanced search
+        And I select status "<status>" in advanced search without login
+        And I click Search button in advanced search without login
+        Then I should be navigated to advance search results page
+        And I should see search results information
+        And I should see status icon "<status>" in first result
+
+        Examples:
+            | status   |
+            | For Sale |
+            | Vacant   |
+            | Reserved |
+            | Occupied |

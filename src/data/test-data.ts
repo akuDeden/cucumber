@@ -42,6 +42,45 @@ export const PLOT_SEARCH = {
 export const STATUSES = ['For Sale', 'Vacant', 'Reserved', 'Occupied'];
 
 // ============================================
+// ADVANCED SEARCH DATA
+// ============================================
+export const ADVANCE_SEARCH_DATA = {
+  // Plot ID search
+  plotId: process.env.TEST_ADVANCE_PLOT_ID || 'B A 1',
+
+  // Plot type search (based on CSV data: 1=Lawn, 2=Garden)
+  // Note: Some plot types may not have results in all cemeteries
+  plotType: process.env.TEST_ADVANCE_PLOT_TYPE || 'Monumental',
+
+  // Status search (1=Vacant, 2=Reserved, 3=Occupied, 6=Unavailable)
+  status: process.env.TEST_ADVANCE_STATUS || 'Vacant',
+
+  // Price search
+  price: process.env.TEST_ADVANCE_PRICE || '500',
+
+  // Capacity search (based on A A 1: burial=3, cremation=2)
+  burialCapacity: process.env.TEST_ADVANCE_BURIAL_CAPACITY || '3',
+  entombmentCapacity: process.env.TEST_ADVANCE_ENTOMBMENT_CAPACITY || '0',
+  cremationCapacity: process.env.TEST_ADVANCE_CREMATION_CAPACITY || '2',
+
+  // Interments Qty range
+  intermentsQtyFrom: process.env.TEST_ADVANCE_INTERMENTS_FROM || '0',
+  intermentsQtyTo: process.env.TEST_ADVANCE_INTERMENTS_TO || '2',
+
+  // Section B (verified to have 91 plots in staging)
+  sectionB: process.env.TEST_ADVANCE_SECTION_B || 'B',
+  rowB: process.env.TEST_ADVANCE_ROW_B || 'A',
+
+  // Section B Row A (with prices)
+  sectionBRowA: process.env.TEST_ADVANCE_SECTION_B_ROW_A || 'B',
+  rowARowA: process.env.TEST_ADVANCE_ROW_A_ROW_A || 'A',
+
+  // Section A Row A (with high capacity)
+  sectionA: process.env.TEST_ADVANCE_SECTION_A || 'A',
+  rowA: process.env.TEST_ADVANCE_ROW_A || 'A'
+};
+
+// ============================================
 // INTERMENT DATA
 // ============================================
 export const INTERMENT_DATA = {
@@ -90,6 +129,7 @@ export const TEST_DATA = {
   cemetery: CEMETERY,
   plot: PLOT_SEARCH,
   statuses: STATUSES,
+  advanceSearch: ADVANCE_SEARCH_DATA,
   interment: INTERMENT_DATA,
   roi: ROI_DATA
 };

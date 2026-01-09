@@ -8,7 +8,11 @@ import { replacePlaceholders } from '../../utils/TestDataHelper.js';
 
 // Initialize logger and page object
 const logger = new Logger('AdvanceSearchPlotSteps');
-let advanceSearchPage: AdvanceSearchPage;
+
+// Helper function to get or initialize advanceSearchPage
+function getAdvanceSearchPage(page: Page): AdvanceSearchPage {
+  return new AdvanceSearchPage(page);
+}
 
 // Background step
 Given('I am on the Chronicle home page', { timeout: 10000 }, async function () {
@@ -281,41 +285,154 @@ Then('I should not see advance search results sidebar', { timeout: 10000 }, asyn
 // ==========================================
 
 When('I click Advanced search button', { timeout: 20000 }, async function () {
-  const page = this.page;
-  if (!advanceSearchPage) {
-    advanceSearchPage = new AdvanceSearchPage(page);
-  }
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
   await advanceSearchPage.clickAdvancedSearchButton();
 });
 
 When('I select section {string} in advanced search', { timeout: 10000 }, async function (section: string) {
-  await advanceSearchPage.selectSectionInAdvancedSearch(section);
+  const actualSection = replacePlaceholders(section);
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.selectSectionInAdvancedSearch(actualSection);
 });
 
 When('I select row {string} in advanced search', { timeout: 10000 }, async function (row: string) {
-  await advanceSearchPage.selectRowInAdvancedSearch(row);
+  const actualRow = replacePlaceholders(row);
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.selectRowInAdvancedSearch(actualRow);
 });
 
 When('I enter plot number {string} in advanced search', { timeout: 10000 }, async function (number: string) {
-  await advanceSearchPage.enterPlotNumberInAdvancedSearch(number);
+  const actualNumber = replacePlaceholders(number);
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.enterPlotNumberInAdvancedSearch(actualNumber);
 });
 
 When('I click Search button in advanced search', { timeout: 15000 }, async function () {
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
   await advanceSearchPage.clickSearchButtonInAdvancedSearch();
 });
 
 Then('I should see search results containing {string}', { timeout: 15000 }, async function (plotId: string) {
-  await advanceSearchPage.verifySearchResultsContain(plotId);
+  const actualPlotId = replacePlaceholders(plotId);
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.verifySearchResultsContain(actualPlotId);
 });
 
 When('I click on plot {string} from search results', { timeout: 15000 }, async function (plotId: string) {
-  await advanceSearchPage.clickPlotFromSearchResults(plotId);
+  const actualPlotId = replacePlaceholders(plotId);
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.clickPlotFromSearchResults(actualPlotId);
 });
 
 Then('I should see plot sidebar with plot ID {string}', { timeout: 15000 }, async function (plotId: string) {
-  await advanceSearchPage.verifyPlotSidebarWithPlotId(plotId);
+  const actualPlotId = replacePlaceholders(plotId);
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.verifyPlotSidebarWithPlotId(actualPlotId);
 });
 
 Then('I should see plot details sidebar', { timeout: 10000 }, async function () {
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
   await advanceSearchPage.verifyPlotDetailsSidebar();
+});
+
+// ==========================================
+// ADVANCED SEARCH WITH MULTIPLE FILTERS STEPS
+// ==========================================
+
+When('I enter plot ID {string} in advanced search', { timeout: 10000 }, async function (plotId: string) {
+  const actualPlotId = replacePlaceholders(plotId);
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.enterPlotIdInAdvancedSearch(actualPlotId);
+});
+
+When('I select plot type {string} in advanced search', { timeout: 10000 }, async function (plotType: string) {
+  const actualPlotType = replacePlaceholders(plotType);
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.selectPlotTypeInAdvancedSearch(actualPlotType);
+});
+
+When('I select status {string} in advanced search', { timeout: 10000 }, async function (status: string) {
+  const actualStatus = replacePlaceholders(status);
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.selectStatusInAdvancedSearch(actualStatus);
+});
+
+When('I enter price {string} in advanced search', { timeout: 10000 }, async function (price: string) {
+  const actualPrice = replacePlaceholders(price);
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.enterPriceInAdvancedSearch(actualPrice);
+});
+
+When('I enter burial capacity {string} in advanced search', { timeout: 10000 }, async function (capacity: string) {
+  const actualCapacity = replacePlaceholders(capacity);
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.enterBurialCapacityInAdvancedSearch(actualCapacity);
+});
+
+When('I enter entombment capacity {string} in advanced search', { timeout: 10000 }, async function (capacity: string) {
+  const actualCapacity = replacePlaceholders(capacity);
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.enterEntombmentCapacityInAdvancedSearch(actualCapacity);
+});
+
+When('I enter cremation capacity {string} in advanced search', { timeout: 10000 }, async function (capacity: string) {
+  const actualCapacity = replacePlaceholders(capacity);
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.enterCremationCapacityInAdvancedSearch(actualCapacity);
+});
+
+When('I enter interments qty from {string} to {string} in advanced search', { timeout: 10000 }, async function (from: string, to: string) {
+  const actualFrom = replacePlaceholders(from);
+  const actualTo = replacePlaceholders(to);
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.enterIntermentsQtyInAdvancedSearch(actualFrom, actualTo);
+});
+
+When('I click on first plot from search results', { timeout: 15000 }, async function () {
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.clickFirstPlotFromSearchResults();
+});
+
+When('I click Edit plot button', { timeout: 15000 }, async function () {
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.clickEditPlotButton();
+});
+
+Then('I should see plot type {string} in edit plot page', { timeout: 10000 }, async function (plotType: string) {
+  const actualPlotType = replacePlaceholders(plotType);
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.verifyPlotTypeInEditPage(actualPlotType);
+});
+
+Then('I should see status {string} in edit plot page', { timeout: 10000 }, async function (status: string) {
+  const actualStatus = replacePlaceholders(status);
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.verifyStatusInEditPage(actualStatus);
+});
+
+When('I close edit plot page', { timeout: 10000 }, async function () {
+  const page = this.page as Page;
+  const advanceSearchPage = getAdvanceSearchPage(page);
+  await advanceSearchPage.closeEditPlotPage();
 });

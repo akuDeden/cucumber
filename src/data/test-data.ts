@@ -135,6 +135,29 @@ export const ROI_DATA = {
 };
 
 // ============================================
+// PERSON DATA
+// ============================================
+export const PERSON_DATA = {
+  add: {
+    firstName: process.env.TEST_PERSON_FIRSTNAME || 'Michael',
+    lastName: process.env.TEST_PERSON_LASTNAME || 'Johnson',
+    middleName: process.env.TEST_PERSON_MIDDLENAME || 'Andrew',
+    title: process.env.TEST_PERSON_TITLE || 'Mr',
+    gender: process.env.TEST_PERSON_GENDER || 'Male',
+    phoneM: process.env.TEST_PERSON_PHONE_M || '+1234567890',
+    phoneH: process.env.TEST_PERSON_PHONE_H || '+0987654321',
+    phoneO: process.env.TEST_PERSON_PHONE_O || '+1122334455',
+    email: process.env.TEST_PERSON_EMAIL || 'michael.johnson@example.com',
+    address: process.env.TEST_PERSON_ADDRESS || '123 Main Street',
+    city: process.env.TEST_PERSON_CITY || 'New York',
+    state: process.env.TEST_PERSON_STATE || 'NY',
+    country: process.env.TEST_PERSON_COUNTRY || 'USA',
+    postCode: process.env.TEST_PERSON_POSTCODE || '10001',
+    note: process.env.TEST_PERSON_NOTE || 'Test person created via automation'
+  }
+};
+
+// ============================================
 // FULL TEST DATA OBJECT (For easy access)
 // ============================================
 export const TEST_DATA = {
@@ -146,7 +169,8 @@ export const TEST_DATA = {
   advanceSearch: ADVANCE_SEARCH_DATA,
   interment: INTERMENT_DATA,
   search: SEARCH_DATA,
-  roi: ROI_DATA
+  roi: ROI_DATA,
+  person: PERSON_DATA
 };
 
 // ============================================
@@ -162,4 +186,9 @@ export function getPlotDetailText(): string {
 export function getDeceasedName(type: 'add' | 'edit' = 'add'): string {
   const data = type === 'add' ? INTERMENT_DATA.add : INTERMENT_DATA.edit;
   return `${data.firstName} ${data.lastName}`;
+}
+
+// Helper function to get full person name
+export function getPersonName(): string {
+  return `${PERSON_DATA.add.firstName} ${PERSON_DATA.add.lastName}`;
 }

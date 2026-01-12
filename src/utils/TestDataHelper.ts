@@ -65,6 +65,23 @@ const PLACEHOLDER_MAP: Record<string, string> = {
   '<TEST_ROI_APPLICANT_LASTNAME>': TEST_DATA.roi.applicant.lastName,
   '<TEST_ROI_APPLICANT_PHONE>': TEST_DATA.roi.applicant.phone,
   '<TEST_ROI_APPLICANT_EMAIL>': TEST_DATA.roi.applicant.email,
+
+  // Person data - Add
+  '<TEST_PERSON_FIRSTNAME>': TEST_DATA.person.add.firstName,
+  '<TEST_PERSON_LASTNAME>': TEST_DATA.person.add.lastName,
+  '<TEST_PERSON_MIDDLENAME>': TEST_DATA.person.add.middleName,
+  '<TEST_PERSON_TITLE>': TEST_DATA.person.add.title,
+  '<TEST_PERSON_GENDER>': TEST_DATA.person.add.gender,
+  '<TEST_PERSON_PHONE_M>': TEST_DATA.person.add.phoneM,
+  '<TEST_PERSON_PHONE_H>': TEST_DATA.person.add.phoneH,
+  '<TEST_PERSON_PHONE_O>': TEST_DATA.person.add.phoneO,
+  '<TEST_PERSON_EMAIL>': TEST_DATA.person.add.email,
+  '<TEST_PERSON_ADDRESS>': TEST_DATA.person.add.address,
+  '<TEST_PERSON_CITY>': TEST_DATA.person.add.city,
+  '<TEST_PERSON_STATE>': TEST_DATA.person.add.state,
+  '<TEST_PERSON_COUNTRY>': TEST_DATA.person.add.country,
+  '<TEST_PERSON_POSTCODE>': TEST_DATA.person.add.postCode,
+  '<TEST_PERSON_NOTE>': TEST_DATA.person.add.note,
 };
 
 /**

@@ -98,7 +98,7 @@ When('I continue from the ROI section', async function () {
   await requestSalesFormPage.continueROISection();
 });
 
-When('I agree to the terms and conditions', async function () {
+When('I agree to the terms and conditions', { timeout: 15000 }, async function () {
   await requestSalesFormPage.agreeToTerms();
 });
 
@@ -134,5 +134,37 @@ Then('I should see a confirmation dialog', { timeout: 15000 }, async function ()
 Then('the confirmation should show that the request was sent successfully', async function () {
   const hasSuccessMessage = await requestSalesFormPage.verifySuccessMessage();
   expect(hasSuccessMessage).toBe(true);
+});
+
+// ============================================
+// AT-NEED SPECIFIC STEPS (DO NOT USE FOR PRE-NEED)
+// ============================================
+
+When('I fill the ROI Applicant form with valid data for At-need', async function () {
+  await requestSalesFormPage.fillROIApplicantFormAtNeed();
+});
+
+When('I fill the ROI Holder form with valid data for At-need', async function () {
+  await requestSalesFormPage.fillROIHolderFormAtNeed();
+});
+
+When('I continue from the ROI Holder section for At-need', async function () {
+  await requestSalesFormPage.continueROIHolderSectionAtNeed();
+});
+
+When('I fill the Deceased form with valid data for At-need', async function () {
+  await requestSalesFormPage.fillDeceasedFormAtNeed();
+});
+
+When('I continue from the Deceased section for At-need', async function () {
+  await requestSalesFormPage.continueDeceasedSectionAtNeed();
+});
+
+When('I fill the Event Service form with valid data for At-need', async function () {
+  await requestSalesFormPage.fillEventServiceFormAtNeed();
+});
+
+When('I continue from the Event Service section for At-need', async function () {
+  await requestSalesFormPage.continueEventServiceSectionAtNeed();
 });
 

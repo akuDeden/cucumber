@@ -363,6 +363,34 @@ export class RequestSalesFormPage {
   }
 
   /**
+   * Fill ROI Applicant form with test data (AT-NEED specific)
+   * At-need form uses different IDs because ROI section comes first
+   */
+  async fillROIApplicantFormAtNeed(): Promise<void> {
+    this.logger.info('Filling ROI Applicant form (At-need)');
+    const applicant = REQUEST_SALES_FORM_DATA.applicant;
+
+    try {
+      await this.page.waitForTimeout(1000);
+
+      // At-need form: IDs start at mat-input-6 (after ROI section inputs)
+      this.logger.info(`Filling First Name: ${applicant.firstName}`);
+      await this.page.locator('#mat-input-6').fill(applicant.firstName);
+      
+      this.logger.info(`Filling Last Name: ${applicant.lastName}`);
+      await this.page.locator('#mat-input-7').fill(applicant.lastName);
+      
+      this.logger.info(`Filling Email: ${applicant.email}`);
+      await this.page.locator('#mat-input-12').fill(applicant.email);
+
+      this.logger.info('ROI Applicant form filled successfully (At-need)');
+    } catch (error) {
+      this.logger.error(`Error filling ROI Applicant form (At-need): ${error}`);
+      throw error;
+    }
+  }
+
+  /**
    * Click continue button in ROI Applicant section
    */
   async continueROIApplicantSection(): Promise<void> {
@@ -372,7 +400,110 @@ export class RequestSalesFormPage {
   }
 
   // ============================================
-  // PURCHASE FORM - INTERMENT DETAILS SECTION (AT-NEED ONLY)
+  // PURCHASE FORM - AT-NEED SPECIFIC SECTIONS
+  // ============================================
+
+  /**
+   * Fill ROI Holder form (AT-NEED only)
+   * ROI Holder section appears after ROI Applicant in At-need flow
+   */
+  async fillROIHolderFormAtNeed(): Promise<void> {
+    this.logger.info('Filling ROI Holder form (At-need)');
+    const applicant = REQUEST_SALES_FORM_DATA.applicant;
+
+    try {
+      await this.page.waitForTimeout(1000);
+
+      // At-need ROI Holder: IDs at mat-input-18, mat-input-19
+      this.logger.info(`Filling ROI Holder First Name: ${applicant.firstName}`);
+      await this.page.locator('#mat-input-18').fill(applicant.firstName);
+      
+      this.logger.info(`Filling ROI Holder Last Name: ${applicant.lastName}`);
+      await this.page.locator('#mat-input-19').fill(applicant.lastName);
+
+      this.logger.info('ROI Holder form filled successfully (At-need)');
+    } catch (error) {
+      this.logger.error(`Error filling ROI Holder form (At-need): ${error}`);
+      throw error;
+    }
+  }
+
+  /**
+   * Click continue button in ROI Holder section (AT-NEED only)
+   */
+  async continueROIHolderSectionAtNeed(): Promise<void> {
+    this.logger.info('Continuing from ROI Holder section (At-need)');
+    await this.page.locator('button:has-text("continue")').click();
+    await this.page.waitForTimeout(500);
+  }
+
+  /**
+   * Fill Deceased form (AT-NEED only)
+   */
+  async fillDeceasedFormAtNeed(): Promise<void> {
+    this.logger.info('Filling Deceased form (At-need)');
+    const deceased = REQUEST_SALES_FORM_DATA.intermentDetails;
+
+    try {
+      await this.page.waitForTimeout(1000);
+
+      // At-need Deceased: IDs at mat-input-32, mat-input-33
+      this.logger.info(`Filling Deceased First Name: ${deceased.deceasedFirstName}`);
+      await this.page.locator('#mat-input-32').fill(deceased.deceasedFirstName);
+      
+      this.logger.info(`Filling Deceased Last Name: ${deceased.deceasedLastName}`);
+      await this.page.locator('#mat-input-33').fill(deceased.deceasedLastName);
+
+      this.logger.info('Deceased form filled successfully (At-need)');
+    } catch (error) {
+      this.logger.error(`Error filling Deceased form (At-need): ${error}`);
+      throw error;
+    }
+  }
+
+  /**
+   * Click continue button in Deceased section (AT-NEED only)
+   */
+  async continueDeceasedSectionAtNeed(): Promise<void> {
+    this.logger.info('Continuing from Deceased section (At-need)');
+    await this.page.locator('button:has-text("continue")').click();
+    await this.page.waitForTimeout(500);
+  }
+
+  /**
+   * Fill Event Service form (AT-NEED only)
+   */
+  async fillEventServiceFormAtNeed(): Promise<void> {
+    this.logger.info('Filling Event Service form (At-need)');
+
+    try {
+      await this.page.waitForTimeout(1000);
+
+      // At-need Event Service: IDs at mat-input-40 (Date), mat-input-43 (Event Name)
+      this.logger.info('Filling Event Date');
+      await this.page.locator('#mat-input-40').fill('01/15/2026');
+      
+      this.logger.info('Filling Event Name');
+      await this.page.locator('#mat-input-43').fill('Memorial Service');
+
+      this.logger.info('Event Service form filled successfully (At-need)');
+    } catch (error) {
+      this.logger.error(`Error filling Event Service form (At-need): ${error}`);
+      throw error;
+    }
+  }
+
+  /**
+   * Click continue button in Event Service section (AT-NEED only)
+   */
+  async continueEventServiceSectionAtNeed(): Promise<void> {
+    this.logger.info('Continuing from Event Service section (At-need)');
+    await this.page.locator('button:has-text("continue")').click();
+    await this.page.waitForTimeout(500);
+  }
+
+  // ============================================
+  // PURCHASE FORM - INTERMENT DETAILS SECTION (OLD - NOT USED)
   // ============================================
 
   /**
@@ -551,6 +682,11 @@ export class RequestSalesFormPage {
    */
   async agreeToTerms(): Promise<void> {
     this.logger.info('Agreeing to terms and conditions');
+    
+    // Wait for Terms section to be visible
+    await this.page.waitForSelector('.mat-checkbox-inner-container', { timeout: 10000 });
+    await this.page.waitForTimeout(500);
+    
     await this.page.locator(RequestSalesFormSelectors.purchaseForm.terms.agreeCheckbox).click();
     await this.page.waitForTimeout(300);
     this.logger.info('Terms agreed');

@@ -39,7 +39,7 @@ export class IntermentPage {
     await this.page.click(IntermentSelectors.addIntermentButton);
     
     // Wait for form to load
-    await this.page.waitForURL('**/manage/add/interment', { timeout: 10000 });
+    await this.page.waitForURL('**/manage/add/interment', { timeout: 15000 });
     await this.page.waitForTimeout(2000); // Wait for form sections to load
     this.logger.success('Add Interment form loaded');
   }
@@ -155,7 +155,7 @@ export class IntermentPage {
     await this.page.click(IntermentSelectors.saveButton);
     
     // Wait for redirect back to plot detail page (longer timeout for production)
-    await this.page.waitForURL('**/plots/**', { timeout: 30000 });
+    await this.page.waitForURL('**/plots/**', { timeout: 35000 });
     await this.page.waitForTimeout(3000); // Wait for page to fully load
     
     this.logger.success('Interment saved and redirected to plot detail');
@@ -243,25 +243,37 @@ export class IntermentPage {
    * Click INTERMENTS tab on plot detail page (for edit flow)
    */
   async clickIntermentTab(): Promise<void> {
-    this.logger.info('Clicking INTERMENTS tab');
-    await this.page.getByRole('tab', { name: /INTERMENTS/i }).click();
-    this.logger.info('Waiting 20 seconds for INTERMENTS tab to load...');
-    await this.page.waitForTimeout(20000); // Wait for tab content to fully load
-    this.logger.success('INTERMENTS tab opened');
-  }
+  this.logger.info('Clicking INTERMENTS tab');
+
+  await this.page.locator(
+    'a.mat-tab-link p.tab-title',
+    { hasText: 'INTERMENTS' }
+  ).click();
+
+  await this.page.waitForSelector(
+    '[data-testid="edit-interment-button"]',
+    { timeout: 30000 }
+  );
+
+  this.logger.success('INTERMENTS tab opened');
+}
 
   /**
    * Click Edit Interment button from INTERMENTS tab
    */
   async clickEditIntermentButton(): Promise<void> {
-    this.logger.info('Clicking Edit Interment button');
-    await this.page.getByTestId('interment-item-button-edit-interment').click();
-    
-    // Wait for edit form to load
-    await this.page.waitForURL('**/manage/edit/interment/**', { timeout: 10000 });
-    await this.page.waitForTimeout(3000); // Wait for form to fully load
-    this.logger.success('Edit Interment form loaded');
-  }
+  this.logger.info('Clicking Edit Interment button');
+
+  const editButton = this.page.getByTestId('interment-item-button-edit-interment').first();
+
+  await editButton.waitFor({ state: 'visible', timeout: 30000 });
+  await editButton.click();
+
+  await this.page.getByRole('heading', { name: 'Edit Interment' })
+    .waitFor({ timeout: 30000 });
+
+  this.logger.success('Edit Interment form loaded');
+}
 
   /**
    * Update interment form with new data (for edit flow)

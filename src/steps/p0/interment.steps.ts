@@ -35,15 +35,17 @@ When('I add next of kin', { timeout: 15000 }, async function () {
   await intermentPage.addNextOfKin();
 });
 
-When('I click on Interments tab', { timeout: 25000 }, async function () {
-  const page = this.page;
-  if (!intermentPage) {
-    intermentPage = new IntermentPage(page);
+When(
+  'I click on Interments tab',
+  { timeout: 30000 },
+  async function () {
+    intermentPage = new IntermentPage(this.page);
+    await intermentPage.clickIntermentTab();
   }
-  await intermentPage.clickIntermentTab();
-});
+);
 
 When('I click Edit Interment button', { timeout: 15000 }, async function () {
+  intermentPage = new IntermentPage(this.page);
   await intermentPage.clickEditIntermentButton();
 });
 

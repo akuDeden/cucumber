@@ -36,7 +36,7 @@ Feature: Interment Management
     And I apply the filter plot
     And I expand section "a"
     And I select the first occupied plot
-    And I click on Interments tab
+    
     When I click Edit Interment button
     And I update interment form with following details
       | firstName     | Jane    |

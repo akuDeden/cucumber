@@ -15,7 +15,7 @@ When('I navigate to the advance table page', { timeout: 15000 }, async function 
   await page.waitForLoadState('networkidle');
 });
 
-When('I click on the PERSONS tab', { timeout: 15000 }, async function () {
+When('I click on the PERSONS tab', { timeout: 45000 }, async function () {
   await personPage.navigateToPersonTab();
 });
 
@@ -29,7 +29,7 @@ When('I fill in the person form with:', { timeout: 60000 }, async function (data
   await personPage.fillPersonForm(actualData as any);
 });
 
-When('I click the save button', { timeout: 30000 }, async function () {
+When('I click the save button', { timeout: 60000 }, async function () {
   await personPage.clickSave();
 });
 
@@ -72,7 +72,7 @@ When('I click the delete button', { timeout: 15000 }, async function () {
   await personPage.clickDelete();
 });
 
-When('I confirm the deletion', { timeout: 20000 }, async function () {
+When('I confirm the deletion', { timeout: 60000 }, async function () {
   await personPage.confirmDelete();
 });
 

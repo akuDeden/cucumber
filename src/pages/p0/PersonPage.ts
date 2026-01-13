@@ -1,6 +1,7 @@
 import { Page, expect } from '@playwright/test';
 import { PersonSelectors } from '../../selectors/p0/person.selectors.js';
 import { Logger } from '../../utils/Logger.js';
+import { NetworkHelper } from '../../utils/NetworkHelper.js';
 
 export interface PersonData {
   firstName: string;
@@ -40,7 +41,14 @@ export class PersonPage {
     await personTab.click();
     
     this.logger.info('PERSONS tab clicked successfully');
-    await this.page.waitForTimeout(1000); // Wait for tab content to load
+    
+    // Wait for person API to load data - try with more flexible pattern
+    try {
+      await NetworkHelper.waitForApiEndpoint(this.page, '/person', 30000);
+    } catch (error) {
+      this.logger.warn('Could not detect person API, waiting with timeout instead');
+      await this.page.waitForTimeout(2000);
+    }
   }
 
   /**
@@ -206,8 +214,13 @@ export class PersonPage {
     await this.page.waitForURL('**/advance-table?tab=persons', { timeout: 20000 });
     this.logger.info('Person saved successfully, navigated back to persons table');
     
-    // Wait for table to load
-    await this.page.waitForTimeout(2000);
+    // Wait for person API to reload data after save
+    try {
+      await NetworkHelper.waitForApiEndpoint(this.page, '/person', 30000);
+    } catch (error) {
+      this.logger.warn('Could not detect person API, waiting with timeout instead');
+      await this.page.waitForTimeout(2000);
+    }
   }
 
   /**
@@ -311,8 +324,13 @@ export class PersonPage {
     await this.page.waitForURL('**/advance-table?tab=persons', { timeout: 20000 });
     this.logger.info('Person saved successfully, navigated back to persons table');
     
-    // Wait for table to load
-    await this.page.waitForTimeout(2000);
+    // Wait for person API to reload data after save
+    try {
+      await NetworkHelper.waitForApiEndpoint(this.page, '/person', 30000);
+    } catch (error) {
+      this.logger.warn('Could not detect person API, waiting with timeout instead');
+      await this.page.waitForTimeout(2000);
+    }
   }
 
   /**
@@ -320,6 +338,14 @@ export class PersonPage {
    */
   async getFirstRowPersonName(): Promise<string> {
     this.logger.info('Getting person name from first row');
+    
+    // Wait for person API to ensure data is loaded
+    try {
+      await NetworkHelper.waitForApiEndpoint(this.page, '/person', 30000);
+    } catch (error) {
+      this.logger.warn('Could not detect person API, waiting with timeout instead');
+      await this.page.waitForTimeout(2000);
+    }
     
     // Wait for table to finish loading (progressbar elements should disappear)
     try {
@@ -363,6 +389,11 @@ export class PersonPage {
     
     try {
       await firstDataRow.waitFor({ state: 'visible', timeout: 5000 });
+      
+      // Scroll into view to ensure virtual scrolling loads the content
+      await firstDataRow.scrollIntoViewIfNeeded();
+      await this.page.waitForTimeout(1000); // Wait for content to load
+      
     } catch (error) {
       this.logger.error('First data row not visible');
       this.logger.info(`First row HTML: ${rowInfo.firstDataRowHTML || 'Not found'}`);
@@ -371,8 +402,20 @@ export class PersonPage {
     
     // Get cells from first data row
     const cells = firstDataRow.locator('[role="gridcell"]');
-    const firstName = await cells.nth(1).textContent(); // Column 2 (0-indexed)
-    const lastName = await cells.nth(3).textContent();  // Column 4 (0-indexed)
+    
+    // Debug: Log all cell contents and row text
+    const cellCount = await cells.count();
+    const rowText = await firstDataRow.innerText();
+    this.logger.info(`Number of cells in first row: ${cellCount}`);
+    this.logger.info(`Full row text: "${rowText}"`);
+    
+    for (let i = 0; i < Math.min(cellCount, 10); i++) { // Only first 10 cells for brevity
+      const cellText = await cells.nth(i).innerText();
+      this.logger.info(`Cell ${i} innerText: "${cellText?.trim()}"`);
+    }
+    
+    const firstName = await cells.nth(1).innerText(); // Column 2 (0-indexed)
+    const lastName = await cells.nth(3).innerText();  // Column 4 (0-indexed)
     
     const fullName = `${firstName?.trim() || ''} ${lastName?.trim() || ''}`.trim();
     this.logger.info(`First row person name: ${fullName}`);
@@ -435,8 +478,14 @@ export class PersonPage {
     await applyButton.click();
     
     this.logger.info('Filter applied, waiting for table to reload');
-    // Wait longer for table to reload with filtered data
-    await this.page.waitForTimeout(3000);
+    
+    // Wait for person API to reload data with filter
+    try {
+      await NetworkHelper.waitForApiEndpoint(this.page, '/person', 30000);
+    } catch (error) {
+      this.logger.warn('Could not detect person API, waiting with timeout instead');
+      await this.page.waitForTimeout(2000);
+    }
   }
 
   /**
@@ -455,10 +504,22 @@ export class PersonPage {
     
     const gridLocator = this.page.locator('[role="grid"]');
     const firstDataRow = gridLocator.locator('[role="row"]').nth(1);
-    await firstDataRow.click();
     
-    this.logger.info('First row clicked, waiting for person details');
-    await this.page.waitForTimeout(1000);
+    // Try double click to open edit page
+    await firstDataRow.dblclick();
+    
+    this.logger.info('First row double-clicked, waiting for edit page');
+    
+    // Wait for navigation to edit page
+    try {
+      await this.page.waitForURL('**/manage/edit/person/**', { timeout: 10000 });
+      this.logger.info('Successfully navigated to person edit page');
+    } catch (error) {
+      this.logger.warn('Did not navigate to edit page, might need different approach');
+      // If double click doesn't work, try single click and wait
+      await firstDataRow.click();
+      await this.page.waitForTimeout(2000);
+    }
   }
 
   /**
@@ -583,8 +644,13 @@ export class PersonPage {
     await this.page.waitForURL('**/advance-table?tab=persons', { timeout: 20000 });
     this.logger.info('Navigated back to persons table after deletion');
     
-    // Wait for table to reload
-    await this.page.waitForTimeout(2000);
+    // Wait for person API to reload data after deletion
+    try {
+      await NetworkHelper.waitForApiEndpoint(this.page, '/person', 30000);
+    } catch (error) {
+      this.logger.warn('Could not detect person API, waiting with timeout instead');
+      await this.page.waitForTimeout(2000);
+    }
   }
 
   /**

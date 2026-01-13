@@ -193,4 +193,33 @@ export class NetworkHelper {
 
     throw new Error(`List ${listSelector} not populated after ${timeout}ms`);
   }
+
+  /**
+   * Wait for specific API endpoint to complete
+   * Monitors network requests and waits for matching URL to finish loading
+   * @param page - Playwright page object
+   * @param urlPattern - URL pattern to wait for (can be partial URL)
+   * @param timeout - Maximum time to wait in ms (default: 30000)
+   */
+  static async waitForApiEndpoint(
+    page: Page,
+    urlPattern: string,
+    timeout: number = 30000
+  ): Promise<void> {
+    this.logger.info(`Waiting for API endpoint: ${urlPattern}`);
+    
+    try {
+      await page.waitForResponse(
+        (response) => response.url().includes(urlPattern) && response.status() === 200,
+        { timeout }
+      );
+      this.logger.info(`API endpoint ${urlPattern} completed successfully`);
+      
+      // Small wait to ensure data is rendered
+      await page.waitForTimeout(500);
+    } catch (e) {
+      this.logger.info(`Timeout waiting for API ${urlPattern}: ${(e as Error).message}`);
+      throw e;
+    }
+  }
 }

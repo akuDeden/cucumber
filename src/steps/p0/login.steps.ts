@@ -4,7 +4,6 @@ import { LoginPage } from '../../pages/p0/LoginPage.js';
 import { Logger } from '../../utils/Logger.js';
 import { replacePlaceholders } from '../../utils/TestDataHelper.js';
 import { BASE_CONFIG } from '../../data/test-data.js';
-import { waitForEndpoint } from '../../utils/NetworkUtils.js';
 
 const logger = new Logger('LoginSteps');
 let loginPage: LoginPage;
@@ -66,11 +65,40 @@ Then('the login button should be disabled', async function () {
 });
 
 When('I navigate to organization home page', { timeout: 30000 }, async function () {
-  logger.info('Navigating to organization home page');
-  const baseUrl = BASE_CONFIG.baseUrl;
-  const responsePromise = waitForEndpoint(this.page, 'v1_ms_cemetery_list');
-  // After login, navigate to the organization home page
-  await this.page.goto(baseUrl);
-  await responsePromise;
-  logger.success('Navigated to organization home page');
+  logger.info('Validating auto-redirect to organization home page after login');
+  
+  // After login, system automatically redirects from public URL to authenticated URL
+  // Public URL pattern: (env).chronicle.rip (e.g., map.chronicle.rip, staging.chronicle.rip)
+  // Authenticated URL pattern: (region).chronicle.rip or (env)-(region).chronicle.rip
+  // Examples:
+  //   - map.chronicle.rip → aus.chronicle.rip
+  //   - staging.chronicle.rip → staging-aus.chronicle.rip  
+  //   - dev.chronicle.rip → dev-aus.chronicle.rip
+  
+  // Wait for automatic redirect to complete
+  // The redirect happens after successful login, so we just need to wait for URL to stabilize
+  await this.page.waitForTimeout(2000);
+  
+  // Wait for URL to contain region (indicates successful redirect to authenticated area)
+  // This will wait for URL pattern like: *-aus.chronicle.rip or aus.chronicle.rip
+  const region = BASE_CONFIG.region; // e.g., "aus"
+  await this.page.waitForURL(`**/*${region}*chronicle.rip/**`, { timeout: 15000 });
+  
+  // Additional wait for page to be fully loaded
+  await this.page.waitForLoadState('domcontentloaded', { timeout: 5000 });
+  await this.page.waitForTimeout(1500); // Wait for UI to be ready
+  
+  // Verify we're on authenticated URL (has region in URL)
+  const currentUrl = this.page.url();
+  const hasRegionInUrl = currentUrl.includes(`${region}.chronicle.rip`) || 
+                         currentUrl.includes(`-${region}.chronicle.rip`);
+  
+  if (!hasRegionInUrl) {
+    throw new Error(
+      `Failed to redirect to authenticated URL with region "${region}". ` +
+      `Current URL: ${currentUrl}`
+    );
+  }
+  
+  logger.success(`Successfully redirected to authenticated organization home page: ${currentUrl}`);
 });

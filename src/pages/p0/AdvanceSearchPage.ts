@@ -121,16 +121,35 @@ export class AdvanceSearchPage {
     const currentUrl = this.page.url();
     const isAlreadyOnSearchPage = currentUrl.includes('/search/advance');
 
-    await this.page.click(AdvanceSearchSelectors.searchButton);
+    // Wait for search button to be visible and enabled
+    const searchButton = this.page.locator(AdvanceSearchSelectors.searchButton);
+    await searchButton.waitFor({ state: 'visible', timeout: 5000 });
+    await expect(searchButton).toBeEnabled({ timeout: 5000 });
+
+    await searchButton.click();
 
     // Wait for search results to load
     if (isAlreadyOnSearchPage) {
       // Already on search page, just wait for results to update
+      this.logger.info('Already on search page, waiting for results to update...');
       await this.page.waitForTimeout(3000);
+      
+      // Wait for the search results heading to be updated (it should change text)
+      await this.page.waitForSelector(AdvanceSearchSelectors.searchResultsHeading, { 
+        state: 'visible', 
+        timeout: 5000 
+      });
     } else {
       // Wait for navigation to search page
+      this.logger.info('Waiting for navigation to search results page...');
       await this.page.waitForURL('**/search/advance', { timeout: 10000 });
       await this.page.waitForTimeout(3000); // Wait for results to load
+      
+      // Verify we're on the search page by checking for results heading
+      await this.page.waitForSelector(AdvanceSearchSelectors.searchResultsHeading, { 
+        state: 'visible', 
+        timeout: 5000 
+      });
     }
 
     this.logger.success('Search completed, results displayed');
@@ -286,10 +305,27 @@ export class AdvanceSearchPage {
     this.logger.info(`Entering Burial capacity: ${capacity}`);
 
     const burialCapacityField = this.page.getByRole('textbox', { name: 'Burials' });
-    await burialCapacityField.click();
+    
+    // Wait for field to be visible and enabled
+    await burialCapacityField.waitFor({ state: 'visible', timeout: 5000 });
+    await expect(burialCapacityField).toBeEnabled({ timeout: 5000 });
+    
+    // Clear any existing value first
+    await burialCapacityField.clear();
     await this.page.waitForTimeout(300);
+    
+    // Fill with new value
     await burialCapacityField.fill(capacity);
     await this.page.waitForTimeout(500);
+    
+    // Verify value was entered correctly
+    const enteredValue = await burialCapacityField.inputValue();
+    if (enteredValue !== capacity) {
+      this.logger.warn(`Value mismatch: expected "${capacity}", got "${enteredValue}". Retrying...`);
+      await burialCapacityField.clear();
+      await burialCapacityField.fill(capacity);
+      await this.page.waitForTimeout(300);
+    }
 
     this.logger.success(`Burial capacity ${capacity} entered`);
   }
@@ -302,10 +338,27 @@ export class AdvanceSearchPage {
     this.logger.info(`Entering Entombment capacity: ${capacity}`);
 
     const entombmentCapacityField = this.page.getByRole('textbox', { name: 'Entombments' });
-    await entombmentCapacityField.click();
+    
+    // Wait for field to be visible and enabled
+    await entombmentCapacityField.waitFor({ state: 'visible', timeout: 5000 });
+    await expect(entombmentCapacityField).toBeEnabled({ timeout: 5000 });
+    
+    // Clear any existing value first
+    await entombmentCapacityField.clear();
     await this.page.waitForTimeout(300);
+    
+    // Fill with new value
     await entombmentCapacityField.fill(capacity);
     await this.page.waitForTimeout(500);
+    
+    // Verify value was entered correctly
+    const enteredValue = await entombmentCapacityField.inputValue();
+    if (enteredValue !== capacity) {
+      this.logger.warn(`Value mismatch: expected "${capacity}", got "${enteredValue}". Retrying...`);
+      await entombmentCapacityField.clear();
+      await entombmentCapacityField.fill(capacity);
+      await this.page.waitForTimeout(300);
+    }
 
     this.logger.success(`Entombment capacity ${capacity} entered`);
   }
@@ -318,10 +371,27 @@ export class AdvanceSearchPage {
     this.logger.info(`Entering Cremation capacity: ${capacity}`);
 
     const cremationCapacityField = this.page.getByRole('textbox', { name: 'Cremations' });
-    await cremationCapacityField.click();
+    
+    // Wait for field to be visible and enabled
+    await cremationCapacityField.waitFor({ state: 'visible', timeout: 5000 });
+    await expect(cremationCapacityField).toBeEnabled({ timeout: 5000 });
+    
+    // Clear any existing value first
+    await cremationCapacityField.clear();
     await this.page.waitForTimeout(300);
+    
+    // Fill with new value
     await cremationCapacityField.fill(capacity);
     await this.page.waitForTimeout(500);
+    
+    // Verify value was entered correctly
+    const enteredValue = await cremationCapacityField.inputValue();
+    if (enteredValue !== capacity) {
+      this.logger.warn(`Value mismatch: expected "${capacity}", got "${enteredValue}". Retrying...`);
+      await cremationCapacityField.clear();
+      await cremationCapacityField.fill(capacity);
+      await this.page.waitForTimeout(300);
+    }
 
     this.logger.success(`Cremation capacity ${capacity} entered`);
   }

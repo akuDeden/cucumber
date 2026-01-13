@@ -17,7 +17,7 @@
 // ============================================
 export const BASE_CONFIG = {
   // Environment: staging, map, production, etc. (used for domain)
-  environment: process.env.ENVIRONMENT || 'map',
+  environment: process.env.ENVIRONMENT || 'dev',
   
   // Base domain (will be combined with environment)
   baseDomain: process.env.BASE_DOMAIN || 'chronicle.rip',

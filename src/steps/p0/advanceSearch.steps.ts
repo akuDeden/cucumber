@@ -29,6 +29,7 @@ Given('I am on the Chronicle home page', { timeout: 10000 }, async function () {
 When('I click Advanced search button without login', { timeout: 10000 }, async function () {
   const page: Page = this.page;
   logger.info('Clicking Advanced search button');
+  await page.waitForTimeout(1000); // Wait for button to be ready
   await page.locator(AdvanceSearchSelectors.advancedSearchButton).click();
   await page.waitForTimeout(1000); // Wait for dialog to open
   logger.success('Advanced search dialog opened');

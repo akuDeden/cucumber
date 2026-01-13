@@ -4,6 +4,7 @@ import { LoginPage } from '../../pages/p0/LoginPage.js';
 import { Logger } from '../../utils/Logger.js';
 import { replacePlaceholders } from '../../utils/TestDataHelper.js';
 import { BASE_CONFIG } from '../../data/test-data.js';
+import { waitForEndpoint } from '../../utils/NetworkUtils.js';
 
 const logger = new Logger('LoginSteps');
 let loginPage: LoginPage;
@@ -67,8 +68,9 @@ Then('the login button should be disabled', async function () {
 When('I navigate to organization home page', { timeout: 30000 }, async function () {
   logger.info('Navigating to organization home page');
   const baseUrl = BASE_CONFIG.baseUrl;
+  const responsePromise = waitForEndpoint(this.page, 'v1_ms_cemetery_list');
   // After login, navigate to the organization home page
   await this.page.goto(baseUrl);
-  await this.page.waitForTimeout(3000); // Wait for page to load
+  await responsePromise;
   logger.success('Navigated to organization home page');
 });

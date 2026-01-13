@@ -1,4 +1,4 @@
-@p0x @advanceSearch @advance-search-public
+@p0x @advance-search-public
 Feature: Advanced Search Plot - Public Access
     As a public user (not logged in)
     I want to search for plots using advanced search
@@ -25,9 +25,9 @@ Feature: Advanced Search Plot - Public Access
         And I should not see advance search results sidebar
 
         Examples:
-            | section | row | number | description           |
-            | A       | A   | 1      | Basic public search   |
-            | B       | A   | 1      | Alternative section   |
+            | section | row | number | description         |
+            | A       | A   | 1      | Basic public search |
+            | B       | A   | 1      | Alternative section |
 
     @advance-search-public @advance-search-status @p0x
     Scenario Outline: Advanced search plot by status without login

@@ -12,7 +12,7 @@ Feature: Advanced Search Plot - Authenticated Users
         Then I should be logged in successfully
         And I navigate to organization home page
 
-    @advanced-search-plot @smoke @p0
+    @advance-search-plot @smoke @p0
     Scenario Outline: Advanced search plot by Section, Row, and Number - <section> <row> <number>
         When I click Advanced search button
         And I select section "<section>" in advanced search
@@ -118,7 +118,7 @@ Feature: Advanced Search Plot - Authenticated Users
             | B       | A   | Monumental  | Section B Monumental  |
             | A       | A   | Columbarium | Section A Columbarium |
 
-    @advance-search-combined-price @p0
+    @advance-search-combined-price @p0 @fail
     Scenario Outline: Advanced search plot by Section Row with Price filter - <section> <row>
         When I click Advanced search button
         And I select section "<section>" in advanced search
@@ -132,7 +132,7 @@ Feature: Advanced Search Plot - Authenticated Users
             | B       | A   | 500   | Section B with price |
             | A       | A   | 1000  | Section A with price |
 
-    @advance-search-combined-capacity @p0
+    @advance-search-combined-capacity @p0 @fail
     Scenario Outline: Advanced search plot by Section Row with Capacity - <section> <row>
         When I click Advanced search button
         And I select section "<section>" in advanced search

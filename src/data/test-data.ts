@@ -16,11 +16,95 @@
 // BASE CONFIGURATION
 // ============================================
 export const BASE_CONFIG = {
-  baseUrl: process.env.BASE_URL || 'https://staging.chronicle.rip',
+  // Environment: staging, map, production, etc. (used for domain)
+  environment: process.env.ENVIRONMENT || 'map',
+  
+  // Base domain (will be combined with environment)
+  baseDomain: process.env.BASE_DOMAIN || 'chronicle.rip',
+  
+  // Region: aus, us, uk, etc. (used for authenticated URLs only)
+  region: process.env.REGION || 'aus',
+  
+  // Convenience property for public URLs (environment.domain)
+  get baseUrl(): string {
+    return `https://${this.environment}.${this.baseDomain}`;
+  },
+  
   browser: process.env.BROWSER || 'chromium',
   headless: process.env.HEADLESS === 'true',
   timeout: parseInt(process.env.TIMEOUT || '30000')
 };
+
+// ============================================
+// CEMETERY DATA
+// ============================================
+// Cemetery configuration with consistent naming
+export const CEMETERY_CONFIG = {
+  // Unique slug identifier (used in URLs)
+  uniqueName: process.env.TEST_CEMETERY_UNIQUE || 'astana_tegal_gundul',
+  
+  // Display name (used in UI)
+  displayName: process.env.TEST_CEMETERY_NAME || 'Astana Tegal Gundul',
+  
+  // Organization name for login
+  organizationName: process.env.TEST_ORG_NAME || 'astana tegal gundul'
+};
+
+// ============================================
+// HELPER FUNCTIONS FOR URL GENERATION
+// ============================================
+
+/**
+ * Build PUBLIC cemetery URL (no region in subdomain)
+ * Format: https://{environment}.chronicle.rip/{unique_name}_{region}
+ * Example: https://staging.chronicle.rip/astana_tegal_gundul_aus
+ */
+export function getCemeteryUrl(uniqueName: string = CEMETERY_CONFIG.uniqueName, region: string = BASE_CONFIG.region): string {
+  return `${BASE_CONFIG.baseUrl}/${uniqueName}_${region}`;
+}
+
+/**
+ * Build PUBLIC sell plots URL
+ * Format: https://{environment}.chronicle.rip/{unique_name}_{region}/sell-plots
+ * Example: https://staging.chronicle.rip/astana_tegal_gundul_aus/sell-plots
+ */
+export function getCemeterySellPlotsUrl(uniqueName: string = CEMETERY_CONFIG.uniqueName, region: string = BASE_CONFIG.region): string {
+  return `${getCemeteryUrl(uniqueName, region)}/sell-plots`;
+}
+
+/**
+ * Get cemetery display name with region
+ * Example: "Astana Tegal Gundul AUS"
+ */
+export function getCemeteryDisplayName(region: string = BASE_CONFIG.region): string {
+  return `${CEMETERY_CONFIG.displayName} ${region.toUpperCase()}`;
+}
+
+/**
+ * Build AUTHENTICATED customer organization base URL (with region in subdomain)
+ * Format: https://{environment}-{region}.chronicle.rip
+ * Example: https://staging-aus.chronicle.rip
+ */
+export function getCustomerOrgBaseUrl(region: string = BASE_CONFIG.region): string {
+  const env = BASE_CONFIG.environment;
+  const domain = BASE_CONFIG.baseDomain;
+  return `https://${env}-${region}.${domain}`;
+}
+
+/**
+ * Build full AUTHENTICATED customer organization URL path
+ * Format: https://{environment}-{region}.chronicle.rip/customer-organization/{OrgName}/{path}
+ * Example: https://staging-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/plots
+ */
+export function getCustomerOrgUrl(path: string = '', region: string = BASE_CONFIG.region): string {
+  const baseUrl = getCustomerOrgBaseUrl(region);
+  const orgName = CEMETERY_CONFIG.displayName.replace(/ /g, '_');
+  const basePath = `${baseUrl}/customer-organization/${orgName}`;
+  return path ? `${basePath}/${path}` : basePath;
+}
+
+// Backward compatibility
+export const CEMETERY = CEMETERY_CONFIG.displayName;
 
 // ============================================
 // LOGIN DATA
@@ -29,18 +113,13 @@ export const LOGIN_DATA = {
   valid: {
     email: process.env.TEST_EMAIL || process.env.CHRONICLE_EMAIL || 'faris+astanaorg@chronicle.rip',
     password: process.env.TEST_PASSWORD || process.env.CHRONICLE_PASSWORD || '12345',
-    organizationName: process.env.TEST_ORG_NAME || 'astana tegal gundul'
+    organizationName: CEMETERY_CONFIG.organizationName // Use centralized org name
   },
   invalid: {
     email: 'invalid@chronicle.rip',
     password: 'wrongpassword'
   }
 };
-
-// ============================================
-// CEMETERY DATA
-// ============================================
-export const CEMETERY = process.env.TEST_CEMETERY || 'Astana Tegal Gundul';
 
 // ============================================
 // PLOT SEARCH DATA
@@ -200,14 +279,17 @@ export const PERSON_DATA = {
 // ============================================
 export const REQUEST_SALES_FORM_DATA = {
   cemetery: {
-    name: process.env.TEST_CEMETERY_NAME || 'Astana Tegal Gundul US',
-    url: process.env.TEST_CEMETERY_URL || 'https://staging.chronicle.rip/astana_tegal_gundul_us',
-    sellPlotsUrl: process.env.TEST_SELL_PLOTS_URL || 'https://staging.chronicle.rip/astana_tegal_gundul_us/sell-plots',
+    // Use centralized cemetery config
+    name: getCemeteryDisplayName(), // e.g., "Astana Tegal Gundul AUS"
+    url: getCemeteryUrl(), // e.g., "https://staging.chronicle.rip/astana_tegal_gundul_aus"
+    sellPlotsUrl: getCemeterySellPlotsUrl(), // e.g., "https://staging.chronicle.rip/astana_tegal_gundul_aus/sell-plots"
+    uniqueName: CEMETERY_CONFIG.uniqueName, // e.g., "astana_tegal_gundul"
+    region: BASE_CONFIG.region, // e.g., "aus"
   },
   plot: {
     section: process.env.TEST_PLOT_SECTION || 'B',
     name: process.env.TEST_PLOT_NAME || 'B A 1',
-    status: process.env.TEST_PLOT_STATUS || 'For SaleS',
+    status: process.env.TEST_PLOT_STATUS || 'For Sale',
   },
   applicant: {
     firstName: process.env.TEST_APPLICANT_FIRSTNAME || 'Test',

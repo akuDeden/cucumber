@@ -1,6 +1,7 @@
 import { Page } from '@playwright/test';
 import { RoiSelectors, RoiUrls, PlotStatus } from '../../selectors/p0/roi.selectors.js';
 import { Logger } from '../../utils/Logger.js';
+import { getCustomerOrgUrl } from '../../data/test-data.js';
 
 export class PlotPage {
   readonly page: Page;
@@ -255,9 +256,11 @@ export class PlotPage {
   async navigateToAddRoi(plotName: string): Promise<void> {
     this.logger.info(`Navigating directly to add ROI page for plot: ${plotName}`);
     const encodedPlotName = encodeURIComponent(plotName);
-    // URL format as per user's example: /customer-organization/{org}/{plotName}/manage/add/roi
-    const addRoiUrl = `https://staging-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/${encodedPlotName}/manage/add/roi`;
     
+    // Build URL using centralized helper function
+    const addRoiUrl = getCustomerOrgUrl(`${encodedPlotName}/manage/add/roi`);
+    
+    this.logger.info(`Constructed URL: ${addRoiUrl}`);
     await this.page.goto(addRoiUrl);
     // Wait for ROI form to fully load and initialize
     await this.page.waitForTimeout(7000);

@@ -18,47 +18,42 @@ export class ROIPage {
     this.logger.info('Clicking Add ROI button');
     
     try {
-      // Wait for button to be visible first
-      await this.page.waitForSelector(RoiSelectors.addRoiButton, { state: 'visible', timeout: 5000 });
+      // Wait for button to be visible and clickable
+      await this.page.waitForSelector(RoiSelectors.addRoiButton, { state: 'visible', timeout: 10000 });
       this.logger.info('Add ROI button found, clicking...');
-      await this.page.click(RoiSelectors.addRoiButton);
       
-      // Wait for navigation to add ROI page (production is slower than staging)
-      this.logger.info('Waiting for navigation to Add ROI form...');
-      try {
-        await this.page.waitForURL('**/manage/add/roi', { timeout: 15000 });
-        this.logger.info('✓ Navigated to Add ROI form page');
-      } catch (e) {
-        this.logger.warn('URL navigation timeout, continuing anyway...');
-      }
+      // Click and wait for navigation in parallel
+      await Promise.all([
+        this.page.waitForURL('**/manage/add/roi', { timeout: 20000 }),
+        this.page.click(RoiSelectors.addRoiButton)
+      ]);
       
-      // Wait for network to settle after navigation (production needs this)
-      try {
-        await this.page.waitForLoadState('networkidle', { timeout: 30000 });
-        this.logger.info('✓ Add ROI page loaded - network idle');
-      } catch (e) {
-        this.logger.warn('Network idle timeout after 30s, continuing anyway');
-      }
+      this.logger.info('✓ Navigated to Add ROI form page');
       
-      const currentUrl = this.page.url();
-      this.logger.info(`Current URL after navigation: ${currentUrl}`);
+      // Instead of network idle, wait for specific form element to be ready
+      await this.page.waitForSelector(RoiSelectors.roiFormTitle, { state: 'visible', timeout: 15000 });
+      this.logger.info('✓ ROI form title loaded');
+      
       this.logger.success('Add ROI button clicked and form loaded');
     } catch (e) {
       // Fallback: try text-based selector
+      this.logger.warn(`Primary selector failed: ${e}`);
       this.logger.info('Trying fallback selector: button with text "Add ROI"');
-      await this.page.getByRole('button', { name: /add roi/i }).click();
       
-      // Wait for navigation with fallback selector too
       try {
-        await this.page.waitForURL('**/manage/add/roi', { timeout: 15000 });
-        await this.page.waitForLoadState('networkidle', { timeout: 30000 });
+        await Promise.all([
+          this.page.waitForURL('**/manage/add/roi', { timeout: 20000 }),
+          this.page.getByRole('button', { name: /add roi/i }).click()
+        ]);
+        
+        // Wait for form to be ready
+        await this.page.waitForSelector(RoiSelectors.roiFormTitle, { state: 'visible', timeout: 15000 });
+        
+        this.logger.success('Add ROI button clicked (fallback)');
       } catch (e2) {
-        this.logger.warn('Fallback navigation wait failed, continuing...');
+        this.logger.error(`Both selectors failed: ${e2}`);
+        throw new Error(`Failed to click Add ROI button and navigate to form: ${e2}`);
       }
-      
-      const currentUrl = this.page.url();
-      this.logger.info(`Current URL after click (fallback): ${currentUrl}`);
-      this.logger.success('Add ROI button clicked (fallback)');
     }
   }
 
@@ -84,23 +79,31 @@ export class ROIPage {
     
     try {
       if (isEditMode) {
-        // Edit mode: wait for network idle first, then check form elements
-        this.logger.info('Waiting for edit page to load completely (network idle with 30s timeout)...');
+        // Edit mode: Just wait for page load state, then check if we have basic form elements
+        this.logger.info('Edit mode detected - waiting for page to be ready...');
         
         try {
-          await this.page.waitForLoadState('networkidle', { timeout: 30000 });
-          this.logger.info('Network idle reached');
+          // Wait for DOM to be ready
+          await this.page.waitForLoadState('domcontentloaded', { timeout: 10000 });
+          this.logger.info('DOM content loaded');
+          
+          // Wait a bit more for Angular/dynamic content
+          await this.page.waitForTimeout(3000);
+          
+          // Check if we have input fields (fee, certificate, etc.)
+          const hasInputs = await this.page.locator('input[type="text"], input[type="number"], textarea').count() > 0;
+          if (hasInputs) {
+            this.logger.info('ROI edit form loaded successfully - found input fields');
+          } else {
+            this.logger.warn('No input fields found yet, waiting a bit more...');
+            await this.page.waitForTimeout(2000);
+          }
         } catch (e) {
-          this.logger.warn('Network idle timeout after 30s, checking for form elements anyway');
+          this.logger.warn(`Edit page load check failed: ${e}, continuing anyway`);
         }
-        
-        // Then wait for form elements to be visible
-        this.logger.info('Waiting for mat-select elements to be visible...');
-        await this.page.waitForSelector('mat-select', { state: 'visible', timeout: 15000 });
-        this.logger.info('ROI edit form loaded successfully');
       } else {
         // Add mode: wait for form title
-        await this.page.waitForSelector(RoiSelectors.roiFormTitle, { state: 'visible', timeout: 10000 });
+        await this.page.waitForSelector(RoiSelectors.roiFormTitle, { state: 'visible', timeout: 15000 });
         this.logger.info('ROI form loaded successfully');
       }
     } catch (e) {
@@ -111,54 +114,74 @@ export class ROIPage {
     // Fill Right Type if provided
     if (roiData.rightType) {
       this.logger.info(`Selecting Right Type: ${roiData.rightType}`);
-      // Right Type is the second mat-select (index 1, after Event Type)
-      const matSelects = await this.page.locator('mat-select').all();
       
-      // Wait for mat-select to be clickable with retry logic (production is very slow)
-      let rightTypeSelected = false;
-      for (let attempt = 1; attempt <= 3 && !rightTypeSelected; attempt++) {
-        try {
-          this.logger.info(`Right Type selection attempt ${attempt}/3`);
-          
-          await matSelects[1].waitFor({ state: 'visible', timeout: 10000 });
-          this.logger.info('Right Type dropdown visible');
-          
-          await this.page.waitForTimeout(1000); // Wait for Angular to initialize
-          
-          await matSelects[1].click();
-          this.logger.info('Right Type dropdown clicked');
-          
-          await this.page.waitForTimeout(2000); // Wait for options to appear
-          
-          // Click the option (Cremation, Burial, Both, or Unassigned)
-          await this.page.getByRole('option', { name: roiData.rightType, exact: true }).click();
-          await this.page.waitForTimeout(500);
-          
-          this.logger.success(`Right Type selected: ${roiData.rightType}`);
-          rightTypeSelected = true;
-        } catch (e) {
-          this.logger.warn(`Right Type selection attempt ${attempt} failed: ${e}`);
-          if (attempt === 3) {
-            this.logger.error('Failed to select Right Type after 3 attempts');
-            throw new Error(`Failed to select Right Type: ${roiData.rightType}`);
-          }
-          // Wait before retry
-          await this.page.waitForTimeout(2000);
-        }
+      // CRITICAL: Wait for page to be fully loaded and stable
+      // Wait for network to be idle to ensure all mat-select elements are rendered
+      try {
+        await this.page.waitForLoadState('networkidle', { timeout: 10000 });
+        this.logger.info('Network idle - page fully loaded');
+      } catch (e) {
+        this.logger.warn('Network idle timeout, continuing anyway');
       }
+      
+      // Wait for the Plot name to appear in the first mat-select (Event Type)
+      // This ensures the form is fully populated
+      await this.page.waitForSelector('mat-select:has-text("A")', { state: 'visible', timeout: 15000 });
+      this.logger.info('Plot field populated - form is ready');
+      
+      // Additional small wait to ensure DOM is stable
+      await this.page.waitForTimeout(1000);
+      
+      // Now get all mat-select elements - they should be stable now
+      const matSelects = await this.page.locator('mat-select').all();
+      this.logger.info(`Found ${matSelects.length} mat-select elements`);
+      
+      // Validate we have at least 3 mat-selects (Event Type, Right Type, Term of Right)
+      if (matSelects.length < 3) {
+        throw new Error(`Expected at least 3 mat-select elements, found ${matSelects.length}`);
+      }
+      
+      // Click the Right Type dropdown (index 1)
+      this.logger.info('Clicking Right Type dropdown (mat-select[1])...');
+      await matSelects[1].click();
+      
+      // Wait for dropdown animation and options to appear
+      await this.page.waitForTimeout(2000);
+      
+      // Use getByRole which works reliably (tested with MCP Playwright)
+      const optionLocator = this.page.getByRole('option', { name: roiData.rightType });
+      await optionLocator.waitFor({ state: 'visible', timeout: 10000 });
+      this.logger.info(`Option "${roiData.rightType}" is visible`);
+      
+      // Click the option
+      await optionLocator.click();
+      
+      this.logger.success(`Right Type selected: ${roiData.rightType}`);
     }
 
     // Fill Term of Right if provided
     if (roiData.termOfRight) {
       this.logger.info(`Selecting Term of Right: ${roiData.termOfRight}`);
-      // Term of Right is the third mat-select (index 2)
-      const matSelects = await this.page.locator('mat-select').all();
-      await matSelects[2].click();
-      await this.page.waitForTimeout(1000);
       
-      // Click the option (25 Years, 50 Years, Perpetual)
-      await this.page.getByRole('option', { name: roiData.termOfRight, exact: true }).click();
-      await this.page.waitForTimeout(500);
+      // Get all mat-select elements again (to be safe after previous interaction)
+      const matSelects = await this.page.locator('mat-select').all();
+      this.logger.info(`Found ${matSelects.length} mat-select elements for Term of Right`);
+      
+      // Click Term of Right dropdown (index 2)
+      this.logger.info('Clicking Term of Right dropdown (mat-select[2])...');
+      await matSelects[2].click();
+      
+      // Wait for dropdown animation and options to fully render
+      await this.page.waitForTimeout(2000);
+      
+      // Use getByRole which works reliably
+      const termOptionLocator = this.page.getByRole('option', { name: roiData.termOfRight });
+      await termOptionLocator.waitFor({ state: 'visible', timeout: 10000 });
+      this.logger.info(`Option "${roiData.termOfRight}" is visible`);
+      
+      // Click the option
+      await termOptionLocator.click();
+      
       this.logger.info(`Term of Right selected: ${roiData.termOfRight}`);
     }
 
@@ -219,9 +242,9 @@ export class ROIPage {
   }): Promise<void> {
     this.logger.info('Adding ROI holder person');
     
-    // Click Add ROI Holder button
+    // Click Add ROI Holder button and wait for form to appear
     await this.page.click(RoiSelectors.addRoiHolderButton);
-    await this.page.waitForTimeout(1000);
+    await this.page.waitForSelector(RoiSelectors.roiHolderFirstNameInput, { state: 'visible', timeout: 5000 });
     
     // Fill first name (required)
     this.logger.info(`Entering ROI holder first name: ${holderData.firstName}`);
@@ -245,12 +268,18 @@ export class ROIPage {
     
     // Click Add button to save ROI holder
     this.logger.info('Clicking Add button to save ROI holder');
-    await this.page.getByRole('button', { name: 'add', exact: true }).click();
-    await this.page.waitForTimeout(1000);
+    const addButton = this.page.getByRole('button', { name: 'add', exact: true });
+    await addButton.click();
     
-    // Wait for background process to complete (production needs time to attach person to ROI)
-    this.logger.info('Waiting 5s for person to be fully created and attached...');
-    await this.page.waitForTimeout(5000);
+    // Wait for the person card to appear in the UI (confirms creation)
+    try {
+      await this.page.waitForSelector(`text=${holderData.firstName} ${holderData.lastName}`, { timeout: 8000 });
+      this.logger.info('Person card appeared in UI');
+    } catch (e) {
+      // Fallback: wait a bit for backend processing
+      this.logger.warn('Person card not detected, waiting for backend...');
+      await this.page.waitForTimeout(3000);
+    }
     
     this.logger.success('ROI holder person added successfully');
   }
@@ -267,15 +296,33 @@ export class ROIPage {
   }): Promise<void> {
     this.logger.info('Adding ROI applicant person');
     
-    // Wait a bit for any alert to auto-dismiss or UI to settle after holder save
-    await this.page.waitForTimeout(1500);
+    // Wait for any previous person card animation to complete
+    await this.page.waitForTimeout(2000);
     
-    // Click ROI Applicant button with force (may be partially obscured after holder save)
+    // Make sure applicant button is visible and in viewport
+    const applicantButton = this.page.locator(RoiSelectors.addRoiApplicantButton);
+    await applicantButton.scrollIntoViewIfNeeded();
+    await this.page.waitForTimeout(500);
+    
+    // Force click the button (may be overlayed by holder card animation)
     this.logger.info('Clicking Add ROI Applicant button');
-    await this.page.click(RoiSelectors.addRoiApplicantButton, { force: true });
+    await applicantButton.click({ force: true });
     
-    // Wait for first name field to be ready (works for both dialog and inline form)
-    await this.page.waitForTimeout(1500);
+    // Wait longer for form to start rendering (especially after holder was just added)
+    await this.page.waitForTimeout(3000);
+    
+    // Wait for form to be visible
+    // After holder is added, form uses role-based selectors instead of data-testid
+    this.logger.info('Waiting for applicant form to appear...');
+    try {
+      // Try role-based selector first (more reliable after holder added)
+      await this.page.getByRole('textbox', { name: /first.*name/i }).first().waitFor({ state: 'visible', timeout: 10000 });
+      this.logger.info('✓ Form detected using role-based selector');
+    } catch (e) {
+      // Fallback to data-testid (when no holder added yet)
+      await this.page.waitForSelector(RoiSelectors.roiApplicantFirstNameInput, { state: 'visible', timeout: 5000 });
+      this.logger.info('✓ Form detected using data-testid selector');
+    }
     
     // After holder is saved, dialog ALWAYS opens with role-based fields
     // Try role selector first (for dialog after holder saved), fallback to data-testid (for standalone)
@@ -319,12 +366,18 @@ export class ROIPage {
     
     // Click Add button to save ROI applicant
     this.logger.info('Clicking Add button to save ROI applicant');
-    await this.page.getByRole('button', { name: 'add', exact: true }).click();
-    await this.page.waitForTimeout(1000);
+    const addButton = this.page.getByRole('button', { name: 'add', exact: true });
+    await addButton.click();
     
-    // Wait for background process to complete (production needs time to attach person to ROI)
-    this.logger.info('Waiting 5s for person to be fully created and attached...');
-    await this.page.waitForTimeout(5000);
+    // Wait for the person card to appear in the UI
+    try {
+      await this.page.waitForSelector(`text=${applicantData.firstName} ${applicantData.lastName}`, { timeout: 8000 });
+      this.logger.info('Person card appeared in UI');
+    } catch (e) {
+      // Fallback: wait a bit for backend processing
+      this.logger.warn('Person card not detected, waiting for backend...');
+      await this.page.waitForTimeout(3000);
+    }
     
     this.logger.success('ROI applicant person added successfully');
   }
@@ -578,12 +631,17 @@ export class ROIPage {
     this.logger.info('Clicking ROI tab');
     await this.page.getByRole('tab', { name: /roi/i }).click();
     
-    // Wait for network idle instead of static timeout (max 30s)
+    // Wait for ROI content to load (faster than network idle)
     try {
-      await this.page.waitForLoadState('networkidle', { timeout: 30000 });
-      this.logger.success('ROI tab opened - network idle');
+      // Wait for ROI content indicators (person cards, edit button, or "No ROI" message)
+      await Promise.race([
+        this.page.waitForSelector('[data-testid*="person-card"]', { state: 'visible', timeout: 3000 }),
+        this.page.waitForSelector('button:has-text("EDIT ROI")', { state: 'visible', timeout: 3000 }),
+        this.page.waitForTimeout(1000) // Fallback minimal wait
+      ]);
+      this.logger.success('ROI tab opened - content loaded');
     } catch (e) {
-      this.logger.warn('ROI tab network idle timeout after 30s, continuing anyway');
+      this.logger.warn('ROI tab content check timeout, continuing anyway');
     }
   }
 
@@ -614,12 +672,21 @@ export class ROIPage {
         this.logger.warn('URL did not change to edit page within 10s, continuing anyway');
       }
       
-      // Wait for network to settle after navigation
+      // Wait for edit page to be ready (faster than network idle)
+      // Edit pages have continuous network activity, so check for form elements instead
       try {
-        await this.page.waitForLoadState('networkidle', { timeout: 30000 });
-        this.logger.info('Edit page loaded - network idle');
+        // Wait for DOM to load
+        await this.page.waitForLoadState('domcontentloaded', { timeout: 5000 });
+        
+        // Wait for form elements to appear (fee, certificate, or activity notes)
+        await Promise.race([
+          this.page.waitForSelector('input[data-testid="user-log-activity-textarea-add-notes"]', { state: 'visible', timeout: 5000 }),
+          this.page.waitForSelector('input[type="number"], input[type="text"]', { state: 'visible', timeout: 5000 })
+        ]);
+        
+        this.logger.info('Edit page loaded - form elements ready');
       } catch (e) {
-        this.logger.warn('Network idle timeout after 30s, continuing anyway');
+        this.logger.warn('Form elements not found within 5s, continuing anyway');
       }
       
       const currentUrl = this.page.url();

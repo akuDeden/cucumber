@@ -1,19 +1,29 @@
 import { chromium } from '@playwright/test';
+import { getCustomerOrgBaseUrl, getCustomerOrgUrl, LOGIN_DATA } from './src/data/test-data.js';
 
 async function testSendButton() {
   const browser = await chromium.launch({ headless: false });
   const context = await browser.newContext();
   const page = await context.newPage();
   
+  // Build URLs using helper functions
+  const baseUrl = getCustomerOrgBaseUrl();
+  const loginUrl = `${baseUrl}/login`;
+  const editRoiUrl = getCustomerOrgUrl('A%20A%203/manage/edit/roi/5664889');
+  
+  console.log('Generated URLs:');
+  console.log('Login URL:', loginUrl);
+  console.log('Edit ROI URL:', editRoiUrl);
+  
   // Login
-  await page.goto('https://staging-aus.chronicle.rip/login');
-  await page.fill('input[name="email"]', 'faris+astanaorg@chronicle.rip');
-  await page.fill('input[type="password"]', '12345');
+  await page.goto(loginUrl);
+  await page.fill('input[name="email"]', LOGIN_DATA.valid.email);
+  await page.fill('input[type="password"]', LOGIN_DATA.valid.password);
   await page.click('button[type="submit"]');
   await page.waitForLoadState('networkidle');
   
   // Navigate to edit ROI page
-  await page.goto('https://staging-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/A%20A%203/manage/edit/roi/5664889');
+  await page.goto(editRoiUrl);
   await page.waitForLoadState('networkidle');
   await page.waitForTimeout(2000);
   

@@ -1,7 +1,7 @@
 import { Given, When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
 import { RequestSalesFormPage } from '../../pages/p0/RequestSalesFormPage.js';
-import { REQUEST_SALES_FORM_DATA } from '../../data/test-data.js';
+import { REQUEST_SALES_FORM_DATA, getCemeteryDisplayName } from '../../data/test-data.js';
 
 let requestSalesFormPage: RequestSalesFormPage;
 let selectedPlotName: string;
@@ -10,6 +10,13 @@ let selectedPlotName: string;
 // NAVIGATION STEPS
 // ============================================
 
+// Updated to work without parameter - uses centralized cemetery config
+Given('I am on the sell plots page for cemetery', { timeout: 30000 }, async function () {
+  requestSalesFormPage = new RequestSalesFormPage(this.page);
+  await requestSalesFormPage.navigateToSellPlotsPage();
+});
+
+// Backward compatibility - keep the old step definition
 Given('I am on the sell plots page for {string}', { timeout: 30000 }, async function (cemeteryName: string) {
   requestSalesFormPage = new RequestSalesFormPage(this.page);
   await requestSalesFormPage.navigateToSellPlotsPage();
@@ -60,9 +67,10 @@ Then('I should be on the request form page', async function () {
 });
 
 Then('the plot name and cemetery should match on the form', async function () {
+  const cemeteryDisplayName = getCemeteryDisplayName();
   await requestSalesFormPage.validateFormSummary(
     selectedPlotName,
-    REQUEST_SALES_FORM_DATA.cemetery.name
+    cemeteryDisplayName
   );
 });
 

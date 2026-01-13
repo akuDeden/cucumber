@@ -5,7 +5,8 @@ Feature: Request Sales Form - Public Plot Purchase
   So that I can secure a plot for future use
 
   Background:
-    Given I am on the sell plots page for "Astana Tegal Gundul US"
+    # Cemetery name is now centralized and dynamically built from CEMETERY_CONFIG + region
+    Given I am on the sell plots page for cemetery
 
   # ============================================
   # SCENARIO 1: PRE-NEED PURCHASE (WORKING ✅)
@@ -39,7 +40,7 @@ Feature: Request Sales Form - Public Plot Purchase
   # ============================================
   @request-sales-form-at-need @smoke
   Scenario: Submit AT-NEED purchase request for available plot
-    Given I am on the sell plots page for "Astana Tegal Gundul US"
+    Given I am on the sell plots page for cemetery
     When I expand the first section in sell plots page
     And I find a plot with purchase option available
     And I should see a Request to Buy button on the plot details page

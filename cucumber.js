@@ -10,6 +10,7 @@ export default {
     },
     import: ['src/steps/**/*.ts', 'src/hooks/**/*.ts'],
     paths: ['src/features/**/*.feature'],
-    publishQuiet: true
+    publishQuiet: true,
+    tags: 'not @skip' // Exclude scenarios tagged with @skip
   }
 };

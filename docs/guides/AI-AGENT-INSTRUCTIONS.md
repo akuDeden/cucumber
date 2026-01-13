@@ -91,33 +91,116 @@ Scenario Outline: Search by <section> <row>
 
 **DO NOT mix approaches within one feature!**
 
-### 3. Centralized Test Data Implementation
-- All test data lives in `src/data/test-data.ts`
-- Use environment variables with fallback defaults:
+### 3. Centralized Test Data & URL Configuration ⭐
+
+#### 3.1 Configuration Structure
+All test data and URLs are centralized in `src/data/test-data.ts`:
+
 ```typescript
-export const LOGIN_DATA = {
-  valid: {
-    email: process.env.TEST_EMAIL || 'default@example.com',
-    password: process.env.TEST_PASSWORD || 'default123'
+// Base configuration
+export const BASE_CONFIG = {
+  environment: 'staging',      // staging | map | production
+  baseDomain: 'chronicle.rip',
+  region: 'aus',               // aus | us | uk
+  
+  // Auto-generated public URL
+  get baseUrl(): string {
+    return `https://${this.environment}.${this.baseDomain}`;
   }
 };
+
+// Cemetery configuration
+export const CEMETERY_CONFIG = {
+  uniqueName: 'astana_tegal_gundul',
+  displayName: 'Astana Tegal Gundul',
+  organizationName: 'astana tegal gundul'
+};
 ```
-- In feature files, use placeholders: `<TEST_EMAIL>`, `<TEST_PASSWORD>`
-- In step definitions, use TestDataHelper:
+
+#### 3.2 URL Structure - Public vs Authenticated
+
+**PUBLIC URLs** (no region in subdomain):
+- Format: `https://{environment}.chronicle.rip/{cemetery}_{region}/{path}`
+- Used for: sell-plots, public pages, non-authenticated access
+- Example: `https://staging.chronicle.rip/astana_tegal_gundul_aus/sell-plots`
+
+**AUTHENTICATED URLs** (with region in subdomain):
+- Format: `https://{environment}-{region}.chronicle.rip/{path}`
+- Used for: login, customer-organization, add/edit ROI
+- Example: `https://staging-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/...`
+
+#### 3.3 Helper Functions for URLs
+
+**Always use helper functions, NEVER hardcode URLs:**
+
 ```typescript
-import { TestDataHelper } from '../../utils/TestDataHelper.js';
+import { 
+  BASE_CONFIG,
+  getCemeteryUrl, 
+  getCemeterySellPlotsUrl,
+  getCustomerOrgBaseUrl,
+  getCustomerOrgUrl 
+} from '../../data/test-data.js';
+
+// Public URLs
+const publicUrl = BASE_CONFIG.baseUrl;               // https://staging.chronicle.rip
+const cemeteryUrl = getCemeteryUrl();                // https://staging.chronicle.rip/astana_tegal_gundul_aus
+const sellPlotsUrl = getCemeterySellPlotsUrl();      // https://staging.chronicle.rip/astana_tegal_gundul_aus/sell-plots
+
+// Authenticated URLs
+const authBaseUrl = getCustomerOrgBaseUrl();         // https://staging-aus.chronicle.rip
+const loginUrl = `${authBaseUrl}/login`;             // https://staging-aus.chronicle.rip/login
+const addRoiUrl = getCustomerOrgUrl('A A 1/manage/add/roi'); // https://staging-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/A A 1/manage/add/roi
+```
+
+#### 3.4 Test Data with Placeholders
+
+In feature files, use placeholders:
+```gherkin
+When I enter email "<TEST_EMAIL>"
+And I enter password "<TEST_PASSWORD>"
+```
+
+In step definitions, use replacePlaceholders:
+```typescript
+import { replacePlaceholders } from '../../utils/TestDataHelper.js';
 
 When('I enter email {string}', async function (email: string) {
-  const actual = TestDataHelper.replacePlaceholders(email);
+  const actual = replacePlaceholders(email);
   await page.fill('#email', actual);
 });
 ```
+
+#### 3.5 Testing Different Environments
+
+```bash
+# Default: staging + aus
+npm test -- --tags "@roi"
+
+# Map environment + US region
+ENVIRONMENT=map REGION=us npm test -- --tags "@roi"
+
+# Production + UK region (future)
+ENVIRONMENT=production REGION=uk npm test
+```
+
+**CRITICAL RULES:**
+- ✅ **ALWAYS** use helper functions for URLs
+- ✅ **NEVER** hardcode `https://staging.chronicle.rip` or `https://staging-aus.chronicle.rip`
+- ✅ Use `BASE_CONFIG.baseUrl` for public URLs
+- ✅ Use `getCustomerOrgBaseUrl()` for authenticated URLs
+- ❌ **DON'T** mix environment variables in URLs manually
 
 ### 3. Adding New Scenarios - Quick Flow
 
 **Step 1:** Determine priority (p0/p1/p2) and access level (public/authenticated)
 
 **Step 2:** Add test data (if needed) to `src/data/test-data.ts`
+```typescript
+export const FEATURE_DATA = {
+  field: process.env.TEST_FIELD || 'default_value'
+};
+```
 
 **Step 3:** Create selectors file `src/selectors/p{X}/{feature}.selectors.ts`:
 ```typescript
@@ -132,24 +215,45 @@ export const FeatureSelectors = {
 @p0 @feature-name @public
 Feature: Feature Name (Public Access)
   
+  Background:
+    # For public features - use BASE_CONFIG.baseUrl
+    Given I am on the public cemetery page
+  
   Scenario: Do something
-    Given I am on homepage
     When I perform action with "<TEST_DATA>"
     Then I see result
 ```
 
-**Step 5:** Create step definitions `src/steps/p{X}/{feature}.steps.ts`:
+**Step 5:** Create Page Object `src/pages/p{X}/{Feature}Page.ts`:
+```typescript
+import { Page } from '@playwright/test';
+import { FeatureSelectors } from '../../selectors/p{X}/feature.selectors.js';
+import { BASE_CONFIG, getCemeteryUrl } from '../../data/test-data.js';
+
+export class FeaturePage {
+  constructor(private page: Page) {}
+  
+  async navigate() {
+    // Use helper functions for URLs
+    const url = getCemeteryUrl();
+    await this.page.goto(url);
+  }
+}
+```
+
+**Step 6:** Create step definitions `src/steps/p{X}/{feature}.steps.ts`:
 ```typescript
 import { When, Then } from '@cucumber/cucumber';
-import { TEST_DATA } from '../../data/test-data.js';
+import { replacePlaceholders } from '../../utils/TestDataHelper.js';
+import { BASE_CONFIG } from '../../data/test-data.js';
 
 When('I perform action with {string}', async function (data: string) {
-  const actual = data.replace('<TEST_DATA>', TEST_DATA.field);
+  const actual = replacePlaceholders(data);
   await this.page.fill('input', actual);
 });
 ```
 
-**Step 6:** Run test: `npm test -- --tags "@feature-name"`
+**Step 7:** Run test: `npm test -- --tags "@feature-name"`
 
 ### 4. MCP Playwright for Debugging
 
@@ -199,6 +303,7 @@ When('I perform action with {string}', async function (data: string) {
 4. CSS selectors - last resort
 
 ### 8. Running Tests
+
 ```bash
 # By access level
 npm test -- --tags "@public"
@@ -210,6 +315,13 @@ npm test -- --tags "@p0"
 # Combined
 npm test -- --tags "@p0 and @authenticated"
 npm test -- --tags "@search and @public"
+
+# Different environments
+ENVIRONMENT=staging npm test -- --tags "@p0"
+ENVIRONMENT=map REGION=us npm test -- --tags "@p0"
+
+# Headless mode
+npm run test:headless -- --tags "@p0"
 ```
 
 ### 9. Background Setup
@@ -237,12 +349,54 @@ Feature: Search (Authenticated)
 - **DO**: Separate public/authenticated files
 - **DO**: Use MCP Playwright to debug and verify selectors
 - **DO**: Use centralized test data from `test-data.ts`
+- **DO**: Use helper functions for URLs (getCemeteryUrl, getCustomerOrgBaseUrl, etc.)
 - **DO**: Add `@public` or `@authenticated` tag to all features
 - **DO**: Use dynamic steps for runtime-dependent values
+- **DO**: Test with different environments using ENVIRONMENT and REGION variables
 - **DON'T**: Mix public/authenticated in same file
 - **DON'T**: Hardcode test data in feature files or steps
+- **DON'T**: Hardcode URLs - always use helper functions
 - **DON'T**: Guess selectors - verify with MCP Playwright first
 - **DON'T**: Create authenticated scenarios without proper Background setup
+
+## Common Patterns
+
+### Pattern 1: Public Feature Page Navigation
+```typescript
+import { BASE_CONFIG, getCemeterySellPlotsUrl } from '../../data/test-data.js';
+
+// Navigate to public sell plots page
+async navigateToSellPlots() {
+  const url = getCemeterySellPlotsUrl();
+  await this.page.goto(url);
+}
+```
+
+### Pattern 2: Authenticated Page Navigation
+```typescript
+import { getCustomerOrgBaseUrl, getCustomerOrgUrl } from '../../data/test-data.js';
+
+// Navigate to login
+async navigateToLogin() {
+  const loginUrl = `${getCustomerOrgBaseUrl()}/login`;
+  await this.page.goto(loginUrl);
+}
+
+// Navigate to add ROI
+async navigateToAddRoi(plotName: string) {
+  const url = getCustomerOrgUrl(`${encodeURIComponent(plotName)}/manage/add/roi`);
+  await this.page.goto(url);
+}
+```
+
+### Pattern 3: Environment-Specific Testing
+```bash
+# Test in staging (default)
+npm test -- --tags "@roi"
+
+# Test in map environment with US region
+ENVIRONMENT=map REGION=us npm test -- --tags "@roi"
+```
 
 ## Quick Reference
 
@@ -256,20 +410,45 @@ Feature: Search (Authenticated)
 // In step definitions
 import { FeatureSelectors } from '../../selectors/p0/feature.selectors.js';
 import { FeaturePage } from '../../pages/p0/FeaturePage.js';
-import { FEATURE_DATA } from '../../data/test-data.js';
+import { FEATURE_DATA, BASE_CONFIG, getCemeteryUrl } from '../../data/test-data.js';
+import { replacePlaceholders } from '../../utils/TestDataHelper.js';
 ```
 
 ### Page Object Pattern
 ```typescript
-import { BasePage } from '../../core/BasePage.js';
+import { Page } from '@playwright/test';
 import { FeatureSelectors } from '../../selectors/p0/feature.selectors.js';
+import { BASE_CONFIG, getCustomerOrgUrl } from '../../data/test-data.js';
 
-export class FeaturePage extends BasePage {
+export class FeaturePage {
+  constructor(private page: Page) {}
+  
+  async navigateToPublicPage() {
+    await this.page.goto(BASE_CONFIG.baseUrl);
+  }
+  
+  async navigateToAuthPage(path: string) {
+    const url = getCustomerOrgUrl(path);
+    await this.page.goto(url);
+  }
+  
   async performAction() {
     await this.page.click(FeatureSelectors.button);
   }
 }
 ```
+
+## Quick Reference: URL Helper Functions
+
+| Function | Returns | Use Case |
+|----------|---------|----------|
+| `BASE_CONFIG.baseUrl` | `https://staging.chronicle.rip` | Public base URL |
+| `getCemeteryUrl()` | `https://staging.chronicle.rip/astana_tegal_gundul_aus` | Public cemetery URL |
+| `getCemeterySellPlotsUrl()` | `https://staging.chronicle.rip/.../sell-plots` | Public sell plots page |
+| `getCustomerOrgBaseUrl()` | `https://staging-aus.chronicle.rip` | Auth base URL |
+| `getCustomerOrgUrl(path)` | `https://staging-aus.chronicle.rip/customer-organization/...` | Auth customer org pages |
+
+**See [URL-STRUCTURE-GUIDE.md](URL-STRUCTURE-GUIDE.md) for complete URL documentation**
 
 ---
 

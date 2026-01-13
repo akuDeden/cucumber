@@ -5,6 +5,7 @@ import { AdvanceSearchSelectors } from '../../selectors/p0/advanceSearch.selecto
 import { AdvanceSearchPage } from '../../pages/p0/AdvanceSearchPage.js';
 import { Logger } from '../../utils/Logger.js';
 import { replacePlaceholders } from '../../utils/TestDataHelper.js';
+import { BASE_CONFIG } from '../../data/test-data.js';
 
 // Initialize logger and page object
 const logger = new Logger('AdvanceSearchPlotSteps');
@@ -17,7 +18,7 @@ function getAdvanceSearchPage(page: Page): AdvanceSearchPage {
 // Background step
 Given('I am on the Chronicle home page', { timeout: 10000 }, async function () {
   const page: Page = this.page;
-  const baseUrl = process.env.BASE_URL || 'https://staging.chronicle.rip';
+  const baseUrl = BASE_CONFIG.baseUrl;
   logger.info(`Navigating to Chronicle home page: ${baseUrl}`);
   await page.goto(baseUrl);
   await page.waitForTimeout(3000); // Wait for page to load
@@ -241,7 +242,7 @@ When('I click close advance search button', { timeout: 20000 }, async function (
   await page.locator(AdvanceSearchSelectors.closeAdvanceSearchButton).click();
 
   // Wait for navigation back to home page with increased timeout
-  const baseUrl = process.env.BASE_URL || 'https://staging.chronicle.rip';
+  const baseUrl = BASE_CONFIG.baseUrl;
   await page.waitForURL(baseUrl, { timeout: 15000 });
   await page.waitForTimeout(1500);
 
@@ -253,7 +254,7 @@ Then('I should be on the home page', { timeout: 10000 }, async function () {
   logger.info('Verifying on home page');
 
   // Check URL - handle trailing slash difference
-  const baseUrl = process.env.BASE_URL || 'https://staging.chronicle.rip';
+  const baseUrl = BASE_CONFIG.baseUrl;
   const currentUrl = page.url().replace(/\/$/, ''); // Remove trailing slash
   const expectedUrl = baseUrl.replace(/\/$/, ''); // Remove trailing slash
   expect(currentUrl).toBe(expectedUrl);

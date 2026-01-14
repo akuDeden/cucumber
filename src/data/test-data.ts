@@ -17,19 +17,19 @@
 // ============================================
 export const BASE_CONFIG = {
   // Environment: staging, map, production, etc. (used for domain)
-  environment: process.env.ENVIRONMENT || 'dev',
-  
+  environment: process.env.ENVIRONMENT || 'staging',
+
   // Base domain (will be combined with environment)
   baseDomain: process.env.BASE_DOMAIN || 'chronicle.rip',
-  
+
   // Region: aus, us, uk, etc. (used for authenticated URLs only)
   region: process.env.REGION || 'aus',
-  
+
   // Convenience property for public URLs (environment.domain)
   get baseUrl(): string {
     return `https://${this.environment}.${this.baseDomain}`;
   },
-  
+
   browser: process.env.BROWSER || 'chromium',
   headless: process.env.HEADLESS === 'true',
   timeout: parseInt(process.env.TIMEOUT || '30000')
@@ -42,10 +42,10 @@ export const BASE_CONFIG = {
 export const CEMETERY_CONFIG = {
   // Unique slug identifier (used in URLs)
   uniqueName: process.env.TEST_CEMETERY_UNIQUE || 'astana_tegal_gundul',
-  
+
   // Display name (used in UI)
   displayName: process.env.TEST_CEMETERY_NAME || 'Astana Tegal Gundul',
-  
+
   // Organization name for login
   organizationName: process.env.TEST_ORG_NAME || 'astana tegal gundul'
 };
@@ -188,14 +188,14 @@ export const ROI_DATA = {
     certificateNumber: process.env.TEST_ROI_CERT || 'CERT-TEST-001',
     notes: process.env.TEST_ROI_NOTES || 'Test ROI for automation'
   },
-  
+
   // Certificate numbers for different scenarios (to avoid conflicts)
   certificates: {
     withPerson: process.env.TEST_ROI_CERT_2 || 'CERT-TEST-002',
     applicant: process.env.TEST_ROI_CERT_APPLICANT || 'CERT-TEST-003',
     both: process.env.TEST_ROI_CERT_BOTH || 'CERT-TEST-004'
   },
-  
+
   // ROI Holder person data
   holder: {
     firstName: process.env.TEST_ROI_HOLDER_FIRSTNAME || 'John',
@@ -203,7 +203,7 @@ export const ROI_DATA = {
     phone: process.env.TEST_ROI_HOLDER_PHONE || '+1234567890',
     email: process.env.TEST_ROI_HOLDER_EMAIL || 'john.doe@example.com'
   },
-  
+
   // ROI Applicant person data
   applicant: {
     firstName: process.env.TEST_ROI_APPLICANT_FIRSTNAME || 'Jane',
@@ -322,6 +322,13 @@ export const REQUEST_SALES_FORM_DATA = {
     intermentDate: process.env.TEST_INTERMENT_DATE || '01/15/2026',
     intermentTime: process.env.TEST_INTERMENT_TIME || '10:00',
     funeralDirector: process.env.TEST_FUNERAL_DIRECTOR || 'Test Funeral Home',
+  },
+  // At-need specific: Event Service and Service sections
+  eventService: {
+    date: process.env.TEST_EVENT_DATE || '01/15/2026',
+    eventName: process.env.TEST_EVENT_NAME || 'Memorial Service',
+    description: process.env.TEST_EVENT_DESCRIPTION || '',
+    isPublic: process.env.TEST_EVENT_PUBLIC === 'true',
   },
 };
 

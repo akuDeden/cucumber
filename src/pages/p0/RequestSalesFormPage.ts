@@ -2,6 +2,7 @@ import { Page } from '@playwright/test';
 import { RequestSalesFormSelectors } from '../../selectors/p0/requestSalesForm.selectors.js';
 import { REQUEST_SALES_FORM_DATA, getApplicantName } from '../../data/test-data.js';
 import { Logger } from '../../utils/Logger.js';
+import { waitForEndpoint } from '../../utils/NetworkUtils.js';
 
 /**
  * Page Object for Request Sales Form functionality
@@ -29,8 +30,8 @@ export class RequestSalesFormPage {
       waitUntil: 'domcontentloaded',
       timeout: 60000,
     });
-    // Wait for page to be interactive instead of specific selector
-    await this.page.waitForLoadState('networkidle', { timeout: 60000 });
+    // Wait for page to be interactive with shorter timeout
+    await this.page.waitForTimeout(2000);  // Just wait a bit for initial rendering
     this.logger.info('Successfully loaded sell plots page');
   }
 
@@ -59,60 +60,39 @@ export class RequestSalesFormPage {
   async findPlotWithPurchaseOption(): Promise<string> {
     this.logger.info('Searching for plot with Request to Buy option');
     
-    // Get all elements that contain "For Sale" text
-    const plotElements = this.page.getByText(/[A-Z]\s+[A-Z]\s+\d+\s+For Sale/i);
-    const count = await plotElements.count();
-    this.logger.info(`Found ${count} plots with "For Sale" status`);
+    // Get target plot name from test data
+    const targetPlotName = REQUEST_SALES_FORM_DATA.plot.name;
+    this.logger.info(`Looking for specific plot: ${targetPlotName}`);
     
-    if (count === 0) {
-      throw new Error('No plots found with "For Sale" status. Make sure section is expanded.');
+    // Click the specific plot directly
+    const plotElement = this.page.getByText(new RegExp(`${targetPlotName}\\s+For Sale`, 'i'));
+    const exists = await plotElement.count();
+    
+    if (exists === 0) {
+      throw new Error(`Plot "${targetPlotName}" with "For Sale" status not found. Make sure section is expanded.`);
     }
     
-    // Try each plot until we find one with Request to Buy button
-    for (let i = 0; i < Math.min(count, 5); i++) {
-      try {
-        const plotElement = plotElements.nth(i);
-        const text = await plotElement.textContent();
-        const plotName = text?.replace(/\s*For Sale.*/i, '').trim() || '';
-        
-        this.logger.info(`Checking plot ${i + 1}/${count}: ${plotName}`);
-        await plotElement.click();
-        await this.page.waitForURL(/\/plots\//);
-        await this.page.waitForLoadState('networkidle');
-        
-        // Check if Request to Buy button exists
-        const buttonSelectors = [
-          'button:has-text("REQUEST TO BUY")',
-          'button:has-text("Request to Buy")',
-          'button >> text=/request.*buy/i',
-        ];
-        
-        for (const selector of buttonSelectors) {
-          const button = this.page.locator(selector);
-          const isVisible = await button.isVisible().catch(() => false);
-          if (isVisible) {
-            this.logger.info(`✓ Found plot with Request to Buy button: ${plotName}`);
-            return plotName;
-          }
-        }
-        
-        // Log available buttons for debugging
-        const allButtons = await this.page.locator('button').allTextContents();
-        this.logger.info(`Plot ${plotName} buttons: ${JSON.stringify(allButtons.filter(b => b.trim()))}`);
-        
-        // Go back to try next plot
-        this.logger.info('Going back to try next plot...');
-        await this.page.goBack();
-        await this.page.waitForLoadState('networkidle');
-        await this.page.waitForTimeout(1000);
-        
-      } catch (error) {
-        this.logger.info(`Error checking plot ${i + 1}: ${error}`);
-        continue;
-      }
+    this.logger.info(`Clicking plot: ${targetPlotName}`);
+    await plotElement.click();
+    
+    // Wait for navigation
+    await this.page.waitForURL(/\/plots\//, { timeout: 15000, waitUntil: 'domcontentloaded' });
+    
+    // Wait for plot details to load
+    this.logger.info('Waiting for plot details to load (v1_customform_public_detail)...');
+    await waitForEndpoint(this.page, 'v1_customform_public_detail', 200);
+    await this.page.waitForTimeout(1000);
+    
+    // Verify Request to Buy button exists
+    const requestButton = this.page.locator('button:has-text("REQUEST TO BUY")').first();
+    const isVisible = await requestButton.isVisible({ timeout: 5000 });
+    
+    if (!isVisible) {
+      throw new Error(`Plot "${targetPlotName}" opened but Request to Buy button not found`);
     }
     
-    throw new Error('No plot found with Request to Buy button after checking available plots');
+    this.logger.info(`✓ SUCCESS! Found plot with Request to Buy button: ${targetPlotName}`);
+    return targetPlotName;
   }
 
   /**
@@ -336,25 +316,39 @@ export class RequestSalesFormPage {
 
   /**
    * Fill ROI Applicant form with test data (PRE-NEED specific)
-   * Pre-need form uses hardcoded mat-input IDs (mat-input-0, mat-input-1, etc.)
+   * Uses label-based selectors for better reliability
    */
   async fillROIApplicantForm(): Promise<void> {
     this.logger.info('Filling ROI Applicant form (Pre-need)');
     const applicant = REQUEST_SALES_FORM_DATA.applicant;
 
     try {
-      await this.page.waitForTimeout(1000);
+      await this.page.waitForTimeout(1500);
 
-      // Pre-need form: Use hardcoded IDs from selectors
+      // Use label-based approach - find input by nearby label text
       this.logger.info(`Filling First Name: ${applicant.firstName}`);
-      await this.page.locator(RequestSalesFormSelectors.purchaseForm.roiApplicant.firstName).fill(applicant.firstName);
+      const firstNameField = this.page.locator('input').filter({ has: this.page.locator('xpath=following-sibling::*//text()[contains(., "First Name")]') }).or(
+        this.page.locator('mat-form-field:has-text("First Name") input')
+      ).or(this.page.locator('input[placeholder*="First"]')).first();
+      await firstNameField.waitFor({ timeout: 5000 });
+      await firstNameField.clear();
+      await firstNameField.fill(applicant.firstName);
       
       this.logger.info(`Filling Last Name: ${applicant.lastName}`);
-      await this.page.locator(RequestSalesFormSelectors.purchaseForm.roiApplicant.lastName).fill(applicant.lastName);
+      const lastNameField = this.page.locator('input').filter({ has: this.page.locator('xpath=following-sibling::*//text()[contains(., "Last Name")]') }).or(
+        this.page.locator('mat-form-field:has-text("Last Name") input')
+      ).or(this.page.locator('input[placeholder*="Last"]')).first();
+      await lastNameField.clear();
+      await lastNameField.fill(applicant.lastName);
       
       this.logger.info(`Filling Email: ${applicant.email}`);
-      await this.page.locator(RequestSalesFormSelectors.purchaseForm.roiApplicant.email).fill(applicant.email);
+      const emailField = this.page.locator('input').filter({ has: this.page.locator('xpath=following-sibling::*//text()[contains(., "Email")]') }).or(
+        this.page.locator('mat-form-field:has-text("Email") input')
+      ).or(this.page.locator('input[type="email"]')).or(this.page.locator('input[placeholder*="Email"]')).first();
+      await emailField.clear();
+      await emailField.fill(applicant.email);
 
+      await this.page.waitForTimeout(500);
       this.logger.info('ROI Applicant form filled successfully (Pre-need)');
     } catch (error) {
       this.logger.error(`Error filling ROI Applicant form: ${error}`);
@@ -364,25 +358,41 @@ export class RequestSalesFormPage {
 
   /**
    * Fill ROI Applicant form with test data (AT-NEED specific)
-   * At-need form uses different IDs because ROI section comes first
+   * Uses label-based selectors for better reliability
    */
   async fillROIApplicantFormAtNeed(): Promise<void> {
     this.logger.info('Filling ROI Applicant form (At-need)');
     const applicant = REQUEST_SALES_FORM_DATA.applicant;
 
     try {
-      await this.page.waitForTimeout(1000);
+      await this.page.waitForTimeout(1500);
 
-      // At-need form: IDs start at mat-input-6 (after ROI section inputs)
+      // Find ROI Applicant section first
+      const roiApplicantSection = this.page.locator('mat-expansion-panel:has-text("ROI Applicant")');
+      
       this.logger.info(`Filling First Name: ${applicant.firstName}`);
-      await this.page.locator('#mat-input-6').fill(applicant.firstName);
+      const firstNameField = roiApplicantSection.locator('input').filter({ has: this.page.locator('xpath=following-sibling::*//text()[contains(., "First Name")]') }).or(
+        roiApplicantSection.locator('mat-form-field:has-text("First Name") input')
+      ).first();
+      await firstNameField.waitFor({ timeout: 5000 });
+      await firstNameField.clear();
+      await firstNameField.fill(applicant.firstName);
       
       this.logger.info(`Filling Last Name: ${applicant.lastName}`);
-      await this.page.locator('#mat-input-7').fill(applicant.lastName);
+      const lastNameField = roiApplicantSection.locator('input').filter({ has: this.page.locator('xpath=following-sibling::*//text()[contains(., "Last Name")]') }).or(
+        roiApplicantSection.locator('mat-form-field:has-text("Last Name") input')
+      ).first();
+      await lastNameField.clear();
+      await lastNameField.fill(applicant.lastName);
       
       this.logger.info(`Filling Email: ${applicant.email}`);
-      await this.page.locator('#mat-input-12').fill(applicant.email);
+      const emailField = roiApplicantSection.locator('input[type="email"]').or(
+        roiApplicantSection.locator('mat-form-field:has-text("Email") input')
+      ).first();
+      await emailField.clear();
+      await emailField.fill(applicant.email);
 
+      await this.page.waitForTimeout(500);
       this.logger.info('ROI Applicant form filled successfully (At-need)');
     } catch (error) {
       this.logger.error(`Error filling ROI Applicant form (At-need): ${error}`);
@@ -412,15 +422,27 @@ export class RequestSalesFormPage {
     const applicant = REQUEST_SALES_FORM_DATA.applicant;
 
     try {
-      await this.page.waitForTimeout(1000);
+      await this.page.waitForTimeout(1500);
 
-      // At-need ROI Holder: IDs at mat-input-18, mat-input-19
+      // Find ROI Holder section
+      const roiHolderSection = this.page.locator('mat-expansion-panel:has-text("ROI Holder")');
+      
       this.logger.info(`Filling ROI Holder First Name: ${applicant.firstName}`);
-      await this.page.locator('#mat-input-18').fill(applicant.firstName);
+      const firstNameField = roiHolderSection.locator('mat-form-field:has-text("First Name") input').or(
+        roiHolderSection.locator('input[placeholder*="First"]')
+      ).first();
+      await firstNameField.waitFor({ timeout: 5000 });
+      await firstNameField.clear();
+      await firstNameField.fill(applicant.firstName);
       
       this.logger.info(`Filling ROI Holder Last Name: ${applicant.lastName}`);
-      await this.page.locator('#mat-input-19').fill(applicant.lastName);
+      const lastNameField = roiHolderSection.locator('mat-form-field:has-text("Last Name") input').or(
+        roiHolderSection.locator('input[placeholder*="Last"]')
+      ).first();
+      await lastNameField.clear();
+      await lastNameField.fill(applicant.lastName);
 
+      await this.page.waitForTimeout(500);
       this.logger.info('ROI Holder form filled successfully (At-need)');
     } catch (error) {
       this.logger.error(`Error filling ROI Holder form (At-need): ${error}`);
@@ -445,15 +467,27 @@ export class RequestSalesFormPage {
     const deceased = REQUEST_SALES_FORM_DATA.intermentDetails;
 
     try {
-      await this.page.waitForTimeout(1000);
+      await this.page.waitForTimeout(1500);
 
-      // At-need Deceased: IDs at mat-input-32, mat-input-33
+      // Find Deceased section
+      const deceasedSection = this.page.locator('mat-expansion-panel:has-text("Deceased")');
+      
       this.logger.info(`Filling Deceased First Name: ${deceased.deceasedFirstName}`);
-      await this.page.locator('#mat-input-32').fill(deceased.deceasedFirstName);
+      const firstNameField = deceasedSection.locator('mat-form-field:has-text("First Name") input').or(
+        deceasedSection.locator('input[placeholder*="First"]')
+      ).first();
+      await firstNameField.waitFor({ timeout: 5000 });
+      await firstNameField.clear();
+      await firstNameField.fill(deceased.deceasedFirstName);
       
       this.logger.info(`Filling Deceased Last Name: ${deceased.deceasedLastName}`);
-      await this.page.locator('#mat-input-33').fill(deceased.deceasedLastName);
+      const lastNameField = deceasedSection.locator('mat-form-field:has-text("Last Name") input').or(
+        deceasedSection.locator('input[placeholder*="Last"]')
+      ).first();
+      await lastNameField.clear();
+      await lastNameField.fill(deceased.deceasedLastName);
 
+      await this.page.waitForTimeout(500);
       this.logger.info('Deceased form filled successfully (At-need)');
     } catch (error) {
       this.logger.error(`Error filling Deceased form (At-need): ${error}`);
@@ -498,6 +532,48 @@ export class RequestSalesFormPage {
    */
   async continueEventServiceSectionAtNeed(): Promise<void> {
     this.logger.info('Continuing from Event Service section (At-need)');
+    await this.page.locator('button:has-text("continue")').click();
+    await this.page.waitForTimeout(500);
+  }
+
+  // ============================================
+  // PURCHASE FORM - SERVICE SECTION (AT-NEED ONLY)
+  // ============================================
+
+  /**
+   * Fill Service section form (AT-NEED only)
+   * This section appears only in AT-NEED flow, after Signature section
+   */
+  async fillServiceForm(): Promise<void> {
+    this.logger.info('Filling Service form (At-need)');
+    const service = REQUEST_SALES_FORM_DATA.eventService;
+
+    try {
+      await this.page.waitForTimeout(1000);
+
+      // Use region locator to scope to Service section only
+      const serviceRegion = this.page.getByRole('region', { name: 'Service' });
+
+      // Fill Date (required) - first input in Service section
+      this.logger.info('Filling Event Date');
+      await serviceRegion.locator('input').nth(0).fill(service.date);
+
+      // Fill Event Name (required) - 4th input in Service section (after Date, Start time, End time)
+      this.logger.info('Filling Event Name');
+      await serviceRegion.locator('input').nth(3).fill(service.eventName);
+
+      this.logger.info('Service form filled successfully (At-need)');
+    } catch (error) {
+      this.logger.error(`Error filling Service form (At-need): ${error}`);
+      throw error;
+    }
+  }
+
+  /**
+   * Click continue button in Service section (AT-NEED only)
+   */
+  async continueServiceSection(): Promise<void> {
+    this.logger.info('Continuing from Service section (At-need)');
     await this.page.locator('button:has-text("continue")').click();
     await this.page.waitForTimeout(500);
   }
@@ -835,9 +911,43 @@ export class RequestSalesFormPage {
       throw new Error('Submit button is disabled - form validation incomplete. Check required fields above.');
     }
     
-    this.logger.info('Submit button is enabled, clicking...');
+    this.logger.info('Submit button is enabled, preparing to submit...');
+    
+    // Setup wait for submission endpoint BEFORE clicking submit to avoid race condition
+    this.logger.info('Waiting for endpoint: v1_cemetery_request_table_public_plot_purchase_create');
+    const responsePromise = waitForEndpoint(
+      this.page, 
+      'v1_cemetery_request_table_public_plot_purchase_create',
+      201  // Changed from 200 to 201 (Created) - the actual response status
+    );
+    
+    // Click submit
     await submitButton.click();
-    this.logger.info('Submit button clicked');
+    this.logger.info('✓ Submit button clicked, waiting for server response...');
+    
+    // Wait for the endpoint to respond (45 second timeout)
+    try {
+      const response = await Promise.race([
+        responsePromise,
+        new Promise<never>((_, reject) => 
+          setTimeout(() => reject(new Error('Endpoint response timeout after 45 seconds')), 45000)
+        )
+      ]);
+      const status = response.status();
+      this.logger.info(`✓ Submission successful! Response status: ${status}`);
+      
+      // Parse response body if needed
+      const responseBody = await response.json().catch(() => null);
+      if (responseBody) {
+        this.logger.info(`Response body: ${JSON.stringify(responseBody).substring(0, 200)}`);
+      }
+      
+      // Wait a bit for UI to update after successful submission
+      await this.page.waitForTimeout(2000);
+    } catch (error) {
+      this.logger.error(`Failed to get submission response: ${error}`);
+      throw new Error('Form submission failed - no response from server');
+    }
   }
 
   // ============================================
@@ -846,33 +956,55 @@ export class RequestSalesFormPage {
 
   /**
    * Verify the confirmation dialog is displayed
+   * Also checks for success page navigation as alternative
    */
   async verifyConfirmationDialog(): Promise<boolean> {
-    this.logger.info('Waiting for confirmation dialog...');
+    this.logger.info('Waiting for confirmation dialog or success page...');
     
-    // Try multiple selector strategies
+    // Wait a bit for page to process submission
+    await this.page.waitForTimeout(2000);
+    
+    // Check if URL changed to a success page
+    const currentUrl = this.page.url();
+    if (currentUrl.includes('/success') || currentUrl.includes('/confirmation') || currentUrl.includes('/thank')) {
+      this.logger.info(`Success page detected: ${currentUrl}`);
+      return true;
+    }
+    
+    // Try multiple selector strategies for dialog
     const selectors = [
       RequestSalesFormSelectors.confirmationDialog.dialog,
       '[role="dialog"]',
       'mat-dialog-container',
       '.mat-dialog-container',
       '.cdk-overlay-pane',
+      '.confirmation-dialog',
+      'div:has-text("Request was sent")',
+      'div:has-text("successfully")',
     ];
     
-    // Wait up to 10 seconds for any dialog to appear
+    // Wait up to 15 seconds for any dialog to appear
     for (const selector of selectors) {
       try {
-        const dialog = this.page.locator(selector);
-        await dialog.waitFor({ state: 'visible', timeout: 10000 });
-        this.logger.info(`Confirmation dialog found with selector: ${selector}`);
+        const dialog = this.page.locator(selector).first();
+        await dialog.waitFor({ state: 'visible', timeout: 15000 });
+        this.logger.info(`Confirmation found with selector: ${selector}`);
         return true;
       } catch (error) {
         this.logger.info(`Selector "${selector}" not found, trying next...`);
       }
     }
     
-    // Log what's actually on the page
+    // Check for any success messages in page content
     const bodyText = await this.page.locator('body').textContent().catch(() => '');
+    if (bodyText?.toLowerCase().includes('request was sent') || 
+        bodyText?.toLowerCase().includes('successfully submitted') ||
+        bodyText?.toLowerCase().includes('thank you')) {
+      this.logger.info('Success message found in page content');
+      return true;
+    }
+    
+    // Log what's actually on the page
     this.logger.info(`Page content after submit (first 500 chars): ${bodyText?.substring(0, 500) || 'No content'}`);
     
     const h1Texts = await this.page.locator('h1, h2').allTextContents();

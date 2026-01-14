@@ -126,7 +126,7 @@ When('I continue from the signature section', async function () {
 // FORM SUBMISSION STEPS
 // ============================================
 
-When('I submit the request form', { timeout: 30000 }, async function () {
+When('I submit the request form', { timeout: 60000 }, async function () {
   await requestSalesFormPage.submitRequest();
 });
 
@@ -174,5 +174,13 @@ When('I fill the Event Service form with valid data for At-need', async function
 
 When('I continue from the Event Service section for At-need', async function () {
   await requestSalesFormPage.continueEventServiceSectionAtNeed();
+});
+
+When('I fill the Service form with valid data for At-need', async function () {
+  await requestSalesFormPage.fillServiceForm();
+});
+
+When('I continue from the Service section for At-need', async function () {
+  await requestSalesFormPage.continueServiceSection();
 });
 

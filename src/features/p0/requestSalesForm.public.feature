@@ -59,6 +59,8 @@ Feature: Request Sales Form - Public Plot Purchase
     And I continue from the Event Service section for At-need
     And I add a signature
     And I continue from the signature section
+    And I fill the Service form with valid data for At-need
+    And I continue from the Service section for At-need
     And I submit the request form
     Then I should see a confirmation dialog
     And the confirmation should show that the request was sent successfully

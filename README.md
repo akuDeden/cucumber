@@ -55,65 +55,142 @@ automation_web/
 
 ## 🌐 Test Environment
 
-- **Target URL**: https://staging.chronicle.rip
+- **Target URL**: Configurable via `.env` (default: dev.chronicle.rip)
 - **Test Organization**: Astana Tegal Gundul
-- **Test Credentials**:
-  - Email: `faris+astanaorg@chronicle.rip`
-  - Password: `12345`
+- **Test Credentials**: Configurable via `.env`
 
-## 🔧 Test Data Management
+## 🔧 Test Data & Environment Management
 
-Framework ini menggunakan **Environment-Based Configuration Pattern** dengan 3 komponen utama:
+Framework ini menggunakan **Centralized Configuration Pattern** dengan fallback system:
 
-### 1. `.env.example` - Template File
-- **Fungsi**: Template/dokumentasi untuk environment variables
-- **Kapan dipakai**: Copy ke `.env` ketika ingin override nilai default
-- **Format**: Standard environment variables (`KEY=VALUE`)
-- **Note**: File ini TIDAK dipakai langsung oleh test!
+### 🎯 Centralized Environment Config (`.env` file)
 
-### 2. `src/data/test-data.ts` - Single Source of Truth ⭐
-- **Fungsi**: **Pusat data testing yang sebenarnya dipakai**
-- **Logika**: `process.env.VARIABLE_NAME || 'default value'`
-- **Ini yang dipakai oleh semua test!**
+**Semua environment setting dikontrol dari file `.env`** di root project:
+
+```bash
+# .env (Auto-loaded untuk SEMUA test commands)
+ENV=staging                              # Environment: dev/staging/map/production
+BASE_URL=https://staging.chronicle.rip  # Target URL
+BROWSER=chromium                         # Browser type
+HEADLESS=false                           # Headless mode
+
+# Test Credentials
+CHRONICLE_EMAIL=faris+astanaorg@chronicle.rip
+CHRONICLE_PASSWORD=12345
+```
+
+**Keuntungan:**
+- ✅ **Single source** - Edit 1 file untuk semua setting
+- ✅ **Auto-loaded** - Semua test commands baca dari `.env` otomatis
+- ✅ **No command duplication** - Tidak perlu buat command terpisah per environment
+- ✅ **Report naming** - Video/screenshot otomatis pakai env name (e.g., `pass_staging_*.webm`)
+
+### 📁 File Structure
+
+#### 1. `.env` - **Centralized Runtime Config** ⭐
+- **Fungsi**: Kontrol environment dan override test data
+- **Auto-loaded**: Otomatis dibaca oleh semua test
+- **Priority**: Tertinggi (override semua default values)
+- **Usage**: Edit file ini untuk switch environment atau ubah test data
+
+#### 2. `src/data/test-data.ts` - **Single Source of Truth**
+- **Fungsi**: Default values & fallback untuk semua test data
+- **Logika Fallback**: `process.env.ENV || 'dev'` (coba dari .env dulu, kalau tidak ada pakai default)
 - **Structure**:
   ```typescript
-  export const ADVANCE_SEARCH_DATA = {
-    sectionA: process.env.TEST_ADVANCE_SECTION_A || 'A',
-    rowA: process.env.TEST_ADVANCE_ROW_A || 'A',
-    // ... more data
+  export const BASE_CONFIG = {
+    environment: process.env.ENV || process.env.ENVIRONMENT || 'dev', // ← Fallback system
+    baseUrl: `https://${this.environment}.${this.baseDomain}`,
+    // ...
+  };
+  
+  export const LOGIN_DATA = {
+    valid: {
+      email: process.env.CHRONICLE_EMAIL || 'default@email.com',  // ← Fallback
+      password: process.env.CHRONICLE_PASSWORD || 'default123'
+    }
   };
   ```
 
-### 3. `src/utils/TestDataHelper.ts` - Placeholder Mapper
-- **Fungsi**: Converter untuk placeholder di file `.feature` (Gherkin)
-- **Contoh**: Mengubah `<TEST_ADVANCE_SECTION_A>` → nilai dari `test-data.ts`
-- **Kapan dipakai**: Di Cucumber step definitions untuk replace placeholders
+#### 3. `.env.example` - Template/Documentation
+- **Fungsi**: Template untuk copy ke `.env`
+- **Note**: File ini TIDAK dipakai langsung oleh test
 
-### 🎯 Cara Mengubah Test Data
+#### 4. `.env.chronicle` & `.env.chronicle.prod` - Legacy Files
+- **Fungsi**: Untuk command spesifik seperti `npm run test:staging`
+- **Note**: Tidak diperlukan jika pakai `.env` centralized
 
-#### Cara 1: Ubah Default Values (Permanent)
-Edit [src/data/test-data.ts](src/data/test-data.ts):
-```typescript
-sectionA: process.env.TEST_ADVANCE_SECTION_A || 'B',  // Ubah 'A' → 'B'
+### 🎯 Cara Mengubah Environment
+
+#### Cara 1: Edit `.env` (Recommended ⭐)
+
+Edit [.env](.env) untuk switch environment:
+```bash
+# Staging
+ENV=staging
+BASE_URL=https://staging.chronicle.rip
+
+# atau Map/Production  
+ENV=map
+BASE_URL=https://map.chronicle.rip
+
+# atau Dev
+ENV=dev
+BASE_URL=https://dev.chronicle.rip
 ```
 
-#### Cara 2: Override via Environment Variable (Flexible)
-1. Copy `.env.example` → `.env`:
-   ```bash
-   cp .env.example .env
-   ```
+Kemudian run test biasa:
+```bash
+npm run test:headless -- --tags "@p0"
+# Akan otomatis pakai environment dari .env
+# Video: pass_staging_*.webm (bukan pass_dev_*.webm)
+```
 
-2. Edit `.env` untuk override nilai tertentu:
-   ```bash
-   # Override section A
-   TEST_ADVANCE_SECTION_A=B
-   
-   # Override untuk different environment
-   BASE_URL=https://production.chronicle.rip
-   TEST_EMAIL=different@email.com
-   ```
+#### Cara 2: Override Test Data via `.env`
 
-3. Run test seperti biasa - akan otomatis pakai nilai dari `.env`
+Override test data specific:
+```bash
+# .env
+ENV=staging
+TEST_EMAIL=custom@email.com
+TEST_CEMETERY_NAME=Different Cemetery
+TEST_ADVANCE_SECTION_A=B
+```
+
+Semua test akan pakai nilai dari `.env`, kalau tidak ada baru pakai default dari `test-data.ts`.
+
+### 🔄 Fallback System Flow
+
+```
+┌─────────────────┐
+│  Run Test       │
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────┐
+│ Cek .env file   │  ← ENV=staging
+└────────┬────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│ Load test-data.ts           │
+│ environment = ENV || 'dev'  │  ← Pakai 'staging' dari .env
+└────────┬────────────────────┘
+         │
+         ▼
+┌─────────────────────────────┐
+│ Generate URL & Run Test     │
+│ baseUrl: staging.rip        │
+│ Video: pass_staging_*.webm  │
+└─────────────────────────────┘
+```
+
+### 🎬 Video/Screenshot Naming
+
+Naming otomatis menggunakan environment dari `.env`:
+- `pass_staging_scenario_name.webm` (ENV=staging)
+- `fail_map_scenario_name.webm` (ENV=map)
+- `pass_dev_scenario_name.webm` (ENV=dev atau tidak di-set)
 
 ### 📝 Menambah Variable Baru
 

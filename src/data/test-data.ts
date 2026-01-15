@@ -12,12 +12,15 @@
  * Don't use Config.ts - it's deprecated. All config should be here.
  */
 
+import { config } from 'dotenv';
+config(); // Load .env file
+
 // ============================================
 // BASE CONFIGURATION
 // ============================================
 export const BASE_CONFIG = {
   // Environment: staging, map, production, etc. (used for domain)
-  environment: process.env.ENVIRONMENT || 'staging',
+  environment: process.env.ENV || process.env.ENVIRONMENT || 'dev',
 
   // Base domain (will be combined with environment)
   baseDomain: process.env.BASE_DOMAIN || 'chronicle.rip',

@@ -1,6 +1,7 @@
 import { Before, After, BeforeAll, AfterAll, setDefaultTimeout } from '@cucumber/cucumber';
 import { BrowserManager } from '../core/BrowserManager.js';
 import { Logger } from '../utils/Logger.js';
+import { BASE_CONFIG } from '../data/test-data.js';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -85,8 +86,8 @@ After(async function(scenario) {
               .substring(0, 100)
           : 'test';
         
-        // Get environment from BASE_URL
-        const env = process.env.BASE_URL?.includes('staging') ? 'stag' : 'prod';
+        // Get environment from centralized config (single source of truth)
+        const env = BASE_CONFIG.environment;
         
         // Get status prefix
         const statusPrefix = status === 'PASSED' ? 'pass' : 'fail';

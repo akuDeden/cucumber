@@ -82,7 +82,8 @@ When('I navigate to organization home page', { timeout: 30000 }, async function 
   // Wait for URL to contain region (indicates successful redirect to authenticated area)
   // This will wait for URL pattern like: *-aus.chronicle.rip or aus.chronicle.rip
   const region = BASE_CONFIG.region; // e.g., "aus"
-  await this.page.waitForURL(`**/*${region}*chronicle.rip/**`, { timeout: 15000 });
+  const baseDomain = BASE_CONFIG.baseDomain; // e.g., "chronicle.rip"
+  await this.page.waitForURL(`**/*${region}*${baseDomain}/**`, { timeout: 15000 });
   
   // Additional wait for page to be fully loaded
   await this.page.waitForLoadState('domcontentloaded', { timeout: 5000 });
@@ -90,8 +91,8 @@ When('I navigate to organization home page', { timeout: 30000 }, async function 
   
   // Verify we're on authenticated URL (has region in URL)
   const currentUrl = this.page.url();
-  const hasRegionInUrl = currentUrl.includes(`${region}.chronicle.rip`) || 
-                         currentUrl.includes(`-${region}.chronicle.rip`);
+  const hasRegionInUrl = currentUrl.includes(`${region}.${baseDomain}`) || 
+                         currentUrl.includes(`-${region}.${baseDomain}`);
   
   if (!hasRegionInUrl) {
     throw new Error(

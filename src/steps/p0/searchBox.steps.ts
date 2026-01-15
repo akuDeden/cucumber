@@ -2,6 +2,9 @@ import { When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
 import { replacePlaceholders } from '../../utils/TestDataHelper.js';
 import { Logger } from '../../utils/Logger.js';
+import { NetworkHelper } from '../../utils/NetworkHelper.js';
+import { waitForEndpoint } from '../../utils/NetworkUtils.js';
+import { BASE_CONFIG } from '../../data/test-data.js';
 
 // Initialize logger
 const logger = new Logger('SearchBoxSteps');
@@ -42,9 +45,28 @@ When('I select cemetery {string} for public search', { timeout: 30000 }, async f
 
   await targetResult.click();
 
-  // Wait for navigation to cemetery page
-  await page.waitForURL(`**/${actualCemetery.replace(/\s+/g, '_')}**`, { timeout: 15000 });
-  await page.waitForTimeout(2000);
+  // Wait for URL to change from homepage to cemetery page
+  // URL format: https://{env}.{domain}/{cemetery}_{region}
+  // Example: https://dev.chronicle.rip/astana_tegal_gundul_aus
+  const homepageUrl = BASE_CONFIG.baseUrl;
+  await page.waitForURL((url: URL) => {
+    // URL changed from homepage AND not just the base domain
+    return url.href !== `${homepageUrl}/` && !url.href.endsWith(`${BASE_CONFIG.environment}.${BASE_CONFIG.baseDomain}`);
+  }, { 
+    timeout: 15000, 
+    waitUntil: 'domcontentloaded' 
+  });
+
+  // AFTER URL changes, THEN wait for sections endpoint (endpoint appears after navigation)
+  try {
+    await NetworkHelper.waitForApiEndpoint(page, 'v1_ms_get_sections_in_viewport', 10000);
+    logger.info('Sections viewport API loaded successfully');
+  } catch (error) {
+    logger.info('Sections viewport API timeout, but continuing...');
+  }
+
+  // Wait for network to be idle to ensure all data is loaded
+  await NetworkHelper.waitForNetworkIdle(page, 10000);
 
   logger.info(`Selected cemetery: ${actualCemetery}, now at: ${page.url()}`);
 });

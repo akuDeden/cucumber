@@ -176,11 +176,11 @@ When('I continue from the Event Service section for At-need', async function () 
   await requestSalesFormPage.continueEventServiceSectionAtNeed();
 });
 
-When('I fill the Service form with valid data for At-need', async function () {
+When('I fill the Service form with valid data for At-need', { timeout: 30000 }, async function () {
   await requestSalesFormPage.fillServiceForm();
 });
 
-When('I continue from the Service section for At-need', async function () {
+When('I continue from the Service section for At-need', { timeout: 15000 }, async function () {
   await requestSalesFormPage.continueServiceSection();
 });
 

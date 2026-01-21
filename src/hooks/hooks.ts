@@ -12,9 +12,9 @@ import * as path from 'path';
 BeforeAll(async function() {
   Logger.info('Starting test execution...');
   
-  // Set default step timeout to 60 seconds (production is slow)
-  setDefaultTimeout(60000);
-  Logger.info('Default step timeout set to 60s');
+  // Set default step timeout to 120 seconds (production is slow, especially for multi-item sales)
+  setDefaultTimeout(120000);
+  Logger.info('Default step timeout set to 120s');
   
   // Create screenshots directory if it doesn't exist
   const screenshotsDir = path.join(process.cwd(), 'screenshots');

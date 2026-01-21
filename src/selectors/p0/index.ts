@@ -10,3 +10,4 @@ export * from './searchBox.selectors.js';
 export * from './advanceSearch.selectors.js';
 export * from './person.selectors.js';
 export * from './requestSalesForm.selectors.js';
+export * from './sales.selectors.js';

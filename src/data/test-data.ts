@@ -336,6 +336,90 @@ export const REQUEST_SALES_FORM_DATA = {
 };
 
 // ============================================
+// SALES DATA
+// ============================================
+export const SALES_DATA = {
+  // Create Sale - Basic Info
+  create: {
+    reference: process.env.TEST_SALES_REFERENCE || 'testNew 001',
+    issueDate: process.env.TEST_SALES_ISSUE_DATE || '21/01/2026',
+    dueDate: process.env.TEST_SALES_DUE_DATE || '22/01/2026',
+    note: process.env.TEST_SALES_NOTE || 'this is note test',
+    
+    // Purchaser info
+    purchaser: {
+      firstName: process.env.TEST_SALES_PURCHASER_FIRSTNAME || 'Jon',
+      lastName: process.env.TEST_SALES_PURCHASER_LASTNAME || 'Doe',
+      email: process.env.TEST_SALES_PURCHASER_EMAIL || 'jondoe@test.com'
+    },
+
+    // Sale items with all required fields
+    // NOTE: Using "B F 1-5" plots as required for the sales test scenario
+    items: [
+      {
+        description: 'item a',
+        quantity: 1,
+        price: 1313.56,
+        related_plot: 'B F 1',
+        tax_rate: 10,
+        total: 1313.56,
+        discount: 0,
+        note: null
+      },
+      {
+        description: 'item b',
+        related_plot: 'B F 2',
+        quantity: 1,
+        price: 178.35,
+        tax_rate: 10,
+        total: 178.35,
+        discount: 0,
+        note: null
+      },
+      {
+        description: 'item c',
+        related_plot: 'B F 3',
+        quantity: 2,
+        price: 32.95,
+        tax_rate: 10,
+        total: 65.9,
+        discount: 0,
+        note: null
+      },
+      {
+        description: 'item d',
+        related_plot: 'B F 4',
+        quantity: 1,
+        price: 105.08,
+        tax_rate: 10,
+        total: 105.08,
+        discount: 0,
+        note: null
+      },
+      {
+        description: 'item e',
+        related_plot: 'B F 5',
+        quantity: 1,
+        price: 101.21,
+        tax_rate: 10,
+        total: 101.21,
+        discount: 0,
+        note: null
+      }
+    ],
+
+    // Expected summary totals
+    expectedSummary: {
+      subtotal: '$1,764.10',
+      discount: '$0.00',
+      vat: '$176.41',
+      vatRate: '10%',
+      total: '$1,940.51'
+    }
+  }
+};
+
+// ============================================
 // FULL TEST DATA OBJECT (For easy access)
 // ============================================
 export const TEST_DATA = {
@@ -349,7 +433,8 @@ export const TEST_DATA = {
   search: SEARCH_DATA,
   roi: ROI_DATA,
   person: PERSON_DATA,
-  requestSalesForm: REQUEST_SALES_FORM_DATA
+  requestSalesForm: REQUEST_SALES_FORM_DATA,
+  sales: SALES_DATA
 };
 
 // ============================================

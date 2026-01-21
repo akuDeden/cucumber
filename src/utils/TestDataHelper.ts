@@ -102,6 +102,20 @@ const PLACEHOLDER_MAP: Record<string, string> = {
   '<TEST_PERSON_DELETE_COUNTRY>': TEST_DATA.person.delete.country,
   '<TEST_PERSON_DELETE_POSTCODE>': TEST_DATA.person.delete.postCode,
   '<TEST_PERSON_DELETE_NOTE>': TEST_DATA.person.delete.note,
+
+  // Sales data
+  '<TEST_SALES_REFERENCE>': TEST_DATA.sales.create.reference,
+  '<TEST_SALES_ISSUE_DATE>': TEST_DATA.sales.create.issueDate,
+  '<TEST_SALES_DUE_DATE>': TEST_DATA.sales.create.dueDate,
+  '<TEST_SALES_NOTE>': TEST_DATA.sales.create.note,
+  '<TEST_SALES_PURCHASER_FIRSTNAME>': TEST_DATA.sales.create.purchaser.firstName,
+  '<TEST_SALES_PURCHASER_LASTNAME>': TEST_DATA.sales.create.purchaser.lastName,
+  '<TEST_SALES_PURCHASER_EMAIL>': TEST_DATA.sales.create.purchaser.email,
+  '<TEST_SALES_PURCHASER>': `${TEST_DATA.sales.create.purchaser.firstName}|${TEST_DATA.sales.create.purchaser.lastName}|${TEST_DATA.sales.create.purchaser.email}`,
+  '<TEST_SALES_SUBTOTAL>': TEST_DATA.sales.create.expectedSummary.subtotal,
+  '<TEST_SALES_DISCOUNT>': TEST_DATA.sales.create.expectedSummary.discount,
+  '<TEST_SALES_VAT>': TEST_DATA.sales.create.expectedSummary.vat,
+  '<TEST_SALES_TOTAL>': TEST_DATA.sales.create.expectedSummary.total,
 };
 
 /**

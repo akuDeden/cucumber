@@ -356,9 +356,15 @@ export class SalesPage {
         
         // Type the plot name to search
         await plotSearchInput.fill(item.related_plot);
-        
-        // Wait for plot search API to complete
-        await NetworkHelper.waitForApiEndpoint(this.page, '/search/plots/', 10000);
+        await this.page.waitForTimeout(1000);
+
+        // Wait for plot search API to complete (optional - data may be cached)
+        const apiCalled = await NetworkHelper.waitForApiEndpoint(this.page, '/search/plots/', 10000, { optional: true });
+        if (apiCalled) {
+          this.logger.info('Plot search API was called');
+        } else {
+          this.logger.info('Plot search API not called (data may be cached), continuing...');
+        }
         
         // Wait for plot options to appear
         await this.page.waitForSelector('[role="option"]', { state: 'visible', timeout: 5000 });

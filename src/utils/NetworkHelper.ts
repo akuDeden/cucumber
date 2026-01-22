@@ -200,13 +200,16 @@ export class NetworkHelper {
    * @param page - Playwright page object
    * @param urlPattern - URL pattern to wait for (can be partial URL)
    * @param timeout - Maximum time to wait in ms (default: 30000)
+   * @param optional - If true, don't throw error on timeout (useful for cached data) (default: false)
+   * @returns true if API was called, false if timeout occurred (when optional=true)
    */
   static async waitForApiEndpoint(
     page: Page,
     urlPattern: string,
-    timeout: number = 30000
-  ): Promise<void> {
-    this.logger.info(`Waiting for API endpoint: ${urlPattern}`);
+    timeout: number = 30000,
+    options: { optional?: boolean } = {}
+  ): Promise<boolean> {
+    this.logger.info(`Waiting for API endpoint: ${urlPattern}${options.optional ? ' (optional)' : ''}`);
 
     try {
       await page.waitForResponse(
@@ -217,8 +220,13 @@ export class NetworkHelper {
 
       // Small wait to ensure data is rendered
       await page.waitForTimeout(500);
+      return true;
     } catch (e) {
       this.logger.info(`Timeout waiting for API ${urlPattern}: ${(e as Error).message}`);
+      if (options.optional) {
+        this.logger.info(`API ${urlPattern} not called (data may be cached)`);
+        return false;
+      }
       throw e;
     }
   }

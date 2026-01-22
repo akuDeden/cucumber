@@ -462,3 +462,45 @@ export function getPersonName(type: 'add' | 'edit' | 'delete' = 'add'): string {
 export function getApplicantName(): string {
   return `${REQUEST_SALES_FORM_DATA.applicant.firstName} ${REQUEST_SALES_FORM_DATA.applicant.lastName}`;
 }
+
+// ============================================
+// RANDOM NAME GENERATION
+// ============================================
+
+const FIRST_NAMES = ['James', 'Mary', 'John', 'Patricia', 'Robert', 'Jennifer', 'Michael', 'Linda', 'William', 'Elizabeth', 'David', 'Barbara', 'Richard', 'Susan', 'Joseph', 'Jessica', 'Thomas', 'Sarah', 'Charles', 'Karen', 'Emma', 'Olivia', 'Ava', 'Sophia', 'Liam', 'Noah', 'Ethan', 'Mason', 'Lucas', 'Oliver'];
+
+const LAST_NAMES = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis', 'Rodriguez', 'Martinez', 'Hernandez', 'Lopez', 'Gonzalez', 'Wilson', 'Anderson', 'Thomas', 'Taylor', 'Moore', 'Jackson', 'Martin', 'Lee', 'Perez', 'Thompson', 'White', 'Harris', 'Sanchez', 'Clark', 'Ramirez', 'Lewis', 'Robinson'];
+
+/**
+ * Generate a random first name
+ */
+export function randomFirstName(): string {
+  return FIRST_NAMES[Math.floor(Math.random() * FIRST_NAMES.length)];
+}
+
+/**
+ * Generate a random last name
+ */
+export function randomLastName(): string {
+  return LAST_NAMES[Math.floor(Math.random() * LAST_NAMES.length)];
+}
+
+/**
+ * Generate a random full name
+ */
+export function randomFullName(): string {
+  return `${randomFirstName()} ${randomLastName()}`;
+}
+
+/**
+ * Generate a person data object with random names
+ * Can be used for add/edit/delete scenarios
+ */
+export function generateRandomPersonData(type: 'add' | 'edit' | 'delete' = 'add') {
+  const baseData = type === 'add' ? PERSON_DATA.add : (type === 'edit' ? PERSON_DATA.edit : PERSON_DATA.delete);
+  return {
+    ...baseData,
+    firstName: randomFirstName(),
+    lastName: randomLastName()
+  };
+}

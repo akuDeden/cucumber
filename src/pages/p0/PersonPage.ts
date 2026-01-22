@@ -365,80 +365,64 @@ export class PersonPage {
    */
   async getFirstRowPersonName(): Promise<string> {
     this.logger.info('Getting person name from first row');
-    
+
     // Wait for table to finish loading (progressbar elements should disappear)
     try {
-      await this.page.waitForSelector('[role="grid"] progressbar', { state: 'detached', timeout: 25000 });
+      await this.page.waitForSelector('[role="table"] progressbar', { state: 'detached', timeout: 25000 });
       this.logger.info('Table loading complete');
     } catch (error) {
       this.logger.info('No loading indicators found or already loaded');
     }
-    
-    // Wait for grid with actual data rows (not just header)
+
+    // Wait for table with actual data rows (not just header)
     await this.page.waitForFunction(`() => {
-      const grid = document.querySelector('[role="grid"]');
-      if (!grid) return false;
-      const rows = grid.querySelectorAll('[role="row"]');
-      // Grid should have at least 2 rows: 1 header + 1 data row
+      const table = document.querySelector('[role="table"]');
+      if (!table) return false;
+      const rows = table.querySelectorAll('[role="row"]');
+      // Table should have at least 2 rows: 1 header + 1 data row
       return rows.length >= 2;
     }`, { timeout: 10000 });
-    
-    this.logger.info('Data rows are present in grid');
-    
-    // Debug: Check what rows are actually visible
-    const rowInfo = await this.page.evaluate(() => {
-      const grid = document.querySelector('[role="grid"]');
-      if (!grid) return { totalRows: 0, visibleRows: 0, firstDataRowHTML: '' };
-      const rows = Array.from(grid.querySelectorAll('[role="row"]'));
-      const visibleRows = rows.filter((row) => {
-        const style = window.getComputedStyle(row);
-        return style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0';
-      });
-      return {
-        totalRows: rows.length,
-        visibleRows: visibleRows.length,
-        firstDataRowHTML: rows.length > 1 ? rows[1].outerHTML.substring(0, 500) : 'No data row'
-      };
+
+    this.logger.info('Data rows are present in table');
+
+    // Use evaluate to directly get the first row data (more reliable than locator.waitFor)
+    const personData = await this.page.evaluate(() => {
+      const table = document.querySelector('[role="table"]');
+      if (!table) {
+        return { error: 'Table not found', firstName: '', lastName: '', totalRows: 0 };
+      }
+
+      const rows = Array.from(table.querySelectorAll('[role="row"]'));
+      if (rows.length < 2) {
+        return { error: 'Less than 2 rows', firstName: '', lastName: '', totalRows: rows.length };
+      }
+
+      // Get first data row (index 1, index 0 is header)
+      const firstDataRow = rows[1];
+      const cells = Array.from(firstDataRow.querySelectorAll('[role="cell"]'));
+
+      // Column 1 = First Name, Column 3 = Last Name
+      const firstName = cells.length > 1 ? cells[1].textContent?.trim() : '';
+      const lastName = cells.length > 3 ? cells[3].textContent?.trim() : '';
+
+      return { firstName, lastName, totalRows: rows.length, error: null };
     });
-    this.logger.info(`Grid rows - Total: ${rowInfo.totalRows}, Visible: ${rowInfo.visibleRows}`);
-    
-    // Use a more robust selector: look for the second row (first data row) within the grid
-    const gridLocator = this.page.locator('[role="grid"]');
-    const firstDataRow = gridLocator.locator('[role="row"]').nth(1); // 0 = header, 1 = first data row
-    
-    try {
-      await firstDataRow.waitFor({ state: 'visible', timeout: 5000 });
-      
-      // Scroll into view to ensure virtual scrolling loads the content
-      await firstDataRow.scrollIntoViewIfNeeded();
-      await this.page.waitForTimeout(1000); // Wait for content to load
-      
-    } catch (error) {
-      this.logger.error('First data row not visible');
-      this.logger.info(`First row HTML: ${rowInfo.firstDataRowHTML || 'Not found'}`);
-      throw error;
+
+    if (personData.error) {
+      this.logger.error(`Failed to extract person data: ${personData.error}, totalRows: ${personData.totalRows}`);
+      throw new Error(`Failed to extract person data from first row: ${personData.error}`);
     }
-    
-    // Get cells from first data row
-    const cells = firstDataRow.locator('[role="gridcell"]');
-    
-    // Debug: Log all cell contents and row text
-    const cellCount = await cells.count();
-    const rowText = await firstDataRow.innerText();
-    this.logger.info(`Number of cells in first row: ${cellCount}`);
-    this.logger.info(`Full row text: "${rowText}"`);
-    
-    for (let i = 0; i < Math.min(cellCount, 10); i++) { // Only first 10 cells for brevity
-      const cellText = await cells.nth(i).innerText();
-      this.logger.info(`Cell ${i} innerText: "${cellText?.trim()}"`);
+
+    this.logger.info(`Table rows - Total: ${personData.totalRows}`);
+    this.logger.info(`First row person - First Name: "${personData.firstName}", Last Name: "${personData.lastName}"`);
+
+    const fullName = `${personData.firstName || ''} ${personData.lastName || ''}`.trim();
+
+    if (!fullName) {
+      throw new Error('First row does not contain person name data');
     }
-    
-    const firstName = await cells.nth(1).innerText(); // Column 2 (0-indexed)
-    const lastName = await cells.nth(3).innerText();  // Column 4 (0-indexed)
-    
-    const fullName = `${firstName?.trim() || ''} ${lastName?.trim() || ''}`.trim();
+
     this.logger.info(`First row person name: ${fullName}`);
-    
     return fullName;
   }
 
@@ -491,29 +475,50 @@ export class PersonPage {
    */
   async applyFilter(): Promise<void> {
     this.logger.info('Applying filter');
-    
+
     const applyButton = this.page.locator(PersonSelectors.filterApplyButton);
     await applyButton.waitFor({ state: 'visible', timeout: 5000 });
-    
+
     // Set up listener BEFORE clicking apply
     const personApiPromise = this.page.waitForResponse(
       (response) => response.url().includes('/person') && response.status() === 200,
       { timeout: 30000 }
     ).catch(() => null);
-    
+
     await applyButton.click();
-    
+
     this.logger.info('Filter applied, waiting for table to reload');
-    
+
     // Wait for person API to reload data with filter
     try {
       await personApiPromise;
       this.logger.info('Person API response received after filter');
-      await this.page.waitForTimeout(500);
     } catch (error) {
       this.logger.warn('Could not detect person API, waiting with timeout instead');
-      await this.page.waitForTimeout(2000);
     }
+
+    // Wait for filter dialog to close - the filter button should become visible again
+    // (or the filter dialog should disappear)
+    await this.page.waitForTimeout(500);
+
+    // Wait for the filter dialog to close by checking if the filter button is visible again
+    // or if the filter dialog is no longer visible
+    try {
+      // Wait for either the filter button to be clickable again or dialog to disappear
+      await this.page.waitForFunction(() => {
+        // Check if filter dialog is still open
+        const dialog = document.querySelector('[role="dialog"]');
+        if (dialog && dialog.getBoundingClientRect().width > 0) {
+          return false; // Dialog still open
+        }
+        return true; // Dialog closed
+      }, { timeout: 5000 });
+      this.logger.info('Filter dialog closed');
+    } catch (error) {
+      this.logger.info('Could not verify dialog closed, continuing anyway');
+    }
+
+    await this.page.waitForTimeout(500);
   }
 
   /**
@@ -521,23 +526,23 @@ export class PersonPage {
    */
   async clickFirstRow(): Promise<void> {
     this.logger.info('Clicking first row to open person details');
-    
-    // Wait for grid with actual data rows
+
+    // Wait for table with actual data rows
     await this.page.waitForFunction(`() => {
-      const grid = document.querySelector('[role="grid"]');
-      if (!grid) return false;
-      const rows = grid.querySelectorAll('[role="row"]');
+      const table = document.querySelector('[role="table"]');
+      if (!table) return false;
+      const rows = table.querySelectorAll('[role="row"]');
       return rows.length >= 2;
     }`, { timeout: 10000 });
-    
-    const gridLocator = this.page.locator('[role="grid"]');
-    const firstDataRow = gridLocator.locator('[role="row"]').nth(1);
-    
+
+    const tableLocator = this.page.locator('[role="table"]');
+    const firstDataRow = tableLocator.locator('[role="row"]').nth(1);
+
     // Try double click to open edit page
     await firstDataRow.dblclick();
-    
+
     this.logger.info('First row double-clicked, waiting for edit page');
-    
+
     // Wait for navigation to edit page
     try {
       await this.page.waitForURL('**/manage/edit/person/**', { timeout: 10000 });
@@ -690,56 +695,197 @@ export class PersonPage {
   }
 
   /**
+   * Search for a person by name using the filter and verify they appear in the first row
+   * This is more robust than assuming the newly created person is in the first row
+   * @param firstName - First name to search for
+   * @param lastName - Last name to search for
+   * @returns The full name found in the first row
+   */
+  async searchAndVerifyPersonInFirstRow(firstName: string, lastName: string): Promise<string> {
+    this.logger.info(`Searching for person: ${firstName} ${lastName}`);
+
+    // Wait for page to be fully loaded
+    await this.page.waitForLoadState('domcontentloaded', { timeout: 10000 }).catch(() => {});
+    await this.page.waitForTimeout(1000);
+
+    // Open filter dialog
+    await this.clickFilterButton();
+
+    // Fill filter form
+    await this.fillFilterForm(firstName, lastName);
+
+    // Apply filter
+    await this.applyFilter();
+
+    // Wait for table to reload with filtered results
+    await this.page.waitForTimeout(2000);
+
+    // Wait for table to finish loading
+    try {
+      await this.page.waitForSelector('[role="table"] progressbar', { state: 'detached', timeout: 15000 });
+      this.logger.info('Table loading complete after filter');
+    } catch (error) {
+      this.logger.info('No loading indicators found or already loaded');
+    }
+
+    // Wait for table to be present
+    await this.page.waitForSelector('[role="table"]', { state: 'attached', timeout: 15000 })
+      .catch(() => {
+        this.logger.error('Table element not found in DOM after filter');
+        throw new Error('Table element not found in DOM after filter applied. The filter may have returned no results or the page structure has changed.');
+      });
+
+    this.logger.info('Table element found in DOM');
+
+    // Check table has data rows using evaluate
+    const hasData = await this.page.evaluate(() => {
+      const table = document.querySelector('[role="table"]');
+      if (!table) return { found: false, rows: 0 };
+      const rows = table.querySelectorAll('[role="row"]');
+      return { found: true, rows: rows.length };
+    });
+
+    this.logger.info(`Table state: found=${hasData.found}, rows=${hasData.rows}`);
+
+    if (hasData.rows < 2) {
+      // Not enough rows - might be "no results" or still loading
+      this.logger.warn(`Table has only ${hasData.rows} rows, waiting longer...`);
+      await this.page.waitForTimeout(3000);
+
+      // Check again
+      const retryData = await this.page.evaluate(() => {
+        const table = document.querySelector('[role="table"]');
+        if (!table) return { found: false, rows: 0 };
+        const rows = table.querySelectorAll('[role="row"]');
+        return { found: true, rows: rows.length };
+      });
+
+      if (retryData.rows < 2) {
+        // Check for "no results" message
+        const noResults = await this.page.evaluate(() => {
+          const bodyText = document.body.textContent || '';
+          return bodyText.toLowerCase().includes('no results') ||
+                 bodyText.toLowerCase().includes('no data') ||
+                 bodyText.toLowerCase().includes('not found');
+        });
+
+        throw new Error(`Table has insufficient rows (${retryData.rows}). No results message: ${noResults}. Filter may not have found the person "${firstName} ${lastName}"`);
+      }
+    }
+
+    // Get the first row data and verify
+    const firstRowPerson = await this.page.evaluate(() => {
+      const table = document.querySelector('[role="table"]');
+      if (!table) {
+        return { error: 'Table not found', firstName: '', lastName: '', totalRows: 0 };
+      }
+
+      const rows = Array.from(table.querySelectorAll('[role="row"]'));
+      if (rows.length < 2) {
+        return { error: 'Less than 2 rows', firstName: '', lastName: '', totalRows: rows.length };
+      }
+
+      const firstDataRow = rows[1];
+      const cells = Array.from(firstDataRow.querySelectorAll('[role="cell"]'));
+
+      // First Name is in column 2 (index 1), Last Name is in column 4 (index 3)
+      const firstName = cells.length > 1 ? cells[1].textContent?.trim() : '';
+      const lastName = cells.length > 3 ? cells[3].textContent?.trim() : '';
+
+      return { firstName, lastName, totalRows: rows.length, error: null };
+    });
+
+    if (firstRowPerson.error) {
+      this.logger.error(`Failed to extract person data: ${firstRowPerson.error}`);
+      throw new Error(`Failed to extract person data from first row after filter: ${firstRowPerson.error}`);
+    }
+
+    const actualFirstName = firstRowPerson.firstName || '';
+    const actualLastName = firstRowPerson.lastName || '';
+    const fullName = `${actualFirstName} ${actualLastName}`.trim();
+
+    this.logger.info(`First row after filter - First Name: "${actualFirstName}", Last Name: "${actualLastName}"`);
+
+    // Verify the first name matches (case-insensitive)
+    if (actualFirstName.toLowerCase() !== firstName.toLowerCase()) {
+      throw new Error(`Expected first name "${firstName}" but found "${actualFirstName}" in first row after filter`);
+    }
+
+    this.logger.success(`✓ Person verified in first row after filter: ${fullName}`);
+    return fullName;
+  }
+
+  /**
    * Verify person is NOT in the table by checking the person name
    */
   async verifyPersonNotInList(expectedName: string): Promise<void> {
     this.logger.info(`Verifying person "${expectedName}" is NOT in the list`);
-    
+
     // Clear any active filters first by reloading the page
     // This ensures we're checking the full list, not a filtered subset
     await this.page.reload({ waitUntil: 'networkidle' });
     this.logger.info('Page reloaded to clear filters');
-    
+
     await this.page.waitForTimeout(2000);
-    
+
     // Wait for table to finish loading
     try {
-      await this.page.waitForSelector('[role="grid"] progressbar', { state: 'detached', timeout: 15000 });
+      await this.page.waitForSelector('[role="table"] progressbar', { state: 'detached', timeout: 15000 });
       this.logger.info('Table loading complete');
     } catch (error) {
       this.logger.info('No loading indicators found or already loaded');
     }
-    
+
     await this.page.waitForTimeout(1000);
-    
+
     // Get all person names from the table
     const allNames = await this.page.evaluate(() => {
-      const grid = document.querySelector('[role="grid"]');
-      if (!grid) return [];
-      
-      const rows = Array.from(grid.querySelectorAll('[role="row"]'));
+      const table = document.querySelector('[role="table"]');
+      if (!table) return [];
+
+      const rows = Array.from(table.querySelectorAll('[role="row"]'));
       // Skip header row (first row)
       const dataRows = rows.slice(1);
-      
+
       return dataRows.map((row) => {
-        const cells = Array.from(row.querySelectorAll('[role="gridcell"]'));
+        const cells = Array.from(row.querySelectorAll('[role="cell"]'));
         // Assuming first name is in column 2, last name is in column 4 (index 1 and 3)
         const firstName = cells[1]?.textContent?.trim() || '';
         const lastName = cells[3]?.textContent?.trim() || '';
         return `${firstName} ${lastName}`.trim();
       }).filter(name => name && name !== '--' && name !== '  ');
     });
-    
+
     this.logger.info(`Found ${allNames.length} persons in the table`);
     this.logger.info(`Names: ${allNames.join(', ')}`);
-    
+
     // Check if the deleted person name is in the list
     const personFound = allNames.some(name => name === expectedName);
-    
+
     if (personFound) {
       throw new Error(`Person "${expectedName}" is still in the list after deletion!`);
     }
-    
+
     this.logger.info(`✓ Person "${expectedName}" is NOT in the list (deleted successfully)`);
+  }
+
+  /**
+   * Clear the filter by reloading the page
+   * Use this to reset the table to show all records
+   */
+  async clearFilter(): Promise<void> {
+    this.logger.info('Clearing filter by reloading page');
+    await this.page.reload({ waitUntil: 'networkidle' });
+
+    // Wait for table to load
+    try {
+      await this.page.waitForSelector('[role="table"] progressbar', { state: 'detached', timeout: 15000 });
+      this.logger.info('Table loading complete after clear filter');
+    } catch (error) {
+      this.logger.info('No loading indicators found or already loaded');
+    }
+
+    await this.page.waitForTimeout(1000);
+    this.logger.success('Filter cleared');
   }
 }

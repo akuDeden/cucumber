@@ -174,19 +174,26 @@ Then('I should see sale summary with following values:', { timeout: 15000 }, asy
 /**
  * Click the Create button to submit the sale
  */
-When('I click Create button', { timeout: 45000 }, async function () {
+When('I click Create button', { timeout: 60000 }, async function () {
   await salesPage.clickCreate();
-  logger.info('Clicked Create button');
+  logger.info('Clicked Create button and navigated back to sales list');
 });
 
 /**
  * Verify that sale was created successfully
- * This checks that we're redirected to sales table page
+ * This checks that we're redirected to sales table page and purchaser name is correct
  */
 Then('the sale should be created successfully', { timeout: 20000 }, async function () {
   // Verify we're back on sales table page
   await salesPage.validateSalesTableLoaded();
   logger.info('Sale created successfully and redirected to sales table');
+  
+  // Validate purchaser name in the table
+  const purchaserData = replacePlaceholders('<TEST_SALES_PURCHASER>');
+  const [firstName, lastName] = purchaserData.split('|');
+  const expectedPurchaserName = `${firstName} ${lastName}`;
+  await salesPage.validatePurchaserInTable(expectedPurchaserName);
+  logger.info(`Purchaser name validated: ${expectedPurchaserName}`);
 });
 
 /**

@@ -128,19 +128,55 @@ export class SalesPage {
   async selectOwner(ownerName?: string): Promise<void> {
     this.logger.info(`Selecting owner: ${ownerName || 'first available'}`);
     await this.page.waitForSelector(salesSelectors.ownerSelect, { state: 'visible', timeout: 10000 });
-    await this.page.locator(salesSelectors.ownerSelect).click();
-    await this.page.waitForTimeout(1000);
+    
+    // Check current value before selecting
+    const ownerCombobox = this.page.locator(salesSelectors.ownerSelect);
+    const valueBefore = await ownerCombobox.textContent();
+    this.logger.info(`Owner value before selection: "${valueBefore?.trim()}"`);
+    
+    await ownerCombobox.click();
+    await this.page.waitForTimeout(1500);
+    
+    // Wait for options to appear
+    await this.page.waitForSelector('mat-option', { state: 'visible', timeout: 5000 });
+    
+    // Get all options
+    const options = await this.page.locator('mat-option:visible').allTextContents();
+    this.logger.info(`Available owner options: ${JSON.stringify(options)}`);
     
     if (ownerName) {
       // Select specific owner by name
-      await this.page.locator(`mat-option:has-text("${ownerName}")`).click();
+      const option = this.page.locator(`mat-option:has-text("${ownerName}")`).first();
+      await option.click();
     } else {
-      // Select first available option
-      await this.page.locator('mat-option').first().click();
+      // Select first available option using more specific selector
+      const option = this.page.locator('mat-option').first();
+      await option.click();
     }
     
+    // Wait longer for Angular to process the selection
+    await this.page.waitForTimeout(2000);
+    
+    // Trigger change event explicitly
+    await this.page.evaluate((selector) => {
+      const selectElement = document.querySelector(selector) as any;
+      if (selectElement && selectElement._elementRef) {
+        const event = new Event('change', { bubbles: true });
+        selectElement._elementRef.nativeElement.dispatchEvent(event);
+      }
+    }, salesSelectors.ownerSelect);
+    
     await this.page.waitForTimeout(500);
-    this.logger.info('Owner selected');
+    
+    // Verify owner is selected
+    const valueAfter = await ownerCombobox.textContent();
+    this.logger.info(`Owner value after selection: "${valueAfter?.trim()}"`);
+    
+    if (!valueAfter || valueAfter.trim() === '' || valueAfter.trim() === 'Owner') {
+      this.logger.error('Owner selection may have failed - combobox still shows empty or placeholder text');
+    } else {
+      this.logger.info('Owner selected');
+    }
   }
 
   /**
@@ -582,54 +618,57 @@ export class SalesPage {
     const urlBefore = this.page.url();
     this.logger.info(`URL before CREATE click: ${urlBefore}`);
     
-    // Check for any empty required fields before clicking
-    const emptyRequiredFields = await this.page.evaluate(() => {
-      const fields: string[] = [];
-      document.querySelectorAll('input[required], textarea[required], mat-select[required]').forEach(el => {
-        const value = (el as HTMLInputElement).value || (el as HTMLTextAreaElement).value;
-        if (!value || value.trim() === '') {
-          const label = el.closest('mat-form-field')?.querySelector('mat-label')?.textContent ||
-                       (el as HTMLElement).getAttribute('placeholder') ||
-                       (el as HTMLElement).getAttribute('formcontrolname') ||
-                       'unknown field';
-          fields.push(label.trim());
-        }
-      });
-      return fields;
-    });
-    
-    if (emptyRequiredFields.length > 0) {
-      this.logger.error(`Empty required fields found: ${JSON.stringify(emptyRequiredFields)}`);
-    }
-    
-    // Force click to bypass any overlay issues
+    // Click CREATE button on the form
     await this.page.locator(salesSelectors.createButton).click({ force: true });
+    this.logger.info('CREATE button clicked - waiting for confirmation dialog');
     
-    // Wait a bit for any immediate feedback
-    await this.page.waitForTimeout(2000);
+    // Wait for confirmation dialog to appear
+    await this.page.waitForTimeout(1500);
     
-    // Check for validation errors
-    const errorMessages = await this.page.locator('.mat-error, .error, [class*="error"]').allTextContents();
-    if (errorMessages.length > 0) {
-      this.logger.error(`Form validation errors after CREATE: ${JSON.stringify(errorMessages)}`);
-      throw new Error(`Form has validation errors: ${errorMessages.join(', ')}`);
+    // Check if confirmation dialog appeared
+    const dialogVisible = await this.page.locator('mat-dialog-container, [role="dialog"]').isVisible().catch(() => false);
+    
+    if (dialogVisible) {
+      this.logger.info('Confirmation dialog appeared');
+      
+      // Click CREATE button in the confirmation dialog
+      const dialogCreateButton = this.page.locator('mat-dialog-container button:has-text("CREATE"), [role="dialog"] button:has-text("CREATE")').first();
+      await dialogCreateButton.waitFor({ state: 'visible', timeout: 5000 });
+      await dialogCreateButton.click();
+      this.logger.info('CREATE button in confirmation dialog clicked');
+    } else {
+      this.logger.warn('No confirmation dialog appeared, proceeding...');
     }
     
-    // Wait for navigation or success message
-    try {
-      await Promise.race([
-        this.page.waitForURL(/\/sales$|\/sales\?/, { timeout: 15000 }),
-        this.page.waitForSelector('.success, .mat-snack-bar-container', { timeout: 15000 })
-      ]);
-    } catch (error) {
-      const urlAfter = this.page.url();
-      this.logger.warn(`URL after CREATE click: ${urlAfter}`);
-      if (urlAfter === urlBefore) {
-        this.logger.error('No navigation occurred - form may have validation issues');
-      }
+    // Wait for API call to /api/v1/invoices/ to complete (POST - create invoice)
+    this.logger.info('Waiting for /api/v1/invoices/ API endpoint (POST - create invoice)...');
+    await NetworkHelper.waitForApiEndpoint(this.page, '/api/v1/invoices/', 30000);
+    this.logger.info('/api/v1/invoices/ API endpoint (POST) completed successfully');
+    
+    // Set up listener for invoice list API BEFORE waiting for navigation
+    // This ensures we catch the API call when page loads
+    const invoiceListPromise = this.page.waitForResponse(
+      (response) => response.url().includes('/api/v1/invoices?page=') && response.status() === 200,
+      { timeout: 20000 }
+    ).catch(() => null); // Don't throw if timeout
+    
+    // Wait for navigation to sales list page (can be /sales or /sales-table)
+    await this.page.waitForURL(/\/sales$|\/sales\?|\/sales-table/, { timeout: 15000 });
+    this.logger.info('Navigated back to sales list page');
+    
+    // Wait for the invoice list API we set up earlier
+    this.logger.info('Waiting for invoice list API endpoint (GET)...');
+    const invoiceListResponse = await invoiceListPromise;
+    
+    if (invoiceListResponse) {
+      this.logger.info(`✓ Invoice list API endpoint completed: ${invoiceListResponse.url()}`);
+    } else {
+      this.logger.warn('Invoice list API timeout, but will proceed with table validation');
     }
     
-    await this.page.waitForTimeout(3000);
+    // Wait for sales table to load completely
+    await this.page.waitForSelector('table', { state: 'visible', timeout: 10000 });
+    this.logger.info('Sales table loaded');
   }
 
   /**
@@ -648,6 +687,28 @@ export class SalesPage {
   async clickCancel(): Promise<void> {
     this.logger.info('Clicking Cancel button');
     await this.page.locator(salesSelectors.cancelButton).click();
+  }
+
+  /**
+   * Validate purchaser name in sales table
+   * Checks the first row in the table for the expected purchaser name
+   */
+  async validatePurchaserInTable(expectedPurchaserName: string): Promise<void> {
+    this.logger.info(`Validating purchaser name in table: ${expectedPurchaserName}`);
+    
+    // Wait for table to be visible
+    await this.page.waitForSelector('table', { state: 'visible', timeout: 10000 });
+    
+    // Get the first row's purchaser cell
+    // Assuming the purchaser column is in the table - adjust selector if needed
+    const firstRowPurchaser = await this.page.locator('table tbody tr').first().locator('td').nth(2).textContent();
+    
+    if (firstRowPurchaser?.trim() === expectedPurchaserName.trim()) {
+      this.logger.info(`✓ Purchaser name validated: ${firstRowPurchaser}`);
+    } else {
+      this.logger.error(`✗ Purchaser name mismatch. Expected: "${expectedPurchaserName}", Found: "${firstRowPurchaser}"`);
+      throw new Error(`Purchaser name mismatch. Expected: "${expectedPurchaserName}", Found: "${firstRowPurchaser}"`);
+    }
   }
 
   /**

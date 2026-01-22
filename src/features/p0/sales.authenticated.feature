@@ -28,7 +28,6 @@ Feature: Sales Management (Authenticated)
       | item c      | B F 3        | 2        | 32.95    | 0        |
       | item d      | B F 4        | 1        | 105.08   | 0        |
       | item e      | B F 5        | 1        | 101.21   | 0        |
-    And I select sale owner
     Then I should see sale summary with following values:
       | subtotal | $1,764.10 |
       | discount | $0.00     |

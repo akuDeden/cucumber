@@ -178,7 +178,7 @@ export class IntermentPage {
     await this.page.click(IntermentSelectors.saveButton);
     
     // Wait for redirect back to plot detail page (longer timeout for production)
-    await this.page.waitForURL('**/plots/**', { timeout: 30000 });
+    await this.page.waitForURL('**/plots/**', { timeout: 35000 });
     await this.page.waitForTimeout(3000); // Wait for page to fully load
     
     this.logger.success('Interment saved and redirected to plot detail');

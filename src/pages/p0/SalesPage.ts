@@ -353,19 +353,25 @@ export class SalesPage {
           this.page.locator('input[type="text"]')
         ).last();
         await plotSearchInput.waitFor({ state: 'visible', timeout: 5000 });
-        
-        // Type the plot name to search
-        await plotSearchInput.fill(item.related_plot);
-        await this.page.waitForTimeout(1000);
 
-        // Wait for plot search API to complete (optional - data may be cached)
-        const apiCalled = await NetworkHelper.waitForApiEndpoint(this.page, '/v2/search/plots-records-persons', 10000, { optional: true });
-        if (apiCalled) {
-          this.logger.info('Plot search API was called');
-        } else {
-          this.logger.info('Plot search API not called (data may be cached), continuing...');
+        // Setup wait for API response BEFORE triggering the search
+        const apiPromise = this.page.waitForResponse(
+          (response) => response.url().includes('/v2/search/plots-records-persons') && response.status() === 200,
+          { timeout: 10000 }
+        ).catch(() => {
+          this.logger.info('Plot search API timeout or data may be cached');
+          return null;
+        });
+
+        // Type the plot name to search (triggers the API call)
+        await plotSearchInput.fill(item.related_plot);
+
+        // Wait for the API response (if called)
+        const response = await apiPromise;
+        if (response) {
+          this.logger.info('Plot search API completed successfully');
         }
-        
+
         // Wait for plot options to appear
         await this.page.waitForSelector('[role="option"]', { state: 'visible', timeout: 5000 });
         

@@ -44,8 +44,11 @@ When('I select cemetery {string} in advanced search', { timeout: 10000 }, async 
   await page.getByRole('combobox', { name: 'Cemeteries' }).click();
   await page.waitForTimeout(500);
 
-  // Select the cemetery option using exact match to avoid strict mode violations
-  await page.getByRole('option', { name: cemetery, exact: true }).click();
+  await page.getByTestId('input-start-typing-to-search').fill(cemetery);
+  await page.waitForTimeout(500);
+
+  // Select the cemetery option using exact match - use .first() to avoid strict mode violations
+  await page.locator('mat-option span.mat-option-text', { hasText: cemetery }).first().click();
   await page.waitForTimeout(500);
 
   // Close the dropdown by pressing Escape (required before clicking Plot tab)

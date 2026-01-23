@@ -405,14 +405,14 @@ export class AdvanceSearchPage {
     this.logger.info(`Entering Interments Qty from ${from} to ${to}`);
 
     // Fill From field - use nth(0) to get the first matching element
-    const fromField = this.page.getByTestId('plot-form-input-0').nth(0);
+    const fromField = this.page.locator('input[formcontrolname="fromQty"]');
     await fromField.click();
     await this.page.waitForTimeout(300);
     await fromField.fill(from);
     await this.page.waitForTimeout(500);
 
     // Fill To field - use nth(1) to get the second matching element
-    const toField = this.page.getByTestId('plot-form-input-0').nth(1);
+    const toField = this.page.locator('input[formcontrolname="toQty"]');
     await toField.click();
     await this.page.waitForTimeout(300);
     await toField.fill(to);

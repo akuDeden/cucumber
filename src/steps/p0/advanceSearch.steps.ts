@@ -399,8 +399,8 @@ When('I enter cremation capacity {string} in advanced search', { timeout: 10000 
   await advanceSearchPage.enterCremationCapacityInAdvancedSearch(actualCapacity);
 });
 
-When('I enter interments qty from {string} to {string} in advanced search', { timeout: 10000 }, async function (from: string, to: string) {
-  const actualFrom = replacePlaceholders(from);
+When('I enter interments qty from {string} to {string} in advanced search', { timeout: 10000 }, async function (From: string, to: string) {
+  const actualFrom = replacePlaceholders(From);
   const actualTo = replacePlaceholders(to);
   const page = this.page as Page;
   const advanceSearchPage = getAdvanceSearchPage(page);

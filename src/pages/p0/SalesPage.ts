@@ -359,7 +359,7 @@ export class SalesPage {
         await this.page.waitForTimeout(1000);
 
         // Wait for plot search API to complete (optional - data may be cached)
-        const apiCalled = await NetworkHelper.waitForApiEndpoint(this.page, '/search/plots/', 10000, { optional: true });
+        const apiCalled = await NetworkHelper.waitForApiEndpoint(this.page, '/v2/search/plots-records-persons', 10000, { optional: true });
         if (apiCalled) {
           this.logger.info('Plot search API was called');
         } else {

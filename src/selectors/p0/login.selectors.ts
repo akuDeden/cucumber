@@ -25,7 +25,7 @@ export const LoginSelectors = {
   rememberMeCheckbox: 'input[type="checkbox"]',
   
   // Error messages
-  errorMessage: '.mat-error, .error-message',
+  errorMessage: '[data-testid="login-snackbar-error-div-left"] span',
   
   // Success indicators (Dashboard after login)
   organizationName: 'div:has-text("astana tegal gundul")',

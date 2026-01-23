@@ -45,6 +45,22 @@ When('I fill sale reference with {string}', async function (reference: string) {
 });
 
 /**
+ * Validate issue date is pre-filled with current date
+ */
+When('I validate issue date is pre-filled with current date', async function () {
+  await salesPage.validateIssueDate();
+  logger.info('Issue date validated - pre-filled with current date');
+});
+
+/**
+ * Validate due date is current date + default due days from invoice settings
+ */
+When('I validate due date is current date plus default due days', async function () {
+  await salesPage.validateDueDate();
+  logger.info('Due date validated - current date plus default due days');
+});
+
+/**
  * Fill the sale issue date field
  * Supports placeholders like <TEST_SALES_ISSUE_DATE>
  */

@@ -16,18 +16,20 @@ Feature: Sales Management (Authenticated)
     When I navigate to Sales page
     And I validate sales table is loaded
     And I click Create Sale button
+    When I validate issue date is pre-filled with current date
+    When I validate due date is current date plus default due days
     And I fill sale reference with "<TEST_SALES_REFERENCE>"
-    And I fill sale issue date with "<TEST_SALES_ISSUE_DATE>"
-    And I fill sale due date with "<TEST_SALES_DUE_DATE>"
-    And I fill sale note with "<TEST_SALES_NOTE>"
+    # And I fill sale issue date with "<TEST_SALES_ISSUE_DATE>"
+    # And I fill sale due date with "<TEST_SALES_DUE_DATE>"
+    # And I fill sale note with "<TEST_SALES_NOTE>"
     And I add purchaser person "<TEST_SALES_PURCHASER>"
     And I add sale items with following details:
-      | description | related_plot | quantity | price    | discount |
-      | item a      | B F 1        | 1        | 1313.56  | 0        |
-      | item b      | B F 2        | 1        | 178.35   | 0        |
-      | item c      | B F 3        | 2        | 32.95    | 0        |
-      | item d      | B F 4        | 1        | 105.08   | 0        |
-      | item e      | B F 5        | 1        | 101.21   | 0        |
+      | description | related_plot | quantity | price   | discount |
+      | item a      | B F 1        | 1        | 1313.56 | 0        |
+      | item b      | B F 2        | 1        | 178.35  | 0        |
+      | item c      | B F 3        | 2        | 32.95   | 0        |
+      | item d      | B F 4        | 1        | 105.08  | 0        |
+      | item e      | B F 5        | 1        | 101.21  | 0        |
     Then I should see sale summary with following values:
       | subtotal | $1,764.10 |
       | discount | $0.00     |

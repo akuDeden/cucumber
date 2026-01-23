@@ -122,6 +122,106 @@ export class SalesPage {
   }
 
   /**
+   * Get invoice settings from API
+   * Returns the default_due_days value
+   */
+  async getInvoiceSettings(): Promise<number> {
+    this.logger.info('Fetching invoice settings from API');
+
+    // Make direct API request to get invoice settings
+    try {
+      const apiResponse = await this.page.request.get('/invoice-settings/');
+      if (apiResponse.ok()) {
+        const data = await apiResponse.json();
+        if (data && typeof data.default_due_days === 'number') {
+          this.logger.info(`Invoice settings fetched: default_due_days = ${data.default_due_days}`);
+          return data.default_due_days;
+        }
+      }
+    } catch (e) {
+      this.logger.info(`Failed to fetch invoice settings: ${(e as Error).message}`);
+    }
+
+    // Default fallback
+    this.logger.info('Using default due days: 3');
+    return 3;
+  }
+
+  /**
+   * Validate issue date is pre-filled with current date
+   * Format: DD/MM/YYYY
+   */
+  async validateIssueDate(): Promise<void> {
+    this.logger.info('Validating issue date is pre-filled with current date');
+
+    await this.page.waitForSelector(salesSelectors.issueDateInput, { state: 'visible', timeout: 10000 });
+
+    const actualIssueDate = await this.page.locator(salesSelectors.issueDateInput).inputValue();
+    this.logger.info(`Actual issue date value: "${actualIssueDate}"`);
+
+    // Get current date in DD/MM/YYYY format
+    const today = new Date();
+    const expectedDate = this.formatDateToDDMMYYYY(today);
+    this.logger.info(`Expected issue date (current date): "${expectedDate}"`);
+
+    if (actualIssueDate !== expectedDate) {
+      throw new Error(`Issue date validation failed. Expected: "${expectedDate}", Actual: "${actualIssueDate}"`);
+    }
+
+    this.logger.info('Issue date validation passed - pre-filled with current date');
+  }
+
+  /**
+   * Validate due date is current date + default due days
+   * If defaultDueDays not provided, fetch from invoice settings API
+   * Format: DD/MM/YYYY
+   */
+  async validateDueDate(defaultDueDays?: number): Promise<void> {
+    this.logger.info('Validating due date is current date + default due days');
+
+    let dueDays = defaultDueDays;
+    if (dueDays === undefined) {
+      dueDays = await this.getInvoiceSettings();
+    }
+
+    await this.page.waitForSelector(salesSelectors.dueDateInput, { state: 'visible', timeout: 10000 });
+
+    const actualDueDate = await this.page.locator(salesSelectors.dueDateInput).inputValue();
+    this.logger.info(`Actual due date value: "${actualDueDate}"`);
+
+    // Calculate expected due date (current date + due days)
+    const today = new Date();
+    const expectedDueDate = this.addDays(today, dueDays);
+    const expectedDateStr = this.formatDateToDDMMYYYY(expectedDueDate);
+    this.logger.info(`Expected due date (current date + ${dueDays} days): "${expectedDateStr}"`);
+
+    if (actualDueDate !== expectedDateStr) {
+      throw new Error(`Due date validation failed. Expected: "${expectedDateStr}" (+${dueDays} days), Actual: "${actualDueDate}"`);
+    }
+
+    this.logger.info(`Due date validation passed - ${dueDays} days from current date`);
+  }
+
+  /**
+   * Format date to DD/MM/YYYY
+   */
+  private formatDateToDDMMYYYY(date: Date): string {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  }
+
+  /**
+   * Add days to a date
+   */
+  private addDays(date: Date, days: number): Date {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  }
+
+  /**
    * Select Owner from dropdown
    * Selects the first available option if no specific owner provided
    */

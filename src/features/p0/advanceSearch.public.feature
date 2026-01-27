@@ -1,4 +1,4 @@
-@p0 @advance-search-public
+@p0 @advance-search-public @smoke
 Feature: Advanced Search Plot - Public Access
     As a public user (not logged in)
     I want to search for plots using advanced search

@@ -86,7 +86,7 @@ export const RoiSelectors = {
   activityNotesContainer: '[data-testid="user-log-activity-div-input-note-container"]',
 
   // Activity Notes - Edit
-  activityNoteThreeDotsMenu: '.mat-icon.mat-menu-trigger', // Three dots menu for each note
+  activityNoteThreeDotsMenu: '[data-testid="user-log-activity-div-button-group"] mat-icon[data-mat-icon-name="more"]', // Three dots menu for each note
   activityNoteEditMenuItem: 'menuitem:has-text("Edit")', // Edit menu item
   activityNoteEditTextarea: 'textarea', // Textarea in edit mode
   activityNoteEditSaveButton: 'mat-icon[svgicon="check-edit"]', // Save/check button in edit mode

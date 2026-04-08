@@ -42,5 +42,5 @@ export const LoginSelectors = {
  */
 export const LoginUrls = {
   loginPage: '/login',
-  dashboardPattern: '/customer-organization/',
+  dashboardPattern: '/customer-organization',
 } as const;

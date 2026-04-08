@@ -1,0 +1,275 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e7]:
+    - generic [ref=e9]:
+      - generic [ref=e12]:
+        - generic [ref=e13]: Astana Tegal Gundul
+        - generic [ref=e17]:
+          - generic [ref=e19]:
+            - img [ref=e21]:
+              - img [ref=e22]
+            - textbox "Search" [ref=e27]
+          - generic [ref=e31]:
+            - generic [ref=e32]:
+              - generic [ref=e33]:
+                - img [ref=e34]:
+                  - img [ref=e35]
+                - generic [ref=e38]: People
+              - generic [ref=e39]:
+                - img [ref=e40]:
+                  - img [ref=e41]
+                - generic [ref=e46]: Plotsttt
+            - heading "within Astana Tegal Gundul" [level=5] [ref=e47]
+        - generic [ref=e48]:
+          - button "Advanced" [ref=e49] [cursor=pointer]:
+            - generic [ref=e52]: Advanced
+          - generic [ref=e55]:
+            - button "Notifications - 2 unread" [ref=e56] [cursor=pointer]:
+              - img "Notification bell" [ref=e58]
+            - generic [ref=e59]: "2"
+      - button "Astana Tegal Gundul faris+astanaorg@chronicle.rip" [ref=e62] [cursor=pointer]:
+        - generic [ref=e65]:
+          - paragraph [ref=e66]: Astana Tegal Gundul
+          - generic [ref=e67]: faris+astanaorg@chronicle.rip
+    - generic:
+      - generic [ref=e69]:
+        - generic:
+          - generic:
+            - generic:
+              - img
+          - generic:
+            - generic:
+              - generic [ref=e89] [cursor=pointer]:
+                - generic [ref=e91]: A C 5
+                - list [ref=e92]:
+                  - listitem [ref=e93]: J. Smith
+              - generic [ref=e94] [cursor=pointer]:
+                - generic [ref=e96]: A C 6
+                - list [ref=e97]:
+                  - listitem [ref=e98]: J. Smith
+                  - listitem [ref=e99]: J. Doe
+              - generic [ref=e100] [cursor=pointer]:
+                - generic [ref=e101]:
+                  - generic [ref=e102]: A B 1
+                  - img [ref=e104]
+                - list [ref=e105]:
+                  - listitem [ref=e106]: P. Wijaya
+                  - listitem [ref=e107]: I. Sari
+              - generic [ref=e108] [cursor=pointer]:
+                - generic [ref=e110]: A B 2
+                - list [ref=e111]:
+                  - listitem [ref=e112]: J. Doe
+              - generic [ref=e113] [cursor=pointer]:
+                - generic [ref=e115]: A B 3
+                - list [ref=e116]:
+                  - listitem [ref=e117]: J. Doe
+              - generic [ref=e118] [cursor=pointer]:
+                - generic [ref=e120]: A B 4
+                - list [ref=e121]:
+                  - listitem [ref=e122]: J. Doe
+              - generic [ref=e123] [cursor=pointer]:
+                - generic [ref=e125]: A B 5
+                - list [ref=e126]:
+                  - listitem [ref=e127]: J. Doe
+              - generic [ref=e128] [cursor=pointer]:
+                - generic [ref=e130]: A B 6
+                - list [ref=e131]:
+                  - listitem [ref=e132]: J. Doe
+              - generic [ref=e133] [cursor=pointer]:
+                - generic [ref=e135]: A B 7
+                - list
+              - generic [ref=e136] [cursor=pointer]:
+                - generic [ref=e138]: A B 8
+                - list [ref=e139]:
+                  - listitem [ref=e140]: J. Doe
+              - generic [ref=e141] [cursor=pointer]:
+                - generic [ref=e143]: A A 1
+                - list [ref=e144]:
+                  - listitem [ref=e145]: g. pearl
+                  - listitem [ref=e146]: p. wijaya
+                  - listitem [ref=e147]: H. Wijayaa
+                  - listitem [ref=e148]: "+1"
+              - generic [ref=e149] [cursor=pointer]:
+                - generic [ref=e151]: A A 2
+                - list [ref=e152]:
+                  - listitem [ref=e153]: F. Putri
+              - generic [ref=e154] [cursor=pointer]:
+                - generic [ref=e156]: A A 3
+                - list [ref=e157]:
+                  - listitem [ref=e158]: T. Tester999
+                  - listitem [ref=e159]: J. Doe
+              - generic [ref=e160] [cursor=pointer]:
+                - generic [ref=e162]: A A 4
+                - list [ref=e163]:
+                  - listitem [ref=e164]: B. Wijaya
+                  - listitem [ref=e165]: L. Sari
+                  - listitem [ref=e166]: A. Pratama
+              - generic [ref=e167] [cursor=pointer]:
+                - generic [ref=e169]: B A 1
+                - list [ref=e170]:
+                  - listitem [ref=e171]: a. a
+              - generic [ref=e172] [cursor=pointer]:
+                - generic [ref=e174]: B A 2
+                - list
+              - generic [ref=e175] [cursor=pointer]:
+                - generic [ref=e177]: B A 3
+                - list
+        - generic:
+          - generic:
+            - button [ref=e179] [cursor=pointer]
+            - button [ref=e180] [cursor=pointer]
+          - generic:
+            - link "Current location" [ref=e182] [cursor=pointer]:
+              - /url: "#"
+            - generic [ref=e183]:
+              - button "Zoom in" [disabled] [ref=e184]: +
+              - button "Zoom out" [ref=e185] [cursor=pointer]: −
+            - generic [ref=e186]:
+              - link "Leaflet" [ref=e187] [cursor=pointer]:
+                - /url: https://leafletjs.com
+                - img [ref=e188]
+                - text: Leaflet
+              - text: "| Map data ©"
+              - link "OpenStreetMap" [ref=e192] [cursor=pointer]:
+                - /url: https://www.openstreetmap.org/
+              - text: contributors,
+              - link "CC-BY-SA" [ref=e193] [cursor=pointer]:
+                - /url: https://creativecommons.org/licenses/by-sa/2.0/
+      - button [ref=e196] [cursor=pointer]:
+        - img [ref=e198]:
+          - img [ref=e199]
+    - generic [ref=e202]:
+      - generic [ref=e207] [cursor=pointer]:
+        - group [ref=e209]:
+          - button "Map" [pressed] [ref=e210]:
+            - generic [ref=e211]:
+              - img [ref=e213]:
+                - img [ref=e214]
+              - generic [ref=e216]: Map
+          - button "Tables" [ref=e217]:
+            - generic [ref=e218]:
+              - img [ref=e220]:
+                - img [ref=e221]
+              - generic [ref=e224]: Tables
+          - button "Calendar" [ref=e225]:
+            - generic [ref=e226]:
+              - img [ref=e228]:
+                - img [ref=e229]
+              - generic [ref=e231]: Calendar
+          - button "Request 12" [ref=e232]:
+            - generic [ref=e233]:
+              - img [ref=e235]:
+                - img [ref=e236]
+              - generic [ref=e239]: Request
+              - generic [ref=e240]: "12"
+          - button "Sales" [ref=e241]:
+            - generic [ref=e242]:
+              - img [ref=e244]:
+                - img [ref=e245]
+              - generic [ref=e248]: Sales
+          - button "Reports" [ref=e249]:
+            - generic [ref=e250]:
+              - img [ref=e252]:
+                - img [ref=e253]
+              - generic [ref=e256]: Reports
+        - group [disabled] [ref=e258]:
+          - button "help" [disabled] [ref=e259]:
+            - link "help" [disabled] [ref=e261]:
+              - /url: https://help.chronicle.rip/
+              - img "help" [ref=e262]
+          - button "home" [disabled] [ref=e263]:
+            - link "home" [disabled] [ref=e265]:
+              - /url: https://chronicle.rip/
+              - img "home" [ref=e266]
+      - generic [ref=e279]:
+        - button "Choose File" [ref=e282]
+        - img [ref=e283] [cursor=pointer]:
+          - img [ref=e284]
+        - generic [ref=e287]:
+          - generic [ref=e288]:
+            - generic [ref=e289]:
+              - paragraph [ref=e291]: Astana Tegal Gundul
+              - heading "A A 1" [level=3] [ref=e293]:
+                - generic [ref=e295]: A A 1
+              - generic [ref=e297]:
+                - generic [ref=e299]: 4 / 3
+                - generic [ref=e302]: 2 / 1
+                - generic [ref=e305]: 1 / 1
+                - generic [ref=e308]: "- / 1"
+                - generic [ref=e310]:
+                  - generic [ref=e311]: east
+                  - generic [ref=e312]: E
+                - generic [ref=e315]: Monumental
+            - button "Edit" [ref=e317] [cursor=pointer]:
+              - paragraph [ref=e319]: Edit
+          - paragraph [ref=e321]:
+            - paragraph [ref=e324]: Headstone description
+          - generic [ref=e325]:
+            - button "Requests" [ref=e326] [cursor=pointer]:
+              - img [ref=e327]:
+                - img [ref=e328]
+              - text: Requests
+              - img [ref=e330]:
+                - img [ref=e331]
+            - button [ref=e333] [cursor=pointer]:
+              - img [ref=e335]:
+                - img [ref=e336]
+            - button [ref=e339] [cursor=pointer]:
+              - img [ref=e341]: share_outlined
+          - generic [ref=e342]:
+            - img [ref=e343] [cursor=pointer]: keyboard_arrow_left
+            - img [ref=e344] [cursor=pointer]: keyboard_arrow_right
+            - generic [ref=e345]:
+              - tablist [ref=e348]:
+                - generic [ref=e349]:
+                  - tab "INTERMENTS" [selected] [ref=e350] [cursor=pointer]:
+                    - generic [ref=e351]: INTERMENTS
+                  - tab "ROI" [ref=e352] [cursor=pointer]:
+                    - generic [ref=e353]: ROI
+                  - tab "EVENTS" [ref=e354] [cursor=pointer]:
+                    - generic [ref=e355]: EVENTS
+                  - tab "ACTIVITY" [ref=e356] [cursor=pointer]:
+                    - generic [ref=e357]: ACTIVITY
+              - generic [ref=e359]:
+                - tabpanel "INTERMENTS" [ref=e360]:
+                  - generic [ref=e363]:
+                    - button "Jane Smith 12/2024 - 2024 ( Infant )" [ref=e368] [cursor=pointer]:
+                      - generic [ref=e369]:
+                        - img [ref=e371]:
+                          - img [ref=e372]
+                        - generic [ref=e376]:
+                          - generic [ref=e378]: Jane Smith
+                          - generic [ref=e379]: 12/2024 - 2024 ( Infant )
+                    - button "Hinata Wijayaa n/a - n/a (n/a y.o)" [ref=e384] [cursor=pointer]:
+                      - generic [ref=e385]:
+                        - img [ref=e387]:
+                          - img [ref=e388]
+                        - generic [ref=e392]:
+                          - generic [ref=e394]: Hinata Wijayaa
+                          - generic [ref=e395]: n/a - n/a (n/a y.o)
+                    - button "panda Bagas wijaya n/a - n/a (n/a y.o)" [ref=e400] [cursor=pointer]:
+                      - generic [ref=e401]:
+                        - img [ref=e403]:
+                          - img [ref=e404]
+                        - generic [ref=e408]:
+                          - generic [ref=e410]: panda Bagas wijaya
+                          - generic [ref=e411]: n/a - n/a (n/a y.o)
+                    - button "ghia pearl 04/02/1997 - 24/03/2026 ( 29 y.o. )" [ref=e416] [cursor=pointer]:
+                      - generic [ref=e417]:
+                        - img [ref=e419]:
+                          - img [ref=e420]
+                        - generic [ref=e424]:
+                          - generic [ref=e426]: ghia pearl
+                          - generic [ref=e427]: 04/02/1997 - 24/03/2026 ( 29 y.o. )
+                - tabpanel "ROI" [ref=e428]
+                - tabpanel "EVENTS" [ref=e429]
+                - tabpanel "ACTIVITY" [ref=e430]
+        - generic [ref=e432]:
+          - button "Add interment" [disabled] [ref=e434]:
+            - generic [ref=e435]: Add interment
+          - button "Edit ROI" [ref=e436] [cursor=pointer]:
+            - generic [ref=e437]: Edit ROI
+  - generic [ref=e443]:
+    - generic [ref=e445]: Geolocation is blocked by this browser. Please enable to use this feature.
+    - generic [ref=e446] [cursor=pointer]: Got it!
+    - button [ref=e447] [cursor=pointer]:
+      - img [ref=e449]: close

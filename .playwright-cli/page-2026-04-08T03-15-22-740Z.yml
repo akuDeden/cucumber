@@ -1,0 +1,185 @@
+- generic [ref=e1348]:
+  - generic [ref=e1350]:
+    - generic [ref=e1353]:
+      - generic [ref=e1354]: Astana Tegal Gundul
+      - generic [ref=e1358]:
+        - generic [ref=e1360]:
+          - img [ref=e1362]:
+            - img [ref=e1363]
+          - textbox "Search" [ref=e1368]
+        - generic [ref=e1372]:
+          - generic [ref=e1373]:
+            - generic [ref=e1374]:
+              - img [ref=e1375]:
+                - img [ref=e1376]
+              - generic [ref=e1379]: People
+            - generic [ref=e1380]:
+              - img [ref=e1381]:
+                - img [ref=e1382]
+              - generic [ref=e1387]: Plots
+          - heading "within Astana Tegal Gundul" [level=5] [ref=e1547]
+      - generic [ref=e1389]:
+        - button "Advanced" [ref=e1390] [cursor=pointer]:
+          - generic [ref=e1393]: Advanced
+        - generic [ref=e1396]:
+          - button "Notifications - 2 unread" [ref=e1397] [cursor=pointer]:
+            - img "Notification bell" [ref=e1399]
+          - generic [ref=e1400]: "2"
+    - button "Astana Tegal Gundul faris+astanaorg@chronicle.rip" [ref=e1403] [cursor=pointer]:
+      - generic [ref=e1406]:
+        - paragraph [ref=e1407]: Astana Tegal Gundul
+        - generic [ref=e1408]: faris+astanaorg@chronicle.rip
+  - generic:
+    - generic [ref=e1410]:
+      - generic:
+        - generic:
+          - generic:
+            - img
+        - generic:
+          - generic:
+            - generic [ref=e1937] [cursor=pointer]: A
+            - generic [ref=e1939] [cursor=pointer]: B
+      - generic:
+        - generic:
+          - button [ref=e1941] [cursor=pointer]
+          - button [ref=e1942] [cursor=pointer]
+        - generic:
+          - link "Current location" [ref=e1414] [cursor=pointer]:
+            - /url: "#"
+          - generic [ref=e1415]:
+            - button "Zoom in" [ref=e1416] [cursor=pointer]: +
+            - button "Zoom out" [ref=e1417] [cursor=pointer]: −
+          - generic [ref=e1418]:
+            - link "Leaflet" [ref=e1419] [cursor=pointer]:
+              - /url: https://leafletjs.com
+              - img [ref=e1420]
+              - text: Leaflet
+            - text: "| Map data ©"
+            - link "OpenStreetMap" [ref=e1424] [cursor=pointer]:
+              - /url: https://www.openstreetmap.org/
+            - text: contributors,
+            - link "CC-BY-SA" [ref=e1425] [cursor=pointer]:
+              - /url: https://creativecommons.org/licenses/by-sa/2.0/
+    - button [ref=e1945] [cursor=pointer]:
+      - img [ref=e1947]:
+        - img [ref=e1948]
+  - generic [ref=e1426]:
+    - generic [ref=e1431] [cursor=pointer]:
+      - group [ref=e1433]:
+        - button "Map" [pressed] [ref=e1434]:
+          - generic [ref=e1435]:
+            - img [ref=e1437]:
+              - img [ref=e1438]
+            - generic [ref=e1440]: Map
+        - button "Tables" [ref=e1441]:
+          - generic [ref=e1442]:
+            - img [ref=e1444]:
+              - img [ref=e1445]
+            - generic [ref=e1448]: Tables
+        - button "Calendar" [ref=e1449]:
+          - generic [ref=e1450]:
+            - img [ref=e1452]:
+              - img [ref=e1453]
+            - generic [ref=e1455]: Calendar
+        - button "Request 12" [ref=e1456]:
+          - generic [ref=e1457]:
+            - img [ref=e1459]:
+              - img [ref=e1460]
+            - generic [ref=e1463]: Request
+            - generic [ref=e1464]: "12"
+        - button "Sales" [ref=e1465]:
+          - generic [ref=e1466]:
+            - img [ref=e1468]:
+              - img [ref=e1469]
+            - generic [ref=e1472]: Sales
+        - button "Reports" [ref=e1473]:
+          - generic [ref=e1474]:
+            - img [ref=e1476]:
+              - img [ref=e1477]
+            - generic [ref=e1480]: Reports
+      - group [disabled] [ref=e1482]:
+        - button "help" [disabled] [ref=e1483]:
+          - link "help" [disabled] [ref=e1485]:
+            - /url: https://help.chronicle.rip/
+            - img "help" [ref=e1486]
+        - button "home" [disabled] [ref=e1487]:
+          - link "home" [disabled] [ref=e1489]:
+            - /url: https://chronicle.rip/
+            - img "home" [ref=e1490]
+    - generic [ref=e1954]:
+      - generic [ref=e1955]:
+        - button "Previous slide" [disabled] [ref=e1961] [cursor=pointer]
+        - button "Next slide" [ref=e1962] [cursor=pointer]
+        - generic [ref=e1963]:
+          - button "Go to slide 1" [ref=e1964] [cursor=pointer]
+          - button "Go to slide 2" [ref=e1965] [cursor=pointer]
+          - button "Go to slide 3" [ref=e1966] [cursor=pointer]
+          - button "Go to slide 4" [ref=e1967] [cursor=pointer]
+        - button "Choose File" [ref=e1968]
+      - generic [ref=e1969]:
+        - generic [ref=e1970]:
+          - heading "Astana Tegal Gundul" [level=3] [ref=e1971]
+          - paragraph [ref=e1972]: Public
+        - generic [ref=e1973]:
+          - tablist [ref=e1976]:
+            - generic [ref=e1977]:
+              - tab "ADMINISTRATION" [selected] [ref=e1978] [cursor=pointer]:
+                - generic [ref=e1979]: ADMINISTRATION
+              - tab "PUBLIC INFO" [ref=e1980] [cursor=pointer]:
+                - generic [ref=e1982]: PUBLIC INFO
+          - generic [ref=e1984]:
+            - tabpanel "ADMINISTRATION" [ref=e1985]:
+              - generic [ref=e1986]:
+                - button "Requests" [ref=e1987] [cursor=pointer]:
+                  - img [ref=e1988]:
+                    - img [ref=e1989]
+                  - text: Requests
+                  - img [ref=e1991]:
+                    - img [ref=e1992]
+                - generic [ref=e1994]:
+                  - generic [ref=e1995]:
+                    - generic [ref=e1996]:
+                      - generic [ref=e1997]: Total Plotsttt
+                      - heading "193" [level=2] [ref=e1998]
+                    - generic [ref=e2000] [cursor=pointer]: See all Plotsttt
+                  - generic [ref=e2002] [cursor=pointer]:
+                    - generic [ref=e2003]: Life Chronicle for Approval
+                    - heading "0" [level=2] [ref=e2004]
+                  - generic [ref=e2005]:
+                    - generic [ref=e2008]:
+                      - paragraph [ref=e2009]: Occupied
+                      - heading "50" [level=4] [ref=e2010]
+                    - generic [ref=e2013]:
+                      - paragraph [ref=e2014]: Vacant (For Sale)
+                      - heading "56 (4)" [level=4] [ref=e2015]
+                    - generic [ref=e2018]:
+                      - paragraph [ref=e2019]: Reserved
+                      - heading "79" [level=4] [ref=e2020]
+                    - generic [ref=e2023]:
+                      - paragraph [ref=e2024]: Unavailable
+                      - heading "4" [level=4] [ref=e2025]
+                  - generic [ref=e2027]:
+                    - paragraph [ref=e2028]: Total interments
+                    - heading "59" [level=2] [ref=e2029]
+                  - generic [ref=e2030]:
+                    - generic [ref=e2032]:
+                      - paragraph [ref=e2033]: Burial
+                      - heading "50" [level=4] [ref=e2034]
+                    - generic [ref=e2036]:
+                      - paragraph [ref=e2037]: Cremated
+                      - heading "7" [level=4] [ref=e2038]
+                    - generic [ref=e2040]:
+                      - paragraph [ref=e2041]: Entombment
+                      - heading "1" [level=4] [ref=e2042]
+                    - generic [ref=e2044]:
+                      - paragraph [ref=e2045]: Memorial
+                      - heading "1" [level=4] [ref=e2046]
+                    - generic [ref=e2048]:
+                      - paragraph [ref=e2049]: Unspecified
+                      - heading "0" [level=4] [ref=e2050]
+            - tabpanel "PUBLIC INFO" [ref=e2051]
+      - button "ADD ROI" [ref=e2054] [cursor=pointer]:
+        - generic [ref=e2055]:
+          - img [ref=e2056]:
+            - img [ref=e2057]
+          - generic [ref=e2060]: ADD ROI

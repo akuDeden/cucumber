@@ -9,8 +9,8 @@ export const IntermentSelectors = {
   addIntermentButton: '[data-testid="plot-details-edit-button-add-interment-btn"]',
 
   // Interment Form - Header
-  saveButton: 'button:has-text("save")',
-  cancelButton: 'button:has-text("cancel")',
+  saveButton: '[data-testid="toolbar-manage-button-toolbar-button-1"]',
+  cancelButton: '[data-testid="toolbar-manage-button-toolbar-button"]',
 
   // Deceased Person section
   firstName: 'input[aria-label="First name"]',
@@ -42,9 +42,10 @@ export const IntermentSelectors = {
 
   // Verification - Plot detail page after save
   intermentsTab: '[aria-label="INTERMENTS"]',
-  deceasedNameHeading: (name: string) => `h3:has-text("${name}")`,
-  intermentTypeLabel: (type: string) => `p:has-text("${type}")`,
-  editIntermentButton: 'button:has-text("Edit interment")',
+  deceasedNameHeading: (name: string) => `[data-testid$="person-full-name"]:has-text("${name}")`,
+  intermentTypeLabel: (type: string) => `mat-expansion-panel.mat-expanded p:has-text("${type}")`,
+  editIntermentButton: '[data-testid="interment-item-button-edit-interment"]',
+  intermentListItem: '[role="tabpanel"] button[class*="interment"]',
 
   // Interment types
   intermentTypes: {

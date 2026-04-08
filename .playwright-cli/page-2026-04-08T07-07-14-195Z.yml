@@ -1,0 +1,127 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - generic [ref=e5]:
+      - generic [ref=e8]:
+        - generic [ref=e9]: Astana Tegal Gundul
+        - generic [ref=e13]:
+          - generic:
+            - generic:
+              - generic:
+                - img:
+                  - img
+              - textbox "Search":
+                - /placeholder: Loading cemeteries data...
+          - generic [ref=e17]:
+            - generic [ref=e18]:
+              - generic [ref=e19]:
+                - img [ref=e20]:
+                  - img [ref=e21]
+                - generic [ref=e24]: People
+              - generic [ref=e25]:
+                - img [ref=e26]:
+                  - img [ref=e27]
+                - generic [ref=e32]: Plotst
+            - heading "within Astana Tegal Gundul" [level=5] [ref=e33]
+        - generic [ref=e34]:
+          - button "Advanced" [disabled] [ref=e35]:
+            - generic [ref=e38]: Advanced
+          - button "Notifications" [ref=e42] [cursor=pointer]:
+            - img "Notification bell" [ref=e44]
+      - button "Astana Tegal Gundul faris+astanaorg@chronicle.rip" [ref=e47] [cursor=pointer]:
+        - generic [ref=e50]:
+          - paragraph [ref=e51]: Astana Tegal Gundul
+          - generic [ref=e52]: faris+astanaorg@chronicle.rip
+    - generic:
+      - img [ref=e56]
+      - generic [ref=e57]:
+        - generic:
+          - generic:
+            - link "Current location" [ref=e59] [cursor=pointer]:
+              - /url: "#"
+            - generic [ref=e60]:
+              - button "Zoom in" [ref=e61] [cursor=pointer]: +
+              - button "Zoom out" [disabled] [ref=e62]: −
+            - generic [ref=e63]:
+              - link "Leaflet" [ref=e64] [cursor=pointer]:
+                - /url: https://leafletjs.com
+                - img [ref=e65]
+                - text: Leaflet
+              - text: "| Map data ©"
+              - link "OpenStreetMap" [ref=e69] [cursor=pointer]:
+                - /url: https://www.openstreetmap.org/
+              - text: contributors,
+              - link "CC-BY-SA" [ref=e70] [cursor=pointer]:
+                - /url: https://creativecommons.org/licenses/by-sa/2.0/
+    - generic [ref=e71]:
+      - generic [ref=e76] [cursor=pointer]:
+        - group [ref=e78]:
+          - button "Map" [pressed] [ref=e79]:
+            - generic [ref=e80]:
+              - img [ref=e82]:
+                - img [ref=e83]
+              - generic [ref=e85]: Map
+          - button "Tables" [ref=e86]:
+            - generic [ref=e87]:
+              - img [ref=e89]:
+                - img [ref=e90]
+              - generic [ref=e93]: Tables
+          - button "Calendar" [ref=e94]:
+            - generic [ref=e95]:
+              - img [ref=e97]:
+                - img [ref=e98]
+              - generic [ref=e100]: Calendar
+          - button "Request" [ref=e101]:
+            - generic [ref=e102]:
+              - img [ref=e104]:
+                - img [ref=e105]
+              - generic [ref=e108]: Request
+          - button "Sales" [ref=e109]:
+            - generic [ref=e110]:
+              - img [ref=e112]:
+                - img [ref=e113]
+              - generic [ref=e116]: Sales
+          - button "Reports" [ref=e117]:
+            - generic [ref=e118]:
+              - img [ref=e120]:
+                - img [ref=e121]
+              - generic [ref=e124]: Reports
+        - group [disabled] [ref=e126]:
+          - button "help" [disabled] [ref=e127]:
+            - generic [ref=e128]:
+              - link "help" [disabled]:
+                - /url: https://help.chronicle.rip/
+                - img "help"
+          - button "home" [disabled] [ref=e129]:
+            - generic [ref=e130]:
+              - link "home" [disabled]:
+                - /url: https://chronicle.rip/
+                - img "home"
+      - generic [ref=e140]:
+        - generic [ref=e142]:
+          - heading "Cemeteries" [level=3] [ref=e143]
+          - heading "2" [level=5] [ref=e144]
+        - generic [ref=e146]:
+          - generic [ref=e147]:
+            - generic [ref=e148]: Sort by
+            - combobox "Creation date (newest first)" [ref=e153] [cursor=pointer]:
+              - generic [ref=e156]: Creation date (newest first)
+          - generic [ref=e159] [cursor=pointer]:
+            - img "TPU Sungai Panas 1" [ref=e160]
+            - generic [ref=e161]:
+              - heading "TPU Sungai Panas 1" [level=6] [ref=e162]
+              - generic [ref=e163]:
+                - generic [ref=e164]: PRIVATE
+                - generic [ref=e165]: Apr 1, 2026
+          - generic [ref=e166] [cursor=pointer]:
+            - img "Astana Tegal Gundul" [ref=e167]
+            - generic [ref=e168]:
+              - heading "Astana Tegal Gundul" [level=6] [ref=e169]
+              - generic [ref=e170]:
+                - generic [ref=e171]: PUBLIC
+                - generic [ref=e172]: Feb 18, 2022
+                - generic [ref=e173]: Canggu, Kabupaten Badung, Bali, 80363, Indonesia, Kabupaten Badung, Bali, 80363, Indonesiass
+  - generic [ref=e179]:
+    - generic [ref=e181]: Geolocation is blocked by this browser. Please enable to use this feature.
+    - generic [ref=e182] [cursor=pointer]: Got it!
+    - button [ref=e183] [cursor=pointer]:
+      - img [ref=e185]: close

@@ -40,12 +40,15 @@ export const AdvanceSearchSelectors = {
   searchResultsHeading: 'h3:has-text("plots found")',
   searchResultsSubheading: 'p:has-text("cemeteries")',
   searchByBoundariesSwitch: '[role="switch"]',
-  closeAdvanceSearchButton: 'button[data-testid="search-advance-advance-search-result-button-close-advance-search"]',
+  closeAdvanceSearchButton: '[data-testid="advance-search-result-button-close-advance-search"]',
+  // Plot result items in sidebar
+  searchResultItem: '[data-testid="advance-search-result-div-search-list"]',
+  searchResultPlotId: '[data-testid="advance-search-result-span-plot-id-title"]',
   // Plot detail in sidebar result
-  plotDetailContainer: 'div[data-testid="search-advance-advance-search-result-div-content-title"]',
-  plotDetailText: 'div[data-testid="search-advance-advance-search-result-div-content-title"] > span:first-child',
-  cemeteryNameText: 'div[data-testid="search-advance-advance-search-result-div-content-title"] > span:last-child',
-  firstResultIcon: 'div[data-testid="search-advance-advance-search-result-div-search-list"]:nth-child(1) mat-icon',
+  plotDetailContainer: '[data-testid="advance-search-result-div-content-title"]',
+  plotDetailText: '[data-testid="advance-search-result-span-plot-id-title"]',
+  cemeteryNameText: '[data-testid="advance-search-result-div-content-title"] > span:last-of-type',
+  firstResultIcon: '[data-testid="advance-search-result-div-picture"] mat-icon',
 
   // No results message
   noResultsMessage: 'generic:has-text("No results at this place")',

@@ -517,6 +517,34 @@ export const SALES_DATA = {
 };
 
 // ============================================
+// PLOT DATA (Create / Edit)
+// ============================================
+// Generate a unique plot number for each test run to avoid duplicate conflicts
+const _uniquePlotNumber = process.env.TEST_PLOT_NEW_NUMBER || String(Math.floor(Math.random() * 8000) + 1000);
+
+export const PLOT_DATA = {
+  // Create new plot data
+  // NOTE: section must be an existing section (e.g., 'A' or 'B') - field uses autocomplete
+  // row can be any value (e.g., 'Z' for a new row)
+  // number is auto-generated as a unique 4-digit number per run to avoid duplicates
+  create: {
+    section: process.env.TEST_PLOT_NEW_SECTION || 'A',
+    row: process.env.TEST_PLOT_NEW_ROW || 'Z',
+    number: _uniquePlotNumber,
+    status: process.env.TEST_PLOT_NEW_STATUS || 'Vacant',
+    plotType: process.env.TEST_PLOT_NEW_TYPE || 'Monumental',
+    direction: process.env.TEST_PLOT_NEW_DIRECTION || '',
+    price: process.env.TEST_PLOT_NEW_PRICE || '',
+    notes: process.env.TEST_PLOT_CREATE_NOTES || 'Created by automated test',
+  },
+  // Edit existing plot data
+  edit: {
+    burialCapacity: process.env.TEST_PLOT_EDIT_BURIAL_CAPACITY || '2',
+    notes: process.env.TEST_PLOT_EDIT_NOTES || 'Updated by automated test',
+  },
+};
+
+// ============================================
 // FULL TEST DATA OBJECT (For easy access)
 // ============================================
 export const TEST_DATA = {
@@ -531,7 +559,8 @@ export const TEST_DATA = {
   roi: ROI_DATA,
   person: PERSON_DATA,
   requestSalesForm: REQUEST_SALES_FORM_DATA,
-  sales: SALES_DATA
+  sales: SALES_DATA,
+  plotManagement: PLOT_DATA
 };
 
 // ============================================

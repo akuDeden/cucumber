@@ -114,6 +114,21 @@ const PLACEHOLDER_MAP: Record<string, string> = {
   '<TEST_PERSON_DELETE_POSTCODE>': TEST_DATA.person.delete.postCode,
   '<TEST_PERSON_DELETE_NOTE>': TEST_DATA.person.delete.note,
 
+  // Plot management data - Cemetery display name (matches the dropdown option, without region suffix)
+  '<TEST_CEMETERY_DISPLAY_NAME>': TEST_DATA.cemetery,
+
+  // Plot management data - Create
+  '<TEST_PLOT_NEW_SECTION>': TEST_DATA.plotManagement.create.section,
+  '<TEST_PLOT_NEW_ROW>': TEST_DATA.plotManagement.create.row,
+  '<TEST_PLOT_NEW_NUMBER>': TEST_DATA.plotManagement.create.number,
+  '<TEST_PLOT_NEW_STATUS>': TEST_DATA.plotManagement.create.status,
+  '<TEST_PLOT_NEW_TYPE>': TEST_DATA.plotManagement.create.plotType,
+  '<TEST_PLOT_CREATE_NOTES>': TEST_DATA.plotManagement.create.notes,
+
+  // Plot management data - Edit
+  '<TEST_PLOT_EDIT_BURIAL_CAPACITY>': TEST_DATA.plotManagement.edit.burialCapacity,
+  '<TEST_PLOT_EDIT_NOTES>': TEST_DATA.plotManagement.edit.notes,
+
   // Sales data
   '<TEST_SALES_REFERENCE>': TEST_DATA.sales.create.reference,
   '<TEST_SALES_ISSUE_DATE>': TEST_DATA.sales.create.issueDate,

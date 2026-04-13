@@ -68,12 +68,27 @@ export const PlotSelectors = {
   plotIdHeading: '[data-testid="plot-details-edit-h3-plot-id"]',
   plotStatusBadge: '[data-testid="plot-details-edit-span-plot-status"]',
   plotCemeteryName: '[data-testid="plot-details-edit-div-cemetery-name-wrapper"]',
+  // Edit button on view page (plots list / map search result detail)
+  plotDetailEditButton: '[data-testid="plot-details-edit-button-edit-plot"]',
+
+  // ===== Cemetery map page =====
+  // URL: /customer-organization/{cemetery_slug}
+  mapSearchInput: '[data-testid="autocomplete-input-input-autocomplete-search-input"]',
+  mapSearchResultItem: '[data-testid="search-plot-item-div-wrapper-plot"]',
+
+  // ===== Edit page MORE menu (from table row click) =====
+  editMoreButton: '[data-testid="toolbar-manage-button-more-btn"]',
+  deletePlotMenuItem: '[data-testid="button-toolbar-button-0"]',
+
+  // ===== Table row =====
+  tableRow: 'mat-row',
 };
 
 export const PlotUrls = {
   advanceTable: '/customer-organization/advance-table?tab=plots',
   addPlotPattern: '/customer-organization/advance-table/manage/add/plot/',
   editPlotPattern: '/manage/edit/plot',
+  plotDetailPattern: '/plots/',
 };
 
 export const PlotStatusOptions = {

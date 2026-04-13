@@ -366,4 +366,172 @@ export class CreatePlotPage {
     const plotId = await plotIdEl.textContent();
     return plotId?.trim() || '';
   }
+
+  // ===== Scenario: Edit plot from MAP page =====
+
+  /**
+   * Navigate to the cemetery map page (cemetery detail page with Leaflet map)
+   */
+  async navigateToCemeteryMapPage(): Promise<void> {
+    this.logger.info('Navigating to cemetery map page');
+    const { getCustomerOrgBaseUrl, CEMETERY_CONFIG, BASE_CONFIG } = await import('../../data/test-data.js');
+    const cemeterySlug = `${CEMETERY_CONFIG.uniqueName}_${BASE_CONFIG.region}`;
+    const url = `${getCustomerOrgBaseUrl()}/customer-organization/${cemeterySlug}`;
+    await this.page.goto(url, { waitUntil: 'domcontentloaded' });
+    await this.page.waitForTimeout(3000);
+    this.logger.success('Navigated to cemetery map page');
+  }
+
+  /**
+   * Search for a plot on the cemetery map page and click the first result
+   * Navigates to the plot detail view page
+   */
+  async searchAndSelectPlotOnMap(plotName: string): Promise<void> {
+    this.logger.info(`Searching for plot "${plotName}" on map`);
+    const searchInput = this.page.locator(PlotSelectors.mapSearchInput);
+    await searchInput.waitFor({ state: 'visible', timeout: 10000 });
+    await searchInput.click();
+    await searchInput.fill(plotName);
+    await this.page.waitForTimeout(1500);
+
+    const firstResult = this.page.locator(PlotSelectors.mapSearchResultItem).first();
+    await firstResult.waitFor({ state: 'visible', timeout: 10000 });
+    await firstResult.click();
+    await this.page.waitForURL(`**${PlotUrls.plotDetailPattern}**`, { timeout: 15000 });
+    await this.page.waitForTimeout(2000);
+    this.logger.success(`Plot "${plotName}" found and selected from map`);
+  }
+
+  /**
+   * Click the Edit button on the plot detail view page (accessed from map or plots list)
+   */
+  async clickEditFromPlotDetail(): Promise<void> {
+    this.logger.info('Clicking Edit button from plot detail view');
+    const editBtn = this.page.locator(PlotSelectors.plotDetailEditButton);
+    await editBtn.waitFor({ state: 'visible', timeout: 10000 });
+    await editBtn.click();
+    await this.page.waitForURL(`**${PlotUrls.editPlotPattern}**`, { timeout: 15000 });
+    await this.page.waitForTimeout(2000);
+    this.logger.success('Navigated to Edit Plot form from detail view');
+  }
+
+  // ===== Scenario: Delete plot from table =====
+
+  /**
+   * Click the first plot row in the advance-table to open the edit page
+   */
+  async clickFirstTableRow(): Promise<string> {
+    this.logger.info('Clicking first plot row in table');
+    const firstRow = this.page.locator(PlotSelectors.tableRow).first();
+    await firstRow.waitFor({ state: 'visible', timeout: 10000 });
+    // Get the plot ID text from the row
+    const plotIdCell = firstRow.locator('[data-testid*="content-wrapper-div-plot-id"]').first();
+    const plotId = ((await plotIdCell.textContent().catch(() => '')) || '').trim();
+    await firstRow.click();
+    await this.page.waitForURL(`**${PlotUrls.editPlotPattern}**`, { timeout: 15000 });
+    await this.page.waitForTimeout(2000);
+    this.logger.success(`Opened edit page for plot "${plotId}"`);
+    return plotId;
+  }
+
+  /**
+   * Get the plot ID shown on the edit page subtitle (e.g. "Astana Tegal Gundul - A Z 4086")
+   */
+  async getPlotIdFromEditPage(): Promise<string> {
+    const subtitleEl = this.page.locator('h6, [class*="subtitle"], a[href*="/plots/"]').first();
+    const text = ((await subtitleEl.textContent().catch(() => '')) || '').trim();
+    // Extract the plot ID from format "Cemetery Name - A Z 4086"
+    const match = text.match(/[A-Z]\s+[A-Z]\s+\d+/);
+    return match ? match[0] : text;
+  }
+
+  /**
+   * Click the MORE (⋮) button on the edit page
+   */
+  async clickMoreOptionsMenu(): Promise<void> {
+    this.logger.info('Clicking MORE options menu');
+    const moreBtn = this.page.locator(PlotSelectors.editMoreButton);
+    await moreBtn.waitFor({ state: 'visible', timeout: 10000 });
+    await moreBtn.click();
+    await this.page.waitForTimeout(800);
+    this.logger.success('MORE menu opened');
+  }
+
+  /**
+   * Click Delete from the MORE menu
+   */
+  async clickDeletePlot(): Promise<void> {
+    this.logger.info('Clicking Delete from MORE menu');
+    const deleteItem = this.page.locator(PlotSelectors.deletePlotMenuItem);
+    await deleteItem.waitFor({ state: 'visible', timeout: 5000 });
+    await deleteItem.click();
+    await this.page.waitForTimeout(1000);
+    this.logger.success('Delete option clicked');
+  }
+
+  /**
+   * Confirm the delete dialog (or handle immediate deletion with no dialog)
+   */
+  async confirmDeletePlot(): Promise<void> {
+    this.logger.info('Handling post-delete state');
+    // Chronicle deletes immediately without a confirmation dialog.
+    // After clicking Delete in the MORE menu, the app navigates back to the table.
+    const currentUrl = this.page.url();
+    if (!currentUrl.includes('/manage/edit/plot')) {
+      this.logger.success('Plot deleted immediately — no confirmation dialog needed');
+      return;
+    }
+    // Fallback: if still on edit page, look for a dialog confirm button
+    const confirmBtn = this.page.locator(
+      '[role="dialog"] button:has-text("Delete"), [role="dialog"] button:has-text("Confirm"), [role="dialog"] button:has-text("Yes")'
+    ).first();
+    const visible = await confirmBtn.isVisible().catch(() => false);
+    if (visible) {
+      await confirmBtn.click();
+      await this.page.waitForURL(`**advance-table**`, { timeout: 10000 });
+    }
+    await this.page.waitForTimeout(1000);
+    this.logger.success('Plot deletion confirmed');
+  }
+
+  /**
+   * Verify that a plot is no longer visible in the advance-table
+   */
+  async verifyPlotRemovedFromTable(plotId: string): Promise<boolean> {
+    this.logger.info(`Verifying plot "${plotId}" is removed from table`);
+    await this.page.waitForTimeout(2000);
+    const allCells = await this.page.locator('[data-testid*="content-wrapper-div-plot-id"]').allTextContents();
+    const found = allCells.some(text => text.includes(plotId));
+    if (!found) {
+      this.logger.success(`Plot "${plotId}" confirmed removed from table`);
+    } else {
+      this.logger.info(`Plot "${plotId}" still found in table — may be on a later page`);
+    }
+    return !found;
+  }
+
+  // ===== Scenario: View plot detail from table =====
+
+  /**
+   * Verify the edit page is loaded after clicking a table row
+   */
+  async verifyEditPageLoaded(): Promise<void> {
+    const url = this.page.url();
+    if (!url.includes(PlotUrls.editPlotPattern)) {
+      throw new Error(`Expected edit page URL but got: ${url}`);
+    }
+    // Wait for the MORE button (reliable indicator the edit page is fully loaded)
+    await this.page.locator(PlotSelectors.editMoreButton).waitFor({ state: 'visible', timeout: 10000 });
+    this.logger.success(`Edit page loaded: ${url}`);
+  }
+
+  /**
+   * Get the plot subtitle info from edit page (Cemetery Name - Plot ID)
+   */
+  async getEditPagePlotSubtitle(): Promise<string> {
+    // The subtitle link shows the plot ID (e.g., "A Z 4086" as a link)
+    const linkEl = this.page.locator('[data-testid="toolbar-manage-a"], [data-testid="toolbar-manage-a-1"]').first();
+    const text = ((await linkEl.textContent().catch(() => '')) || '').trim();
+    return text;
+  }
 }

@@ -60,9 +60,8 @@ Then('the new plot should appear in the plots table', { timeout: 20000 }, async 
 
 When('I click the Edit Plot button', { timeout: 15000 }, async function () {
   const page = this.page;
-  if (!createPlotPage) {
-    createPlotPage = new CreatePlotPage(page);
-  }
+  // Always reinitialize to avoid stale page reference from a previous scenario
+  createPlotPage = new CreatePlotPage(page);
   await createPlotPage.clickEditPlot();
 });
 
@@ -139,4 +138,27 @@ Then('the plot should no longer be in the table', { timeout: 25000 }, async func
 
 Then('I should see the plot edit page', { timeout: 15000 }, async function () {
   await createPlotPage.verifyEditPageLoaded();
+});
+
+// ===== Map-based navigation: find first vacant plot via map =====
+
+When('I navigate to the map and find the first available vacant plot', { timeout: 90000 }, async function () {
+  const page = this.page;
+  createPlotPage = new CreatePlotPage(page);
+  plotPage = new PlotPage(page);
+
+  // Step 1: Go to the plots list to find the name of the first vacant plot
+  await plotPage.clickSeeAllPlots();
+  await plotPage.openFilter();
+  await plotPage.selectVacantFilter();
+  await plotPage.applyFilter();
+  await plotPage.expandFirstSection();
+  const plotName = await plotPage.selectFirstVacantPlot();
+  this.selectedPlotName = plotName;
+  this.logger?.info(`First vacant plot found: ${plotName}`);
+
+  // Step 2: Navigate to cemetery map page and search for the plot
+  await createPlotPage.navigateToCemeteryMapPage();
+  await createPlotPage.searchAndSelectPlotOnMap(plotName);
+  this.logger?.info(`Navigated to plot detail via map search: ${plotName}`);
 });

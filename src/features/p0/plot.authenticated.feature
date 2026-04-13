@@ -64,3 +64,63 @@ Feature: Plot Management (Authenticated)
     When I navigate to the Tables section
     And I click the first plot row in the table
     Then I should see the plot edit page
+
+  @add-interment-from-edit-plot @smoke @p0
+  Scenario: Add Interment to a plot from the edit plot page
+    When I navigate to all plots page
+    And I open the filter dialog
+    And I select vacant filter
+    And I apply the filter plot
+    And I expand the first section
+    And I select the first vacant plot
+    And I click the Edit Plot button
+    And I click Add Interment button
+    And I fill interment form with following details
+      | firstName     | <TEST_INTERMENT_FIRSTNAME> |
+      | lastName      | <TEST_INTERMENT_LASTNAME>  |
+      | intermentType | <TEST_INTERMENT_TYPE>      |
+    And I save the Interment
+    Then I should see deceased "<TEST_INTERMENT_FIRSTNAME> <TEST_INTERMENT_LASTNAME>" in the Interment tab
+    And I should see interment type "<TEST_INTERMENT_TYPE>"
+
+  @add-roi-from-edit-plot @smoke @p0
+  Scenario: Add Right of Interment to a plot from the edit plot page
+    When I navigate to all plots page
+    And I open the filter dialog
+    And I select vacant filter
+    And I apply the filter plot
+    And I expand the first section
+    And I select the first vacant plot
+    And I click the Edit Plot button
+    And I click Add ROI button
+    And I fill ROI form with following details
+      | rightType         | <TEST_ROI_RIGHT_TYPE> |
+      | termOfRight       | <TEST_ROI_TERM>       |
+      | fee               | <TEST_ROI_FEE>        |
+      | certificateNumber | <TEST_ROI_CERT>       |
+    And I save the ROI
+    Then the plot status should be "RESERVED"
+
+  @add-interment-from-map @smoke @p0
+  Scenario: Add Interment to a plot from the cemetery map
+    When I navigate to the map and find the first available vacant plot
+    And I click Add Interment button
+    And I fill interment form with following details
+      | firstName     | <TEST_INTERMENT_FIRSTNAME> |
+      | lastName      | <TEST_INTERMENT_LASTNAME>  |
+      | intermentType | <TEST_INTERMENT_TYPE>      |
+    And I save the Interment
+    Then I should see deceased "<TEST_INTERMENT_FIRSTNAME> <TEST_INTERMENT_LASTNAME>" in the Interment tab
+    And I should see interment type "<TEST_INTERMENT_TYPE>"
+
+  @add-roi-from-map @smoke @p0
+  Scenario: Add Right of Interment to a plot from the cemetery map
+    When I navigate to the map and find the first available vacant plot
+    And I click Add ROI button
+    And I fill ROI form with following details
+      | rightType         | <TEST_ROI_RIGHT_TYPE> |
+      | termOfRight       | <TEST_ROI_TERM>       |
+      | fee               | <TEST_ROI_FEE>        |
+      | certificateNumber | <TEST_ROI_CERT>       |
+    And I save the ROI
+    Then the plot status should be "RESERVED"

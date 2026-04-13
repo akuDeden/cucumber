@@ -61,3 +61,10 @@ export const IntermentSelectors = {
   // Use specific testid to avoid strict mode violation with interment Edit button
   editButtonInSidebar: '[data-testid="plot-details-edit-button-edit-plot"]'
 };
+
+// ===== Edit Plot form (URL: /manage/edit/plot) =====
+// The "Add" button in the Interments section on the edit plot form page
+export const PlotEditFormSelectors = {
+  addIntermentButton: '[data-testid="plot-edit-button-adding"]',
+  addRoiButton: '[data-testid="plot-edit-div-roi"] [data-testid="plus-item-button-plus-button"]',
+};

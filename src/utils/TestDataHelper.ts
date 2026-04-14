@@ -42,6 +42,13 @@ const PLACEHOLDER_MAP: Record<string, string> = {
   '<TEST_INTERMENT_EDIT_LASTNAME>': TEST_DATA.interment.edit.lastName,
   '<TEST_INTERMENT_EDIT_TYPE>': TEST_DATA.interment.edit.intermentType,
 
+  // Interment relations
+  '<TEST_INTERMENT_APPLICANT_LASTNAME>': TEST_DATA.interment.relations.applicantLastName,
+  '<TEST_INTERMENT_NOK_LASTNAME>': TEST_DATA.interment.relations.nokLastName,
+  '<TEST_INTERMENT_MINISTER_BUSINESS>': TEST_DATA.interment.relations.ministerBusinessName,
+  '<TEST_INTERMENT_DIRECTOR_BUSINESS>': TEST_DATA.interment.relations.directorBusinessName,
+  '<TEST_INTERMENT_MOVE_PLOT>': TEST_DATA.interment.relations.movePlot,
+
   // ROI data - Basic
   '<TEST_ROI_RIGHT_TYPE>': TEST_DATA.roi.basic.rightType,
   '<TEST_ROI_TERM>': TEST_DATA.roi.basic.termOfRight,

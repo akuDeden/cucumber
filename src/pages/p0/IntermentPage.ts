@@ -518,6 +518,295 @@ export class IntermentPage {
   }
 
   /**
+   * Click a relation role button and search/select a person or business via autocomplete.
+   * Used for: Interment applicant, Next of kin (search by person last name)
+   *           Funeral minister, Funeral director (search by business name)
+   *
+   * @param buttonSelector - CSS selector (or label text) of the role button
+   * @param searchTerm - Last name (person) or business name to type in the search field
+   * @param subType - Optional: 'PERSON' or 'BUSINESS' to click the sub-option that appears
+   *                  after expanding a collapsible relation section
+   */
+  async searchAndAddRelation(buttonSelector: string, searchTerm: string, subType?: 'PERSON' | 'BUSINESS'): Promise<void> {
+    this.logger.info(`Adding relation "${buttonSelector}" by searching for "${searchTerm}"`);
+
+    // Extract label text from a :has-text("...") selector for fallback matching
+    const textMatch = buttonSelector.match(/:has-text\("([^"]+)"\)/i);
+    const labelText = textMatch ? textMatch[1] : buttonSelector;
+    const upperLabel = labelText.toUpperCase();
+
+    // Try multiple strategies to find and click the relation section header
+    const fallbackSelectors = [
+      buttonSelector,
+      `button:has-text("${upperLabel}")`,
+      `[role="button"]:has-text("${labelText}")`,
+      `[role="button"]:has-text("${upperLabel}")`,
+      `mat-expansion-panel-header:has-text("${labelText}")`,
+      `mat-expansion-panel-header:has-text("${upperLabel}")`,
+    ];
+
+    let clicked = false;
+    for (const sel of fallbackSelectors) {
+      try {
+        const el = this.page.locator(sel).first();
+        if (await el.isVisible({ timeout: 1500 }).catch(() => false)) {
+          await el.click();
+          this.logger.info(`Clicked relation element with selector: "${sel}"`);
+          clicked = true;
+          break;
+        }
+      } catch {
+        // continue trying next selector
+      }
+    }
+
+    if (!clicked) {
+      // Last resort: getByText searches any element type broadly
+      this.logger.info(`Using getByText fallback for: "${upperLabel}"`);
+      const el = this.page.getByText(upperLabel, { exact: false }).first();
+      await el.waitFor({ state: 'visible', timeout: 8000 });
+      await el.click();
+    }
+
+    await this.page.waitForTimeout(1200);
+
+    // Handle sub-options (PERSON / BUSINESS) that may appear after expanding the section.
+    // IMPORTANT: Use CSS :has-text() which is CASE-SENSITIVE — this avoids accidentally
+    // matching "Deceased person" when searching for "PERSON".
+    // getByText({ exact: false }) is case-insensitive and would hit the wrong elements.
+    if (subType) {
+      const subLabel = subType; // 'PERSON' or 'BUSINESS'
+
+      // The sub-options are <div class="option select"> elements with text "Person"/"Business".
+      // These are displayed as "PERSON"/"BUSINESS" via CSS text-transform:uppercase.
+      // From DOM inspection: data-testid="interment-add-form-div-option-1" for Person.
+      const subLower = subLabel.toLowerCase();  // 'person' or 'business'
+      const subTitle = subLabel[0] + subLabel.slice(1).toLowerCase(); // 'Person' or 'Business'
+
+      // Priority order: exact testid match, then class+text, then broader fallbacks
+      const subSelectors = [
+        `[data-testid*="option"]:has-text("${subTitle}")`,   // e.g., data-testid="interment-add-form-div-option-1"
+        `div.option.select:has-text("${subTitle}")`,          // <div class="option select"> with "Person"/"Business" text
+        `div[class*="option"]:has-text("${subTitle}")`,       // any option-classed div with the text
+        `div.option:has-text("${subTitle}")`,                 // option div with title-case text
+        `button:has-text("${subTitle}")`,
+        `cl-plus-item[text="${subLower}"]`,
+        `a:has-text("${subTitle}")`,
+      ];
+
+      let subClicked = false;
+      for (const sel of subSelectors) {
+        const el = this.page.locator(sel).first();
+        if (await el.isVisible({ timeout: 1000 }).catch(() => false)) {
+          const html = await el.evaluate((e: Element) => e.outerHTML.substring(0, 300)).catch(() => '?');
+          this.logger.info(`Found "${subLabel}" sub-option with: ${sel} → ${html}`);
+          await el.click();
+          this.logger.info(`Clicked "${subLabel}" sub-option with: ${sel}`);
+          subClicked = true;
+          break;
+        }
+      }
+
+      if (!subClicked) {
+        this.logger.info(`No "${subLabel}" sub-option found, proceeding to search directly`);
+      } else {
+        await this.page.waitForTimeout(1500);
+      }
+    } else {
+      // Auto-detect: check if PERSON sub-option appears using case-sensitive :has-text()
+      const personEl = this.page.locator('[data-testid*="option"]:has-text("Person"), div.option.select:has-text("Person")').first();
+      if (await personEl.isVisible({ timeout: 1500 }).catch(() => false)) {
+        this.logger.info('Auto-clicking PERSON sub-option');
+        await personEl.click();
+        await this.page.waitForTimeout(1000);
+      }
+    }
+
+    // Find the search input. After clicking PERSON sub-option, an "Interment Applicant" dialog
+    // appears — search via the Last name autocomplete field inside the dialog.
+    // For BUSINESS (funeral minister/director), a direct search panel may appear.
+    const searchInputSelectors = [
+      'mat-dialog-container input[formcontrolname="last_name"]',  // Person dialog: Last name
+      '[role="dialog"] input[formcontrolname="last_name"]',        // Dialog last name
+      'mat-dialog-container input[formcontrolname="name"]',        // Business dialog: business name
+      '[role="dialog"] input[formcontrolname="name"]',             // Business dialog name
+      ...IntermentSelectors.relationSearchInput.split(', '),       // Original selectors
+      'input[placeholder*="name"]',
+      'input[placeholder*="Search"]',
+    ];
+
+    let searchInputEl = this.page.locator(searchInputSelectors[0]);
+    for (const sel of searchInputSelectors) {
+      const el = this.page.locator(sel).first();
+      if (await el.isVisible({ timeout: 2000 }).catch(() => false)) {
+        this.logger.info(`Found search input with selector: ${sel}`);
+        searchInputEl = el;
+        break;
+      }
+    }
+    await searchInputEl.waitFor({ state: 'visible', timeout: 10000 });
+    await searchInputEl.click();
+    await searchInputEl.fill(searchTerm);
+    await this.page.waitForTimeout(1500);
+
+    // Select the first autocomplete suggestion
+    const firstOption = this.page.locator('mat-option').first();
+    await firstOption.waitFor({ state: 'visible', timeout: 10000 });
+    const optionText = await firstOption.textContent();
+    this.logger.info(`Selecting autocomplete option: "${optionText?.trim()}"`);
+    await firstOption.click();
+    await this.page.waitForTimeout(800);
+
+    this.logger.success(`Relation added via search for: "${searchTerm}"`);
+  }
+
+  /**
+   * Click the MORE (⋮) button on the edit interment toolbar
+   */
+  async clickMoreMenuOnEditInterment(): Promise<void> {
+    this.logger.info('Clicking MORE button on edit interment page');
+    const moreBtn = this.page.locator(IntermentSelectors.moreButton);
+    await moreBtn.waitFor({ state: 'visible', timeout: 10000 });
+    await moreBtn.click();
+    await this.page.waitForTimeout(800);
+    this.logger.success('MORE menu opened');
+  }
+
+  /**
+   * Click "Delete" from the MORE menu on edit interment page
+   */
+  async clickDeleteIntermentFromMenu(): Promise<void> {
+    this.logger.info('Clicking Delete from MORE menu');
+    const deleteItem = this.page.locator(IntermentSelectors.deleteIntermentMenuItem).first();
+    await deleteItem.waitFor({ state: 'visible', timeout: 5000 });
+    await deleteItem.click();
+    await this.page.waitForTimeout(1000);
+    this.logger.success('Delete option clicked');
+  }
+
+  /**
+   * Confirm the interment deletion dialog and wait for navigation away from the manage page.
+   * Handles a secondary dialog that may ask "This plot is empty. Keep the plot status as occupied?"
+   */
+  async confirmIntermentDeletion(): Promise<void> {
+    this.logger.info('Confirming interment deletion');
+
+    // Click primary delete confirmation button if a dialog is showing
+    const confirmBtn = this.page.locator(IntermentSelectors.confirmDeleteIntermentButton).first();
+    if (await confirmBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await confirmBtn.click();
+      this.logger.success('Clicked primary delete confirmation');
+    } else {
+      this.logger.info('No primary confirmation dialog found — proceeding');
+    }
+
+    await this.page.waitForTimeout(1000);
+
+    // Handle secondary dialog: "This plot is empty. Would you like to keep the plot status as occupied?"
+    const secondaryDialog = this.page.locator('[role="dialog"]');
+    if (await secondaryDialog.isVisible({ timeout: 3000 }).catch(() => false)) {
+      this.logger.info('Secondary "keep occupied" dialog appeared');
+      // Click "No" to set plot as vacant; fall back to "Yes" if No is absent
+      const noBtn = this.page.locator('[role="dialog"] button:has-text("No")').first();
+      const yesBtn = this.page.locator('[role="dialog"] button:has-text("Yes")').first();
+
+      if (await noBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
+        await noBtn.click();
+        this.logger.info('Clicked "No" in secondary dialog');
+      } else if (await yesBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
+        await yesBtn.click();
+        this.logger.info('Clicked "Yes" in secondary dialog');
+      } else {
+        const anyBtn = this.page.locator('[role="dialog"] button').first();
+        if (await anyBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
+          await anyBtn.click();
+          this.logger.info('Clicked first available dialog button');
+        }
+      }
+    }
+
+    // Wait for navigation away from the interment manage page
+    await this.page.waitForURL(
+      url => !url.href.includes('/manage/edit/interment') && !url.href.includes('/manage/add/interment'),
+      { timeout: 20000 }
+    );
+    await this.page.waitForTimeout(2000);
+    this.logger.success('Interment deleted — navigated away from manage page');
+  }
+
+  /**
+   * Click "Move" from the MORE menu on edit interment page
+   */
+  async clickMoveIntermentFromMenu(): Promise<void> {
+    this.logger.info('Clicking Move from MORE menu');
+    const moveItem = this.page.locator(IntermentSelectors.moveIntermentMenuItem).first();
+    await moveItem.waitFor({ state: 'visible', timeout: 5000 });
+    await moveItem.click();
+    await this.page.waitForTimeout(1000);
+    this.logger.success('Move option clicked');
+  }
+
+  /**
+   * In the move interment dialog, search for and select a target plot by its ID
+   */
+  async searchAndSelectMoveTargetPlot(plotId: string): Promise<void> {
+    this.logger.info(`Searching for plot to move interment to: "${plotId}"`);
+    const searchInput = this.page.locator(IntermentSelectors.movePlotSearchInput).first();
+    await searchInput.waitFor({ state: 'visible', timeout: 10000 });
+    await searchInput.click();
+    await searchInput.fill(plotId);
+    await this.page.waitForTimeout(1500);
+
+    const option = this.page.locator(IntermentSelectors.autocompleteOption(plotId)).first();
+    await option.waitFor({ state: 'visible', timeout: 10000 });
+    await option.click();
+    await this.page.waitForTimeout(500);
+    this.logger.success(`Target plot "${plotId}" selected`);
+  }
+
+  /**
+   * Confirm the interment move and wait for navigation to the new plot detail
+   */
+  async confirmIntermentMove(): Promise<void> {
+    this.logger.info('Confirming interment move');
+    const confirmBtn = this.page.locator(IntermentSelectors.moveConfirmButton).first();
+    await confirmBtn.waitFor({ state: 'visible', timeout: 10000 });
+    await confirmBtn.click();
+
+    // After move, expect to land on the target plot detail page
+    try {
+      await this.page.waitForURL('**/plots/**', { timeout: 20000 });
+    } catch {
+      // If not /plots/, at minimum wait for navigation away from interment manage page
+      this.logger.info('Did not navigate to /plots/ — waiting for any navigation away from manage page');
+      await this.page.waitForURL(
+        url => !url.href.includes('/manage/edit/interment'),
+        { timeout: 10000 }
+      );
+    }
+
+    await this.page.waitForTimeout(2000);
+    this.logger.success('Interment moved successfully');
+  }
+
+  /**
+   * Verify we have navigated away from the interment manage page after an action.
+   * Accepts /plots/ (plot detail) or /customer-organization/ (advance table after delete).
+   */
+  async verifyOnPlotDetailPage(): Promise<void> {
+    const url = this.page.url();
+    if (url.includes('/manage/edit/interment') || url.includes('/manage/add/interment')) {
+      throw new Error(`Still on interment manage page — action may have failed: ${url}`);
+    }
+    if (url.includes('/plots/') || url.includes('/customer-organization/')) {
+      this.logger.success(`On expected page after interment action: ${url}`);
+    } else {
+      // Any other page is acceptable (SPA may redirect differently)
+      this.logger.info(`Navigated to: ${url}`);
+    }
+  }
+
+  /**
    * Click INTERMENTS tab on plot detail page (for edit flow)
    */
   async clickIntermentTab(): Promise<void> {

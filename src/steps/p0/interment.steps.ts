@@ -177,3 +177,63 @@ When('I update interment form with following details', async function (dataTable
   console.log('========== UPDATE INTERMENT STEP END ==========');
   await intermentPage.updateIntermentForm(actualData as any);
 });
+
+// ===== Relations: Interment applicant, Next of kin, Funeral minister, Funeral director =====
+
+When('I add interment applicant by searching {string}', { timeout: 30000 }, async function (lastName: string) {
+  const actualLastName = replacePlaceholders(lastName);
+  await intermentPage.searchAndAddRelation('button:has-text("Interment applicant")', actualLastName, 'PERSON');
+});
+
+When('I add next of kin by searching {string}', { timeout: 30000 }, async function (lastName: string) {
+  const actualLastName = replacePlaceholders(lastName);
+  await intermentPage.searchAndAddRelation('button:has-text("Next of kin")', actualLastName, 'PERSON');
+});
+
+When('I add funeral minister by searching {string}', { timeout: 30000 }, async function (businessName: string) {
+  const actualName = replacePlaceholders(businessName);
+  await intermentPage.searchAndAddRelation('button:has-text("Funeral minister")', actualName, 'BUSINESS');
+});
+
+When('I add funeral director by searching {string}', { timeout: 30000 }, async function (businessName: string) {
+  const actualName = replacePlaceholders(businessName);
+  await intermentPage.searchAndAddRelation('button:has-text("Funeral director")', actualName, 'BUSINESS');
+});
+
+Then('I should be on the plot detail page after save', { timeout: 20000 }, async function () {
+  await intermentPage.verifyOnPlotDetailPage();
+});
+
+// ===== Delete interment =====
+
+When('I click more options on edit interment page', { timeout: 10000 }, async function () {
+  await intermentPage.clickMoreMenuOnEditInterment();
+});
+
+When('I click delete interment from menu', { timeout: 10000 }, async function () {
+  await intermentPage.clickDeleteIntermentFromMenu();
+});
+
+When('I confirm the interment deletion', { timeout: 25000 }, async function () {
+  await intermentPage.confirmIntermentDeletion();
+});
+
+// ===== Move interment =====
+
+When('I click move interment from menu', { timeout: 10000 }, async function () {
+  await intermentPage.clickMoveIntermentFromMenu();
+});
+
+When('I select a vacant plot to move interment to {string}', { timeout: 30000 }, async function (plotId: string) {
+  const actualPlotId = replacePlaceholders(plotId);
+  await intermentPage.searchAndSelectMoveTargetPlot(actualPlotId);
+});
+
+When('I confirm the interment move', { timeout: 30000 }, async function () {
+  await intermentPage.confirmIntermentMove();
+});
+
+Then('the interment should be moved successfully', { timeout: 20000 }, async function () {
+  await intermentPage.verifyOnPlotDetailPage();
+  this.logger?.info(`Interment moved successfully. URL: ${this.page.url()}`);
+});

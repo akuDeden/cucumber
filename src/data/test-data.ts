@@ -232,7 +232,15 @@ export const INTERMENT_DATA = {
     firstName: process.env.TEST_INTERMENT_EDIT_FIRSTNAME || 'Jane',
     lastName: process.env.TEST_INTERMENT_EDIT_LASTNAME || 'Smith',
     intermentType: process.env.TEST_INTERMENT_EDIT_TYPE || 'Cremated'
-  }
+  },
+  // Relations — persons and businesses that exist on staging for autocomplete search
+  relations: {
+    applicantLastName: process.env.TEST_INTERMENT_APPLICANT_LASTNAME || 'Johnson',
+    nokLastName: process.env.TEST_INTERMENT_NOK_LASTNAME || 'Johnson',
+    ministerBusinessName: process.env.TEST_INTERMENT_MINISTER_BUSINESS || 'CV. Maju Bersama',
+    directorBusinessName: process.env.TEST_INTERMENT_DIRECTOR_BUSINESS || 'CV. Maju Bersama',
+    movePlot: process.env.TEST_INTERMENT_MOVE_PLOT || 'B G 1',
+  },
 };
 
 // ============================================

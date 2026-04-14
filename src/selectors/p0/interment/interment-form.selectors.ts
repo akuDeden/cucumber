@@ -34,11 +34,45 @@ export const IntermentSelectors = {
   cremationLocationDropdown: 'mat-select[aria-label="Cremation location"]',
   containerTypeDropdown: 'mat-select[aria-label="Container type"]',
 
-  // Right sidebar - Person additions
+  // Right sidebar - Person/Business additions
   addIntermentApplicantButton: 'button:has-text("Interment applicant")',
   addNextOfKinButton: 'button:has-text("Next of kin")',
   addFuneralMinisterButton: 'button:has-text("Funeral minister")',
   addFuneralDirectorButton: 'button:has-text("Funeral director")',
+
+  // Sidebar search input (autocomplete) that appears after clicking role button
+  relationSearchInput: [
+    '[data-testid="autocomplete-input-input-autocomplete-search-input"]',
+    'input[data-testid*="search"]',
+    'input[placeholder*="earch"]',
+    'input[formcontrolname="search"]',
+  ].join(', '),
+  autocompleteOption: (text: string) => `mat-option:has-text("${text}")`,
+
+  // Edit Interment page - toolbar more button and menu items
+  moreButton: '[data-testid="toolbar-manage-button-more-btn"]',
+  deleteIntermentMenuItem: '[data-testid="button-toolbar-button-0"], button.mat-menu-item:has-text("Delete")',
+  moveIntermentMenuItem: '[data-testid="button-toolbar-button-1"], button.mat-menu-item:has-text("Move")',
+
+  // Delete confirmation dialog
+  confirmDeleteIntermentButton: [
+    '[role="dialog"] button:has-text("Delete")',
+    '[role="dialog"] button:has-text("Yes")',
+    '[role="dialog"] button:has-text("Confirm")',
+    'mat-dialog-container button:has-text("Delete")',
+  ].join(', '),
+
+  // Move interment dialog / panel
+  movePlotSearchInput: [
+    'input[formcontrolname="plot"]',
+    'input[placeholder*="lot"]',
+    '[data-testid="autocomplete-input-input-autocomplete-search-input"]',
+  ].join(', '),
+  moveConfirmButton: [
+    '[role="dialog"] button:has-text("Move")',
+    'button[type="submit"]:has-text("Move")',
+    'mat-dialog-container button:has-text("Confirm")',
+  ].join(', '),
 
   // Verification - Plot detail page after save
   intermentsTab: '[aria-label="INTERMENTS"]',

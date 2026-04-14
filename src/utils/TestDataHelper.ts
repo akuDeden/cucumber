@@ -129,6 +129,20 @@ const PLACEHOLDER_MAP: Record<string, string> = {
   '<TEST_PLOT_EDIT_BURIAL_CAPACITY>': TEST_DATA.plotManagement.edit.burialCapacity,
   '<TEST_PLOT_EDIT_NOTES>': TEST_DATA.plotManagement.edit.notes,
 
+  // Business data - Create
+  '<TEST_BUSINESS_NAME>': TEST_DATA.business.create.name,
+  '<TEST_BUSINESS_ABN>': TEST_DATA.business.create.abn,
+  '<TEST_BUSINESS_FIRSTNAME>': TEST_DATA.business.create.firstName,
+  '<TEST_BUSINESS_LASTNAME>': TEST_DATA.business.create.lastName,
+  '<TEST_BUSINESS_PHONE>': TEST_DATA.business.create.phone,
+  '<TEST_BUSINESS_EMAIL>': TEST_DATA.business.create.email,
+  '<TEST_BUSINESS_ADDRESS>': TEST_DATA.business.create.address,
+
+  // Business data - Edit
+  '<TEST_BUSINESS_EDIT_PHONE>': TEST_DATA.business.edit.phone,
+  '<TEST_BUSINESS_EDIT_EMAIL>': TEST_DATA.business.edit.email,
+  '<TEST_BUSINESS_EDIT_ADDRESS>': TEST_DATA.business.edit.address,
+
   // Sales data
   '<TEST_SALES_REFERENCE>': TEST_DATA.sales.create.reference,
   '<TEST_SALES_ISSUE_DATE>': TEST_DATA.sales.create.issueDate,

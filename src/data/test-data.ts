@@ -545,6 +545,26 @@ export const PLOT_DATA = {
 };
 
 // ============================================
+// BUSINESS DATA (Create / Edit)
+// ============================================
+export const BUSINESS_DATA = {
+  create: {
+    name: process.env.TEST_BUSINESS_NAME || 'Test Funeral Services Pty Ltd',
+    abn: process.env.TEST_BUSINESS_ABN || '12 345 678 901',
+    firstName: process.env.TEST_BUSINESS_FIRSTNAME || 'John',
+    lastName: process.env.TEST_BUSINESS_LASTNAME || 'Funeral',
+    phone: process.env.TEST_BUSINESS_PHONE || '+61299990001',
+    email: process.env.TEST_BUSINESS_EMAIL || 'contact@testfuneral.com.au',
+    address: process.env.TEST_BUSINESS_ADDRESS || '1 Cemetery Road, Sydney NSW 2000',
+  },
+  edit: {
+    phone: process.env.TEST_BUSINESS_EDIT_PHONE || '+61299990002',
+    email: process.env.TEST_BUSINESS_EDIT_EMAIL || 'updated@testfuneral.com.au',
+    address: process.env.TEST_BUSINESS_EDIT_ADDRESS || '2 Memorial Lane, Melbourne VIC 3000',
+  },
+};
+
+// ============================================
 // FULL TEST DATA OBJECT (For easy access)
 // ============================================
 export const TEST_DATA = {
@@ -560,7 +580,8 @@ export const TEST_DATA = {
   person: PERSON_DATA,
   requestSalesForm: REQUEST_SALES_FORM_DATA,
   sales: SALES_DATA,
-  plotManagement: PLOT_DATA
+  plotManagement: PLOT_DATA,
+  business: BUSINESS_DATA,
 };
 
 // ============================================

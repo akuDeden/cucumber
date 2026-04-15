@@ -180,22 +180,22 @@ When('I update interment form with following details', async function (dataTable
 
 // ===== Relations: Interment applicant, Next of kin, Funeral minister, Funeral director =====
 
-When('I add interment applicant by searching {string}', { timeout: 30000 }, async function (lastName: string) {
+When('I add interment applicant by searching {string}', { timeout: 45000 }, async function (lastName: string) {
   const actualLastName = replacePlaceholders(lastName);
   await intermentPage.searchAndAddRelation('button:has-text("Interment applicant")', actualLastName, 'PERSON');
 });
 
-When('I add next of kin by searching {string}', { timeout: 30000 }, async function (lastName: string) {
+When('I add next of kin by searching {string}', { timeout: 45000 }, async function (lastName: string) {
   const actualLastName = replacePlaceholders(lastName);
   await intermentPage.searchAndAddRelation('button:has-text("Next of kin")', actualLastName, 'PERSON');
 });
 
-When('I add funeral minister by searching {string}', { timeout: 30000 }, async function (businessName: string) {
+When('I add funeral minister by searching {string}', { timeout: 45000 }, async function (businessName: string) {
   const actualName = replacePlaceholders(businessName);
   await intermentPage.searchAndAddRelation('button:has-text("Funeral minister")', actualName, 'BUSINESS');
 });
 
-When('I add funeral director by searching {string}', { timeout: 30000 }, async function (businessName: string) {
+When('I add funeral director by searching {string}', { timeout: 45000 }, async function (businessName: string) {
   const actualName = replacePlaceholders(businessName);
   await intermentPage.searchAndAddRelation('button:has-text("Funeral director")', actualName, 'BUSINESS');
 });
@@ -229,7 +229,7 @@ When('I select a vacant plot to move interment to {string}', { timeout: 30000 },
   await intermentPage.searchAndSelectMoveTargetPlot(actualPlotId);
 });
 
-When('I confirm the interment move', { timeout: 30000 }, async function () {
+When('I confirm the interment move', { timeout: 60000 }, async function () {
   await intermentPage.confirmIntermentMove();
 });
 

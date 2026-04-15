@@ -239,7 +239,7 @@ export const INTERMENT_DATA = {
     nokLastName: process.env.TEST_INTERMENT_NOK_LASTNAME || 'Johnson',
     ministerBusinessName: process.env.TEST_INTERMENT_MINISTER_BUSINESS || 'CV. Maju Bersama',
     directorBusinessName: process.env.TEST_INTERMENT_DIRECTOR_BUSINESS || 'CV. Maju Bersama',
-    movePlot: process.env.TEST_INTERMENT_MOVE_PLOT || 'B G 1',
+    movePlot: process.env.TEST_INTERMENT_MOVE_PLOT || 'B B 1',
   },
 };
 

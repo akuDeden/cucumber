@@ -50,9 +50,10 @@ export const IntermentSelectors = {
   autocompleteOption: (text: string) => `mat-option:has-text("${text}")`,
 
   // Edit Interment page - toolbar more button and menu items
+  // Menu order: index-0 = "Move Interment", index-1 = "Delete"
   moreButton: '[data-testid="toolbar-manage-button-more-btn"]',
-  deleteIntermentMenuItem: '[data-testid="button-toolbar-button-0"], button.mat-menu-item:has-text("Delete")',
-  moveIntermentMenuItem: '[data-testid="button-toolbar-button-1"], button.mat-menu-item:has-text("Move")',
+  deleteIntermentMenuItem: '[data-testid="button-toolbar-button-1"], button:has-text("Delete")',
+  moveIntermentMenuItem: '[data-testid="button-toolbar-button-0"], button:has-text("Move Interment")',
 
   // Delete confirmation dialog
   confirmDeleteIntermentButton: [
@@ -62,15 +63,16 @@ export const IntermentSelectors = {
     'mat-dialog-container button:has-text("Delete")',
   ].join(', '),
 
-  // Move interment dialog / panel
-  movePlotSearchInput: [
-    'input[formcontrolname="plot"]',
-    'input[placeholder*="lot"]',
-    '[data-testid="autocomplete-input-input-autocomplete-search-input"]',
+  // Move interment dialog — "Plott *" is a mat-select dropdown, confirm is "ASSIGN"
+  movePlotSelect: [
+    '[role="dialog"] mat-select[formcontrolname="plot"]',
+    'mat-dialog-container mat-select[formcontrolname="plot"]',
+    '[role="dialog"] mat-select',
   ].join(', '),
   moveConfirmButton: [
+    '[role="dialog"] button:has-text("ASSIGN")',
+    '[role="dialog"] button:has-text("Assign")',
     '[role="dialog"] button:has-text("Move")',
-    'button[type="submit"]:has-text("Move")',
     'mat-dialog-container button:has-text("Confirm")',
   ].join(', '),
 

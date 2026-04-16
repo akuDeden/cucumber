@@ -3,7 +3,7 @@ import { IntermentPage } from '../../pages/p0/IntermentPage.js';
 import { replacePlaceholdersInObject, replacePlaceholders } from '../../utils/TestDataHelper.js';
 import { NetworkHelper } from '../../utils/NetworkHelper.js';
 
-// Initialize page object - Reset for each scenario
+// Initialize page objects - Reset for each scenario
 let intermentPage: IntermentPage;
 
 // FLOW 1: Add interment from plot detail page
@@ -236,4 +236,27 @@ When('I confirm the interment move', { timeout: 60000 }, async function () {
 Then('the interment should be moved successfully', { timeout: 20000 }, async function () {
   await intermentPage.verifyOnPlotDetailPage();
   this.logger?.info(`Interment moved successfully. URL: ${this.page.url()}`);
+});
+
+// ===== Add Sale from Edit Interment =====
+
+When('I navigate to the advance table and open the second interment', { timeout: 60000 }, async function () {
+  const page = this.page;
+  intermentPage = new IntermentPage(page);
+
+  const baseUrl = page.url().split('/customer-organization')[0];
+  await page.goto(`${baseUrl}/customer-organization/advance-table?tab=interments`, { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(3000);
+
+  // Click the second interment row
+  const rows = page.locator('mat-row');
+  await rows.first().waitFor({ state: 'visible', timeout: 10000 });
+  const secondRow = rows.nth(1);
+  this.logger?.info('Clicking second interment row in advance table');
+
+  await secondRow.click();
+  // Wait for Edit Interment page — SAVE/CANCEL buttons are always present
+  await page.waitForSelector('button:has-text("SAVE"), button:has-text("CANCEL")', { state: 'visible', timeout: 45000 });
+  await page.waitForTimeout(1000);
+  this.logger?.info(`Opened Edit Interment page. URL: ${page.url()}`);
 });

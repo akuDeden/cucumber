@@ -443,6 +443,7 @@ export const SALES_DATA = {
     issueDate: process.env.TEST_SALES_ISSUE_DATE || '21/01/2026',
     dueDate: process.env.TEST_SALES_DUE_DATE || '22/01/2026',
     note: process.env.TEST_SALES_NOTE || 'this is note test',
+    relatedPlot: process.env.TEST_SALES_RELATED_PLOT || 'A A 1',
 
     // Purchaser info - use random names for dynamic testing
     purchaser: {

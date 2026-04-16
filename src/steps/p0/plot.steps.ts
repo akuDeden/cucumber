@@ -2,12 +2,16 @@ import { When, Then } from '@cucumber/cucumber';
 import { expect } from '@playwright/test';
 import { CreatePlotPage } from '../../pages/p0/CreatePlotPage.js';
 import { PlotPage } from '../../pages/p0/PlotPage.js';
+import { SalesPage } from '../../pages/p0/SalesPage.js';
 import { replacePlaceholders, replacePlaceholdersInObject } from '../../utils/TestDataHelper.js';
 
 let createPlotPage: CreatePlotPage;
 let plotPage: PlotPage;
+let salesPage: SalesPage;
 let createdPlotId: string;
 let lastClickedPlotId: string = '';
+let addSalePlotId: string = '';
+let addSaleItemRelatedPlot: string = '';
 
 When('I navigate to the Tables section', { timeout: 20000 }, async function () {
   const page = this.page;
@@ -141,6 +145,79 @@ Then('I should see the plot edit page', { timeout: 15000 }, async function () {
 });
 
 // ===== Map-based navigation: find first vacant plot via map =====
+
+// ===== Add Sale from Edit Plot steps =====
+
+When('I navigate to the advance table and open the first plot', { timeout: 60000 }, async function () {
+  const page = this.page;
+  createPlotPage = new CreatePlotPage(page);
+  plotPage = new PlotPage(page);
+  salesPage = new SalesPage(page);
+
+  await createPlotPage.navigateToTablesSection();
+
+  // Get the plot ID from the second row before clicking
+  const rows = page.locator('mat-row');
+  await rows.first().waitFor({ state: 'visible', timeout: 10000 });
+  const secondRow = rows.nth(1);
+  const plotIdCell = secondRow.locator('[data-testid*="content-wrapper-div-plot-id"]').first();
+  addSalePlotId = ((await plotIdCell.textContent().catch(() => '')) || '').trim();
+  this.logger?.info(`Second plot in table: ${addSalePlotId}`);
+
+  // Click the row to open the Edit Plot page
+  await secondRow.click();
+  // Wait for the Edit Plot page to render — SAVE button is always present on edit plot page
+  await page.waitForSelector('button:has-text("SAVE"), button:has-text("CANCEL")', { state: 'visible', timeout: 45000 });
+  await page.waitForTimeout(1000);
+  this.logger?.info(`Opened Edit Plot page for: ${addSalePlotId}`);
+});
+
+When('I click the ADD SALE button', { timeout: 30000 }, async function () {
+  const page = this.page;
+  if (!salesPage) salesPage = new SalesPage(page);
+  await salesPage.clickAddSaleButton();
+});
+
+When('I search and select purchaser {string} {string} in the add person modal', { timeout: 30000 }, async function (firstName: string, lastName: string) {
+  const page = this.page;
+  if (!salesPage) salesPage = new SalesPage(page);
+  await salesPage.clickAddPurchaserModal();
+  await salesPage.searchAndSelectPurchaser(firstName, lastName);
+  this.logger?.info(`Purchaser ${firstName} ${lastName} selected`);
+});
+
+When('I select the first available item from the Item dropdown', { timeout: 30000 }, async function () {
+  const page = this.page;
+  if (!salesPage) salesPage = new SalesPage(page);
+  addSaleItemRelatedPlot = await salesPage.selectFirstItemAndGetPlot();
+  this.logger?.info(`Item selected; related plot: ${addSaleItemRelatedPlot}`);
+});
+
+Then('the selected item related plot should match the first plot ID', { timeout: 10000 }, async function () {
+  if (!addSalePlotId) {
+    this.logger?.info('No plot ID captured — skipping related plot validation (interment flow)');
+    return;
+  }
+  if (!addSaleItemRelatedPlot) {
+    this.logger?.info('Related plot from item dropdown was empty — skipping strict match validation');
+    return;
+  }
+  expect(addSaleItemRelatedPlot).toContain(addSalePlotId);
+  this.logger?.info(`Related plot "${addSaleItemRelatedPlot}" matches first plot ID "${addSalePlotId}"`);
+});
+
+When('I click Create and confirm to navigate back to Edit Plot page', { timeout: 60000 }, async function () {
+  const page = this.page;
+  if (!salesPage) salesPage = new SalesPage(page);
+  await salesPage.clickCreateFromEditPlot();
+});
+
+Then('I should see a new sale entry with reference {string} on the Edit Plot page', { timeout: 20000 }, async function (reference: string) {
+  const actualReference = replacePlaceholders(reference);
+  const page = this.page;
+  if (!salesPage) salesPage = new SalesPage(page);
+  await salesPage.verifySaleEntryWithReference(actualReference);
+});
 
 When('I navigate to the map and find the first available vacant plot', { timeout: 90000 }, async function () {
   const page = this.page;

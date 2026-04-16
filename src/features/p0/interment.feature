@@ -137,3 +137,14 @@ Feature: Interment Management
     And I select a vacant plot to move interment to "<TEST_INTERMENT_MOVE_PLOT>"
     And I confirm the interment move
     Then the interment should be moved successfully
+
+  @add-sale-from-edit-interment @smoke @p0
+  Scenario: Add Sale to an interment from the Edit Interment page
+    When I navigate to the advance table and open the second interment
+    And I click the ADD SALE button
+    And I fill sale reference with "<TEST_SALES_REFERENCE>"
+    And I search and select purchaser "endri" "yanto" in the add person modal
+    And I select the first available item from the Item dropdown
+    Then the selected item related plot should match the first plot ID
+    When I click Create and confirm to navigate back to Edit Plot page
+    Then I should see a new sale entry with reference "<TEST_SALES_REFERENCE>" on the Edit Plot page

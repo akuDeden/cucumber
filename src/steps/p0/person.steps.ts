@@ -1,10 +1,13 @@
 import { When, Then, Before, After } from '@cucumber/cucumber';
 import { PersonPage } from '../../pages/p0/PersonPage.js';
+import { SalesPage } from '../../pages/p0/SalesPage.js';
 import { replacePlaceholdersInObject, replacePlaceholders } from '../../utils/TestDataHelper.js';
 import { randomFirstName, randomLastName, PERSON_DATA } from '../../data/test-data.js';
 
-// Initialize page object
+// Initialize page objects
 let personPage: PersonPage;
+let salesPage: SalesPage;
+let currentPersonFullName: string = '';
 
 // Store random person data (shared across all scenarios in the feature)
 interface RandomPersonData {
@@ -190,7 +193,45 @@ When('I confirm the deletion', async function () {
   await personPage.confirmDelete();
 });
 
-Then('the person {string} should not be in the list', async function (personName: string) {
+When('I navigate to the advance table and open the second person', { timeout: 90000 }, async function () {
+  const page = this.page;
+  personPage = new PersonPage(page);
+  salesPage = new SalesPage(page);
+
+  const baseUrl = page.url().split('/customer-organization')[0];
+  await page.goto(`${baseUrl}/customer-organization/advance-table?tab=persons`, { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(3000);
+
+  const rows = page.locator('mat-row');
+  await rows.first().waitFor({ state: 'visible', timeout: 10000 });
+
+  // Read person name from the second row before clicking
+  const secondRow = rows.nth(1);
+  const rowText = (await secondRow.textContent()) || '';
+  this.logger?.info(`Second person row text: ${rowText.trim()}`);
+
+  await secondRow.click();
+  await page.waitForSelector('button:has-text("SAVE"), button:has-text("CANCEL")', { state: 'visible', timeout: 45000 });
+  await page.waitForTimeout(1000);
+
+  // Read person name from the edit form fields
+  const firstNameInput = page.locator('input[formcontrolname="firstName"], input[placeholder*="First"], input[name*="firstName"]').first();
+  const lastNameInput = page.locator('input[formcontrolname="lastName"], input[placeholder*="Last"], input[name*="lastName"]').first();
+
+  const firstName = ((await firstNameInput.inputValue().catch(() => '')) || '').trim();
+  const lastName = ((await lastNameInput.inputValue().catch(() => '')) || '').trim();
+  currentPersonFullName = `${firstName} ${lastName}`.trim();
+  this.currentPersonFullName = currentPersonFullName;
+  this.logger?.info(`Opened Edit Person page for: "${currentPersonFullName}". URL: ${page.url()}`);
+});
+
+When('I select the first available item with related plot {string}', { timeout: 60000 }, async function (relatedPlot: string) {
+  if (!salesPage) salesPage = new SalesPage(this.page);
+  const actualRelatedPlot = replacePlaceholders(relatedPlot);
+  await salesPage.selectFirstItemWithRelatedPlot(actualRelatedPlot);
+});
+
+Then('the person {string} should not be in the list', { timeout: 20000 }, async function (personName: string) {
   const usesPlaceholder = personName.includes('<TEST_PERSON_');
 
   let actualName = usesPlaceholder

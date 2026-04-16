@@ -170,4 +170,15 @@ Feature: ROI Management
     When I click Edit ROI button
     Then I should see activity note "EDITED: Note has been updated successfully"
 
+  @add-sale-from-edit-roi @smoke @p0
+  Scenario: Add Sale to a ROI from the Edit ROI page
+    When I navigate to the advance table and open the second ROI
+    And I click the ADD SALE button
+    And I fill sale reference with "<TEST_SALES_REFERENCE>"
+    And I search and select purchaser "endri" "yanto" in the add person modal
+    And I select the first available item from the Item dropdown
+    Then the selected item related plot should match the first plot ID
+    When I click Create and confirm to navigate back to Edit Plot page
+    Then I should see a new sale entry with reference "<TEST_SALES_REFERENCE>" on the Edit Plot page
+
 

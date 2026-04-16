@@ -124,3 +124,14 @@ Feature: Plot Management (Authenticated)
       | certificateNumber | <TEST_ROI_CERT>       |
     And I save the ROI
     Then the plot status should be "RESERVED"
+
+  @add-sale-from-edit-plot @smoke @p0
+  Scenario: Add Sale to a plot from the Edit Plot page
+    When I navigate to the advance table and open the first plot
+    And I click the ADD SALE button
+    And I fill sale reference with "<TEST_SALES_REFERENCE>"
+    And I search and select purchaser "endri" "yanto" in the add person modal
+    And I select the first available item from the Item dropdown
+    Then the selected item related plot should match the first plot ID
+    When I click Create and confirm to navigate back to Edit Plot page
+    Then I should see a new sale entry with reference "<TEST_SALES_REFERENCE>" on the Edit Plot page

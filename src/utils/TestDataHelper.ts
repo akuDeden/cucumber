@@ -152,6 +152,7 @@ const PLACEHOLDER_MAP: Record<string, string> = {
 
   // Sales data
   '<TEST_SALES_REFERENCE>': TEST_DATA.sales.create.reference,
+  '<TEST_SALES_RELATED_PLOT>': TEST_DATA.sales.create.relatedPlot,
   '<TEST_SALES_ISSUE_DATE>': TEST_DATA.sales.create.issueDate,
   '<TEST_SALES_DUE_DATE>': TEST_DATA.sales.create.dueDate,
   '<TEST_SALES_NOTE>': TEST_DATA.sales.create.note,

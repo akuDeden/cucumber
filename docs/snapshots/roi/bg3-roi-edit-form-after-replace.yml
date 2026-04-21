@@ -1,0 +1,167 @@
+- generic [ref=e7]:
+  - generic [ref=e9]:
+    - generic [ref=e10]:
+      - link [ref=e11] [cursor=pointer]:
+        - /url: /
+      - link:
+        - /url: /
+    - generic [ref=e12]:
+      - button "MORE" [ref=e14] [cursor=pointer]:
+        - generic [ref=e15]:
+          - img [ref=e16]: more_vert
+          - text: MORE
+      - button "cancel" [ref=e17] [cursor=pointer]: cancel
+      - button "save" [ref=e18] [cursor=pointer]: save
+  - generic [ref=e22]:
+    - generic [ref=e23]:
+      - generic [ref=e24]:
+        - heading "Edit ROI" [level=1] [ref=e25]
+        - generic [ref=e27]:
+          - heading "Astana Tegal Gundul - B G 3" [level=4] [ref=e28]
+          - generic [ref=e29]:
+            - img [ref=e30]
+            - paragraph [ref=e31] [cursor=pointer]: View on map
+      - paragraph [ref=e36] [cursor=pointer]: Create certificate
+    - generic [ref=e37]:
+      - generic [ref=e39]:
+        - generic [ref=e40]:
+          - generic [ref=e44] [cursor=pointer]:
+            - combobox "Right type Burial" [ref=e45]:
+              - generic [ref=e48]: Burial
+            - generic:
+              - generic: Right type *
+          - generic [ref=e54] [cursor=pointer]:
+            - combobox "Term of right" [ref=e55]
+            - generic:
+              - generic: Term of right
+        - generic [ref=e61]:
+          - generic [ref=e64]:
+            - generic [ref=e65]: $
+            - generic [ref=e66]:
+              - spinbutton "Fee" [ref=e67]
+              - generic:
+                - generic: Fee
+          - generic [ref=e70]:
+            - generic [ref=e71]:
+              - textbox "Payment date" [ref=e72]
+              - generic:
+                - generic: Payment date
+            - button "Open calendar" [ref=e75] [cursor=pointer]:
+              - img [ref=e76]
+          - generic [ref=e81] [cursor=pointer]:
+            - switch "Charged" [ref=e83]
+            - generic [ref=e86]: Charged
+        - generic [ref=e87]:
+          - generic [ref=e90]:
+            - generic [ref=e91]:
+              - textbox "Application date" [ref=e92]: 08/04/2026
+              - generic:
+                - generic: Application date
+            - button "Open calendar" [ref=e95] [cursor=pointer]:
+              - img [ref=e96]
+          - generic [ref=e100]:
+            - generic [ref=e103]:
+              - generic [ref=e104]:
+                - textbox "Expiry Date" [ref=e105]
+                - generic:
+                  - generic: Expiry Date
+              - button "Open calendar" [ref=e108] [cursor=pointer]:
+                - img [ref=e109]
+            - generic [ref=e114]:
+              - generic [ref=e115]:
+                - checkbox "Auto add to event calendar" [disabled] [ref=e116]
+                - generic:
+                  - img
+              - generic [ref=e117]: Auto add to event calendar
+        - generic [ref=e118]:
+          - generic [ref=e122] [cursor=pointer]:
+            - combobox "Service need" [ref=e123]
+            - generic:
+              - generic: Service need
+          - generic [ref=e133]:
+            - textbox "Certificate number" [ref=e134]
+            - generic:
+              - generic: Certificate number
+        - heading "Extra details" [level=6] [ref=e135]
+        - generic [ref=e142]:
+          - textbox "label" [ref=e143]
+          - generic:
+            - generic:
+              - generic: cus_roi
+        - generic [ref=e150]:
+          - spinbutton "label" [ref=e151]
+          - generic:
+            - generic:
+              - generic: Infusions cost
+        - generic [ref=e158]:
+          - spinbutton "label" [ref=e159]
+          - generic:
+            - generic:
+              - generic: Crystal keepsakes cost
+        - generic [ref=e166]:
+          - spinbutton "label" [ref=e167]
+          - generic:
+            - generic:
+              - generic: Weekend surcharge cost
+        - generic [ref=e174]:
+          - textbox "label" [ref=e175]
+          - generic:
+            - generic:
+              - generic: Digging Fee
+        - generic [ref=e182]:
+          - textbox "label" [ref=e183]
+          - generic:
+            - generic:
+              - generic: text area
+        - generic [ref=e186]:
+          - heading "Documents" [level=4] [ref=e187]
+          - generic [ref=e193] [cursor=pointer]:
+            - button "SELECT FILE" [ref=e194]:
+              - generic [ref=e195]:
+                - img [ref=e196]:
+                  - img [ref=e197]
+                - text: SELECT FILE
+            - paragraph [ref=e200]: or drag it here
+            - paragraph [ref=e201]: "Maximum file size: 8 MB"
+      - generic [ref=e202]:
+        - generic [ref=e203]:
+          - button "ROI Holders" [ref=e206] [cursor=pointer]:
+            - generic [ref=e207]: ROI Holders
+          - button "ROI Applicant" [ref=e210] [cursor=pointer]:
+            - generic [ref=e211]: ROI Applicant
+        - generic [ref=e214]:
+          - generic [ref=e216]:
+            - banner [ref=e217]:
+              - heading "ROI Holders" [level=4] [ref=e219]
+            - generic [ref=e220]:
+              - heading "yaya fix 3" [level=2] [ref=e221]
+              - generic [ref=e223]:
+                - generic [ref=e224]: "E-mail:"
+                - generic [ref=e225]: hkyhr.fd2@inbox.testmail.app
+              - button "EDIT CONTACT INFO" [ref=e226] [cursor=pointer]:
+                - generic [ref=e228]: EDIT CONTACT INFO
+              - button "REMOVE & REPLACE" [ref=e231] [cursor=pointer]:
+                - generic [ref=e233]: REMOVE & REPLACE
+          - generic [ref=e234]:
+            - paragraph [ref=e235]: "Also:"
+            - option "ROI Applicant" [ref=e236] [cursor=pointer]: ROI Applicant
+          - button "ADD AS INTERMENT" [ref=e238] [cursor=pointer]: ADD AS INTERMENT
+        - button "Add Sale" [ref=e245] [cursor=pointer]:
+          - generic [ref=e246]: Add Sale
+        - generic [ref=e248]:
+          - generic [ref=e249]:
+            - generic [ref=e250]: Activity
+            - listbox "Filter Selection" [ref=e251]:
+              - generic [ref=e252]:
+                - option "Notes" [selected] [ref=e253]: Notes
+                - option "Changes" [ref=e254]: Changes
+                - option "All" [ref=e255]: All
+            - button [ref=e256] [cursor=pointer]:
+              - img [ref=e258]:
+                - img [ref=e259]
+              - generic: "1"
+          - generic [ref=e264]:
+            - textbox "Add Notes" [ref=e266]
+            - img [ref=e268] [cursor=pointer]:
+              - img [ref=e269]
+          - generic [ref=e274]: No previous activity recorded in Chronicle.

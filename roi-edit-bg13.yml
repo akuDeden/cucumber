@@ -1,0 +1,175 @@
+- generic [ref=e892]:
+  - generic [ref=e894]:
+    - generic [ref=e895]:
+      - link [ref=e896] [cursor=pointer]:
+        - /url: /
+      - link:
+        - /url: /
+    - generic [ref=e897]:
+      - button "MORE" [ref=e899] [cursor=pointer]:
+        - generic [ref=e900]:
+          - img [ref=e901]: more_vert
+          - text: MORE
+      - button "cancel" [ref=e902] [cursor=pointer]: cancel
+      - button "save" [ref=e903] [cursor=pointer]: save
+  - generic [ref=e909]:
+    - generic [ref=e910]:
+      - generic [ref=e911]:
+        - heading "Edit ROI" [level=1] [ref=e912]
+        - generic [ref=e914]:
+          - heading "Astana Tegal Gundul - B G 13" [level=4] [ref=e915]
+          - generic [ref=e916]:
+            - img [ref=e917]
+            - paragraph [ref=e918] [cursor=pointer]: View on map
+      - paragraph [ref=e923] [cursor=pointer]: Create certificate
+    - generic [ref=e924]:
+      - generic [ref=e926]:
+        - generic [ref=e927]:
+          - generic [ref=e931] [cursor=pointer]:
+            - combobox "Right type Both" [ref=e932]:
+              - generic [ref=e935]: Both
+            - generic:
+              - generic: Right type *
+          - generic [ref=e941] [cursor=pointer]:
+            - combobox "Term of right" [ref=e942]
+            - generic:
+              - generic: Term of right
+        - generic [ref=e948]:
+          - generic [ref=e951]:
+            - generic [ref=e952]: $
+            - generic [ref=e953]:
+              - spinbutton "Fee" [ref=e954]
+              - generic:
+                - generic: Fee
+          - generic [ref=e957]:
+            - generic [ref=e958]:
+              - textbox "Payment date" [ref=e959]
+              - generic:
+                - generic: Payment date
+            - button "Open calendar" [ref=e962] [cursor=pointer]:
+              - img [ref=e963]
+          - generic [ref=e968] [cursor=pointer]:
+            - switch "Charged" [ref=e970]
+            - generic [ref=e973]: Charged
+        - generic [ref=e974]:
+          - generic [ref=e977]:
+            - generic [ref=e978]:
+              - textbox "Application date" [ref=e979]
+              - generic:
+                - generic: Application date
+            - button "Open calendar" [ref=e982] [cursor=pointer]:
+              - img [ref=e983]
+          - generic [ref=e987]:
+            - generic [ref=e990]:
+              - generic [ref=e991]:
+                - textbox "Expiry Date" [ref=e992]
+                - generic:
+                  - generic: Expiry Date
+              - button "Open calendar" [ref=e995] [cursor=pointer]:
+                - img [ref=e996]
+            - generic [ref=e1001]:
+              - generic [ref=e1002]:
+                - checkbox "Auto add to event calendar" [disabled] [ref=e1003]
+                - generic:
+                  - img
+              - generic [ref=e1004]: Auto add to event calendar
+        - generic [ref=e1005]:
+          - generic [ref=e1009] [cursor=pointer]:
+            - combobox "Service need" [ref=e1010]
+            - generic:
+              - generic: Service need
+          - generic [ref=e1019]:
+            - textbox "Certificate number" [ref=e1020]
+            - generic:
+              - generic: Certificate number
+        - heading "Extra details" [level=6] [ref=e1021]
+        - generic [ref=e1028] [cursor=pointer]:
+          - combobox "Infusions purchased" [ref=e1029]
+          - generic:
+            - generic:
+              - generic: Infusions purchased
+        - generic [ref=e1041]:
+          - spinbutton "label" [ref=e1042]
+          - generic:
+            - generic:
+              - generic: Infusions cost
+        - generic [ref=e1049]:
+          - spinbutton "label" [ref=e1050]
+          - generic:
+            - generic:
+              - generic: Crystal keepsakes cost
+        - generic [ref=e1057]:
+          - spinbutton "label" [ref=e1058]
+          - generic:
+            - generic:
+              - generic: Weekend surcharge cost
+        - generic [ref=e1065]:
+          - textbox "label" [ref=e1066]
+          - generic:
+            - generic:
+              - generic: Digging Fee
+        - generic [ref=e1069]:
+          - heading "Documents" [level=4] [ref=e1070]
+          - generic [ref=e1076] [cursor=pointer]:
+            - button "SELECT FILE" [ref=e1077]:
+              - generic [ref=e1078]:
+                - img [ref=e1079]:
+                  - img [ref=e1080]
+                - text: SELECT FILE
+            - paragraph [ref=e1083]: or drag it here
+            - paragraph [ref=e1084]: "Maximum file size: 8 MB"
+      - generic [ref=e1085]:
+        - generic [ref=e1086]:
+          - button "ROI Holder" [ref=e1089] [cursor=pointer]:
+            - generic [ref=e1090]: ROI Holder
+          - button "ROI Applicant" [ref=e1093] [cursor=pointer]:
+            - generic [ref=e1094]: ROI Applicant
+        - generic [ref=e1097]:
+          - generic [ref=e1099]:
+            - banner [ref=e1100]:
+              - heading "ROI Holder" [level=4] [ref=e1102]
+            - generic [ref=e1103]:
+              - heading "Bapak Wahyu Nugroho Santoso" [level=2] [ref=e1104]
+              - generic [ref=e1105]:
+                - generic [ref=e1106]:
+                  - generic [ref=e1107]: "Phone (home):"
+                  - generic [ref=e1108]: "081234567911"
+                - generic [ref=e1109]:
+                  - generic [ref=e1110]: "Phone (mobile):"
+                  - generic [ref=e1111]: "081234567911"
+                - generic [ref=e1112]:
+                  - generic [ref=e1113]: "Phone (office):"
+                  - generic [ref=e1114]: "081234567911"
+                - generic [ref=e1115]:
+                  - generic [ref=e1116]: "E-mail:"
+                  - generic [ref=e1117]: wahyu.santoso@email.com
+                - generic [ref=e1118]:
+                  - generic [ref=e1119]: "Address:"
+                  - generic [ref=e1120]: Jl. Jenderal Ahmad Yani No. 100, Banjarmasin, Kalimantan Selatan, 70117
+              - button "EDIT CONTACT INFO" [ref=e1121] [cursor=pointer]:
+                - generic [ref=e1123]: EDIT CONTACT INFO
+              - button "REMOVE & REPLACE" [ref=e1126] [cursor=pointer]:
+                - generic [ref=e1128]: REMOVE & REPLACE
+          - generic [ref=e1129]:
+            - paragraph [ref=e1130]: "Also:"
+            - option "ROI Applicant" [ref=e1131] [cursor=pointer]: ROI Applicant
+          - button "ADD AS INTERMENT" [ref=e1133] [cursor=pointer]: ADD AS INTERMENT
+        - button "Add Sale" [ref=e1140] [cursor=pointer]:
+          - generic [ref=e1141]: Add Sale
+        - generic [ref=e1143]:
+          - generic [ref=e1144]:
+            - generic [ref=e1145]: Activity
+            - listbox "Filter Selection" [ref=e1146]:
+              - generic [ref=e1147]:
+                - option "Notes" [selected] [ref=e1148]: Notes
+                - option "Changes" [ref=e1149]: Changes
+                - option "All" [ref=e1150]: All
+            - button [ref=e1151] [cursor=pointer]:
+              - img [ref=e1153]:
+                - img [ref=e1154]
+              - generic: "1"
+          - generic [ref=e1159]:
+            - textbox "Add Notes" [ref=e1161]
+            - img [ref=e1163] [cursor=pointer]:
+              - img [ref=e1164]
+          - generic [ref=e1169]: No previous activity recorded in Chronicle.

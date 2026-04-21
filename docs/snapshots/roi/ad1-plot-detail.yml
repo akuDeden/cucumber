@@ -1,0 +1,254 @@
+- generic [ref=e2750]:
+  - generic [ref=e2752]:
+    - generic [ref=e2755]:
+      - generic [ref=e2756]: hahahahaha
+      - generic [ref=e2760]:
+        - generic [ref=e2762]:
+          - img [ref=e2764]:
+            - img [ref=e2765]
+          - textbox "Search" [ref=e2770]
+        - generic [ref=e2774]:
+          - generic [ref=e2775]:
+            - generic [ref=e2776]:
+              - img [ref=e2777]:
+                - img [ref=e2778]
+              - generic [ref=e2781]: People
+            - generic [ref=e2782]:
+              - img [ref=e2783]:
+                - img [ref=e2784]
+              - generic [ref=e2789]: Plots
+          - heading "within Astana Tegal Gundul" [level=5] [ref=e2790]
+      - generic [ref=e2791]:
+        - button "Advanced" [ref=e2792] [cursor=pointer]:
+          - generic [ref=e2795]: Advanced
+        - generic [ref=e2798]:
+          - button "Notifications - 2 unread" [ref=e2799] [cursor=pointer]:
+            - img "Notification bell" [ref=e2801]
+          - generic [ref=e2802]: "2"
+    - button "hahahahaha faris+astanaorg@chronicle.rip" [ref=e2805] [cursor=pointer]:
+      - generic [ref=e2808]:
+        - paragraph [ref=e2809]: hahahahaha
+        - generic [ref=e2810]: faris+astanaorg@chronicle.rip
+  - generic:
+    - generic [ref=e2812]:
+      - generic:
+        - generic:
+          - generic:
+            - img
+        - generic:
+          - generic:
+            - generic [ref=e3046] [cursor=pointer]:
+              - generic [ref=e3048]: A D 1
+              - list [ref=e3049]:
+                - listitem [ref=e3050]: F. Bagas
+            - generic [ref=e3051] [cursor=pointer]:
+              - generic [ref=e3053]: A D 2
+              - list
+            - generic [ref=e3054] [cursor=pointer]:
+              - generic [ref=e3056]: A D 3
+              - list [ref=e3057]:
+                - listitem [ref=e3058]: J. Doe
+            - generic [ref=e3059] [cursor=pointer]:
+              - generic [ref=e3061]: A D 4
+              - list [ref=e3062]:
+                - listitem [ref=e3063]: J. Smith
+            - generic [ref=e3064] [cursor=pointer]:
+              - generic [ref=e3066]: A D 5
+              - list
+            - generic [ref=e3067] [cursor=pointer]:
+              - generic [ref=e3069]: A C 1
+              - list [ref=e3070]:
+                - listitem [ref=e3071]: J. Yanto
+            - generic [ref=e3072] [cursor=pointer]:
+              - generic [ref=e3074]: A C 2
+              - list [ref=e3075]:
+                - listitem [ref=e3076]: J. Doe
+            - generic [ref=e3077] [cursor=pointer]:
+              - generic [ref=e3079]: A C 3
+              - list
+            - generic [ref=e3080] [cursor=pointer]:
+              - generic [ref=e3082]: A E 2
+              - list [ref=e3083]:
+                - listitem [ref=e3084]: C. Black
+            - generic [ref=e3085] [cursor=pointer]:
+              - generic [ref=e3087]: A E 3
+              - list [ref=e3088]:
+                - listitem [ref=e3089]: C. Black
+            - generic [ref=e3090] [cursor=pointer]:
+              - generic [ref=e3092]: A E 4
+              - list [ref=e3093]:
+                - listitem [ref=e3094]: J. Smith
+            - generic [ref=e3095] [cursor=pointer]:
+              - generic [ref=e3097]: A E 5
+              - list [ref=e3098]:
+                - listitem [ref=e3099]: C. Black
+            - generic [ref=e3100] [cursor=pointer]:
+              - generic [ref=e3102]: A E 6
+              - list [ref=e3103]:
+                - listitem [ref=e3104]: J. García Flores
+            - generic [ref=e3105] [cursor=pointer]:
+              - generic [ref=e3107]: A E 7
+              - list [ref=e3108]:
+                - listitem [ref=e3109]: Y. Atinjo
+            - generic [ref=e3110] [cursor=pointer]:
+              - generic [ref=e3112]: A E 8
+              - list [ref=e3113]:
+                - listitem [ref=e3114]: J. Meguiars
+            - generic [ref=e3115] [cursor=pointer]:
+              - generic [ref=e3117]: A E 9
+              - list [ref=e3118]:
+                - listitem [ref=e3119]: J. Smith
+                - listitem [ref=e3120]: J. Doe
+            - generic [ref=e3121] [cursor=pointer]:
+              - generic [ref=e3123]: A F 4
+              - list [ref=e3124]:
+                - listitem [ref=e3125]: J. Smith
+                - listitem [ref=e3126]: J. Doe
+            - generic [ref=e3127] [cursor=pointer]:
+              - generic [ref=e3129]: A F 5
+              - list
+            - generic [ref=e3130] [cursor=pointer]:
+              - generic [ref=e3132]: A F 6
+              - list [ref=e3133]:
+                - listitem [ref=e3134]: J. Doe
+            - generic [ref=e3135] [cursor=pointer]:
+              - generic [ref=e3137]: A F 7
+              - list [ref=e3138]:
+                - listitem [ref=e3139]: J. Smith
+            - generic [ref=e3140] [cursor=pointer]:
+              - generic [ref=e3142]: B D 1
+              - list
+      - generic:
+        - generic:
+          - button [ref=e3144] [cursor=pointer]
+          - button [ref=e3145] [cursor=pointer]
+        - generic:
+          - link "Current location" [ref=e2814] [cursor=pointer]:
+            - /url: "#"
+          - generic [ref=e2815]:
+            - button "Zoom in" [disabled] [ref=e2816]: +
+            - button "Zoom out" [ref=e2817] [cursor=pointer]: −
+          - generic [ref=e2818]:
+            - link "Leaflet" [ref=e2819] [cursor=pointer]:
+              - /url: https://leafletjs.com
+              - img [ref=e2820]
+              - text: Leaflet
+            - text: "| Map data ©"
+            - link "OpenStreetMap" [ref=e2824] [cursor=pointer]:
+              - /url: https://www.openstreetmap.org/
+            - text: contributors,
+            - link "CC-BY-SA" [ref=e2825] [cursor=pointer]:
+              - /url: https://creativecommons.org/licenses/by-sa/2.0/
+    - button [ref=e2828] [cursor=pointer]:
+      - img [ref=e2830]:
+        - img [ref=e2831]
+  - generic [ref=e2834]:
+    - generic [ref=e2839] [cursor=pointer]:
+      - group [ref=e2841]:
+        - button "Map" [pressed] [ref=e2842]:
+          - generic [ref=e2843]:
+            - img [ref=e2845]:
+              - img [ref=e2846]
+            - generic [ref=e2848]: Map
+        - button "Tables" [ref=e2849]:
+          - generic [ref=e2850]:
+            - img [ref=e2852]:
+              - img [ref=e2853]
+            - generic [ref=e2856]: Tables
+        - button "Calendar" [ref=e2857]:
+          - generic [ref=e2858]:
+            - img [ref=e2860]:
+              - img [ref=e2861]
+            - generic [ref=e2863]: Calendar
+        - button "Request 57" [ref=e2864]:
+          - generic [ref=e2865]:
+            - img [ref=e2867]:
+              - img [ref=e2868]
+            - generic [ref=e2871]: Request
+            - generic [ref=e2872]: "57"
+        - button "Reports" [ref=e2873]:
+          - generic [ref=e2874]:
+            - img [ref=e2876]:
+              - img [ref=e2877]
+            - generic [ref=e2880]: Reports
+      - group [disabled] [ref=e2882]:
+        - button "help" [disabled] [ref=e2883]:
+          - link "help" [disabled] [ref=e2885]:
+            - /url: https://help.chronicle.rip/
+            - img "help" [ref=e2886]
+        - button "home" [disabled] [ref=e2887]:
+          - link "home" [disabled] [ref=e2889]:
+            - /url: https://chronicle.rip/
+            - img "home" [ref=e2890]
+    - generic [ref=e2903]:
+      - button "Choose File" [ref=e2906]
+      - img [ref=e2907] [cursor=pointer]:
+        - img [ref=e2908]
+      - generic [ref=e2911]:
+        - generic [ref=e2912]:
+          - generic [ref=e2913]:
+            - paragraph [ref=e2915]: Astana Tegal Gundul
+            - heading "A D 1" [level=3] [ref=e2917]:
+              - generic [ref=e2919]: A D 1
+            - generic [ref=e2921]:
+              - generic [ref=e2923]: 1 / 1
+              - generic [ref=e2926]: 1 / 1
+              - generic [ref=e2928]:
+                - generic [ref=e2929]: west
+                - generic [ref=e2930]: W
+              - generic [ref=e2933]: Monumental
+          - button "Edit" [ref=e2935] [cursor=pointer]:
+            - paragraph [ref=e2937]: Edit
+        - paragraph [ref=e2939]
+        - generic [ref=e2942]:
+          - button "Requests" [ref=e2943] [cursor=pointer]:
+            - img [ref=e2944]:
+              - img [ref=e2945]
+            - text: Requests
+            - img [ref=e2947]:
+              - img [ref=e2948]
+          - button [ref=e2950] [cursor=pointer]:
+            - img [ref=e2952]:
+              - img [ref=e2953]
+          - button [ref=e2956] [cursor=pointer]:
+            - img [ref=e2958]: share_outlined
+        - generic [ref=e2959]:
+          - img [ref=e2960] [cursor=pointer]: keyboard_arrow_left
+          - img [ref=e2961] [cursor=pointer]: keyboard_arrow_right
+          - generic [ref=e2962]:
+            - tablist [ref=e2965]:
+              - generic [ref=e2966]:
+                - tab "INTERMENTS" [selected] [ref=e2967] [cursor=pointer]:
+                  - generic [ref=e2968]: INTERMENTS
+                - tab "ROI" [ref=e2969] [cursor=pointer]:
+                  - generic [ref=e2970]: ROI
+                - tab "EVENTS" [ref=e2971] [cursor=pointer]:
+                  - generic [ref=e2972]: EVENTS
+                - tab "ACTIVITY" [ref=e2973] [cursor=pointer]:
+                  - generic [ref=e2974]: ACTIVITY
+            - generic [ref=e2976]:
+              - tabpanel "INTERMENTS" [ref=e2977]:
+                - generic [ref=e2984]:
+                  - button "Fufu Jhon Bagas n/a - n/a (n/a y.o)" [expanded] [ref=e2985] [cursor=pointer]:
+                    - generic [ref=e2988]:
+                      - heading "Fufu Jhon Bagas" [level=3] [ref=e2990]
+                      - paragraph [ref=e2991]: n/a - n/a (n/a y.o)
+                  - region "Fufu Jhon Bagas n/a - n/a (n/a y.o)" [ref=e2992]:
+                    - generic [ref=e2994]:
+                      - generic [ref=e2995]:
+                        - paragraph [ref=e2996]: Burial
+                        - paragraph [ref=e2998]: Male
+                      - generic:
+                        - list
+                      - button "Edit interment" [ref=e3000] [cursor=pointer]:
+                        - generic [ref=e3001]:
+                          - img [ref=e3002]: person
+                          - text: Edit interment
+              - tabpanel "ROI" [ref=e3003]
+              - tabpanel "EVENTS" [ref=e3004]
+              - tabpanel "ACTIVITY" [ref=e3005]
+      - generic [ref=e3007]:
+        - button "Add interment" [disabled] [ref=e3009]:
+          - generic [ref=e3010]: Add interment
+        - button "Edit ROI" [ref=e3011] [cursor=pointer]:
+          - generic [ref=e3012]: Edit ROI

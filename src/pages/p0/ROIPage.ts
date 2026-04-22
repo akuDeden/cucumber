@@ -13,48 +13,38 @@ export class ROIPage {
   }
 
   /**
-   * Click Add ROI button on plot detail page
+   * Click Add ROI button — works from both plot detail page and edit plot page.
+   * Plot detail: [data-testid="plot-details-edit-button-add-roi-btn"]
+   * Edit plot:   [data-testid="plot-edit-div-roi"] [data-testid="plus-item-button-plus-button"]
    */
   async clickAddRoi(): Promise<void> {
     this.logger.info('Clicking Add ROI button');
-    
-    try {
-      // Wait for button to be visible and clickable
-      await this.page.waitForSelector(RoiSelectors.addRoiButton, { state: 'visible' });
-      this.logger.info('Add ROI button found, clicking...');
-      
-      // Click and wait for navigation
-      await Promise.all([
-        this.page.waitForURL('**/manage/add/roi'),
-        this.page.click(RoiSelectors.addRoiButton)
-      ]);
-      
-      this.logger.info('✓ Navigated to Add ROI form page');
-      
-      // Wait for form to be ready (form title visible = page loaded + data rendered)
-      await this.page.waitForSelector(RoiSelectors.roiFormTitle, { state: 'visible' });
-      this.logger.info('✓ ROI form title loaded');
-      
-      this.logger.success('Add ROI button clicked and form loaded');
-    } catch (e) {
-      // Fallback: try text-based selector
-      this.logger.warn(`Primary selector failed: ${e}`);
-      this.logger.info('Trying fallback selector: button with text "Add ROI"');
-      
-      try {
-        await Promise.all([
-          this.page.waitForURL('**/manage/add/roi'),
-          this.page.getByRole('button', { name: /add roi/i }).click()
-        ]);
-        
-        await this.page.waitForSelector(RoiSelectors.roiFormTitle, { state: 'visible' });
-        
-        this.logger.success('Add ROI button clicked (fallback)');
-      } catch (e2) {
-        this.logger.error(`Both selectors failed: ${e2}`);
-        throw new Error(`Failed to click Add ROI button and navigate to form: ${e2}`);
-      }
+
+    // Try plot detail selector first, then edit plot page selector
+    const plotDetailBtn = this.page.locator(RoiSelectors.addRoiButton);
+    const editPlotBtn = this.page.locator('[data-testid="plot-edit-div-roi"] [data-testid="plus-item-button-plus-button"]');
+
+    let button = plotDetailBtn;
+    const detailVisible = await plotDetailBtn.isVisible({ timeout: 5000 }).catch(() => false);
+    if (!detailVisible) {
+      this.logger.info('Plot detail Add ROI button not found — trying edit plot page selector');
+      button = editPlotBtn;
     }
+
+    await button.waitFor({ state: 'visible', timeout: 30000 });
+    this.logger.info('Add ROI button found, clicking...');
+
+    const navigationPromise = this.page.waitForURL('**/manage/add/roi', { timeout: 30000 }).catch(() => null);
+    await button.click();
+    await navigationPromise;
+
+    const currentUrl = this.page.url();
+    if (!currentUrl.includes('/manage/add/roi')) {
+      throw new Error(`Failed to navigate to Add ROI form. Current URL: ${currentUrl}`);
+    }
+
+    await this.page.waitForSelector(RoiSelectors.roiFormTitle, { state: 'visible' });
+    this.logger.success('Add ROI button clicked and form loaded');
   }
 
   /**

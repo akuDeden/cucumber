@@ -214,7 +214,7 @@ When('I click delete interment from menu', { timeout: 10000 }, async function ()
   await intermentPage.clickDeleteIntermentFromMenu();
 });
 
-When('I confirm the interment deletion', { timeout: 25000 }, async function () {
+When('I confirm the interment deletion', { timeout: 70000 }, async function () {
   await intermentPage.confirmIntermentDeletion();
 });
 

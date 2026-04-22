@@ -63,11 +63,15 @@ export const IntermentSelectors = {
     'mat-dialog-container button:has-text("Delete")',
   ].join(', '),
 
-  // Move interment dialog — "Plott *" is a mat-select dropdown, confirm is "ASSIGN"
+  // Move interment dialog — search input for target plot
+  movePlotSearchInput: '[role="dialog"] [data-testid="input-start-typing-to-search"], mat-dialog-container [data-testid="input-start-typing-to-search"], [role="dialog"] input[type="text"]',
+
+  // Move interment dialog — "Plott *" is the second mat-select (Cemetery is first), confirm is "ASSIGN"
   movePlotSelect: [
     '[role="dialog"] mat-select[formcontrolname="plot"]',
     'mat-dialog-container mat-select[formcontrolname="plot"]',
-    '[role="dialog"] mat-select',
+    '[role="dialog"] mat-select[formcontrolname="plot_id"]',
+    // Fallback: second mat-select in dialog (first is Cemetery)
   ].join(', '),
   moveConfirmButton: [
     '[role="dialog"] button:has-text("ASSIGN")',

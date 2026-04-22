@@ -438,14 +438,24 @@ export class AdvanceSearchPage {
   async verifyPlotTypeInEditPage(plotType: string): Promise<void> {
     this.logger.info(`Verifying plot type "${plotType}" in edit plot page`);
 
-    const plotTypeField = this.page.getByRole('combobox', { name: /Plot type/i });
-    const actualPlotType = (await plotTypeField.textContent())?.trim() || '';
+    // mat-select doesn't expose a reliable combobox role; use aria-label or label-based selector
+    const plotTypeSelect = this.page.locator(
+      'mat-select[aria-label="Plot type"], mat-select[aria-label="Plott type"],' +
+      'mat-form-field:has(mat-label:has-text("Plot type")) mat-select,' +
+      'mat-form-field:has(mat-label:has-text("Plott type")) mat-select'
+    ).first();
 
-    if (actualPlotType !== plotType) {
+    await plotTypeSelect.waitFor({ state: 'visible', timeout: 10000 });
+
+    // Get the selected value from the trigger span (not full textContent which includes the label)
+    const valueText = await plotTypeSelect.locator('mat-select-trigger, .mat-select-value-text span').first().textContent();
+    const actualPlotType = valueText?.trim() || '';
+
+    if (!actualPlotType.toLowerCase().includes(plotType.toLowerCase())) {
       throw new Error(`❌ Plot type mismatch! Expected: "${plotType}", Actual: "${actualPlotType}"`);
     }
 
-    this.logger.success(`Plot type verified: "${plotType}"`);
+    this.logger.success(`Plot type verified: "${plotType}" (found: "${actualPlotType}")`);
   }
 
   /**

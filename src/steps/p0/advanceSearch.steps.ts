@@ -306,8 +306,8 @@ Then('I should see status icon {string} in first result', async function (expect
   const page: Page = this.page;
   logger.info(`Verifying status icon ${expectedStatus} in first result`);
 
-  // Get the icon element from first result
-  const icon = page.locator(AdvanceSearchSelectors.firstResultIcon);
+  // Get the icon element from first result (use .first() to avoid strict mode violation)
+  const icon = page.locator(AdvanceSearchSelectors.firstResultIcon).first();
   await expect(icon).toBeVisible();
 
   // Get the class attribute

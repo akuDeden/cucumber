@@ -388,9 +388,10 @@ export class ROIPage {
       }
     }
     
-    this.logger.info('Waiting for URL redirect to plot detail page...');
-    // Wait for save to complete and redirect back to plot detail
-    await this.page.waitForURL(`**${RoiUrls.plotDetailPattern}**`);
+    this.logger.info('Waiting for URL redirect after ROI save...');
+    // Wait for navigation away from add/roi page — destination varies depending on entry point
+    // (plot detail page, edit plot page, etc.)
+    await this.page.waitForURL(url => !url.includes('/add/roi'), { timeout: 60000 });
     await NetworkHelper.waitForApiRequestsComplete(this.page, 5000);
     this.logger.success('ROI saved successfully');
   }

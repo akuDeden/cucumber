@@ -98,7 +98,7 @@ Then('the plot should be updated successfully', { timeout: 15000 }, async functi
 
 When('I navigate to the cemetery map page', { timeout: 20000 }, async function () {
   const page = this.page;
-  if (!createPlotPage) createPlotPage = new CreatePlotPage(page);
+  createPlotPage = new CreatePlotPage(page);
   await createPlotPage.navigateToCemeteryMapPage();
 });
 
@@ -162,6 +162,7 @@ When('I navigate to the advance table and open the first plot', { timeout: 60000
   const secondRow = rows.nth(1);
   const plotIdCell = secondRow.locator('[data-testid*="content-wrapper-div-plot-id"]').first();
   addSalePlotId = ((await plotIdCell.textContent().catch(() => '')) || '').trim();
+  this.addSalePlotId = addSalePlotId;
   this.logger?.info(`Second plot in table: ${addSalePlotId}`);
 
   // Click the row to open the Edit Plot page
@@ -174,7 +175,7 @@ When('I navigate to the advance table and open the first plot', { timeout: 60000
 
 When('I click the ADD SALE button', { timeout: 30000 }, async function () {
   const page = this.page;
-  if (!salesPage) salesPage = new SalesPage(page);
+  salesPage = new SalesPage(page);
   await salesPage.clickAddSaleButton();
 });
 
@@ -194,28 +195,29 @@ When('I select the first available item from the Item dropdown', { timeout: 3000
 });
 
 Then('the selected item related plot should match the first plot ID', { timeout: 10000 }, async function () {
-  if (!addSalePlotId) {
-    this.logger?.info('No plot ID captured — skipping related plot validation (interment flow)');
+  const expectedPlotId: string | undefined = this.addSalePlotId;
+  if (!expectedPlotId) {
+    this.logger?.info('No plot ID captured — skipping related plot validation (interment/roi flow)');
     return;
   }
   if (!addSaleItemRelatedPlot) {
     this.logger?.info('Related plot from item dropdown was empty — skipping strict match validation');
     return;
   }
-  expect(addSaleItemRelatedPlot).toContain(addSalePlotId);
-  this.logger?.info(`Related plot "${addSaleItemRelatedPlot}" matches first plot ID "${addSalePlotId}"`);
+  expect(addSaleItemRelatedPlot).toContain(expectedPlotId);
+  this.logger?.info(`Related plot "${addSaleItemRelatedPlot}" matches first plot ID "${expectedPlotId}"`);
 });
 
 When('I click Create and confirm to navigate back to Edit Plot page', { timeout: 60000 }, async function () {
   const page = this.page;
-  if (!salesPage) salesPage = new SalesPage(page);
+  salesPage = new SalesPage(page);
   await salesPage.clickCreateFromEditPlot();
 });
 
 Then('I should see a new sale entry with reference {string} on the Edit Plot page', { timeout: 20000 }, async function (reference: string) {
   const actualReference = replacePlaceholders(reference);
   const page = this.page;
-  if (!salesPage) salesPage = new SalesPage(page);
+  salesPage = new SalesPage(page);
   await salesPage.verifySaleEntryWithReference(actualReference);
 });
 

@@ -378,7 +378,7 @@ export class CreatePlotPage {
     const cemeterySlug = `${CEMETERY_CONFIG.uniqueName}_${BASE_CONFIG.region}`;
     const url = `${getCustomerOrgBaseUrl()}/customer-organization/${cemeterySlug}`;
     await this.page.goto(url, { waitUntil: 'domcontentloaded' });
-    await this.page.waitForTimeout(3000);
+    await this.page.locator('button:has-text("Advanced")').waitFor({ state: 'visible', timeout: 15000 });
     this.logger.success('Navigated to cemetery map page');
   }
 

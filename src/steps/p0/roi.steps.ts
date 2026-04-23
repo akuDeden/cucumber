@@ -61,15 +61,18 @@ When('I select plot {string}', async function (plotName: string) {
 });
 
 Then('the plot status should be {string}', async function (expectedStatus: string) {
+  ensurePageObjects(this.page);
   const isCorrect = await plotPage.verifyStatusChanged(expectedStatus);
   expect(isCorrect).toBeTruthy();
 });
 
 When('I click Add ROI button', async function () {
+  ensurePageObjects(this.page);
   await roiPage.clickAddRoi();
 });
 
 When('I click ROI tab', async function () {
+  ensurePageObjects(this.page);
   await roiPage.clickRoiTab();
 });
 
@@ -79,6 +82,7 @@ When('I click Edit ROI button', async function () {
 });
 
 When('I fill ROI form with following details', async function (dataTable: any) {
+  ensurePageObjects(this.page);
   const roiData = dataTable.rowsHash(); // For vertical tables with key-value pairs
   const actualData = replacePlaceholdersInObject(roiData);
   await roiPage.fillRoiForm(actualData);

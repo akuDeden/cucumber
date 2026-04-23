@@ -11,6 +11,7 @@ Feature: Advanced Search Plot - Authenticated Users
         And I click the login button
         Then I should be logged in successfully
         And I navigate to organization home page
+        And I navigate to the cemetery map page
 
     @advance-search-plot @smoke
     Scenario Outline: Advanced search plot by Section, Row, and Number - <section> <row> <number>

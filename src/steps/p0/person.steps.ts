@@ -3,6 +3,7 @@ import { PersonPage } from '../../pages/p0/PersonPage.js';
 import { SalesPage } from '../../pages/p0/SalesPage.js';
 import { replacePlaceholdersInObject, replacePlaceholders } from '../../utils/TestDataHelper.js';
 import { randomFirstName, randomLastName, PERSON_DATA } from '../../data/test-data.js';
+import { NetworkHelper } from '../../utils/NetworkHelper.js';
 
 // Initialize page objects
 let personPage: PersonPage;
@@ -200,10 +201,15 @@ When('I navigate to the advance table and open the second person', { timeout: 90
 
   const baseUrl = page.url().split('/customer-organization')[0];
   await page.goto(`${baseUrl}/customer-organization/advance-table?tab=persons`, { waitUntil: 'domcontentloaded' });
-  await page.waitForTimeout(3000);
 
   const rows = page.locator('mat-row');
-  await rows.first().waitFor({ state: 'visible', timeout: 10000 });
+  // Wait for second row to exist AND have populated cell content (API data rendered)
+  await page.waitForFunction(() => {
+    const matRows = document.querySelectorAll('mat-row');
+    if (matRows.length < 2) return false;
+    const cells = matRows[1].querySelectorAll('mat-cell');
+    return Array.from(cells).some((c: any) => (c.textContent?.trim().length || 0) > 2);
+  }, { timeout: 15000 });
 
   // Read person name from the second row before clicking
   const secondRow = rows.nth(1);
@@ -212,7 +218,7 @@ When('I navigate to the advance table and open the second person', { timeout: 90
 
   await secondRow.click();
   await page.waitForSelector('button:has-text("SAVE"), button:has-text("CANCEL")', { state: 'visible', timeout: 45000 });
-  await page.waitForTimeout(1000);
+  await NetworkHelper.waitForStabilization(page, { minWait: 300, maxWait: 2000 });
 
   // Read person name from the edit form fields
   const firstNameInput = page.locator('input[formcontrolname="firstName"], input[placeholder*="First"], input[name*="firstName"]').first();

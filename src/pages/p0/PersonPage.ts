@@ -582,7 +582,7 @@ export class PersonPage {
     }
     
     // Type the new value
-    await lastNameInput.type(newLastName, { delay: 50 });
+    await lastNameInput.pressSequentially(newLastName, { delay: 50 });
     
     // Blur to trigger validation
     await this.page.keyboard.press('Tab');
@@ -797,47 +797,38 @@ export class PersonPage {
   async verifyPersonNotInList(expectedName: string): Promise<void> {
     this.logger.info(`Verifying person "${expectedName}" is NOT in the list`);
 
-    // Clear any active filters first by reloading the page
-    // This ensures we're checking the full list, not a filtered subset
-    await this.page.reload({ waitUntil: 'networkidle' });
-    this.logger.info('Page reloaded to clear filters');
+    // Split full name to use filter — more reliable than scanning visible rows
+    // (pagination means not all persons are visible; filter proves the record is gone)
+    const parts = expectedName.trim().split(' ');
+    const firstName = parts[0] || '';
+    const lastName = parts.length > 1 ? parts[parts.length - 1] : '';
 
+    await this.clickFilterButton();
+    await this.fillFilterForm(firstName, lastName);
+    await this.applyFilter();
     await NetworkHelper.waitForStabilization(this.page, { minWait: 500, maxWait: 3000 });
 
-    // Wait for table to finish loading
-    try {
-      await this.page.waitForSelector('[role="table"] progressbar', { state: 'detached' });
-      this.logger.info('Table loading complete');
-    } catch (error) {
-      this.logger.info('No loading indicators found or already loaded');
-    }
-
-    // Get all person names from the table
-    const allNames = await this.page.evaluate(() => {
+    // Table should have only the header row (0 data rows) if person was deleted
+    const tableState = await this.page.evaluate(() => {
       const table = document.querySelector('[role="table"]');
-      if (!table) return [];
-
-      const rows = Array.from(table.querySelectorAll('[role="row"]'));
-      // Skip header row (first row)
-      const dataRows = rows.slice(1);
-
-      return dataRows.map((row) => {
-        const cells = Array.from(row.querySelectorAll('[role="cell"]'));
-        // Assuming first name is in column 2, last name is in column 4 (index 1 and 3)
-        const firstName = cells[1]?.textContent?.trim() || '';
-        const lastName = cells[3]?.textContent?.trim() || '';
-        return `${firstName} ${lastName}`.trim();
-      }).filter(name => name && name !== '--' && name !== '  ');
+      if (!table) return { rows: 0 };
+      return { rows: table.querySelectorAll('[role="row"]').length };
     });
 
-    this.logger.info(`Found ${allNames.length} persons in the table`);
-    this.logger.info(`Names: ${allNames.join(', ')}`);
+    this.logger.info(`Table rows after filter for "${expectedName}": ${tableState.rows}`);
 
-    // Check if the deleted person name is in the list
-    const personFound = allNames.some(name => name === expectedName);
-
-    if (personFound) {
-      throw new Error(`Person "${expectedName}" is still in the list after deletion!`);
+    if (tableState.rows >= 2) {
+      const foundRow = await this.page.evaluate(() => {
+        const table = document.querySelector('[role="table"]');
+        if (!table) return '';
+        const rows = Array.from(table.querySelectorAll('[role="row"]'));
+        if (rows.length < 2) return '';
+        const cells = Array.from(rows[1].querySelectorAll('[role="cell"]'));
+        const fn = cells[1]?.textContent?.trim() || '';
+        const ln = cells[3]?.textContent?.trim() || '';
+        return `${fn} ${ln}`.trim();
+      });
+      throw new Error(`Person "${expectedName}" is still in the list after deletion! Found: "${foundRow}"`);
     }
 
     this.logger.info(`✓ Person "${expectedName}" is NOT in the list (deleted successfully)`);
@@ -849,15 +840,13 @@ export class PersonPage {
    */
   async clearFilter(): Promise<void> {
     this.logger.info('Clearing filter by reloading page');
-    await this.page.reload({ waitUntil: 'networkidle' });
-
-    // Wait for table to load
-    try {
-      await this.page.waitForSelector('[role="table"] progressbar', { state: 'detached' });
-      this.logger.info('Table loading complete after clear filter');
-    } catch (error) {
-      this.logger.info('No loading indicators found or already loaded');
-    }
+    await this.page.reload({ waitUntil: 'domcontentloaded' });
+    await NetworkHelper.waitForApiRequestsComplete(this.page, 5000);
+    await this.page.waitForFunction(() => {
+      const table = document.querySelector('[role="table"]');
+      if (!table) return false;
+      return table.querySelectorAll('[role="row"]').length >= 2;
+    }, { timeout: 10000 }).catch(() => {});
 
     await NetworkHelper.waitForStabilization(this.page, { minWait: 300, maxWait: 2000 });
     this.logger.success('Filter cleared');

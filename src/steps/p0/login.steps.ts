@@ -68,11 +68,11 @@ When('I navigate to organization home page', async function () {
   logger.info('Validating auto-redirect to organization home page after login');
 
   // After login, system automatically redirects from public URL to authenticated URL
-  // Public URL pattern: (env).chronicle.rip (e.g., map.chronicle.rip, staging.chronicle.rip)
+  // Public URL pattern: (env).chronicle.rip (e.g., map.chronicle.rip, project.chronicle.rip)
   // Authenticated URL pattern: (region).chronicle.rip or (env)-(region).chronicle.rip
   // Examples:
   //   - map.chronicle.rip → aus.chronicle.rip
-  //   - staging.chronicle.rip → staging-aus.chronicle.rip  
+  //   - project.chronicle.rip → staging-aus.chronicle.rip  
   //   - dev.chronicle.rip → dev-aus.chronicle.rip
 
   // Wait for URL to contain region (indicates successful redirect to authenticated area)

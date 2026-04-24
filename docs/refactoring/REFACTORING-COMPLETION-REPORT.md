@@ -34,13 +34,13 @@
 #### ✅ `/src/steps/p0/advanceSearch.steps.ts`
 **Status**: Refactored
 - Added import: `BASE_CONFIG`
-- Replaced 3 instances of `process.env.BASE_URL || 'https://staging.chronicle.rip'`
+- Replaced 3 instances of `process.env.BASE_URL || 'https://project.chronicle.rip'`
 - Now uses `BASE_CONFIG.baseUrl` directly
 
 #### ✅ `/src/steps/p0/login.steps.ts`
 **Status**: Refactored
 - Added import: `BASE_CONFIG`
-- Replaced `process.env.BASE_URL || 'https://staging.chronicle.rip'`
+- Replaced `process.env.BASE_URL || 'https://project.chronicle.rip'`
 - Now uses `BASE_CONFIG.baseUrl` directly
 
 #### ✅ `/test-send-button.ts`
@@ -84,7 +84,7 @@ grep -r "https://staging.*chronicle.rip" src/**/*.ts
 ### Current Default Values
 ```typescript
 BASE_CONFIG = {
-  baseUrl: 'https://staging.chronicle.rip',
+  baseUrl: 'https://project.chronicle.rip',
   region: 'aus'
 }
 
@@ -97,8 +97,8 @@ CEMETERY_CONFIG = {
 
 ### Generated URLs (Example)
 ```
-Cemetery URL: https://staging.chronicle.rip/astana_tegal_gundul_aus
-Sell Plots URL: https://staging.chronicle.rip/astana_tegal_gundul_aus/sell-plots
+Cemetery URL: https://project.chronicle.rip/astana_tegal_gundul_aus
+Sell Plots URL: https://project.chronicle.rip/astana_tegal_gundul_aus/sell-plots
 Display Name: Astana Tegal Gundul AUS
 Customer Org URL: https://staging-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/...
 ```

@@ -59,6 +59,8 @@ export const BASE_CONFIG = {
 
   // Convenience property for public URLs (environment.domain)
   get baseUrl(): string {
+    // Allow full BASE_URL override (e.g., https://project.chronicle.rip)
+    if (process.env.BASE_URL) return process.env.BASE_URL.replace(/\/$/, '');
     // Production uses map.chronicle.rip instead of production.chronicle.rip
     if (this.environment === 'production') {
       return `https://map.${this.baseDomain}`;
@@ -93,7 +95,7 @@ export const CEMETERY_CONFIG = {
 /**
  * Build PUBLIC cemetery URL (no region in subdomain)
  * Format: https://{environment}.chronicle.rip/{unique_name}_{region}
- * Example: https://staging.chronicle.rip/astana_tegal_gundul_aus
+ * Example: https://project.chronicle.rip/astana_tegal_gundul_aus
  */
 export function getCemeteryUrl(uniqueName: string = CEMETERY_CONFIG.uniqueName, region: string = BASE_CONFIG.region): string {
   return `${BASE_CONFIG.baseUrl}/${uniqueName}_${region}`;
@@ -102,7 +104,7 @@ export function getCemeteryUrl(uniqueName: string = CEMETERY_CONFIG.uniqueName, 
 /**
  * Build PUBLIC sell plots URL
  * Format: https://{environment}.chronicle.rip/{unique_name}_{region}/sell-plots
- * Example: https://staging.chronicle.rip/astana_tegal_gundul_aus/sell-plots
+ * Example: https://project.chronicle.rip/astana_tegal_gundul_aus/sell-plots
  */
 export function getCemeterySellPlotsUrl(uniqueName: string = CEMETERY_CONFIG.uniqueName, region: string = BASE_CONFIG.region): string {
   return `${getCemeteryUrl(uniqueName, region)}/sell-plots`;
@@ -374,8 +376,8 @@ export const REQUEST_SALES_FORM_DATA = {
   cemetery: {
     // Use centralized cemetery config
     name: getCemeteryDisplayName(), // e.g., "Astana Tegal Gundul AUS"
-    url: getCemeteryUrl(), // e.g., "https://staging.chronicle.rip/astana_tegal_gundul_aus"
-    sellPlotsUrl: getCemeterySellPlotsUrl(), // e.g., "https://staging.chronicle.rip/astana_tegal_gundul_aus/sell-plots"
+    url: getCemeteryUrl(), // e.g., "https://project.chronicle.rip/astana_tegal_gundul_aus"
+    sellPlotsUrl: getCemeterySellPlotsUrl(), // e.g., "https://project.chronicle.rip/astana_tegal_gundul_aus/sell-plots"
     uniqueName: CEMETERY_CONFIG.uniqueName, // e.g., "astana_tegal_gundul"
     region: BASE_CONFIG.region, // e.g., "aus"
   },

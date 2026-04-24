@@ -1,6 +1,6 @@
 # Chronicle Web Automation Framework
 
-A web automation framework for Chronicle using Playwright, Cucumber, and TypeScript with real test scenarios against staging.chronicle.rip.
+A web automation framework for Chronicle using Playwright, Cucumber, and TypeScript with real test scenarios against project.chronicle.rip.
 
 ## ⚠️ Known Issues
 
@@ -97,7 +97,7 @@ automation_web/
    Edit `.env` to configure your test environment:
    ```bash
    ENV=staging
-   BASE_URL=https://staging.chronicle.rip
+   BASE_URL=https://project.chronicle.rip
    CHRONICLE_EMAIL=your-email@domain.com
    CHRONICLE_PASSWORD=your-password
    ```
@@ -136,7 +136,7 @@ Framework ini menggunakan **Centralized Configuration Pattern** dengan fallback 
 ```bash
 # .env (Auto-loaded untuk SEMUA test commands)
 ENV=staging                              # Environment: dev/staging/map/production
-BASE_URL=https://staging.chronicle.rip  # Target URL
+BASE_URL=https://project.chronicle.rip  # Target URL
 BROWSER=chromium                         # Browser type
 HEADLESS=false                           # Headless mode
 
@@ -194,7 +194,7 @@ Edit [.env](.env) untuk switch environment:
 ```bash
 # Staging
 ENV=staging
-BASE_URL=https://staging.chronicle.rip
+BASE_URL=https://project.chronicle.rip
 
 # atau Map/Production  
 ENV=map
@@ -448,7 +448,7 @@ npm run test:headless -- --tags "@smoke"
 
 **Environment files:**
 - `.env.dev` → dev.chronicle.rip
-- `.env.staging` → staging.chronicle.rip
+- `.env.staging` → project.chronicle.rip
 - `.env.map` → map.chronicle.rip
 
 ### Run all tests

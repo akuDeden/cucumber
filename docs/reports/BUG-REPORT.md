@@ -11,7 +11,7 @@
 When clicking the "Add ROI" button on a plot detail page, the form does not open. The URL remains on the plot detail page instead of navigating to the Add ROI form.
 
 ### Steps to Reproduce
-1. Login to staging.chronicle.rip with credentials `faris+astanaorg@chronicle.rip` / `12345`
+1. Login to project.chronicle.rip with credentials `faris+astanaorg@chronicle.rip` / `12345`
 2. Navigate to "See all Plots"
 3. Filter plots by status "Vacant"
 4. Expand section "A"

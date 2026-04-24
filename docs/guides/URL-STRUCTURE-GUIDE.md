@@ -9,8 +9,8 @@ Digunakan untuk halaman public seperti sell-plots, public cemetery pages.
 
 **Contoh**:
 ```
-Staging AUS: https://staging.chronicle.rip/astana_tegal_gundul_aus
-Staging US:  https://staging.chronicle.rip/astana_tegal_gundul_us
+Staging AUS: https://project.chronicle.rip/astana_tegal_gundul_aus
+Staging US:  https://project.chronicle.rip/astana_tegal_gundul_us
 Map AUS:     https://map.chronicle.rip/astana_tegal_gundul_aus
 Map US:      https://map.chronicle.rip/astana_tegal_gundul_us
 ```
@@ -80,15 +80,15 @@ export const BASE_CONFIG = {
 ```typescript
 // Get public base URL
 BASE_CONFIG.baseUrl
-// → https://staging.chronicle.rip
+// → https://project.chronicle.rip
 
 // Get cemetery URL
 getCemeteryUrl()
-// → https://staging.chronicle.rip/astana_tegal_gundul_aus
+// → https://project.chronicle.rip/astana_tegal_gundul_aus
 
 // Get sell plots URL
 getCemeterySellPlotsUrl()
-// → https://staging.chronicle.rip/astana_tegal_gundul_aus/sell-plots
+// → https://project.chronicle.rip/astana_tegal_gundul_aus/sell-plots
 ```
 
 ### Authenticated URLs
@@ -115,7 +115,7 @@ getCustomerOrgUrl('plots')
 npm test -- --tags "@request-sales-form-pre-need"
 
 # URLs generated:
-# Public: https://staging.chronicle.rip/astana_tegal_gundul_aus
+# Public: https://project.chronicle.rip/astana_tegal_gundul_aus
 # Auth:   https://staging-aus.chronicle.rip
 ```
 
@@ -135,7 +135,7 @@ ENVIRONMENT=map npm test -- --tags "@request-sales-form-pre-need"
 REGION=us npm test -- --tags "@request-sales-form-pre-need"
 
 # URLs generated:
-# Public: https://staging.chronicle.rip/astana_tegal_gundul_us
+# Public: https://project.chronicle.rip/astana_tegal_gundul_us
 # Auth:   https://staging-us.chronicle.rip
 ```
 
@@ -156,7 +156,7 @@ ENVIRONMENT=map REGION=us npm test -- --tags "@request-sales-form-pre-need"
 ```typescript
 // Bad - hardcoded URLs
 const url = 'https://staging-aus.chronicle.rip/login';
-const sellUrl = 'https://staging.chronicle.rip/astana_tegal_gundul_us/sell-plots';
+const sellUrl = 'https://project.chronicle.rip/astana_tegal_gundul_us/sell-plots';
 ```
 
 ### ✅ New (Dynamic)
@@ -178,7 +178,7 @@ import { getCemeterySellPlotsUrl } from './data/test-data.js';
 
 // Navigate to sell plots
 await page.goto(getCemeterySellPlotsUrl());
-// → https://staging.chronicle.rip/astana_tegal_gundul_aus/sell-plots
+// → https://project.chronicle.rip/astana_tegal_gundul_aus/sell-plots
 ```
 
 ### Authenticated Login
@@ -231,7 +231,7 @@ BASE_DOMAIN=customdomain.com npm test
 
 | Type | Format | Example |
 |------|--------|---------|
-| **Public** | `{env}.domain/{cem}_{reg}` | `staging.chronicle.rip/astana_tegal_gundul_aus` |
+| **Public** | `{env}.domain/{cem}_{reg}` | `project.chronicle.rip/astana_tegal_gundul_aus` |
 | **Auth** | `{env}-{reg}.domain` | `staging-aus.chronicle.rip/login` |
 
 **Key Points**:

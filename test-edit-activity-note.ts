@@ -22,7 +22,7 @@ test.describe('ROI Activity Notes', () => {
 
     await loginPage.login(process.env.TEST_EMAIL as string, process.env.TEST_PASSWORD as string);
     // Navigate to a specific ROI edit page
-    await roiPage.page.goto('https://staging.chronicle.rip/manage/edit/roi/4636');
+    await roiPage.page.goto('https://project.chronicle.rip/manage/edit/roi/4636');
     // Add a note to be edited
     await roiPage.addActivityNote(noteText);
     const isNoteVisible = await roiPage.verifyActivityNote(noteText);

@@ -52,7 +52,7 @@ Edit file `.env` di root project:
 ```bash
 # Switch ke Staging
 ENV=staging
-BASE_URL=https://staging.chronicle.rip
+BASE_URL=https://project.chronicle.rip
 
 # Switch ke Map/Production
 ENV=map

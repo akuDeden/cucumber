@@ -1,6 +1,6 @@
 import { chromium } from '@playwright/test';
 
-const BASE_URL = 'https://staging.chronicle.rip';
+const BASE_URL = 'https://project.chronicle.rip';
 const ORG_BASE = 'https://staging-aus.chronicle.rip/customer-organization';
 const CEM_SLUG = 'astana_tegal_gundul_aus';
 const EMAIL = 'faris+astanaorg@chronicle.rip';

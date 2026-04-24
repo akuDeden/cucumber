@@ -10,7 +10,7 @@ Always address the user as "Mr Deden" at the beginning of every sentence or answ
 
 ```
 1. Di environment mana skenario ini akan dijalankan?
-   (contoh: dev / staging / prod — atau URL lengkap seperti https://dev.chronicle.rip https://staging.chronicle.rip  https://map.chronicle.rip )
+   (contoh: dev / staging / prod — atau URL lengkap seperti https://dev.chronicle.rip https://project.chronicle.rip  https://map.chronicle.rip )
 
 2. Akun apa yang akan digunakan?
    (email + password)

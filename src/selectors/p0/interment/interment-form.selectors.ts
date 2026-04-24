@@ -1,6 +1,6 @@
 /**
  * Interment Page Selectors
- * Real selectors from staging.chronicle.rip
+ * Real selectors from project.chronicle.rip
  * Discovered via MCP Playwright manual exploration
  */
 

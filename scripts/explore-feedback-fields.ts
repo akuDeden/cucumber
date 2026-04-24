@@ -5,7 +5,7 @@
 import { chromium } from 'playwright';
 import type { Page } from 'playwright';
 
-const BASE_URL = 'https://staging.chronicle.rip';
+const BASE_URL = 'https://project.chronicle.rip';
 const EMAIL = 'faris+astanaorg@chronicle.rip';
 const PASSWORD = '12345';
 const SCREENSHOT_DIR = '/Users/ahmadfaris/work/automation_web/screenshots';

@@ -1,6 +1,6 @@
 /**
  * ROI (Record of Interest) Page Selectors
- * Real selectors from staging.chronicle.rip
+ * Real selectors from project.chronicle.rip
  * All selectors use data-testid attributes
  */
 

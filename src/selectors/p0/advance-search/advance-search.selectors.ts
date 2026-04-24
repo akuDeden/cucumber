@@ -1,6 +1,6 @@
 /**
  * Advanced Search Selectors
- * Real selectors from staging.chronicle.rip
+ * Real selectors from project.chronicle.rip
  * Discovered via MCP Playwright manual exploration
  * Using CSS selectors with data-testid and aria-label
  */

@@ -1,6 +1,6 @@
 import { chromium } from '@playwright/test';
 
-const BASE_URL = 'https://staging.chronicle.rip';
+const BASE_URL = 'https://project.chronicle.rip';
 const EMAIL = 'faris+astanaorg@chronicle.rip';
 const PASSWORD = '12345';
 

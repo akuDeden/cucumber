@@ -11,7 +11,7 @@ import { fileURLToPath } from 'url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // ─── CONFIG ────────────────────────────────────────────────────────────────────
-const BASE_URL = 'https://staging.chronicle.rip';
+const BASE_URL = 'https://project.chronicle.rip';
 const EMAIL    = 'faris+astanaorg@chronicle.rip';
 const PASSWORD = '12345';
 const SS_DIR   = __dirname; // save screenshots to project root

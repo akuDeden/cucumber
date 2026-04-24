@@ -161,7 +161,7 @@ Then('I should be navigated back to the plot detail page', async function () {
     if (plotName) {
       const encodedPlot = encodeURIComponent(plotName);
       await page.goto(`${baseUrl}/customer-organization/astana_tegal_gundul_aus/plots/${encodedPlot}`, { waitUntil: 'domcontentloaded' });
-      await page.waitForTimeout(2000);
+      await NetworkHelper.waitForApiRequestsComplete(page, 5000);
     }
   }
 });

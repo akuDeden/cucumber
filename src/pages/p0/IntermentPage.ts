@@ -604,7 +604,7 @@ export class IntermentPage {
       await el.click();
     }
 
-    await this.page.waitForTimeout(1200);
+    await NetworkHelper.waitForStabilization(this.page, { minWait: 300, maxWait: 1200 });
 
     // Handle sub-options (PERSON / BUSINESS) that may appear after expanding the section.
     // IMPORTANT: Use CSS :has-text() which is CASE-SENSITIVE — this avoids accidentally
@@ -656,7 +656,7 @@ export class IntermentPage {
       if (!subClicked) {
         this.logger.info(`No "${subLabel}" sub-option found, proceeding to search directly`);
       } else {
-        await this.page.waitForTimeout(1500);
+        await NetworkHelper.waitForStabilization(this.page, { minWait: 300, maxWait: 1500 });
       }
     } else {
       // Auto-detect: check if PERSON sub-option appears using case-sensitive :has-text()
@@ -664,7 +664,7 @@ export class IntermentPage {
       if (await personEl.isVisible({ timeout: 1500 }).catch(() => false)) {
         this.logger.info('Auto-clicking PERSON sub-option');
         await personEl.click();
-        await this.page.waitForTimeout(1000);
+        await NetworkHelper.waitForStabilization(this.page, { minWait: 300, maxWait: 1000 });
       }
     }
 
@@ -698,43 +698,52 @@ export class IntermentPage {
     await searchInputEl.waitFor({ state: 'visible', timeout: 12000 });
     await searchInputEl.click();
     await searchInputEl.pressSequentially(searchTerm, { delay: 80 });
-    await this.page.waitForTimeout(1500);
-    // DEBUG: capture inner HTML of dialog to find result selector
-    // Select the first search result.
-    // Chronicle renders results as <article class="person"> inside [data-testid="autocomplete-wrapper-div-available-1"]
-    // or <article class="business"> for business relations.
-    // IMPORTANT: Scope to the available-results panel to avoid matching person cards on main form.
-    // Result cards are <article> elements inside mat-dialog-container, each containing a
-    // <header data-testid="autocomplete-wrapper-header-name-0"> (person) or similar (business).
-    // "Also: relation" mat-chips at the bottom are NOT article elements.
-    // Use .filter({ has }) to target articles with a name header (person) OR article.business.
+    await NetworkHelper.waitForStabilization(this.page, { minWait: 300, maxWait: 1500 });
+    // Check if dialog shows search results (old flow) or a creation form (new flow).
+    // In the old flow: articles with header-name/header-business appear after typing.
+    // In the new flow: the dialog is a creation form (First name + Last name fields) with no articles.
     const resultArticles = this.page.locator('mat-dialog-container article').filter({
       has: this.page.locator('[data-testid*="header-name"], [data-testid*="header-business"], h4, h5'),
     });
     const firstOption = resultArticles.first();
-    await firstOption.waitFor({ state: 'visible', timeout: 10000 });
-    const optionText = await firstOption.textContent().catch(() => '');
-    this.logger.info(`Selecting search result: "${optionText?.trim().substring(0, 80)}"`);
-    await firstOption.click();
-    await this.page.waitForTimeout(600);
+    const hasResults = await firstOption.isVisible({ timeout: 3000 }).catch(() => false);
 
-    // After clicking a result card, the dialog may require clicking ADD/Confirm to close
+    if (hasResults) {
+      // Old search-and-select flow
+      const optionText = await firstOption.textContent().catch(() => '');
+      this.logger.info(`Selecting search result: "${optionText?.trim().substring(0, 80)}"`);
+      await firstOption.click();
+      await NetworkHelper.waitForStabilization(this.page, { minWait: 300, maxWait: 1500 });
+    } else {
+      // New creation form flow — dialog is a creation form, not a search-and-select.
+      // For PERSON: first_name is required, fill it (last_name already filled from searchTerm above).
+      // For BUSINESS: business_name is required and already filled; no additional required fields.
+      this.logger.info(`No search results found — using creation form for "${searchTerm}"`);
+      if (subType !== 'BUSINESS') {
+        const firstNameInput = this.page.locator(
+          'mat-dialog-container input[formcontrolname="first_name"],' +
+          '[role="dialog"] input[formcontrolname="first_name"]'
+        ).first();
+        const firstNameVisible = await firstNameInput.isVisible({ timeout: 2000 }).catch(() => false);
+        if (firstNameVisible) {
+          await firstNameInput.click();
+          await firstNameInput.pressSequentially('Test', { delay: 50 });
+        }
+      }
+    }
+
+    // Click ADD to submit the dialog (search-select flow: after clicking result; creation flow: always).
     const addBtn = this.page.locator(
       'mat-dialog-container button:has-text("ADD"),' +
       '[role="dialog"] button:has-text("ADD"),' +
       'mat-dialog-container button:has-text("Add"),' +
       '[role="dialog"] button:has-text("Add")'
     ).first();
-    // After clicking result, ADD button may appear (enabled) — click it to close dialog
     const addBtnVisible = await addBtn.isVisible({ timeout: 3000 }).catch(() => false);
     if (addBtnVisible) {
-      const addBtnEnabled = await addBtn.isEnabled().catch(() => false);
-      if (addBtnEnabled) {
-        await addBtn.click();
-      } else {
-        await addBtn.click({ force: true });
-      }
-      await this.page.waitForTimeout(500);
+      // Wait up to 5s for the ADD button to become enabled (Angular form validation)
+      await expect(addBtn).toBeEnabled({ timeout: 5000 }).catch(() => {});
+      await addBtn.click();
     }
     // Wait for the dialog backdrop to disappear (dialog closed)
     await this.page.locator('.cdk-overlay-backdrop').waitFor({ state: 'hidden', timeout: 15000 }).catch(() => {});

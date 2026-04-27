@@ -4,22 +4,52 @@ Always address the user as "Mr Deden" at the beginning of every sentence or answ
 
 ## Scenario Runner — Wajib Baca Sebelum Run
 
-**TRIGGER**: Kapanpun user mengirimkan tiket/skenario pengujian (berisi langkah-langkah bernomor, kata "Skenario", "validate", "verify", atau deskripsi flow yang harus di-test), WAJIB tanya dua hal ini TERLEBIH DAHULU sebelum menjalankan apapun:
+**TRIGGER**: Kapanpun user mengirimkan tiket/skenario pengujian (berisi langkah-langkah bernomor, kata "Skenario", "validate", "verify", atau deskripsi flow yang harus di-test):
 
-### Pertanyaan Wajib (tanya ketiganya sekaligus dalam satu pesan):
+### Session Config (Baca Dulu Sebelum Tanya)
 
+Baca `.test-session.json` di root project — file ini berisi default environment, akun, dan cemetery.
+
+```json
+// .test-session.json (selalu up-to-date)
+{
+  "environment": "production",
+  "baseUrl": "https://project-aus.chronicle.rip",
+  "account": { "email": "...", "password": "..." },
+  "cemetery": "Astana Tegal Gundul",
+  "region": "aus"
+}
 ```
-1. Di environment mana skenario ini akan dijalankan?
-   (contoh: dev / staging / prod — atau URL lengkap seperti https://dev.chronicle.rip https://project.chronicle.rip  https://map.chronicle.rip )
 
-2. Akun apa yang akan digunakan?
-   (email + password)
+**Jika tiket tidak menyebutkan environment/akun/cemetery** → gunakan nilai dari `.test-session.json` langsung, **tanpa perlu tanya ke user**.
 
-3. Cemetery mana yang akan digunakan?
-   (contoh: Astana Tegal Gundul / nama cemetery lainnya)
+**Tanya ke user HANYA jika** tiket secara eksplisit meminta environment/akun/cemetery yang berbeda dari default.
+
+**JANGAN langsung open browser atau jalankan playwright-cli sebelum membaca `.test-session.json`.**
+
+### Auth State Reuse (Skip Login Steps)
+
+File `auth-support-admin.json` di root berisi saved session untuk `project.chronicle.rip` + `project-aus.chronicle.rip`.
+
+**Gunakan saat membuka browser untuk scenario @authenticated:**
+```bash
+playwright-cli state-load auth-support-admin.json
 ```
+Lakukan setelah `playwright-cli open` dan sebelum navigasi ke halaman target — ini skip login sepenuhnya.
 
-**JANGAN langsung open browser atau jalankan playwright-cli sebelum ketiga pertanyaan ini dijawab.**
+**Regenerate jika session expired** (redirect ke `/login` setelah load):
+```bash
+# 1. Buka login page
+playwright-cli open https://project.chronicle.rip/login
+# 2. Click email field dulu (readonly), fill, click password, fill, click LOGIN
+playwright-cli click e{email-ref}
+playwright-cli fill e{email-ref} "faris+astanaorg@chronicle.rip"
+playwright-cli click e{password-ref}
+playwright-cli fill e{password-ref} "12345"
+playwright-cli click e{login-btn-ref}
+# 3. Setelah redirect sukses, save state
+playwright-cli state-save auth-support-admin.json
+```
 
 ### Setelah Mendapat Jawaban — Aturan Eksekusi:
 
@@ -116,12 +146,18 @@ See `package.json` scripts for all test commands (`test:staging`, `test:p0`, etc
 3. **Satu element wait cukup** — jika `mat-select:has-text("A")` sudah visible berarti API selesai + DOM rendered, tidak perlu tambah `waitForApiRequestsComplete` + `waitForStabilization`
 4. **Gunakan `{ optional: true }` hati-hati** — jika API tidak terpanggil, wait tetap tunggu sampai timeout penuh
 
+## Feature Map
+
+Sebelum menyentuh file apapun untuk fitur tertentu, baca **`docs/FEATURE_MAP.md`** — berisi mapping lengkap:
+feature → selectors → page object → steps → feature file → snapshots → entry point → run command.
+
 ## Adding New Tests
 
 1. Selectors in `src/selectors/p0/<feature>/<feature>.selectors.ts`
 2. Page object in `src/pages/p0/<Feature>Page.ts` extending `BasePage`
 3. Steps in `src/steps/p0/<feature>.steps.ts`
 4. Feature in `src/features/p0/<feature>.{public|authenticated}.feature` with required tags
+5. Update `docs/FEATURE_MAP.md` dengan entry baru
 
 ## Debug Snapshots
 
@@ -146,14 +182,21 @@ playwright-cli snapshot
 - `ref=eXXXX` berubah setiap session — jangan jadikan selector, gunakan `data-testid`, `role`, `aria-label`, atau text
 
 ### Snapshot yang Tersedia
+
+Lihat `docs/snapshots/README.md` untuk index lengkap. Setiap folder punya `README.md` sendiri dengan tabel per file.
+
 ```
 docs/snapshots/
-├── README.md
-└── roi/
-    ├── plots-tab.yml          # Tables > tab PLOTS (default)
-    ├── filtered-plots.yml     # Tab PLOTS filter Status: Vacant
-    ├── add-roi-form.yml       # Form Add ROI (kosong)
-    └── plot-search-result.yml # Form Add ROI setelah search plot
+├── advance-table/   # Tables > Advanced Table (Plots & ROIs tab)
+├── at-need/         # Form At-need Plot Purchase — tiap step
+├── home/            # Dashboard & homepage public
+├── import/          # Halaman Import data
+├── interment/       # Form Add Interment & plot detail tab Interments
+├── login/           # Login page & state setelah login — semua env
+├── plots/           # Plot detail & Edit Plot form
+├── roi/             # Add/Edit ROI form, plot detail, activity — per tiket
+├── tables/          # Halaman Tables (ROI Table & general)
+└── evidence/        # Screenshot BEFORE/AFTER per eksekusi tiket
 ```
 
 ## Environment

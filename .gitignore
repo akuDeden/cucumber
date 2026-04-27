@@ -12,6 +12,9 @@ videos/
 .env
 .env.local
 
+# Test session config (contains credentials)
+.test-session.json
+
 # IDE
 .vscode/
 .idea/

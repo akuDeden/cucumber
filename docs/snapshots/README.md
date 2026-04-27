@@ -1,36 +1,29 @@
-# Accessibility Tree Snapshots
+# Snapshot Index
 
-Snapshot YAML dari accessibility tree halaman web Chronicle, diambil via `playwright-cli` (MCP Playwright).
+Accessibility tree snapshots diambil via `playwright-cli snapshot`. Gunakan sebagai referensi selector & struktur DOM — tanpa perlu buka browser.
 
 ## Cara Pakai
 
-- Gunakan file ini sebagai **referensi selector** saat menulis/debug test
-- Tidak perlu buka browser — cukup baca YAML untuk tahu struktur DOM
-- Cocokkan `ref=`, `role`, `data-testid`, dan `text` dengan selector di `src/selectors/`
-
-## Cara Capture Snapshot Baru
-
 ```bash
-# Via MCP Playwright
-1. playwright-cli navigate ke halaman target
-2. playwright-cli snapshot → simpan output ke .yml
-3. Taruh di folder feature yang sesuai (roi/, sales/, dll)
+# Capture snapshot baru
+playwright-cli open https://project.chronicle.rip/...
+playwright-cli snapshot --filename=<nama>.yml
+# Simpan ke folder feature yang sesuai
 ```
 
-## Struktur Folder
+**Aturan selector**: jangan pakai `ref=eXXXX` (berubah tiap session). Gunakan `data-testid`, `role`, `aria-label`, atau text content.
 
-```
-snapshots/
-├── roi/
-│   ├── plots-tab.yml          # Halaman Tables, tab PLOTS (default view)
-│   ├── filtered-plots.yml     # Tab PLOTS setelah filter Status: Vacant
-│   ├── add-roi-form.yml       # Form Add ROI (kosong)
-│   └── plot-search-result.yml # Form Add ROI setelah search plot "B G 9"
-└── (feature lain bisa ditambah di sini)
-```
+## Folder Index
 
-## Tips
-
-- Snapshot bisa *outdated* jika UI berubah — selalu verify ulang jika test gagal
-- `[ref=eXXXX]` berubah setiap session, jangan jadikan selector
-- Gunakan `data-testid`, `role`, `aria-label`, atau text content sebagai selector yang stabil
+| Folder | Isi | Jumlah File |
+|--------|-----|-------------|
+| [advance-table/](advance-table/) | Halaman Tables > Advanced Table (Plots & ROIs tab) | 6 |
+| [at-need/](at-need/) | Form At-need Plot Purchase — tiap step form | 6 |
+| [home/](home/) | Dashboard & homepage public setelah login | 3 |
+| [import/](import/) | Halaman Import data — berbagai state | 4 |
+| [interment/](interment/) | Form Add Interment & plot detail dengan tab Interments | 4 |
+| [login/](login/) | Login page berbagai environment & state | 16 |
+| [plots/](plots/) | Plot detail & Edit Plot form | 7 |
+| [roi/](roi/) | Add/Edit ROI form, plot detail, activity tab — tiap ticket | 24 |
+| [tables/](tables/) | Halaman Tables (ROI Table & general) | 2 |
+| [evidence/](evidence/) | Screenshot BEFORE/AFTER per eksekusi tiket | — |

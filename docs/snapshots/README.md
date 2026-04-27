@@ -25,5 +25,6 @@ playwright-cli snapshot --filename=<nama>.yml
 | [login/](login/) | Login page berbagai environment & state | 16 |
 | [plots/](plots/) | Plot detail & Edit Plot form | 7 |
 | [roi/](roi/) | Add/Edit ROI form, plot detail, activity tab — tiap ticket | 24 |
+| [regional-settings/](regional-settings/) | Regional Settings debug — login, dropdown, form fill, save states | 26 |
 | [tables/](tables/) | Halaman Tables (ROI Table & general) | 2 |
 | [evidence/](evidence/) | Screenshot BEFORE/AFTER per eksekusi tiket | — |

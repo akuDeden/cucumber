@@ -1,0 +1,177 @@
+- main [ref=e3]:
+  - generic [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - button "Link" [ref=e7] [cursor=pointer]:
+          - img "Chronicle Logo" [ref=e8]
+        - generic [ref=e12]:
+          - img [ref=e14]:
+            - img [ref=e15]
+          - textbox "Search" [ref=e20]
+        - button "ADVANCED" [ref=e22] [cursor=pointer]:
+          - generic [ref=e24]:
+            - img "Options Settings Slider" [ref=e25]
+            - generic [ref=e26]: Advanced
+      - generic [ref=e27]:
+        - navigation "menu" [ref=e28]:
+          - list [ref=e29]:
+            - listitem [ref=e30]:
+              - button "About chronicle" [ref=e31] [cursor=pointer]
+        - link "Login" [ref=e33] [cursor=pointer]:
+          - /url: /login
+          - text: Login
+    - generic [ref=e35]:
+      - generic:
+        - generic:
+          - generic:
+            - generic:
+              - generic:
+                - img "274799"
+                - img "274799"
+                - img "274800"
+                - img "274800"
+          - generic:
+            - img
+        - generic:
+          - generic:
+            - generic [ref=e438] [cursor=pointer]: Section LOT A2
+            - generic [ref=e440] [cursor=pointer]: Section LOT A1
+            - generic [ref=e442] [cursor=pointer]: Section LOT B1
+            - generic [ref=e444] [cursor=pointer]: Section LOT A2
+            - generic [ref=e446] [cursor=pointer]: Section LOT A1
+            - generic [ref=e448] [cursor=pointer]: Section LOT B1
+      - generic:
+        - generic:
+          - button "Toggle plot status legend" [ref=e450] [cursor=pointer]
+          - button "Toggle map layers" [ref=e451] [cursor=pointer]
+        - generic:
+          - button "Show current location on map" [ref=e453] [cursor=pointer]
+          - generic [ref=e454]:
+            - button "Zoom in" [ref=e455] [cursor=pointer]: +
+            - button "Zoom out" [ref=e456] [cursor=pointer]: −
+          - generic [ref=e457]:
+            - link "Leaflet" [ref=e458] [cursor=pointer]:
+              - /url: https://leafletjs.com
+              - img [ref=e459]
+              - text: Leaflet
+            - text: "| Map data ©"
+            - link "OpenStreetMap" [ref=e463] [cursor=pointer]:
+              - /url: https://www.openstreetmap.org/
+            - text: contributors,
+            - link "CC-BY-SA" [ref=e464] [cursor=pointer]:
+              - /url: https://creativecommons.org/licenses/by-sa/2.0/
+    - generic [ref=e468]:
+      - generic [ref=e469]:
+        - generic [ref=e470]:
+          - generic [ref=e471]:
+            - img "P2 S1 G76 Hanson Kevin Olaf" [ref=e473] [cursor=pointer]
+            - img "Interment Story Doc" [ref=e475] [cursor=pointer]
+          - button "Previous slide" [disabled] [ref=e476] [cursor=pointer]:
+            - img "Arrow Icon White" [ref=e477]
+          - button "Next slide" [ref=e478] [cursor=pointer]:
+            - img "Arrow Icon White" [ref=e479]
+          - generic [ref=e480]:
+            - button "Go to slide 1" [ref=e481] [cursor=pointer]
+            - button "Go to slide 2" [ref=e482] [cursor=pointer]
+          - button "Choose File" [ref=e483]
+        - generic [ref=e484]:
+          - generic [ref=e485]:
+            - heading "Astana Tegal Gundul" [level=1] [ref=e486]
+            - heading "Astana Tegal Gundul" [level=3] [ref=e487]
+            - paragraph [ref=e488]: Public
+          - generic [ref=e489]:
+            - generic [ref=e491]:
+              - generic [ref=e493] [cursor=pointer]:
+                - img "Default Official Story" [ref=e494]
+                - generic [ref=e495]:
+                  - paragraph [ref=e496]: Test story untuk plot B F 7 dengan 3 gambar (reset cycle) dari interments data.
+                  - paragraph [ref=e497]: Anak Prabowo
+                  - generic [ref=e498]:
+                    - img [ref=e499]:
+                      - img [ref=e500]
+                    - generic [ref=e503]: B F 7
+              - generic [ref=e505] [cursor=pointer]:
+                - img "Image Story Yjbvbmc" [ref=e506]
+                - generic [ref=e507]:
+                  - paragraph [ref=e508]: story text 1
+                  - paragraph [ref=e509]: Madyson Breitenberg
+                  - generic [ref=e510]:
+                    - img [ref=e511]:
+                      - img [ref=e512]
+                    - generic [ref=e515]: QA A z51
+              - generic [ref=e517] [cursor=pointer]:
+                - img "Image Story Dhlc5r U" [ref=e518]
+                - generic [ref=e519]:
+                  - paragraph [ref=e520]: story text 1
+                  - paragraph [ref=e521]: Susie McGlynn
+                  - generic [ref=e522]:
+                    - img [ref=e523]:
+                      - img [ref=e524]
+                    - generic [ref=e527]: QA A xk1
+              - generic [ref=e529] [cursor=pointer]:
+                - img "Default Official Story" [ref=e530]
+                - generic [ref=e531]:
+                  - paragraph [ref=e532]: Test story untuk plot A A 1 dengan 1 gambar dari interments data.
+                  - paragraph [ref=e533]: Jane Smith
+                  - generic [ref=e534]:
+                    - img [ref=e535]:
+                      - img [ref=e536]
+                    - generic [ref=e539]: A A 1
+              - generic [ref=e541] [cursor=pointer]:
+                - img "Default Official Story" [ref=e542]
+                - generic [ref=e543]:
+                  - paragraph [ref=e544]: Test story untuk plot B F 5 dengan 1 gambar (reset cycle) dari interments data.
+                  - paragraph [ref=e545]: Anak Rugaiyah
+                  - generic [ref=e546]:
+                    - img [ref=e547]:
+                      - img [ref=e548]
+                    - generic [ref=e551]: B F 5
+            - paragraph [ref=e559]: SEE ALL STORIES
+          - button "Requests" [ref=e560] [cursor=pointer]:
+            - img [ref=e561]:
+              - img [ref=e562]
+            - text: Requests
+            - img [ref=e564]:
+              - img [ref=e565]
+          - button "PLOTS FOR SALE" [ref=e567] [cursor=pointer]:
+            - generic [ref=e569]:
+              - img [ref=e570]:
+                - img [ref=e571]
+              - generic [ref=e573]: PLOTS FOR SALE
+          - list [ref=e574]:
+            - listitem [ref=e575]:
+              - img [ref=e576]:
+                - img [ref=e577]
+              - generic [ref=e580]: 114 Glover Tunnel, Stiedemann Trails, Jakarta, post code AUS field, Indonesia
+            - listitem [ref=e581]:
+              - img [ref=e582]:
+                - img [ref=e583]
+              - generic [ref=e590]: 24 hours
+            - listitem [ref=e591]:
+              - img [ref=e592]:
+                - img [ref=e593]
+              - link "089661619359" [ref=e595] [cursor=pointer]:
+                - /url: tel:089661619359
+            - listitem [ref=e596]:
+              - img [ref=e597]:
+                - img [ref=e598]
+              - link "089661619359" [ref=e600] [cursor=pointer]:
+                - /url: tel:089661619359
+            - listitem [ref=e601]:
+              - img [ref=e602]:
+                - img [ref=e603]
+              - link "faris+testPostman@chronicle.rip" [ref=e608] [cursor=pointer]:
+                - /url: mailto:faris+testPostman@chronicle.rip
+            - listitem [ref=e609]:
+              - img [ref=e610]:
+                - img [ref=e611]
+              - link "https://demo.chronicle.rip/chronicle-admin/" [ref=e615] [cursor=pointer]:
+                - /url: https://demo.chronicle.rip/chronicle-admin/
+      - generic [ref=e617]:
+        - generic [ref=e618]:
+          - paragraph [ref=e619]: Create a lasting tribute for your loved one
+          - button "CREATE AN ONLINE MEMORIAL" [ref=e620] [cursor=pointer]: CREATE AN ONLINE MEMORIAL
+        - img [ref=e621] [cursor=pointer]:
+          - img [ref=e622]
+        - img "flower" [ref=e625]
+        - img "photos" [ref=e626]

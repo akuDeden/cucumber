@@ -14,3 +14,4 @@ export * from './request-sales-form/index.js';
 export * from './roi/index.js';
 export * from './sales/index.js';
 export * from './advance-table/index.js';
+export * from './regional-settings/index.js';

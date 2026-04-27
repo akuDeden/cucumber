@@ -1,0 +1,82 @@
+- generic [ref=e300]:
+  - generic [ref=e303]:
+    - img [ref=e305] [cursor=pointer]:
+      - img [ref=e306]
+    - link [ref=e308] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e309]:
+      - generic [ref=e310]: organisation Configuration
+      - generic [ref=e311]: faris+astanaorg@chronicle.rip
+  - generic [ref=e312]:
+    - list [ref=e314]:
+      - listitem [ref=e315] [cursor=pointer]: General
+      - listitem [ref=e316] [cursor=pointer]:
+        - text: Cemeteries
+        - generic [ref=e317]: "1"
+      - listitem [ref=e318] [cursor=pointer]: Access
+      - listitem [ref=e319] [cursor=pointer]: Custom Fields
+      - listitem [ref=e320] [cursor=pointer]: Sales
+      - listitem [ref=e321] [cursor=pointer]: Event Type
+      - listitem [ref=e322] [cursor=pointer]: Business Types
+      - listitem [ref=e323] [cursor=pointer]: Regional Settings
+      - listitem [ref=e324] [cursor=pointer]: Certificates
+      - listitem [ref=e325] [cursor=pointer]: Forms
+    - generic [ref=e330]:
+      - heading "Astana Tegal Gundul" [level=1] [ref=e332]
+      - generic [ref=e333]:
+        - generic [ref=e335]:
+          - generic [ref=e336]:
+            - generic [ref=e337]: Public URLs
+            - generic [ref=e338]:
+              - generic [ref=e339]: https://project.chronicle.rip/?org=Astana Tegal Gundul
+              - img [ref=e341] [cursor=pointer]:
+                - img [ref=e342]
+          - generic [ref=e345]:
+            - generic [ref=e346]: Business Number
+            - generic [ref=e347]: "100123"
+          - generic [ref=e348]:
+            - heading "Juan Francisco fasss" [level=4] [ref=e349]
+            - generic [ref=e350]:
+              - generic [ref=e351]: Email
+              - link "faris+astanaorg@chronicle.rip" [ref=e353] [cursor=pointer]:
+                - /url: mailto:faris+astanaorg@chronicle.rip
+            - generic [ref=e354]:
+              - generic [ref=e355]: Phone (mobile)
+              - generic [ref=e356]: "5553428400"
+            - generic [ref=e357]:
+              - generic [ref=e358]: Business address
+              - generic [ref=e359]: C. Falsa 445, Ciudad de México Distrito Federal 11001aaa, Indonesia
+          - generic [ref=e360]:
+            - generic [ref=e361]: Multi factor authentication
+            - generic [ref=e362]:
+              - img [ref=e363]: close
+              - generic [ref=e364]: "Off"
+          - generic [ref=e365]:
+            - generic [ref=e366]: SSO/SAML
+            - generic [ref=e367]:
+              - img [ref=e368]: close
+              - generic [ref=e369]: "Off"
+          - generic [ref=e370]:
+            - generic [ref=e371]: Osiris
+            - generic [ref=e372]:
+              - img [ref=e373]: done
+              - generic [ref=e374]: "On"
+          - generic [ref=e375]:
+            - generic [ref=e376]: Payment Gateway
+            - generic [ref=e377]:
+              - img [ref=e378]: done
+              - generic [ref=e379]: Configured
+          - generic [ref=e381] [cursor=pointer]: edit organisation details
+        - generic [ref=e384]:
+          - generic [ref=e386]: Credits
+          - generic [ref=e388]:
+            - generic [ref=e389]:
+              - generic [ref=e390]: Available credits
+              - img "info quota" [ref=e392]
+            - generic [ref=e393]:
+              - img [ref=e394]:
+                - img [ref=e395]
+              - generic [ref=e397]: "100"
+        - generic [ref=e399]:
+          - generic [ref=e400]: Subscription plan
+          - generic [ref=e401]: PRO

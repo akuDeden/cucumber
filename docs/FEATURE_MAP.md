@@ -221,6 +221,22 @@ Baca ini sebelum menyentuh file apapun — hindari buka 4 file hanya untuk tahu 
 
 ---
 
+## Regional Settings (p0)
+
+| Item | Path |
+|------|------|
+| Selector file | `src/selectors/p0/regional-settings/regional-settings.selectors.ts` |
+| Page object | `src/pages/p0/RegionalSettingsPage.ts` |
+| Steps file | `src/steps/p0/regionalSettings.steps.ts` |
+| Feature file | `src/features/p0/regionalSettings.authenticated.feature` |
+| Snapshots | `docs/snapshots/regional-settings/` — belum ada |
+| Tags | `@p0 @regional-settings @authenticated` |
+| Scenarios | 2 — update labels, restore defaults |
+| Entry point | Top-right dropdown > My Organisation > Regional Settings tab |
+| Notes | Use `selectText() + pressSequentially()` — `fill()` tidak trigger Angular dirty state. Save button muncul hanya setelah form dirty. waitForResponse harus dipasang SEBELUM click save. |
+
+---
+
 ## Import (p1)
 
 | Item | Path |

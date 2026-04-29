@@ -44,6 +44,8 @@ export class ROIPage {
     }
 
     await this.page.waitForSelector(RoiSelectors.roiFormTitle, { state: 'visible' });
+    await NetworkHelper.waitForApiRequestsComplete(this.page, 5000);
+    await NetworkHelper.waitForFormReady(this.page, 'form');
     this.logger.success('Add ROI button clicked and form loaded');
   }
 

@@ -181,6 +181,16 @@ playwright-cli snapshot
 - Gunakan YAML snapshot untuk cari selector **tanpa perlu buka browser ulang**
 - `ref=eXXXX` berubah setiap session — jangan jadikan selector, gunakan `data-testid`, `role`, `aria-label`, atau text
 
+### Root Directory — Wajib Bersih dari .yaml
+- **DILARANG** meninggalkan file `.yaml` / `.yml` di root project
+- Setiap kali `playwright-cli snapshot` dijalankan tanpa `--filename`, file otomatis masuk ke `.playwright-cli/` — biarkan di sana
+- Setiap kali snapshot disimpan dengan nama custom (misal `playwright-cli snapshot --filename=foo.yaml`), **langsung pindahkan** ke `docs/snapshots/<feature>/foo.yaml`
+- **Setelah setiap sesi debug**, jalankan:
+  ```bash
+  find . -maxdepth 1 -name "*.yaml" -o -maxdepth 1 -name "*.yml" | head -5
+  ```
+  Jika ada file, pindahkan ke folder snapshot yang sesuai dan update `README.md`-nya
+
 ### Snapshot yang Tersedia
 
 Lihat `docs/snapshots/README.md` untuk index lengkap. Setiap folder punya `README.md` sendiri dengan tabel per file.

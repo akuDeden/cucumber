@@ -486,19 +486,27 @@ export class SalesPage {
         throw new Error('Could not find search input in item dropdown after retries');
       }
       await searchInput.waitFor({ state: 'visible' });
-      
-      // Type the item name in the search box
-      await searchInput.fill(item.description);
-      this.logger.info(`  - Typed "${item.description}" in search box`);
 
-      // Retry mechanism: if item not found, delete last char with Backspace and retype it
-      const maxSearchRetries = 3;
+      // Clear any existing text then type character-by-character so Angular search filter fires
+      await searchInput.clear();
+      await searchInput.pressSequentially(item.description, { delay: 80 });
+      this.logger.info(`  - Typed "${item.description}" in search box (pressSequentially)`);
+
+      // Wait for search API / filter to settle before reading options
+      await NetworkHelper.waitForApiRequestsComplete(this.page, 3000).catch(() => {});
+      await NetworkHelper.waitForStabilization(this.page, { minWait: 500, maxWait: 2000 });
+
+      // Retry mechanism: clear + retype if item not found on first attempt
+      const maxSearchRetries = 4;
       let itemFound = false;
       let itemOptions: string[] = [];
 
       for (let searchAttempt = 0; searchAttempt < maxSearchRetries; searchAttempt++) {
-        // Wait for search results to filter
-        await this.page.waitForSelector('[role="option"], mat-option', { state: 'visible' });
+        // Wait for options panel to be visible
+        await this.page.waitForSelector('[role="option"], mat-option', { state: 'visible', timeout: 10000 });
+
+        // Allow extra time for filter to fully apply
+        await NetworkHelper.waitForStabilization(this.page, { minWait: 300, maxWait: 1000 });
 
         // Log available options for debugging
         itemOptions = await this.page.locator('[role="option"]:visible, mat-option:visible').allTextContents();
@@ -531,14 +539,14 @@ export class SalesPage {
           break;
         }
 
-        // Item not found - retry by pressing Backspace to delete last char, then retype it
+        // Item not found - clear and retype to trigger fresh search
         if (searchAttempt < maxSearchRetries - 1) {
-          const lastChar = item.description.slice(-1);
-          this.logger.info(`  - Item "${item.description}" not found, retrying: Backspace last char "${lastChar}" and retype`);
-          await this.page.keyboard.press('Backspace');
-          await this.page.waitForSelector('[role="option"], mat-option', { state: 'visible' }).catch(() => {});
-          await this.page.keyboard.type(lastChar, { delay: 100 });
-          this.logger.info(`  - Retyped "${lastChar}", waiting for search results to refresh...`);
+          this.logger.info(`  - Item "${item.description}" not found on attempt ${searchAttempt + 1}, clearing and retyping...`);
+          await searchInput.clear();
+          await NetworkHelper.waitForStabilization(this.page, { minWait: 300, maxWait: 800 });
+          await searchInput.pressSequentially(item.description, { delay: 100 });
+          await NetworkHelper.waitForApiRequestsComplete(this.page, 3000).catch(() => {});
+          await NetworkHelper.waitForStabilization(this.page, { minWait: 500, maxWait: 1500 });
         }
       }
 
@@ -776,6 +784,29 @@ export class SalesPage {
    */
   async validateSaleSummary(expected: SaleSummary): Promise<void> {
     this.logger.info('Validating sale summary');
+
+    // Wait for VAT line to appear when expected VAT > 0
+    const expectedVat = this.normalizeCurrency(expected.vat);
+    if (expectedVat !== '0.00') {
+      const maxWaitMs = 10000;
+      const pollMs = 500;
+      const deadline = Date.now() + maxWaitMs;
+      let vatVisible = false;
+      while (Date.now() < deadline) {
+        const summary = await this.getSaleSummary();
+        const actualVat = this.normalizeCurrency(summary.vat);
+        if (actualVat !== '0.00') {
+          vatVisible = true;
+          break;
+        }
+        this.logger.info(`VAT not yet rendered (got $0.00), retrying in ${pollMs}ms...`);
+        await this.page.waitForTimeout(pollMs);
+      }
+      if (!vatVisible) {
+        this.logger.warn(`VAT did not appear after ${maxWaitMs}ms — proceeding with current summary`);
+      }
+    }
+
     const actual = await this.getSaleSummary();
 
     this.logger.info(`Expected: ${JSON.stringify(expected)}`);

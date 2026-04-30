@@ -6,7 +6,7 @@ import { replacePlaceholdersInObject } from '../../utils/TestDataHelper.js';
 let businessPage: BusinessPage;
 let lastClickedBusinessName: string = '';
 
-When('I navigate to the Business tab in the advance table', { timeout: 20000 }, async function () {
+When('I navigate to the Business tab in the advance table', { timeout: 45000 }, async function () {
   businessPage = new BusinessPage(this.page);
   await businessPage.navigateToBusinessTab();
 });
@@ -49,7 +49,7 @@ Then('the new business should appear in the business table', { timeout: 45000 },
 // ===== Edit Business steps =====
 // Clicking a row navigates directly to the edit form — no separate "Edit" button
 
-When('I click the first business row in the table', { timeout: 15000 }, async function () {
+When('I click the first business row in the table', { timeout: 60000 }, async function () {
   if (!businessPage) businessPage = new BusinessPage(this.page);
   lastClickedBusinessName = await businessPage.clickFirstTableRow();
   this.logger?.info(`Clicked business row: ${lastClickedBusinessName}`);
@@ -77,7 +77,7 @@ Then('the business should be updated successfully', { timeout: 15000 }, async fu
 
 // ===== Delete Business steps =====
 
-When('I click the Delete Business button', { timeout: 10000 }, async function () {
+When('I click the Delete Business button', { timeout: 20000 }, async function () {
   await businessPage.clickDeleteBusiness();
 });
 

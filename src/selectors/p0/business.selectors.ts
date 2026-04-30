@@ -33,9 +33,10 @@ export const BusinessSelectors = {
   addressInput: 'input[formcontrolname="street"], input[formcontrolname="address"]',
 
   // ===== Toolbar buttons (top-right on add/edit page) =====
-  saveButton: 'button:has-text("SAVE")',
-  cancelButton: 'button:has-text("CANCEL")',
-  deleteButton: 'button:has-text("DELETE")',
+  // Prod/aus renders lowercase text: "save", "cancel", "Delete"
+  saveButton: 'button:has-text("save"), button:has-text("SAVE")',
+  cancelButton: 'button:has-text("cancel"), button:has-text("CANCEL")',
+  deleteButton: 'button:has-text("Delete"), button:has-text("DELETE")',
 
   // ===== Delete confirmation dialog =====
   confirmDeleteButton: '[role="dialog"] button:has-text("Delete"), [role="dialog"] button:has-text("Yes"), [role="dialog"] button:has-text("Confirm")',

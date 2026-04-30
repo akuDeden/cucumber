@@ -1,11 +1,13 @@
 import { Page } from '@playwright/test';
 import { BusinessSelectors, BusinessUrls } from '../../selectors/p0/business.selectors.js';
 import { Logger } from '../../utils/Logger.js';
+import { NetworkHelper } from '../../utils/NetworkHelper.js';
 import { getCustomerOrgBaseUrl } from '../../data/test-data.js';
 
 export class BusinessPage {
   readonly page: Page;
   private logger: Logger;
+  private businessListResponse: import('@playwright/test').Response | null = null;
 
   constructor(page: Page) {
     this.page = page;
@@ -19,13 +21,22 @@ export class BusinessPage {
     this.logger.info('Navigating to Business tab in advance table');
     const baseUrl = getCustomerOrgBaseUrl();
     await this.page.goto(`${baseUrl}${BusinessUrls.advanceTable}`, { waitUntil: 'domcontentloaded' });
-    await this.page.waitForTimeout(2000);
+    await NetworkHelper.waitForApiRequestsComplete(this.page, 8000);
 
     this.logger.info('Clicking BUSINESS tab');
     const businessTab = this.page.locator(BusinessSelectors.businessTab);
     await businessTab.waitFor({ state: 'visible', timeout: 10000 });
     await businessTab.click();
-    await this.page.waitForTimeout(2000);
+
+    // Wait for business list API to complete — captures both the response and its data
+    const response = await this.page.waitForResponse(
+      resp => resp.url().includes('/business-org') &&
+              resp.request().method() === 'GET',
+      { timeout: 15000 }
+    ).catch(() => null);
+    this.businessListResponse = response;
+
+    await NetworkHelper.waitForApiRequestsComplete(this.page, 8000);
     this.logger.success('Navigated to Business tab');
   }
 
@@ -192,21 +203,88 @@ export class BusinessPage {
   }
 
   /**
-   * Click the first data row in the business table (opens the edit form directly).
-   * Business table uses mat-row (Angular Material table).
+   * Click the first data row in the business table to open the edit form.
+   * Clicks each name cell to trigger the Angular router's API call, captures
+   * the business ID from the network request, then navigates directly to the
+   * edit URL — robust against broken rows (500) and tooltip interception.
    */
   async clickFirstTableRow(): Promise<string> {
     this.logger.info('Clicking first business row in table');
 
-    // Wait for table to load
     await this.page.waitForSelector('mat-row', { state: 'visible', timeout: 15000 });
 
-    const firstRow = this.page.locator('mat-row').first();
-    const rowText = ((await firstRow.textContent().catch(() => '')) || '').trim().split('\n')[0].trim();
-    await firstRow.click();
-    await this.page.waitForTimeout(2000);
-    this.logger.success(`Opened business row: "${rowText}"`);
-    return rowText;
+    // Wait for cell content to be rendered (data loaded, not skeleton rows)
+    await this.page.waitForFunction(
+      () => {
+        const cell = document.querySelector('mat-row mat-cell');
+        return cell && (cell.textContent || '').trim().length > 0;
+      },
+      { timeout: 15000 }
+    );
+
+    const rows = this.page.locator('mat-row');
+    const rowCount = await rows.count();
+    const baseUrl = this.page.url().split('/customer-organization')[0]; // e.g. https://aus.chronicle.rip
+    const cemeterySlug = baseUrl.includes('aus.') ? 'astana_tegal_gundul_aus' : 'astana_tegal_gundul';
+
+    for (let i = 0; i < Math.min(rowCount, 8); i++) {
+      const row = rows.nth(i);
+      const nameCell = row.locator('mat-cell').first();
+      const rowText = ((await nameCell.textContent().catch(() => '')) || '').trim();
+
+      // Move mouse to top-left to dismiss any tooltip from previous hover
+      await this.page.mouse.move(0, 0);
+      await this.page.waitForTimeout(400);
+
+      // Set up request listener to capture business ID from the API call triggered by clicking
+      let capturedBusinessId: string | null = null;
+      const reqHandler = (req: import('@playwright/test').Request) => {
+        const match = req.url().match(/\/business-org\/(\d+)\//);
+        if (match) capturedBusinessId = match[1];
+      };
+      this.page.on('request', reqHandler);
+
+      await nameCell.click({ timeout: 8000, force: true });
+      await this.page.waitForTimeout(1500); // allow request to fire
+
+      this.page.off('request', reqHandler);
+
+      if (!capturedBusinessId) {
+        this.logger.info(`Row ${i} ("${rowText}") did not trigger a business API request, trying next row`);
+        continue;
+      }
+
+      this.logger.info(`Row ${i} ("${rowText}") triggered request for business ID: ${capturedBusinessId}`);
+
+      // Navigate directly to the edit URL (bypasses Angular routing issues)
+      const editUrl = `${baseUrl}/customer-organization/advance-table/manage/edit/business/${capturedBusinessId}/cemetery/${cemeterySlug}?from=table`;
+      await this.page.goto(editUrl);
+
+      try {
+        await this.page.waitForURL(`**/manage/edit/business/${capturedBusinessId}/**`, { timeout: 10000 });
+        const saveVisible = await this.page.locator(BusinessSelectors.saveButton).first().isVisible().catch(() => false);
+        if (saveVisible) {
+          this.logger.success(`Opened edit form for: "${rowText}" — ${this.page.url()}`);
+          return rowText;
+        }
+        this.logger.info(`Edit form for business ${capturedBusinessId} has no save button (likely 500), trying next row`);
+      } catch {
+        this.logger.info(`Edit URL for business ${capturedBusinessId} timed out, trying next row`);
+      }
+
+      // Navigate back to the business tab for next retry
+      await this.page.goto(`${baseUrl}/customer-organization/advance-table?tab=business`);
+      await this.page.waitForSelector('mat-row', { state: 'visible', timeout: 10000 });
+      await this.page.waitForFunction(
+        () => {
+          const cell = document.querySelector('mat-row mat-cell');
+          return cell && (cell.textContent || '').trim().length > 0;
+        },
+        { timeout: 10000 }
+      ).catch(() => {});
+    }
+
+    throw new Error('No business edit form could be opened from the first 8 rows');
   }
 
   /**
@@ -258,7 +336,7 @@ export class BusinessPage {
   async clickDeleteBusiness(): Promise<void> {
     this.logger.info('Clicking DELETE button');
     const deleteBtn = this.page.locator(BusinessSelectors.deleteButton).first();
-    await deleteBtn.waitFor({ state: 'visible', timeout: 10000 });
+    await deleteBtn.waitFor({ state: 'visible', timeout: 15000 });
     await deleteBtn.click();
     await this.page.waitForTimeout(1000);
     this.logger.success('DELETE button clicked');

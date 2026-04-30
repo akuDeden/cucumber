@@ -237,10 +237,10 @@ export const INTERMENT_DATA = {
   },
   // Relations — persons and businesses that exist on staging for autocomplete search
   relations: {
-    applicantLastName: process.env.TEST_INTERMENT_APPLICANT_LASTNAME || 'Johnson',
-    nokLastName: process.env.TEST_INTERMENT_NOK_LASTNAME || 'Johnson',
-    ministerBusinessName: process.env.TEST_INTERMENT_MINISTER_BUSINESS || 'CV. Maju Bersama',
-    directorBusinessName: process.env.TEST_INTERMENT_DIRECTOR_BUSINESS || 'CV. Maju Bersama',
+    applicantLastName: process.env.TEST_INTERMENT_APPLICANT_LASTNAME || 'Kalla',
+    nokLastName: process.env.TEST_INTERMENT_NOK_LASTNAME || 'Wahid',
+    ministerBusinessName: process.env.TEST_INTERMENT_MINISTER_BUSINESS || 'Masjid Raya Bandung',
+    directorBusinessName: process.env.TEST_INTERMENT_DIRECTOR_BUSINESS || 'Rumah Duka Sejahtera',
     movePlot: process.env.TEST_INTERMENT_MOVE_PLOT || 'B B 1',
   },
 };

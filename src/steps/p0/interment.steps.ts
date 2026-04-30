@@ -2,6 +2,7 @@ import { When, Then } from '@cucumber/cucumber';
 import { IntermentPage } from '../../pages/p0/IntermentPage.js';
 import { replacePlaceholdersInObject, replacePlaceholders } from '../../utils/TestDataHelper.js';
 import { NetworkHelper } from '../../utils/NetworkHelper.js';
+import { getCustomerOrgBaseUrl } from '../../data/test-data.js';
 
 // Initialize page objects - Reset for each scenario
 let intermentPage: IntermentPage;
@@ -240,23 +241,43 @@ Then('the interment should be moved successfully', { timeout: 20000 }, async fun
 
 // ===== Add Sale from Edit Interment =====
 
-When('I navigate to the advance table and open the second interment', { timeout: 60000 }, async function () {
+When('I navigate to the advance table and open the second interment', { timeout: 90000 }, async function () {
   const page = this.page;
   intermentPage = new IntermentPage(page);
 
-  const baseUrl = page.url().split('/customer-organization')[0];
-  await page.goto(`${baseUrl}/customer-organization/advance-table?tab=interments`, { waitUntil: 'domcontentloaded' });
-  await page.waitForTimeout(3000);
+  const baseUrl = getCustomerOrgBaseUrl();
+  await page.goto(`${baseUrl}/customer-organization/advance-table`, { waitUntil: 'domcontentloaded' });
+  await NetworkHelper.waitForApiRequestsComplete(page, 8000);
 
-  // Click the second interment row
+  // Click INTERMENTS tab (index 1 in advance table)
+  const intermentsTab = page.locator('[data-testid="content-wrapper-a-1"]');
+  await intermentsTab.waitFor({ state: 'visible', timeout: 10000 });
+  await intermentsTab.click();
+  await NetworkHelper.waitForApiRequestsComplete(page, 8000);
+
+  // Wait for rows with actual content.
+  // IMPORTANT: mat-cell:nth-child(1) is the checkbox (always empty textContent).
+  // mat-cell:nth-child(4) is First Name — the first cell that has visible text.
+  await page.waitForSelector('mat-row', { state: 'visible', timeout: 15000 });
+  await page.waitForFunction(
+    () => {
+      const cell = document.querySelector('mat-row mat-cell:nth-child(4)');
+      return cell && (cell.textContent || '').trim().length > 0;
+    },
+    { timeout: 15000 }
+  );
+
+  // Click First Name cell (nth(3)) — confirmed to navigate to interment edit URL on aus.chronicle.rip
   const rows = page.locator('mat-row');
-  await rows.first().waitFor({ state: 'visible', timeout: 10000 });
-  const secondRow = rows.nth(1);
-  this.logger?.info('Clicking second interment row in advance table');
+  const rowCount = await rows.count();
+  const targetRow = rows.nth(Math.min(1, rowCount - 1)); // second row, or first if only one
+  const nameCell = targetRow.locator('mat-cell').nth(3);
+  this.logger?.info('Clicking First Name cell in interment row to open edit form');
+  await page.mouse.move(0, 0);
+  await nameCell.click({ timeout: 8000, force: true });
 
-  await secondRow.click();
-  // Wait for Edit Interment page — SAVE/CANCEL buttons are always present
-  await page.waitForSelector('button:has-text("SAVE"), button:has-text("CANCEL")', { state: 'visible', timeout: 45000 });
-  await page.waitForTimeout(1000);
+  // Wait for navigation to Edit Interment page
+  await page.waitForURL('**/manage/edit/interment/**', { timeout: 30000 });
+  await NetworkHelper.waitForApiRequestsComplete(page, 5000);
   this.logger?.info(`Opened Edit Interment page. URL: ${page.url()}`);
 });

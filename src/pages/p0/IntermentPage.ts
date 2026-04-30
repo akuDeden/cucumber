@@ -698,26 +698,41 @@ export class IntermentPage {
     await searchInputEl.waitFor({ state: 'visible', timeout: 12000 });
     await searchInputEl.click();
     await searchInputEl.pressSequentially(searchTerm, { delay: 80 });
-    await NetworkHelper.waitForStabilization(this.page, { minWait: 300, maxWait: 1500 });
-    // Check if dialog shows search results (old flow) or a creation form (new flow).
-    // In the old flow: articles with header-name/header-business appear after typing.
-    // In the new flow: the dialog is a creation form (First name + Last name fields) with no articles.
+
+    // Wait for search results: mat-option (CDK autocomplete overlay) takes priority,
+    // then article elements (older dialog-list flow).
+    const matOptions = this.page.locator(
+      '.cdk-overlay-container mat-option, .cdk-overlay-pane mat-option'
+    );
     const resultArticles = this.page.locator('mat-dialog-container article').filter({
       has: this.page.locator('[data-testid*="header-name"], [data-testid*="header-business"], h4, h5'),
     });
-    const firstOption = resultArticles.first();
-    const hasResults = await firstOption.isVisible({ timeout: 3000 }).catch(() => false);
 
-    if (hasResults) {
-      // Old search-and-select flow
-      const optionText = await firstOption.textContent().catch(() => '');
-      this.logger.info(`Selecting search result: "${optionText?.trim().substring(0, 80)}"`);
-      await firstOption.click();
+    // Race both result formats — resolve as soon as either becomes visible (up to 8s)
+    await Promise.race([
+      matOptions.first().waitFor({ state: 'visible', timeout: 8000 }),
+      resultArticles.first().waitFor({ state: 'visible', timeout: 8000 }),
+    ]).catch(() => {});
+
+    const hasMatOption = await matOptions.first().isVisible({ timeout: 500 }).catch(() => false);
+    const hasArticle = !hasMatOption && await resultArticles.first().isVisible({ timeout: 500 }).catch(() => false);
+
+    if (hasMatOption) {
+      const firstMatOption = matOptions.first();
+      const optionText = await firstMatOption.textContent().catch(() => '');
+      this.logger.info(`Selecting mat-option autocomplete: "${optionText?.trim().substring(0, 80)}"`);
+      await firstMatOption.click();
+      await NetworkHelper.waitForStabilization(this.page, { minWait: 300, maxWait: 1000 });
+    } else if (hasArticle) {
+      const firstArticle = resultArticles.first();
+      const optionText = await firstArticle.textContent().catch(() => '');
+      this.logger.info(`Selecting article result: "${optionText?.trim().substring(0, 80)}"`);
+      await firstArticle.click();
       await NetworkHelper.waitForStabilization(this.page, { minWait: 300, maxWait: 1500 });
     } else {
-      // New creation form flow — dialog is a creation form, not a search-and-select.
-      // For PERSON: first_name is required, fill it (last_name already filled from searchTerm above).
-      // For BUSINESS: business_name is required and already filled; no additional required fields.
+      // Creation form flow — dialog is a creation form, not search-and-select.
+      // For PERSON: first_name is required (last_name already filled from searchTerm above).
+      // For BUSINESS: business_name already filled; no additional required fields.
       this.logger.info(`No search results found — using creation form for "${searchTerm}"`);
       if (subType !== 'BUSINESS') {
         const firstNameInput = this.page.locator(
@@ -856,77 +871,86 @@ export class IntermentPage {
   }
 
   /**
-   * In the move interment dialog, search for and select a target plot by its ID
+   * In the move interment dialog, search for and select a target plot by its ID.
+   * Dialog structure (confirmed via browser inspection):
+   *   - Cemetery field: combobox "Cemetery ..." — pre-filled, no action needed
+   *   - Plot field:     mat-select aria-label="Event Type" — must be clicked to open CDK overlay
+   *   - CDK overlay search input appears OUTSIDE the dialog element (appended to body)
+   *   - Assign button becomes enabled only after a plot is selected
    */
   async searchAndSelectMoveTargetPlot(plotId: string): Promise<void> {
     this.logger.info(`Searching for plot to move interment to: "${plotId}"`);
 
-    // Brief settle after menu click before looking for UI
-    await this.page.waitForTimeout(1500);
+    // Wait for the move dialog to open
+    await this.page.waitForSelector(
+      '[role="dialog"], mat-dialog-container',
+      { state: 'visible', timeout: 8000 }
+    );
 
-    // Step 1: Try direct search input (no ancestor constraint — move dialog may not use role=dialog)
-    const searchInput = this.page.locator(
-      '[data-testid="input-start-typing-to-search"],' +
-      'input[placeholder*="search"], input[placeholder*="Search"], input[placeholder*="plot"], input[placeholder*="Plot"]'
+    // The Plot field is mat-select[aria-label="Event Type"] — second combobox in the dialog.
+    // Cemetery is already pre-filled; only the Plot combobox needs interaction.
+    const plotSelect = this.page.locator(
+      '[role="dialog"] mat-select[aria-label="Event Type"], ' +
+      'mat-dialog-container mat-select[aria-label="Event Type"]'
     ).first();
-
-    const inputVisible = await searchInput.isVisible({ timeout: 12000 }).catch(() => false);
-
-    if (inputVisible) {
-      this.logger.info('Found direct search input, typing plot ID');
-      await searchInput.click();
-      await searchInput.pressSequentially(plotId, { delay: 80 });
-      await this.page.waitForTimeout(1200);
-
-      const option = this.page.locator(IntermentSelectors.autocompleteOption(plotId)).first();
-      if (await option.isVisible({ timeout: 5000 }).catch(() => false)) {
-        await option.click();
-        this.logger.info(`Selected plot "${plotId}" from autocomplete`);
-        await this.page.waitForTimeout(500);
-        return;
-      }
-      this.logger.info('Autocomplete option not found after typing, trying mat-select fallback');
-    } else {
-      this.logger.info('Direct search input not visible, trying mat-select CDK overlay');
-    }
-
-    // Step 2: "Plott *" mat-select (second mat-select in dialog — Cemetery is first)
-    // Use formcontrolname if present, else nth(1) to get the second mat-select
-    let plotSelect = this.page.locator(IntermentSelectors.movePlotSelect).first();
-    const namedSelectVisible = await plotSelect.isVisible({ timeout: 3000 }).catch(() => false);
-    if (!namedSelectVisible) {
-      plotSelect = this.page.locator('[role="dialog"] mat-select, mat-dialog-container mat-select').nth(1);
-    }
 
     await plotSelect.waitFor({ state: 'visible', timeout: 8000 });
+    this.logger.info('Clicking Plot mat-select in move dialog');
     await plotSelect.click();
-    await this.page.waitForTimeout(800);
 
-    // After clicking, CDK overlay opens — may have a search input (mat-select with search)
-    const overlayInput = this.page.locator(
-      '.cdk-overlay-container input, .cdk-overlay-pane input'
+    // CDK overlay search input is rendered OUTSIDE the dialog — query from page root
+    const overlaySearchInput = this.page.locator(
+      '.cdk-overlay-container [data-testid="input-start-typing-to-search"], ' +
+      '.cdk-overlay-pane [data-testid="input-start-typing-to-search"]'
     ).first();
-    const overlayHasInput = await overlayInput.isVisible({ timeout: 3000 }).catch(() => false);
 
-    if (overlayHasInput) {
-      await overlayInput.pressSequentially(plotId, { delay: 80 });
-      await this.page.waitForTimeout(1000);
-    }
+    await overlaySearchInput.waitFor({ state: 'visible', timeout: 8000 });
+    this.logger.info(`Typing "${plotId}" in overlay search input`);
+    await overlaySearchInput.pressSequentially(plotId, { delay: 80 });
 
-    // Click the matching option from CDK overlay
-    const overlayOption = this.page.locator(IntermentSelectors.autocompleteOption(plotId)).first();
-    if (await overlayOption.isVisible({ timeout: 8000 }).catch(() => false)) {
-      await overlayOption.click();
+    // Use exact-match filter (RegExp anchor) to avoid "B B 1" matching "B B 10", "B B 11" etc.
+    // Wait up to 10s for the EXACT option (not "none") so we don't fall back to the null option.
+    const escaped = plotId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const allOptions = this.page.locator('.cdk-overlay-container mat-option, .cdk-overlay-pane mat-option');
+    const exactOption = allOptions.filter({ hasText: new RegExp(`^\\s*${escaped}\\s*$`) }).first();
+
+    const hasExact = await exactOption.waitFor({ state: 'visible', timeout: 10000 })
+      .then(() => true)
+      .catch(() => false);
+
+    if (hasExact) {
+      const text = await exactOption.textContent().catch(() => '');
+      this.logger.info(`Clicking exact match option: "${text?.trim()}"`);
+      await exactOption.click();
     } else {
-      // Last resort: click first available mat-option
-      const firstOption = this.page.locator('.cdk-overlay-container mat-option, .cdk-overlay-pane mat-option').first();
-      await firstOption.waitFor({ state: 'visible', timeout: 5000 });
-      this.logger.info(`Plot "${plotId}" option not found — clicking first available option`);
-      await firstOption.click();
+      // Exact plot not found (likely occupied). Clear the search and pick any first vacant plot.
+      this.logger.info(`Plot "${plotId}" not found — clearing search and picking first available vacant plot`);
+      await overlaySearchInput.press('Control+a');
+      await overlaySearchInput.fill('');
+      await this.page.waitForTimeout(500); // allow list to reset
+
+      // Wait for options to reload, skip the "none" placeholder (value = "")
+      const nonNoneOption = allOptions.filter({ hasNotText: /^\s*none\s*$/i }).first();
+      const hasFallback = await nonNoneOption.waitFor({ state: 'visible', timeout: 8000 })
+        .then(() => true)
+        .catch(() => false);
+
+      if (hasFallback) {
+        const text = await nonNoneOption.textContent().catch(() => '');
+        this.logger.info(`Fallback: clicking first available plot: "${text?.trim()}"`);
+        await nonNoneOption.click();
+      } else {
+        const count = await allOptions.count().catch(() => 0);
+        const texts: string[] = [];
+        for (let i = 0; i < Math.min(count, 5); i++) {
+          texts.push((await allOptions.nth(i).textContent().catch(() => ''))?.trim() ?? '');
+        }
+        throw new Error(`No vacant plot available in move dialog (searched "${plotId}") — options: [${texts.join(', ')}]`);
+      }
     }
 
-    await this.page.waitForTimeout(500);
-    this.logger.success(`Target plot "${plotId}" selected`);
+    await NetworkHelper.waitForStabilization(this.page, { minWait: 300, maxWait: 1000 });
+    this.logger.success(`Target plot selected (searched: "${plotId}")`);
   }
 
   /**
@@ -934,8 +958,14 @@ export class IntermentPage {
    */
   async confirmIntermentMove(): Promise<void> {
     this.logger.info('Confirming interment move');
-    const confirmBtn = this.page.locator(IntermentSelectors.moveConfirmButton).first();
+    // data-testid confirmed via browser inspection
+    const confirmBtn = this.page.locator('[data-testid="assign-plot-button"]').first();
     await confirmBtn.waitFor({ state: 'visible', timeout: 10000 });
+    // Wait for button to become enabled (plot selection must complete first)
+    await this.page.waitForFunction(
+      () => !document.querySelector('[data-testid="assign-plot-button"]')?.hasAttribute('disabled'),
+      { timeout: 10000 }
+    );
     await confirmBtn.click();
 
     // After move, expect to land on the target plot detail page

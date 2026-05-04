@@ -15,6 +15,12 @@ const PLACEHOLDER_MAP: Record<string, string> = {
   '<TEST_PASSWORD>': TEST_DATA.login.valid.password,
   '<TEST_ORG_NAME>': TEST_DATA.login.valid.organizationName,
 
+  // Role-based credentials (admin org user vs owner org user)
+  '<TEST_ADMIN_EMAIL>': process.env.TEST_ADMIN_EMAIL || '',
+  '<TEST_ADMIN_PASSWORD>': process.env.TEST_ADMIN_PASSWORD || '',
+  '<TEST_OWNER_EMAIL>': process.env.TEST_OWNER_EMAIL || '',
+  '<TEST_OWNER_PASSWORD>': process.env.TEST_OWNER_PASSWORD || '',
+
   // Cemetery & Plot data
   '<TEST_CEMETERY>': TEST_DATA.cemetery,
   '<TEST_SECTION>': TEST_DATA.plot.section,

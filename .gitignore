@@ -43,6 +43,12 @@ test-send-button.ts
 # Playwright CLI data
 .playwright-cli/
 
+# Claude Code internal files
+.claude/scheduled_tasks.lock
+
+# Test run reports (local only)
+docs/reports/
+
 # Playwright screenshots (MCP / debug)
 *.png
 !src/**/*.png

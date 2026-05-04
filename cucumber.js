@@ -3,7 +3,7 @@ export default {
     format: [
       'progress-bar',
       'html:cucumber-report.html',
-      'json:cucumber-report.json'
+      'json:cucumber-report.json',
     ],
     formatOptions: {
       snippetInterface: 'async-await'

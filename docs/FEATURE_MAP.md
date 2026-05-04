@@ -237,6 +237,22 @@ Baca ini sebelum menyentuh file apapun — hindari buka 4 file hanya untuk tahu 
 
 ---
 
+## Invoice from Sales Request
+
+| Item | Path |
+|------|------|
+| Feature file | `src/features/p0/invoiceFromSalesRequest.authenticated.feature` |
+| Steps | `src/steps/p0/invoiceFromSalesRequest.steps.ts` |
+| Page object | `src/pages/p0/InvoiceFromSalesRequestPage.ts` (11 methods) |
+| Selectors | `src/selectors/p0/invoice-from-sales-request/invoice-from-sales-request.selectors.ts` |
+| Snapshots | — (belum ada dedicated folder) |
+| Tags | `@p0 @invoice-from-sales-request @authenticated` |
+| Scenarios | 4 — TC-01 admin generate, TC-02 already exists, TC-03 owner regression, TC-04 sales menu regression |
+| Entry point | `/customer-admin/request` (admin) atau `/customer-organization/request` (owner) |
+| Notes | Bug fix: admin org user harus dapat generate invoice tanpa 403 "access denied". `<TEST_ADMIN_EMAIL>` / `<TEST_ADMIN_PASSWORD>` untuk admin, `<TEST_OWNER_EMAIL>` / `<TEST_OWNER_PASSWORD>` untuk owner |
+
+---
+
 ## Import (p1)
 
 | Item | Path |

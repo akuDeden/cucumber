@@ -930,48 +930,36 @@ export class SalesPage {
    */
   async clickAddSaleButton(): Promise<void> {
     this.logger.info('Clicking ADD SALE button on Edit page');
-    await this.page.waitForTimeout(2000);
 
-    // Try the primary "ADD SALE" button first
+    // Setup API listeners BEFORE click (same pattern as clickCreateSale)
+    const paymentMethodsPromise = this.page.waitForResponse(
+      (res) => res.url().includes('/payment-methods/') && res.status() === 200,
+      { timeout: 20000 }
+    ).catch(() => this.logger.info('payment-methods not called (may be cached)'));
+    const invoiceSettingsPromise = this.page.waitForResponse(
+      (res) => res.url().includes('/invoice-settings/') && res.status() === 200,
+      { timeout: 20000 }
+    ).catch(() => this.logger.info('invoice-settings not called (may be cached)'));
+
+    // Prefer "ADD SALE" button; fall back to Sales-section ADD or any ADD button
     const addSaleBtn = this.page.locator('button:has-text("ADD SALE"), a:has-text("ADD SALE")');
-    const hasPrimaryBtn = await addSaleBtn.isVisible({ timeout: 3000 }).catch(() => false);
+    const hasPrimaryBtn = await addSaleBtn.isVisible({ timeout: 5000 }).catch(() => false);
     if (hasPrimaryBtn) {
       this.logger.info('Found "ADD SALE" button — clicking');
       await addSaleBtn.click();
     } else {
-      this.logger.info('"ADD SALE" button not found — trying Sales section add button');
-      // Try various selectors for the "+ ADD" button in the Sales section
-      // The section heading may be "Sales" and has a nearby ADD/+ button
-      const candidates = [
-        this.page.locator('section:has-text("Sales") button:has-text("ADD")').first(),
-        this.page.locator('div:has-text("Sales") button:has-text("ADD")').last(),
-        this.page.locator('mat-card:has-text("Sales") button:has-text("ADD")').first(),
-        this.page.locator('button:has-text("ADD")').first(),
-      ];
-
-      let clicked = false;
-      for (const candidate of candidates) {
-        const isVis = await candidate.isVisible({ timeout: 3000 }).catch(() => false);
-        if (isVis) {
-          this.logger.info('Found Sales section ADD button via fallback — clicking');
-          await candidate.click();
-          clicked = true;
-          break;
-        }
-      }
-
-      if (!clicked) {
-        // Last resort: scroll down and look for any ADD button
-        await this.page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-        await this.page.waitForTimeout(1000);
-        const anyAddBtn = this.page.locator('button:has-text("ADD")').first();
-        await anyAddBtn.waitFor({ state: 'visible', timeout: 10000 });
-        await anyAddBtn.click();
-      }
+      // Person edit page has an ADD button inside the Sales section heading
+      const salesAddBtn = this.page.locator('h4:has-text("Sales") ~ button, h4:has-text("Sales") + button, [class*="sales"] button:has-text("ADD"), button:has-text("ADD")').first();
+      await salesAddBtn.waitFor({ state: 'visible', timeout: 15000 });
+      this.logger.info('Found Sales ADD button — clicking');
+      await salesAddBtn.click();
     }
+
     await this.page.waitForLoadState('domcontentloaded');
-    await this.page.waitForTimeout(2000);
-    this.logger.info('Navigated to Create Sale page');
+    await Promise.all([paymentMethodsPromise, invoiceSettingsPromise]);
+    // Wait for reference input to confirm form is ready
+    await this.page.waitForSelector(salesSelectors.referenceInput, { state: 'visible', timeout: 30000 });
+    this.logger.info('Navigated to Create Sale page, form ready');
   }
 
   /**

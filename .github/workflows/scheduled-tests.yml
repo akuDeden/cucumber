@@ -1,0 +1,121 @@
+name: Scheduled Tests by Tag
+
+on:
+  schedule:
+    # Runs every 5 hours
+    - cron: '0 */5 * * *'
+
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Cucumber tag(s) to run (e.g. @smoke, @p0, @login, @smoke and @p0)'
+        required: true
+        default: '@smoke'
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'staging'
+        type: choice
+        options:
+          - staging
+          - prod
+          - dev
+
+env:
+  # Default values for scheduled runs (cron)
+  DEFAULT_TAGS: '@smoke'
+  DEFAULT_ENV: 'staging'
+
+jobs:
+  run-tests:
+    name: Run Tests [${{ github.event.inputs.tags || '@smoke' }}] on [${{ github.event.inputs.environment || 'staging' }}]
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+
+      - name: Create .env file (staging)
+        if: ${{ (github.event.inputs.environment || 'staging') == 'staging' }}
+        run: |
+          cat <<EOF > .env.chronicle
+          BASE_URL=${{ secrets.STAGING_BASE_URL }}
+          USERNAME=${{ secrets.STAGING_USERNAME }}
+          PASSWORD=${{ secrets.STAGING_PASSWORD }}
+          CEMETERY=${{ secrets.STAGING_CEMETERY }}
+          REGION=${{ secrets.STAGING_REGION }}
+          EOF
+
+      - name: Create .env file (prod)
+        if: ${{ github.event.inputs.environment == 'prod' }}
+        run: |
+          cat <<EOF > .env.chronicle.prod
+          BASE_URL=${{ secrets.PROD_BASE_URL }}
+          USERNAME=${{ secrets.PROD_USERNAME }}
+          PASSWORD=${{ secrets.PROD_PASSWORD }}
+          CEMETERY=${{ secrets.PROD_CEMETERY }}
+          REGION=${{ secrets.PROD_REGION }}
+          EOF
+
+      - name: Create .env file (dev)
+        if: ${{ github.event.inputs.environment == 'dev' }}
+        run: |
+          cat <<EOF > .env.dev
+          BASE_URL=${{ secrets.DEV_BASE_URL }}
+          USERNAME=${{ secrets.DEV_USERNAME }}
+          PASSWORD=${{ secrets.DEV_PASSWORD }}
+          CEMETERY=${{ secrets.DEV_CEMETERY }}
+          REGION=${{ secrets.DEV_REGION }}
+          EOF
+
+      - name: Run tests
+        run: |
+          TAGS="${{ github.event.inputs.tags || env.DEFAULT_TAGS }}"
+          ENV="${{ github.event.inputs.environment || env.DEFAULT_ENV }}"
+          HEADLESS=true
+
+          echo "Running tag(s): $TAGS on environment: $ENV"
+
+          if [ "$ENV" = "staging" ]; then
+            dotenv -e .env.chronicle -- cross-env HEADLESS=true NODE_OPTIONS='--loader ts-node/esm' \
+              npx cucumber-js 'src/features/**/*.feature' \
+              --import 'src/**/*.ts' \
+              --tags "$TAGS" \
+              --format progress \
+              --format html:reports/cucumber-report.html
+          elif [ "$ENV" = "prod" ]; then
+            dotenv -e .env.chronicle.prod -- cross-env HEADLESS=true NODE_OPTIONS='--loader ts-node/esm' \
+              npx cucumber-js 'src/features/**/*.feature' \
+              --import 'src/**/*.ts' \
+              --tags "$TAGS" \
+              --format progress \
+              --format html:reports/cucumber-report.html
+          else
+            dotenv -e .env.dev -- cross-env HEADLESS=true NODE_OPTIONS='--loader ts-node/esm' \
+              npx cucumber-js 'src/features/**/*.feature' \
+              --import 'src/**/*.ts' \
+              --tags "$TAGS" \
+              --format progress \
+              --format html:reports/cucumber-report.html
+          fi
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cucumber-report-${{ github.run_number }}
+          path: reports/cucumber-report.html
+          retention-days: 14

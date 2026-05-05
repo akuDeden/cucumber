@@ -14,7 +14,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 519000542
+              "duration": 593948375
             }
           },
           {
@@ -27,7 +27,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 6301217957
+              "duration": 8634981707
             }
           },
           {
@@ -40,7 +40,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 2023808457
+              "duration": 2112583374
             }
           },
           {
@@ -53,7 +53,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1977144039
+              "duration": 1979874291
             }
           },
           {
@@ -66,7 +66,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1471136583
+              "duration": 1462790875
             }
           },
           {
@@ -79,7 +79,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 17589353917
+              "duration": 16762263333
             }
           },
           {
@@ -92,7 +92,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 22385257207
+              "duration": 27255317123
             }
           },
           {
@@ -105,7 +105,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4766425414
+              "duration": 6477001622
             }
           },
           {
@@ -165,7 +165,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 8974526289
+              "duration": 8978221792
             }
           },
           {
@@ -178,7 +178,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 4459123333
+              "duration": 4459853373
             }
           },
           {
@@ -191,7 +191,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 22442512123
+              "duration": 27341149707
             }
           },
           {
@@ -199,7 +199,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 1234679375
+              "duration": 1248995083
             }
           }
         ],
@@ -243,7 +243,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 422392959
+              "duration": 165214292
             }
           },
           {
@@ -256,7 +256,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 6354058874
+              "duration": 5482086625
             }
           },
           {
@@ -269,7 +269,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1992827248
+              "duration": 2400831248
             }
           },
           {
@@ -282,7 +282,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1961068292
+              "duration": 1967857874
             }
           },
           {
@@ -295,7 +295,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1463011666
+              "duration": 1463632081
             }
           },
           {
@@ -308,7 +308,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 14489194832
+              "duration": 11640979124
             }
           },
           {
@@ -321,7 +321,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 22439466331
+              "duration": 22939063122
             }
           },
           {
@@ -334,8 +334,8 @@
             },
             "result": {
               "status": "failed",
-              "duration": 53275727583,
-              "error_message": "page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('mat-row') to be visible\u001b[22m\n\n    at BusinessPage.clickFirstTableRow (/Users/endriyanto/Work/Work_Chronicle/Ai Project/cucumber_3/cucumber/src/pages/p0/BusinessPage.ts:229:29)\n    at async CustomWorld.<anonymous> (/Users/endriyanto/Work/Work_Chronicle/Ai Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:45:31)"
+              "duration": 60945230915,
+              "error_message": "Error: function timed out, ensure the promise resolves within 60000 milliseconds\n    at Timeout.<anonymous> (/Users/endriyanto/Work/Work_Chronicle/Ai Project/cucumber_3/cucumber/node_modules/@cucumber/cucumber/lib/time.js:54:20)\n    at listOnTimeout (node:internal/timers:588:17)\n    at process.processTimers (node:internal/timers:523:7)"
             }
           },
           {
@@ -405,7 +405,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 6860497208
+              "duration": 2160892583
             }
           }
         ],
@@ -449,7 +449,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 98831541
+              "duration": 94161374
             }
           },
           {
@@ -462,7 +462,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 6886187084
+              "duration": 5316181625
             }
           },
           {
@@ -475,7 +475,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 2040940501
+              "duration": 2029343999
             }
           },
           {
@@ -488,7 +488,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1969410041
+              "duration": 1972120207
             }
           },
           {
@@ -501,7 +501,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1475403747
+              "duration": 1468689374
             }
           },
           {
@@ -514,7 +514,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 11194875624
+              "duration": 13083578957
             }
           },
           {
@@ -527,7 +527,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 22858519957
+              "duration": 24156422333
             }
           },
           {
@@ -539,9 +539,8 @@
               "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:42"
             },
             "result": {
-              "status": "failed",
-              "duration": 16561173249,
-              "error_message": "page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('mat-row') to be visible\u001b[22m\n\n    at BusinessPage.clickFirstTableRow (/Users/endriyanto/Work/Work_Chronicle/Ai Project/cucumber_3/cucumber/src/pages/p0/BusinessPage.ts:229:29)\n    at async CustomWorld.<anonymous> (/Users/endriyanto/Work/Work_Chronicle/Ai Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:45:31)"
+              "status": "passed",
+              "duration": 16600666958
             }
           },
           {
@@ -553,8 +552,8 @@
               "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:66"
             },
             "result": {
-              "status": "skipped",
-              "duration": 0
+              "status": "passed",
+              "duration": 2559130249
             }
           },
           {
@@ -566,8 +565,8 @@
               "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:69"
             },
             "result": {
-              "status": "skipped",
-              "duration": 0
+              "status": "passed",
+              "duration": 6776679415
             }
           },
           {
@@ -579,8 +578,9 @@
               "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:72"
             },
             "result": {
-              "status": "skipped",
-              "duration": 0
+              "status": "failed",
+              "duration": 25942687790,
+              "error_message": "Error: function timed out, ensure the promise resolves within 25000 milliseconds\n    at Timeout.<anonymous> (/Users/endriyanto/Work/Work_Chronicle/Ai Project/cucumber_3/cucumber/node_modules/@cucumber/cucumber/lib/time.js:54:20)\n    at listOnTimeout (node:internal/timers:588:17)\n    at process.processTimers (node:internal/timers:523:7)"
             }
           },
           {
@@ -588,7 +588,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 6816856041
+              "duration": 6818900332
             }
           }
         ],

@@ -15,7 +15,7 @@ Meningkatkan konsistensi dan maintainability test data dengan mensentralkan konf
    - `'Astana Tegal Gundul'` di login
    
 2. **Hardcoded URLs**:
-   - `'https://staging.chronicle.rip/astana_tegal_gundul_us'`
+   - `'https://project.chronicle.rip/astana_tegal_gundul_us'`
    - `'https://staging-aus.chronicle.rip/customer-organization/...'`
    
 3. **Region Tidak Terpusat**:
@@ -35,7 +35,7 @@ Meningkatkan konsistensi dan maintainability test data dengan mensentralkan konf
 ```typescript
 // TAMBAHAN: Region di BASE_CONFIG
 export const BASE_CONFIG = {
-  baseUrl: 'https://staging.chronicle.rip',
+  baseUrl: 'https://project.chronicle.rip',
   region: 'aus'  // ✨ BARU
 }
 
@@ -57,8 +57,8 @@ export function getCemeteryDisplayName()
 // BEFORE
 cemetery: {
   name: 'Astana Tegal Gundul US',
-  url: 'https://staging.chronicle.rip/astana_tegal_gundul_us',
-  sellPlotsUrl: 'https://staging.chronicle.rip/astana_tegal_gundul_us/sell-plots'
+  url: 'https://project.chronicle.rip/astana_tegal_gundul_us',
+  sellPlotsUrl: 'https://project.chronicle.rip/astana_tegal_gundul_us/sell-plots'
 }
 
 // AFTER
@@ -144,19 +144,19 @@ BASE_URL=https://production.chronicle.rip npm test
 ```bash
 npm test -- --tags "@request-sales-form-pre-need"
 ```
-URL yang digunakan: `https://staging.chronicle.rip/astana_tegal_gundul_aus`
+URL yang digunakan: `https://project.chronicle.rip/astana_tegal_gundul_aus`
 
 ### Test dengan Region US
 ```bash
 REGION=us npm test -- --tags "@request-sales-form-pre-need"
 ```
-URL yang digunakan: `https://staging.chronicle.rip/astana_tegal_gundul_us`
+URL yang digunakan: `https://project.chronicle.rip/astana_tegal_gundul_us`
 
 ### Test dengan Region UK
 ```bash
 REGION=uk npm test -- --tags "@request-sales-form-pre-need"
 ```
-URL yang digunakan: `https://staging.chronicle.rip/astana_tegal_gundul_uk`
+URL yang digunakan: `https://project.chronicle.rip/astana_tegal_gundul_uk`
 
 ## Backward Compatibility
 

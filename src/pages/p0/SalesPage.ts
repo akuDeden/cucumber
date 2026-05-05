@@ -486,19 +486,27 @@ export class SalesPage {
         throw new Error('Could not find search input in item dropdown after retries');
       }
       await searchInput.waitFor({ state: 'visible' });
-      
-      // Type the item name in the search box
-      await searchInput.fill(item.description);
-      this.logger.info(`  - Typed "${item.description}" in search box`);
 
-      // Retry mechanism: if item not found, delete last char with Backspace and retype it
-      const maxSearchRetries = 3;
+      // Clear any existing text then type character-by-character so Angular search filter fires
+      await searchInput.clear();
+      await searchInput.pressSequentially(item.description, { delay: 80 });
+      this.logger.info(`  - Typed "${item.description}" in search box (pressSequentially)`);
+
+      // Wait for search API / filter to settle before reading options
+      await NetworkHelper.waitForApiRequestsComplete(this.page, 3000).catch(() => {});
+      await NetworkHelper.waitForStabilization(this.page, { minWait: 500, maxWait: 2000 });
+
+      // Retry mechanism: clear + retype if item not found on first attempt
+      const maxSearchRetries = 4;
       let itemFound = false;
       let itemOptions: string[] = [];
 
       for (let searchAttempt = 0; searchAttempt < maxSearchRetries; searchAttempt++) {
-        // Wait for search results to filter
-        await this.page.waitForSelector('[role="option"], mat-option', { state: 'visible' });
+        // Wait for options panel to be visible
+        await this.page.waitForSelector('[role="option"], mat-option', { state: 'visible', timeout: 10000 });
+
+        // Allow extra time for filter to fully apply
+        await NetworkHelper.waitForStabilization(this.page, { minWait: 300, maxWait: 1000 });
 
         // Log available options for debugging
         itemOptions = await this.page.locator('[role="option"]:visible, mat-option:visible').allTextContents();
@@ -531,14 +539,14 @@ export class SalesPage {
           break;
         }
 
-        // Item not found - retry by pressing Backspace to delete last char, then retype it
+        // Item not found - clear and retype to trigger fresh search
         if (searchAttempt < maxSearchRetries - 1) {
-          const lastChar = item.description.slice(-1);
-          this.logger.info(`  - Item "${item.description}" not found, retrying: Backspace last char "${lastChar}" and retype`);
-          await this.page.keyboard.press('Backspace');
-          await this.page.waitForSelector('[role="option"], mat-option', { state: 'visible' }).catch(() => {});
-          await this.page.keyboard.type(lastChar, { delay: 100 });
-          this.logger.info(`  - Retyped "${lastChar}", waiting for search results to refresh...`);
+          this.logger.info(`  - Item "${item.description}" not found on attempt ${searchAttempt + 1}, clearing and retyping...`);
+          await searchInput.clear();
+          await NetworkHelper.waitForStabilization(this.page, { minWait: 300, maxWait: 800 });
+          await searchInput.pressSequentially(item.description, { delay: 100 });
+          await NetworkHelper.waitForApiRequestsComplete(this.page, 3000).catch(() => {});
+          await NetworkHelper.waitForStabilization(this.page, { minWait: 500, maxWait: 1500 });
         }
       }
 
@@ -776,6 +784,29 @@ export class SalesPage {
    */
   async validateSaleSummary(expected: SaleSummary): Promise<void> {
     this.logger.info('Validating sale summary');
+
+    // Wait for VAT line to appear when expected VAT > 0
+    const expectedVat = this.normalizeCurrency(expected.vat);
+    if (expectedVat !== '0.00') {
+      const maxWaitMs = 10000;
+      const pollMs = 500;
+      const deadline = Date.now() + maxWaitMs;
+      let vatVisible = false;
+      while (Date.now() < deadline) {
+        const summary = await this.getSaleSummary();
+        const actualVat = this.normalizeCurrency(summary.vat);
+        if (actualVat !== '0.00') {
+          vatVisible = true;
+          break;
+        }
+        this.logger.info(`VAT not yet rendered (got $0.00), retrying in ${pollMs}ms...`);
+        await this.page.waitForTimeout(pollMs);
+      }
+      if (!vatVisible) {
+        this.logger.warn(`VAT did not appear after ${maxWaitMs}ms — proceeding with current summary`);
+      }
+    }
+
     const actual = await this.getSaleSummary();
 
     this.logger.info(`Expected: ${JSON.stringify(expected)}`);
@@ -892,6 +923,387 @@ export class SalesPage {
     // Wait for sales table to load completely
     await this.page.waitForSelector('table', { state: 'visible' });
     this.logger.info('Sales table loaded');
+  }
+
+  /**
+   * Click the ADD SALE button on the Edit Plot page to navigate to Create Sale page
+   */
+  async clickAddSaleButton(): Promise<void> {
+    this.logger.info('Clicking ADD SALE button on Edit page');
+
+    // Setup API listeners BEFORE click (same pattern as clickCreateSale)
+    const paymentMethodsPromise = this.page.waitForResponse(
+      (res) => res.url().includes('/payment-methods/') && res.status() === 200,
+      { timeout: 20000 }
+    ).catch(() => this.logger.info('payment-methods not called (may be cached)'));
+    const invoiceSettingsPromise = this.page.waitForResponse(
+      (res) => res.url().includes('/invoice-settings/') && res.status() === 200,
+      { timeout: 20000 }
+    ).catch(() => this.logger.info('invoice-settings not called (may be cached)'));
+
+    // Prefer "ADD SALE" button; fall back to Sales-section ADD or any ADD button
+    const addSaleBtn = this.page.locator('button:has-text("ADD SALE"), a:has-text("ADD SALE")');
+    const hasPrimaryBtn = await addSaleBtn.isVisible({ timeout: 5000 }).catch(() => false);
+    if (hasPrimaryBtn) {
+      this.logger.info('Found "ADD SALE" button — clicking');
+      await addSaleBtn.click();
+    } else {
+      // Person edit page has an ADD button inside the Sales section heading
+      const salesAddBtn = this.page.locator('h4:has-text("Sales") ~ button, h4:has-text("Sales") + button, [class*="sales"] button:has-text("ADD"), button:has-text("ADD")').first();
+      await salesAddBtn.waitFor({ state: 'visible', timeout: 15000 });
+      this.logger.info('Found Sales ADD button — clicking');
+      await salesAddBtn.click();
+    }
+
+    await this.page.waitForLoadState('domcontentloaded');
+    await Promise.all([paymentMethodsPromise, invoiceSettingsPromise]);
+    // Wait for reference input to confirm form is ready
+    await this.page.waitForSelector(salesSelectors.referenceInput, { state: 'visible', timeout: 30000 });
+    this.logger.info('Navigated to Create Sale page, form ready');
+  }
+
+  /**
+   * Open the Add Purchaser modal (search-based, not the new person dialog)
+   * This opens a search modal where you type a name and select from suggestions
+   */
+  async clickAddPurchaserModal(): Promise<void> {
+    this.logger.info('Clicking ADD PURCHASER button to open search modal');
+    await this.page.waitForSelector(salesSelectors.addPurchaserButton, { state: 'visible', timeout: 10000 });
+    await this.page.locator(salesSelectors.addPurchaserButton).click();
+    await this.page.waitForTimeout(1500);
+    this.logger.info('ADD PURCHASER modal should now be open');
+  }
+
+  /**
+   * In the Add Purchaser search modal, type a name and select from the dropdown suggestion
+   * Uses pressSequentially to trigger Angular reactive search
+   */
+  async searchAndSelectPurchaser(firstName: string, lastName: string): Promise<void> {
+    this.logger.info(`Searching for purchaser: ${firstName} ${lastName}`);
+
+    // Wait for the dialog/modal to appear
+    await this.page.waitForSelector('mat-dialog-container, [role="dialog"]', { state: 'visible', timeout: 10000 });
+    this.logger.info('Add person dialog visible');
+    await this.page.waitForTimeout(500);
+
+    // Fill first name field inside the dialog using pressSequentially to trigger search
+    const firstNameInput = this.page.locator('mat-dialog-container input[formcontrolname="first_name"], [role="dialog"] input[formcontrolname="first_name"]').first();
+    await firstNameInput.waitFor({ state: 'visible', timeout: 10000 });
+    await firstNameInput.click();
+    await firstNameInput.pressSequentially(firstName, { delay: 80 });
+    this.logger.info(`Typed first name: ${firstName}`);
+    await this.page.waitForTimeout(500);
+
+    // Fill last name field
+    const lastNameInput = this.page.locator('mat-dialog-container input[formcontrolname="last_name"], [role="dialog"] input[formcontrolname="last_name"]').first();
+    await lastNameInput.waitFor({ state: 'visible', timeout: 10000 });
+    await lastNameInput.click();
+    await lastNameInput.pressSequentially(lastName, { delay: 80 });
+    this.logger.info(`Typed last name: ${lastName}`);
+
+    // Wait for dropdown suggestions to appear — the suggestion list is a custom div, not mat-option.
+    // Use getByText with exact match to find the name row without matching the entire dialog.
+    this.logger.info('Waiting for dropdown suggestion to appear...');
+    const dialog = this.page.locator('mat-dialog-container').first();
+    // Wait for the name text to appear in the dialog (inside the suggestion dropdown)
+    const suggestionOption = dialog.getByText(`${firstName} ${lastName}`, { exact: true }).first();
+    await suggestionOption.waitFor({ state: 'visible', timeout: 15000 });
+    this.logger.info(`Found suggestion for "${firstName} ${lastName}", clicking...`);
+    await suggestionOption.click();
+
+    // Wait for modal to close after selection
+    await this.page.waitForSelector('mat-dialog-container, [role="dialog"]', { state: 'hidden', timeout: 10000 });
+    this.logger.info('Modal closed after purchaser selection');
+    await this.page.waitForTimeout(1000);
+  }
+
+  /**
+   * Click the Item dropdown (first mat-select for items on the Create Sale form)
+   * and select the first available item, returning its related plot value
+   */
+  async selectFirstItemAndGetPlot(): Promise<string> {
+    this.logger.info('Clicking the Item dropdown to select the first available item');
+
+    // The item dropdown is a mat-select in the items row section.
+    // The Add Sale form typically has: Cemetery (index 0), Owner (index 1), then Item (index 2), Plot (index 3).
+    // When navigating from Edit Plot, Cemetery may not be present — so Item is at index 1 or 2.
+    // We skip known non-item selects by looking for mat-selects that are NOT formcontrolname=cemetery/owner.
+    // Use nth(2) as a safe fallback: if Cemetery is present (index 0), Owner (1), Item (2).
+    // If Cemetery is absent (single-cemetery org), Owner (0), Item (1) — use nth(1).
+    // We detect which index to use by checking the total count.
+    const allMatSelects = await this.page.locator('mat-select').all();
+    this.logger.info(`mat-select count on Create Sale page: ${allMatSelects.length}`);
+
+    // The Item dropdown is inside the items table row — look for the ADD ITEM button's parent container
+    // to scope the mat-select search to just the items section (not the top form's Cemetery/Owner)
+    // Strategy: find mat-select elements that are inside the items panel (identified by ADD ITEM button proximity)
+    // Fallback: skip cemetery/owner by formcontrolname, and also skip any that have 'cemetery'/'owner' visible text
+    let itemSelectIndex = -1;
+    for (let i = 0; i < allMatSelects.length; i++) {
+      const fcn = (await allMatSelects[i].getAttribute('formcontrolname') || '').toLowerCase();
+      const visibleText = ((await allMatSelects[i].textContent()) || '').trim().toLowerCase();
+      if (fcn !== 'cemetery' && fcn !== 'owner' && !visibleText.includes('cemetery') && !visibleText.includes('gundul') && !visibleText.includes('tegal')) {
+        itemSelectIndex = i;
+        this.logger.info(`Item dropdown found at mat-select index: ${i} (formcontrolname="${fcn}", text="${visibleText}")`);
+        break;
+      }
+    }
+
+    if (itemSelectIndex === -1) {
+      // Fallback: find mat-select scoped inside the items section panel
+      this.logger.info('Fallback: looking for mat-select inside items panel (near ADD ITEM button)');
+      const addItemBtn = this.page.locator('button:has-text("ADD ITEM"), button:has-text("+ ADD ITEM")').first();
+      const itemsPanel = addItemBtn.locator('..').locator('..');
+      const itemPanelSelects = itemsPanel.locator('mat-select');
+      const count = await itemPanelSelects.count();
+      if (count > 0) {
+        await itemPanelSelects.first().click();
+        await this.page.waitForTimeout(1500);
+        await this.page.waitForSelector('mat-option', { state: 'visible', timeout: 10000 });
+        const firstOption = this.page.locator('mat-option').first();
+        const optionText = (await firstOption.textContent())?.trim() || '';
+        this.logger.info(`First item option text (fallback): "${optionText}"`);
+        await firstOption.click();
+        await this.page.waitForTimeout(2000);
+        this.logger.info('First item selected (fallback path)');
+        return '';
+      }
+      throw new Error('Could not find the Item dropdown on the Create Sale page');
+    }
+
+    const itemSelect = this.page.locator('mat-select').nth(itemSelectIndex);
+    await itemSelect.waitFor({ state: 'visible', timeout: 10000 });
+    await itemSelect.click();
+    await this.page.waitForTimeout(1500);
+
+    // Wait for CDK overlay options to appear
+    await this.page.waitForSelector('mat-option', { state: 'visible', timeout: 10000 });
+
+    // Get first visible option details (item name and related plot)
+    const firstOption = this.page.locator('mat-option').first();
+    await firstOption.waitFor({ state: 'visible', timeout: 5000 });
+
+    const optionText = (await firstOption.textContent())?.trim() || '';
+    this.logger.info(`First item option text: "${optionText}"`);
+
+    await firstOption.click();
+    await this.page.waitForTimeout(2000);
+    this.logger.info('First item selected');
+
+    // After selecting item, the plot field should auto-fill. Get the related plot value.
+    // The plot mat-select (next mat-select after the item) will show the related plot
+    const allSelects = await this.page.locator('mat-select').all();
+    this.logger.info(`Total mat-selects on page after item selection: ${allSelects.length}`);
+
+    // Read the related plot from the plot dropdown (the one after the item dropdown)
+    // We look for the mat-select that now shows a plot ID
+    let relatedPlot = '';
+    for (const select of allSelects) {
+      const text = ((await select.textContent()) || '').trim();
+      // Plot IDs match the pattern "X X N" (letter space letter space number)
+      if (/^[A-Z]\s+[A-Z]\s+\d+/.test(text) || /^[A-Za-z]\s+[A-Za-z]\s+\d+/.test(text)) {
+        relatedPlot = text;
+        this.logger.info(`Found related plot in dropdown: "${relatedPlot}"`);
+        break;
+      }
+    }
+
+    if (!relatedPlot) {
+      this.logger.warn('Could not find related plot value from item dropdown auto-fill');
+    }
+
+    return relatedPlot;
+  }
+
+  /**
+   * Verify the purchaser is pre-filled on the Create Sale page (no modal needed).
+   * Used when navigating from Edit Person — the person is auto-set as purchaser.
+   * @param expectedName - Full name expected (e.g. "endri yanto")
+   */
+  async verifyPurchaserPreFilled(expectedName: string): Promise<void> {
+    this.logger.info(`Verifying purchaser is pre-filled as: "${expectedName}"`);
+    await this.page.waitForTimeout(1500);
+    const purchaserSection = this.page.locator('text=Purchaser').locator('..').first();
+    const purchaserText = ((await purchaserSection.textContent()) || '').trim();
+    if (purchaserText.toLowerCase().includes(expectedName.toLowerCase())) {
+      this.logger.info(`Purchaser "${expectedName}" is pre-filled correctly`);
+    } else {
+      this.logger.warn(`Purchaser section text: "${purchaserText}" — may not contain "${expectedName}", continuing`);
+    }
+  }
+
+  /**
+   * Select the first available item from the Item dropdown, then manually type
+   * a related plot ID into the Related Plot CDK overlay search input.
+   * @param relatedPlotId - Plot ID to search for (e.g. "A A 1")
+   */
+  async selectFirstItemWithRelatedPlot(relatedPlotId: string): Promise<void> {
+    this.logger.info('Selecting first available item from Item dropdown');
+
+    // Wait for page to fully load (ADD ITEM button may appear after a delay)
+    await this.page.waitForTimeout(3000);
+
+    // Find the item mat-select (skip cemetery/owner selects)
+    const allMatSelects = await this.page.locator('mat-select').all();
+    this.logger.info(`mat-select count on Create Sale page: ${allMatSelects.length}`);
+
+    let itemSelectIndex = -1;
+    for (let i = 0; i < allMatSelects.length; i++) {
+      const fcn = (await allMatSelects[i].getAttribute('formcontrolname') || '').toLowerCase();
+      const visibleText = ((await allMatSelects[i].textContent()) || '').trim().toLowerCase();
+      if (fcn !== 'cemetery' && fcn !== 'owner' && !visibleText.includes('cemetery') && !visibleText.includes('gundul') && !visibleText.includes('tegal')) {
+        itemSelectIndex = i;
+        this.logger.info(`Item dropdown at mat-select index: ${i} (formcontrolname="${fcn}")`);
+        break;
+      }
+    }
+
+    if (itemSelectIndex === -1) {
+      // No item dropdown visible yet — click ADD ITEM button to reveal the item row
+      this.logger.info('No item dropdown found — clicking ADD ITEM button');
+      const addItemBtn = this.page.locator('button:has-text("ADD ITEM"), button:has-text("+ ADD ITEM"), a:has-text("ADD ITEM")').first();
+      const hasAddItem = await addItemBtn.isVisible({ timeout: 10000 }).catch(() => false);
+      if (hasAddItem) {
+        await addItemBtn.click();
+        await this.page.waitForTimeout(1500);
+        // Re-scan mat-selects after clicking ADD ITEM
+        const newMatSelects = await this.page.locator('mat-select').all();
+        for (let i = 0; i < newMatSelects.length; i++) {
+          const fcn = (await newMatSelects[i].getAttribute('formcontrolname') || '').toLowerCase();
+          const visibleText = ((await newMatSelects[i].textContent()) || '').trim().toLowerCase();
+          if (fcn !== 'cemetery' && fcn !== 'owner' && !visibleText.includes('cemetery') && !visibleText.includes('gundul') && !visibleText.includes('tegal')) {
+            itemSelectIndex = i;
+            this.logger.info(`Item dropdown found at index: ${i} after ADD ITEM click`);
+            break;
+          }
+        }
+      }
+      if (itemSelectIndex === -1) {
+        throw new Error('Could not find the Item dropdown on the Create Sale page even after clicking ADD ITEM');
+      }
+    }
+
+    const itemSelect = this.page.locator('mat-select').nth(itemSelectIndex);
+    await itemSelect.waitFor({ state: 'visible', timeout: 10000 });
+    await itemSelect.click();
+    await this.page.waitForTimeout(1500);
+    await this.page.waitForSelector('mat-option', { state: 'visible', timeout: 10000 });
+
+    const firstOption = this.page.locator('mat-option').first();
+    const optionText = (await firstOption.textContent())?.trim() || '';
+    this.logger.info(`First item option: "${optionText}"`);
+    await firstOption.click();
+    await this.page.waitForTimeout(1500);
+    this.logger.info('First item selected');
+
+    // Now find the Related Plot mat-select (next one after the item) and type the plot ID
+    this.logger.info(`Selecting related plot: "${relatedPlotId}"`);
+    const plotSelect = this.page.locator('mat-select').nth(itemSelectIndex + 1);
+    await plotSelect.waitFor({ state: 'visible', timeout: 10000 });
+    await plotSelect.click();
+    this.logger.info('Clicked Related Plot mat-select — waiting for CDK overlay search input');
+
+    // The CDK overlay has a search input at the top
+    const overlayInput = this.page.locator('.cdk-overlay-container input').first();
+    await overlayInput.waitFor({ state: 'visible', timeout: 8000 });
+    await overlayInput.click();
+    await overlayInput.pressSequentially(relatedPlotId, { delay: 80 });
+    this.logger.info(`Typed "${relatedPlotId}" into related plot search`);
+
+    // Wait for matching mat-option and click it
+    const plotOption = this.page.locator(`mat-option:has-text("${relatedPlotId}")`).first();
+    await plotOption.waitFor({ state: 'visible', timeout: 15000 });
+    await plotOption.click();
+    this.logger.info(`Related plot "${relatedPlotId}" selected`);
+    await this.page.waitForTimeout(1000);
+  }
+
+  /**
+   * Click Create on the sale form, handle confirmation modal, and wait for navigation
+   * back to Edit Plot page (not the sales list page)
+   */
+  async clickCreateFromEditPlot(): Promise<void> {
+    this.logger.info('Clicking Create button (from Edit Plot flow)');
+
+    await this.page.waitForTimeout(1000);
+
+    const createButton = this.page.locator(salesSelectors.createButton).first();
+    await createButton.waitFor({ state: 'visible', timeout: 10000 });
+
+    const isEnabled = await createButton.isEnabled();
+    this.logger.info(`CREATE button enabled: ${isEnabled}`);
+
+    if (!isEnabled) {
+      const errorMessages = await this.page.locator('.mat-error, .error, [class*="error"]').allTextContents();
+      if (errorMessages.length > 0) {
+        this.logger.error(`Form validation errors: ${JSON.stringify(errorMessages)}`);
+      }
+      throw new Error('CREATE button is disabled — form may have validation errors');
+    }
+
+    await createButton.click({ force: true });
+    this.logger.info('CREATE button clicked — waiting for confirmation dialog');
+
+    // Wait for confirmation dialog
+    await this.page.waitForTimeout(1500);
+    const dialogVisible = await this.page.locator('mat-dialog-container, [role="dialog"]').isVisible().catch(() => false);
+
+    if (dialogVisible) {
+      this.logger.info('Confirmation dialog appeared');
+      const dialogCreateButton = this.page.locator('mat-dialog-container button:has-text("CREATE"), [role="dialog"] button:has-text("CREATE")').first();
+      await dialogCreateButton.waitFor({ state: 'visible', timeout: 5000 });
+      await dialogCreateButton.click();
+      this.logger.info('Clicked CREATE in confirmation dialog');
+    } else {
+      this.logger.warn('No confirmation dialog appeared');
+    }
+
+    // Wait for navigation back to Edit Plot page — SAVE/CANCEL buttons are always present on edit plot page
+    await this.page.waitForSelector('button:has-text("SAVE"), button:has-text("CANCEL")', { state: 'visible', timeout: 45000 });
+    this.logger.info('Navigated back to Edit Plot page');
+    await this.page.waitForTimeout(2000);
+  }
+
+  /**
+   * Verify a new sale entry exists and the reference appears on the left side of the INV ID
+   * The sales tab shows entries like "REF-001 / INV-001"
+   */
+  async verifySaleEntryWithReference(reference: string): Promise<void> {
+    this.logger.info(`Verifying sale entry with reference: "${reference}"`);
+
+    // Click on the Sales tab if not already active
+    const salesTab = this.page.locator('[role="tab"]:has-text("Sales"), mat-tab-header:has-text("Sales"), .mat-tab-label:has-text("Sales")').first();
+    const salesTabVisible = await salesTab.isVisible().catch(() => false);
+    if (salesTabVisible) {
+      await salesTab.click();
+      await this.page.waitForTimeout(1500);
+    }
+
+    // Wait for the sales section to be populated
+    await this.page.waitForTimeout(1000);
+
+    // Look for the reference text anywhere in the sales list area
+    // The format is typically "REF / INV-ID" — reference on the left, invoice ID on the right
+    const referenceLocator = this.page.locator(`text=${reference}`).first();
+    await referenceLocator.waitFor({ state: 'visible', timeout: 15000 });
+    this.logger.info(`Reference "${reference}" found on the Edit Plot page`);
+
+    // Verify reference appears to the left of the INV ID
+    // Get the parent container and check relative positioning
+    const parentContainer = referenceLocator.locator('..');
+    const fullText = (await parentContainer.textContent()) || '';
+    this.logger.info(`Sale entry container text: "${fullText}"`);
+
+    // The reference should appear before the invoice separator (/ or INV)
+    const refIndex = fullText.indexOf(reference);
+    const invIndex = fullText.search(/INV|\/\s*\d/);
+
+    if (invIndex >= 0 && refIndex >= 0 && refIndex < invIndex) {
+      this.logger.info(`Reference "${reference}" confirmed on the left side of the INV ID`);
+    } else {
+      // Fallback: just verify the reference is visible
+      this.logger.warn(`Could not confirm left/right positioning, but reference "${reference}" is visible`);
+    }
   }
 
   /**

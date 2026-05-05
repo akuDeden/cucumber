@@ -7,6 +7,14 @@ import { BASE_CONFIG } from '../data/test-data.js';
 import * as fs from 'fs';
 import * as path from 'path';
 
+interface ScenarioResult {
+  feature: string;
+  name: string;
+  status: 'PASS' | 'FAIL';
+}
+
+const runResults: ScenarioResult[] = [];
+
 /**
  * Global Hooks for Cucumber
  * setDefaultTimeout MUST be at module level — inside BeforeAll it does NOT apply to steps/hooks
@@ -29,7 +37,89 @@ AfterAll(async function () {
   const browserManager = BrowserManager.getInstance();
   await browserManager.closeBrowser();
   Logger.info('Test execution completed');
+
+  if (runResults.length > 0) {
+    saveTxtReport();
+  }
 });
+
+function saveTxtReport(): void {
+  const date = new Date().toISOString().slice(0, 10);
+  const env = process.env.ENVIRONMENT ?? 'local';
+  const region = process.env.REGION ?? '';
+
+  const tagsIdx = process.argv.indexOf('--tags');
+  const rawTags = tagsIdx >= 0 ? (process.argv[tagsIdx + 1] ?? '') : '';
+  const tagSlug = rawTags
+    .replace(/[@\s"']/g, '')
+    .replace(/\s*and\s+not\s+.*$/i, '')
+    .replace(/[^a-zA-Z0-9-]/g, '_')
+    || 'all';
+
+  const envPart = region ? `${env}_${region}` : env;
+  const filename = `${date}_${tagSlug}_${envPart}.txt`;
+  const outputDir = path.join(process.cwd(), 'docs', 'reports');
+  fs.mkdirSync(outputDir, { recursive: true });
+
+  const passed = runResults.filter(r => r.status === 'PASS').length;
+  const failed = runResults.filter(r => r.status === 'FAIL').length;
+  const total = runResults.length;
+  const envDisplay = [env, region].filter(Boolean).join('-').toUpperCase() || 'LOCAL';
+
+  const byFeature = new Map<string, ScenarioResult[]>();
+  for (const r of runResults) {
+    if (!byFeature.has(r.feature)) byFeature.set(r.feature, []);
+    byFeature.get(r.feature)!.push(r);
+  }
+
+  const SEP = '='.repeat(80);
+  const sep = '-'.repeat(80);
+  const lines: string[] = [];
+
+  lines.push(SEP);
+  lines.push(`TEST REPORT`);
+  lines.push(`Date       : ${date}`);
+  lines.push(`Environment: ${envDisplay}`);
+  lines.push(`Tags       : ${rawTags || 'all'}`);
+  lines.push(`Result     : ${passed} passed, ${failed} failed, ${total} total`);
+  lines.push(SEP);
+  lines.push('');
+
+  for (const [feature, scenarios] of byFeature) {
+    const fP = scenarios.filter(s => s.status === 'PASS').length;
+    const fF = scenarios.filter(s => s.status === 'FAIL').length;
+    lines.push(`[${feature.toUpperCase()}]  ${fP}P ${fF}F`);
+    lines.push(sep);
+    lines.push(` Status | Scenario`);
+    lines.push(sep);
+    for (const s of scenarios) {
+      lines.push(` ${s.status === 'PASS' ? 'PASS  ' : 'FAIL  '} | ${s.name}`);
+    }
+    lines.push('');
+  }
+
+  if (failed > 0) {
+    lines.push(SEP);
+    lines.push(`FAILURES (${failed})`);
+    lines.push(sep);
+    runResults.filter(r => r.status === 'FAIL').forEach((r, i) => {
+      lines.push(` ${String(i + 1).padStart(2)}. [${r.feature}] ${r.name}`);
+    });
+    lines.push('');
+  }
+
+  lines.push(SEP);
+  lines.push(`SUMMARY`);
+  lines.push(sep);
+  lines.push(` Pass  : ${passed}`);
+  lines.push(` Fail  : ${failed}`);
+  lines.push(` Total : ${total}`);
+  lines.push(SEP);
+
+  const outputPath = path.join(outputDir, filename);
+  fs.writeFileSync(outputPath, lines.join('\n') + '\n', 'utf8');
+  Logger.info(`Report saved: docs/reports/${filename}`);
+}
 
 Before(async function (scenario) {
   Logger.info(`\n========================================`);
@@ -138,6 +228,14 @@ After({ timeout: 30000 }, async function (scenario) {
       Logger.error(`Failed to close page or rename video: ${error}`);
     }
   }
+
+  // Accumulate result for end-of-run report
+  const featureName = path
+    .basename(scenario.pickle.uri ?? '', path.extname(scenario.pickle.uri ?? ''))
+    .replace(/\.(authenticated|public)$/i, '')
+    .replace(/[-_]/g, ' ')
+    .replace(/\b\w/g, (c: string) => c.toUpperCase());
+  runResults.push({ feature: featureName, name: scenario.pickle.name, status: status === 'PASSED' ? 'PASS' : 'FAIL' });
 
   if (status === 'PASSED') {
     Logger.success(`Scenario Passed: ${scenario.pickle.name}`);

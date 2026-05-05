@@ -1,0 +1,135 @@
+- generic [ref=e7]:
+  - generic [ref=e9]:
+    - generic [ref=e12]:
+      - generic [ref=e13]: Astana Tegal Gundul
+      - generic [ref=e17]:
+        - generic [ref=e19]:
+          - img [ref=e21]:
+            - img [ref=e22]
+          - textbox "Search" [ref=e27]
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - generic [ref=e33]:
+              - img [ref=e34]:
+                - img [ref=e35]
+              - generic [ref=e38]: People
+            - generic [ref=e39]:
+              - img [ref=e40]:
+                - img [ref=e41]
+              - generic [ref=e46]: Plotst
+          - heading "within your Cemeteries" [level=5] [ref=e47]
+      - generic [ref=e48]:
+        - button "Advanced" [ref=e49] [cursor=pointer]:
+          - generic [ref=e52]: Advanced
+        - generic [ref=e55]:
+          - button "Notifications - 6 unread" [ref=e56] [cursor=pointer]:
+            - img "Notification bell" [ref=e58]
+          - generic [ref=e59]: "6"
+    - button "Astana Tegal Gundul faris+astanaorg@chronicle.rip" [ref=e62] [cursor=pointer]:
+      - generic [ref=e65]:
+        - paragraph [ref=e66]: Astana Tegal Gundul
+        - generic [ref=e67]: faris+astanaorg@chronicle.rip
+  - generic:
+    - generic [ref=e69]:
+      - generic:
+        - generic:
+          - generic:
+            - img
+        - generic:
+          - generic:
+            - generic [ref=e72] [cursor=pointer]: Section LOT A2
+            - generic [ref=e74] [cursor=pointer]: Section LOT A1
+            - generic [ref=e76] [cursor=pointer]: Section LOT B1
+      - generic:
+        - generic:
+          - button [ref=e78] [cursor=pointer]
+          - button [ref=e79] [cursor=pointer]
+        - generic:
+          - link "Current location" [ref=e81] [cursor=pointer]:
+            - /url: "#"
+          - generic [ref=e82]:
+            - button "Zoom in" [ref=e83] [cursor=pointer]: +
+            - button "Zoom out" [ref=e84] [cursor=pointer]: −
+          - generic [ref=e85]:
+            - link "Leaflet" [ref=e86] [cursor=pointer]:
+              - /url: https://leafletjs.com
+              - img [ref=e87]
+              - text: Leaflet
+            - text: "| Map data ©"
+            - link "OpenStreetMap" [ref=e91] [cursor=pointer]:
+              - /url: https://www.openstreetmap.org/
+            - text: contributors,
+            - link "CC-BY-SA" [ref=e92] [cursor=pointer]:
+              - /url: https://creativecommons.org/licenses/by-sa/2.0/
+    - button [ref=e95] [cursor=pointer]:
+      - img [ref=e97]:
+        - img [ref=e98]
+  - generic [ref=e101]:
+    - generic [ref=e106] [cursor=pointer]:
+      - group [ref=e108]:
+        - button "Map" [pressed] [ref=e109]:
+          - generic [ref=e110]:
+            - img [ref=e112]:
+              - img [ref=e113]
+            - generic [ref=e115]: Map
+        - button "Tables" [ref=e116]:
+          - generic [ref=e117]:
+            - img [ref=e119]:
+              - img [ref=e120]
+            - generic [ref=e123]: Tables
+        - button "Calendar" [ref=e124]:
+          - generic [ref=e125]:
+            - img [ref=e127]:
+              - img [ref=e128]
+            - generic [ref=e130]: Calendar
+        - button "Request 86" [ref=e131]:
+          - generic [ref=e132]:
+            - img [ref=e134]:
+              - img [ref=e135]
+            - generic [ref=e138]: Request
+            - generic [ref=e139]: "86"
+        - button "Sales" [ref=e140]:
+          - generic [ref=e141]:
+            - img [ref=e143]:
+              - img [ref=e144]
+            - generic [ref=e147]: Sales
+        - button "Reports" [ref=e148]:
+          - generic [ref=e149]:
+            - img [ref=e151]:
+              - img [ref=e152]
+            - generic [ref=e155]: Reports
+      - group [disabled] [ref=e157]:
+        - button "help" [disabled] [ref=e158]:
+          - link "help" [disabled] [ref=e160]:
+            - /url: https://help.chronicle.rip/
+            - img "help" [ref=e161]
+        - button "home" [disabled] [ref=e162]:
+          - link "home" [disabled] [ref=e164]:
+            - /url: https://chronicle.rip/
+            - img "home" [ref=e165]
+    - generic [ref=e180]:
+      - generic [ref=e182]:
+        - generic [ref=e183] [cursor=pointer]:
+          - img [ref=e184]:
+            - img [ref=e185]
+          - generic [ref=e187]: Astana Tegal Gundul
+        - generic [ref=e188]:
+          - heading "All Plotst" [level=3] [ref=e189]
+          - button "FILTER" [ref=e191] [cursor=pointer]:
+            - generic [ref=e192]:
+              - img [ref=e193]:
+                - img [ref=e194]
+              - text: FILTER
+      - tree [ref=e198]:
+        - treeitem "toggle A A Section" [level=1] [ref=e199]:
+          - button "toggle A" [ref=e200] [cursor=pointer]:
+            - img [ref=e202]: chevron_right
+          - generic [ref=e203] [cursor=pointer]:
+            - generic [ref=e204]: A
+            - text: Section
+        - treeitem "toggle B B Section" [level=1] [ref=e205]:
+          - button "toggle B" [ref=e206] [cursor=pointer]:
+            - img [ref=e208]: chevron_right
+          - generic [ref=e209] [cursor=pointer]:
+            - generic [ref=e210]: B
+            - text: Section

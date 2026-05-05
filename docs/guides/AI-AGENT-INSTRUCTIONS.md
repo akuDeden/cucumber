@@ -122,7 +122,7 @@ export const CEMETERY_CONFIG = {
 **PUBLIC URLs** (no region in subdomain):
 - Format: `https://{environment}.chronicle.rip/{cemetery}_{region}/{path}`
 - Used for: sell-plots, public pages, non-authenticated access
-- Example: `https://staging.chronicle.rip/astana_tegal_gundul_aus/sell-plots`
+- Example: `https://project.chronicle.rip/astana_tegal_gundul_aus/sell-plots`
 
 **AUTHENTICATED URLs** (with region in subdomain):
 - Format: `https://{environment}-{region}.chronicle.rip/{path}`
@@ -143,9 +143,9 @@ import {
 } from '../../data/test-data.js';
 
 // Public URLs
-const publicUrl = BASE_CONFIG.baseUrl;               // https://staging.chronicle.rip
-const cemeteryUrl = getCemeteryUrl();                // https://staging.chronicle.rip/astana_tegal_gundul_aus
-const sellPlotsUrl = getCemeterySellPlotsUrl();      // https://staging.chronicle.rip/astana_tegal_gundul_aus/sell-plots
+const publicUrl = BASE_CONFIG.baseUrl;               // https://project.chronicle.rip
+const cemeteryUrl = getCemeteryUrl();                // https://project.chronicle.rip/astana_tegal_gundul_aus
+const sellPlotsUrl = getCemeterySellPlotsUrl();      // https://project.chronicle.rip/astana_tegal_gundul_aus/sell-plots
 
 // Authenticated URLs
 const authBaseUrl = getCustomerOrgBaseUrl();         // https://staging-aus.chronicle.rip
@@ -186,7 +186,7 @@ ENVIRONMENT=production REGION=uk npm test
 
 **CRITICAL RULES:**
 - ✅ **ALWAYS** use helper functions for URLs
-- ✅ **NEVER** hardcode `https://staging.chronicle.rip` or `https://staging-aus.chronicle.rip`
+- ✅ **NEVER** hardcode `https://project.chronicle.rip` or `https://staging-aus.chronicle.rip`
 - ✅ Use `BASE_CONFIG.baseUrl` for public URLs
 - ✅ Use `getCustomerOrgBaseUrl()` for authenticated URLs
 - ❌ **DON'T** mix environment variables in URLs manually
@@ -270,7 +270,7 @@ When('I perform action with {string}', async function (data: string) {
 **Quick Debug Workflow with CLI:**
 ```bash
 # 1. Open browser and navigate
-playwright-cli open https://staging.chronicle.rip
+playwright-cli open https://project.chronicle.rip
 
 # 2. Take snapshot to see page structure & element refs
 playwright-cli snapshot
@@ -614,9 +614,9 @@ export class FeaturePage {
 
 | Function | Returns | Use Case |
 |----------|---------|----------|
-| `BASE_CONFIG.baseUrl` | `https://staging.chronicle.rip` | Public base URL |
-| `getCemeteryUrl()` | `https://staging.chronicle.rip/astana_tegal_gundul_aus` | Public cemetery URL |
-| `getCemeterySellPlotsUrl()` | `https://staging.chronicle.rip/.../sell-plots` | Public sell plots page |
+| `BASE_CONFIG.baseUrl` | `https://project.chronicle.rip` | Public base URL |
+| `getCemeteryUrl()` | `https://project.chronicle.rip/astana_tegal_gundul_aus` | Public cemetery URL |
+| `getCemeterySellPlotsUrl()` | `https://project.chronicle.rip/.../sell-plots` | Public sell plots page |
 | `getCustomerOrgBaseUrl()` | `https://staging-aus.chronicle.rip` | Auth base URL |
 | `getCustomerOrgUrl(path)` | `https://staging-aus.chronicle.rip/customer-organization/...` | Auth customer org pages |
 

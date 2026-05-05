@@ -11,6 +11,7 @@ Feature: Advanced Search Plot - Authenticated Users
         And I click the login button
         Then I should be logged in successfully
         And I navigate to organization home page
+        And I navigate to the cemetery map page
 
     @advance-search-plot @smoke
     Scenario Outline: Advanced search plot by Section, Row, and Number - <section> <row> <number>
@@ -88,14 +89,14 @@ Feature: Advanced Search Plot - Authenticated Users
             | 1      | 0          | 0         | Standard capacity |
 
     @advance-search-interments-qty @p0
-    Scenario Outline: Advanced search plot by Interments Qty - <from> to <to>
+    Scenario Outline: Advanced search plot by Interments Qty - <From> to <to>
         When I click Advanced search button
-        And I enter interments qty from "<from>" to "<to>" in advanced search
+        And I enter interments qty from "<From>" to "<to>" in advanced search
         And I click Search button in advanced search
         Then I should see search results information
 
         Examples:
-            | from | to | description        |
+            | From | to | description        |
             | 0    | 2  | Low range (0-2)    |
             | 1    | 5  | Medium range (1-5) |
 

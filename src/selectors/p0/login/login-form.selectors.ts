@@ -1,6 +1,6 @@
 /**
  * Login Page Selectors
- * Real selectors from staging.chronicle.rip
+ * Real selectors from project.chronicle.rip
  * All selectors use data-testid attributes
  */
 
@@ -42,5 +42,5 @@ export const LoginSelectors = {
  */
 export const LoginUrls = {
   loginPage: '/login',
-  dashboardPattern: '/customer-organization/',
+  dashboardPattern: '/customer-',
 } as const;

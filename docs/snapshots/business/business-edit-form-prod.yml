@@ -1,0 +1,128 @@
+- generic [ref=e2288]:
+  - generic [ref=e2290]:
+    - generic [ref=e2291]:
+      - link [ref=e2292] [cursor=pointer]:
+        - /url: /
+      - link:
+        - /url: /
+    - generic [ref=e2293]:
+      - button "Delete" [ref=e2294] [cursor=pointer]:
+        - generic [ref=e2295]:
+          - img [ref=e2296]:
+            - img [ref=e2297]
+          - text: Delete
+      - button "cancel" [ref=e2300] [cursor=pointer]: cancel
+      - button "save" [ref=e2301] [cursor=pointer]: save
+  - generic [ref=e2302]:
+    - heading "Edit business" [level=1] [ref=e2303]
+    - generic [ref=e2304]:
+      - generic [ref=e2305]:
+        - generic [ref=e2310] [cursor=pointer]:
+          - combobox "Cemetery Astana Tegal Gundul" [ref=e2594]:
+            - generic [ref=e2595]: Astana Tegal Gundul
+          - generic:
+            - generic: Cemetery *
+        - generic [ref=e2321]:
+          - textbox "Business name" [ref=e2322]: Event Organizer Bahagia
+          - generic:
+            - generic: Business name *
+        - generic [ref=e2323]:
+          - generic [ref=e2327]:
+            - textbox "Business number" [ref=e2328]: "001234567897"
+            - generic:
+              - generic: Business number
+          - generic [ref=e2332] [cursor=pointer]:
+            - combobox "Business type Other" [ref=e2596]:
+              - generic [ref=e2597]: Other
+            - generic:
+              - generic: Business type
+        - generic [ref=e2339]:
+          - generic [ref=e2343]:
+            - textbox "First name" [ref=e2344]: Rahmat
+            - generic:
+              - generic: First name *
+          - generic [ref=e2348]:
+            - textbox "Last name" [ref=e2349]: Santoso
+            - generic:
+              - generic: Last name *
+        - generic [ref=e2350]:
+          - generic [ref=e2354]:
+            - textbox "Middle name" [ref=e2355]: Hidayat
+            - generic:
+              - generic: Middle name
+          - generic [ref=e2359]:
+            - textbox "Title" [ref=e2360]: Bapak
+            - generic:
+              - generic: Title
+        - generic [ref=e2361]:
+          - generic [ref=e2365]:
+            - textbox "Phone (mobile)" [ref=e2366]: "081234567905"
+            - generic:
+              - generic: Phone (mobile)
+          - generic [ref=e2370]:
+            - textbox "Phone (home)" [ref=e2371]: "081234567905"
+            - generic:
+              - generic: Phone (home)
+        - generic [ref=e2376]:
+          - textbox "Phone (office)" [ref=e2377]: "081234567905"
+          - generic:
+            - generic: Phone (office)
+        - generic [ref=e2383]:
+          - textbox "E-mail" [ref=e2384]: rahmat.santoso@event.com
+          - generic:
+            - generic: E-mail
+        - heading "Business address" [level=6] [ref=e2385]
+        - generic [ref=e2390]:
+          - textbox "Address" [ref=e2391]: Jl. Basuki Rahmat No. 70
+          - generic:
+            - generic: Address
+        - generic [ref=e2392]:
+          - generic [ref=e2396]:
+            - textbox "City / Town / Suburb" [ref=e2397]: Surabaya
+            - generic:
+              - generic: City / Town / Suburb
+          - generic [ref=e2401]:
+            - textbox "State" [ref=e2402]: Jawa Timur
+            - generic:
+              - generic: State
+        - generic [ref=e2403]:
+          - generic [ref=e2407]:
+            - textbox "Country" [ref=e2408]: Indonesia
+            - generic:
+              - generic: Country
+          - generic [ref=e2412]:
+            - textbox "Post code" [ref=e2413]: "60271"
+            - generic:
+              - generic: Post code
+        - generic [ref=e2416] [cursor=pointer]:
+          - generic [ref=e2417]:
+            - checkbox "Postal address different" [ref=e2418]
+            - generic:
+              - img
+          - generic [ref=e2419]: Postal address different
+      - generic [ref=e2421]:
+        - generic [ref=e2422]:
+          - generic [ref=e2423]: Activity
+          - listbox "Filter Selection" [ref=e2424]:
+            - generic [ref=e2425]:
+              - option "Notes" [selected] [ref=e2426]: Notes
+              - option "Changes" [ref=e2427]: Changes
+              - option "All" [ref=e2428]: All
+          - button [ref=e2429] [cursor=pointer]:
+            - img [ref=e2431]:
+              - img [ref=e2432]
+            - generic: "1"
+        - generic [ref=e2437]:
+          - textbox "Add Notes" [ref=e2439]
+          - img [ref=e2441] [cursor=pointer]:
+            - img [ref=e2442]
+        - generic [ref=e2598]:
+          - generic [ref=e2599]:
+            - generic [ref=e2600]: Jan 26, 2024 10:45 PM
+            - generic [ref=e2602]: Cemetery Admin
+          - generic [ref=e2605]:
+            - img [ref=e2606]:
+              - img [ref=e2607]
+            - generic [ref=e2613]: note for event organizer A B 1
+            - img [ref=e2615] [cursor=pointer]:
+              - img [ref=e2616]

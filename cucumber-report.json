@@ -1,0 +1,640 @@
+[
+  {
+    "description": "  As a cemetery administrator\n  I want to manage businesses in the system\n  So that I can associate businesses with cemetery operations",
+    "elements": [
+      {
+        "description": "",
+        "id": "business-management-(authenticated);add-a-new-business-from-the-business-tab-in-the-advance-table",
+        "keyword": "Scenario",
+        "line": 15,
+        "name": "Add a new business from the Business tab in the advance table",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 519000542
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Chronicle login page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6301217957
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I enter email \"<TEST_EMAIL>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2023808457
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I enter password \"<TEST_PASSWORD>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1977144039
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I click the login button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1471136583
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be logged in successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 17589353917
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 16,
+            "name": "I navigate to the Business tab in the advance table",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 22385257207
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 17,
+            "name": "I click the Add Business button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:11"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4766425414
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "cemetery",
+                      "<TEST_CEMETERY_DISPLAY_NAME>"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "businessName",
+                      "<TEST_BUSINESS_NAME>"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "firstName",
+                      "<TEST_BUSINESS_FIRSTNAME>"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "lastName",
+                      "<TEST_BUSINESS_LASTNAME>"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "phone",
+                      "<TEST_BUSINESS_PHONE>"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "email",
+                      "<TEST_BUSINESS_EMAIL>"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "address",
+                      "<TEST_BUSINESS_ADDRESS>"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "And ",
+            "line": 18,
+            "name": "I fill the add business form with following details",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8974526289
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 26,
+            "name": "I save the new business",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:27"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4459123333
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 27,
+            "name": "the new business should appear in the business table",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:30"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 22442512123
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1234679375
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@p0",
+            "line": 1
+          },
+          {
+            "name": "@business",
+            "line": 1
+          },
+          {
+            "name": "@authenticated",
+            "line": 1
+          },
+          {
+            "name": "@create-business",
+            "line": 14
+          },
+          {
+            "name": "@smoke",
+            "line": 14
+          },
+          {
+            "name": "@p0",
+            "line": 14
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "business-management-(authenticated);edit-an-existing-business-from-the-business-table",
+        "keyword": "Scenario",
+        "line": 30,
+        "name": "Edit an existing business from the business table",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 422392959
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Chronicle login page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6354058874
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I enter email \"<TEST_EMAIL>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1992827248
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I enter password \"<TEST_PASSWORD>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1961068292
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I click the login button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1463011666
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be logged in successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 14489194832
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 31,
+            "name": "I navigate to the Business tab in the advance table",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 22439466331
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 32,
+            "name": "I click the first business row in the table",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:42"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 53275727583,
+              "error_message": "page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('mat-row') to be visible\u001b[22m\n\n    at BusinessPage.clickFirstTableRow (/Users/endriyanto/Work/Work_Chronicle/Ai Project/cucumber_3/cucumber/src/pages/p0/BusinessPage.ts:229:29)\n    at async CustomWorld.<anonymous> (/Users/endriyanto/Work/Work_Chronicle/Ai Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:45:31)"
+            }
+          },
+          {
+            "arguments": [
+              {
+                "rows": [
+                  {
+                    "cells": [
+                      "phone",
+                      "<TEST_BUSINESS_EDIT_PHONE>"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "email",
+                      "<TEST_BUSINESS_EDIT_EMAIL>"
+                    ]
+                  },
+                  {
+                    "cells": [
+                      "address",
+                      "<TEST_BUSINESS_EDIT_ADDRESS>"
+                    ]
+                  }
+                ]
+              }
+            ],
+            "keyword": "And ",
+            "line": 33,
+            "name": "I update the business with following details",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:48"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 37,
+            "name": "I save the business changes",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:56"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 38,
+            "name": "the business should be updated successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:59"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 6860497208
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@p0",
+            "line": 1
+          },
+          {
+            "name": "@business",
+            "line": 1
+          },
+          {
+            "name": "@authenticated",
+            "line": 1
+          },
+          {
+            "name": "@edit-business",
+            "line": 29
+          },
+          {
+            "name": "@smoke",
+            "line": 29
+          },
+          {
+            "name": "@p0",
+            "line": 29
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "business-management-(authenticated);delete-a-business-from-the-business-table",
+        "keyword": "Scenario",
+        "line": 41,
+        "name": "Delete a business from the business table",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 98831541
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Chronicle login page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6886187084
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I enter email \"<TEST_EMAIL>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2040940501
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I enter password \"<TEST_PASSWORD>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1969410041
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I click the login button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1475403747
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be logged in successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 11194875624
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 42,
+            "name": "I navigate to the Business tab in the advance table",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:7"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 22858519957
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 43,
+            "name": "I click the first business row in the table",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:42"
+            },
+            "result": {
+              "status": "failed",
+              "duration": 16561173249,
+              "error_message": "page.waitForSelector: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('mat-row') to be visible\u001b[22m\n\n    at BusinessPage.clickFirstTableRow (/Users/endriyanto/Work/Work_Chronicle/Ai Project/cucumber_3/cucumber/src/pages/p0/BusinessPage.ts:229:29)\n    at async CustomWorld.<anonymous> (/Users/endriyanto/Work/Work_Chronicle/Ai Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:45:31)"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 44,
+            "name": "I click the Delete Business button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:66"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 45,
+            "name": "I confirm the business deletion",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:69"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 46,
+            "name": "the business should no longer be in the table",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:72"
+            },
+            "result": {
+              "status": "skipped",
+              "duration": 0
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 6816856041
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@p0",
+            "line": 1
+          },
+          {
+            "name": "@business",
+            "line": 1
+          },
+          {
+            "name": "@authenticated",
+            "line": 1
+          },
+          {
+            "name": "@delete-business",
+            "line": 40
+          },
+          {
+            "name": "@p0",
+            "line": 40
+          }
+        ],
+        "type": "scenario"
+      }
+    ],
+    "id": "business-management-(authenticated)",
+    "line": 2,
+    "keyword": "Feature",
+    "name": "Business Management (Authenticated)",
+    "tags": [
+      {
+        "name": "@p0",
+        "line": 1
+      },
+      {
+        "name": "@business",
+        "line": 1
+      },
+      {
+        "name": "@authenticated",
+        "line": 1
+      }
+    ],
+    "uri": "src/features/p0/business.authenticated.feature"
+  }
+]

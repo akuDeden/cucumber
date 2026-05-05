@@ -1,0 +1,150 @@
+- generic [ref=e277]:
+  - generic [ref=e279]:
+    - generic [ref=e280]:
+      - link [ref=e281] [cursor=pointer]:
+        - /url: /
+      - link:
+        - /url: /
+    - generic [ref=e282]:
+      - button "cancel" [ref=e283] [cursor=pointer]: cancel
+      - button "save and add interment" [ref=e284] [cursor=pointer]: save and add interment
+      - button "save" [ref=e285] [cursor=pointer]: save
+  - generic [ref=e289]:
+    - generic [ref=e291]:
+      - heading "Add ROIx" [level=1] [ref=e292]
+      - generic [ref=e293]:
+        - generic [ref=e297] [cursor=pointer]:
+          - combobox "Cemeteries Lists" [ref=e298]:
+            - generic [ref=e301]: Astana Tegal Gundul
+          - generic:
+            - generic: Cemetery *
+        - generic [ref=e308] [cursor=pointer]:
+          - combobox "Event Type" [expanded] [ref=e309]:
+            - generic [ref=e310]:
+              - generic [ref=e312]: B A 2
+              - listbox "Event Type" [ref=e502]:
+                - generic [ref=e503]:
+                  - generic [ref=e504]:
+                    - textbox "Start typing to search" [active] [ref=e505]
+                    - img [ref=e506]:
+                      - img [ref=e507]
+                  - separator [ref=e512]
+                - option "Unassigned" [ref=e513]:
+                  - generic [ref=e514]: Unassigned
+                - option "B A 2" [selected] [ref=e515]:
+                  - generic [ref=e517]: B A 2
+          - generic:
+            - generic:
+              - generic: Plott
+              - text: "*"
+    - generic [ref=e315]:
+      - generic [ref=e317]:
+        - generic [ref=e318]:
+          - generic [ref=e322] [cursor=pointer]:
+            - combobox "Right type" [ref=e323]
+            - generic:
+              - generic: Right type *
+          - generic [ref=e332] [cursor=pointer]:
+            - combobox "Term of right" [ref=e333]
+            - generic:
+              - generic: Term of right
+        - generic [ref=e339]:
+          - generic [ref=e342]:
+            - generic [ref=e343]: $
+            - generic [ref=e344]:
+              - spinbutton "Fee" [ref=e345]: "200"
+              - generic:
+                - generic: Fee
+          - generic [ref=e348]:
+            - generic [ref=e349]:
+              - textbox "Payment date" [ref=e350]
+              - generic:
+                - generic: Payment date
+            - button "Open calendar" [ref=e353] [cursor=pointer]:
+              - img [ref=e354]
+          - generic [ref=e359] [cursor=pointer]:
+            - switch "Charged" [ref=e361]
+            - generic [ref=e364]: Charged
+        - generic [ref=e365]:
+          - generic [ref=e368]:
+            - generic [ref=e369]:
+              - textbox "Application date" [ref=e370]: 08/04/2026
+              - generic:
+                - generic: Application date
+            - button "Open calendar" [ref=e373] [cursor=pointer]:
+              - img [ref=e374]
+          - generic [ref=e378]:
+            - generic [ref=e381]:
+              - generic [ref=e382]:
+                - textbox "Expiry Date" [ref=e383]
+                - generic:
+                  - generic: Expiry Date
+              - button "Open calendar" [ref=e386] [cursor=pointer]:
+                - img [ref=e387]
+            - generic [ref=e392]:
+              - generic [ref=e393]:
+                - checkbox "Auto add to event calendar" [disabled] [ref=e394]
+                - generic:
+                  - img
+              - generic [ref=e395]: Auto add to event calendar
+        - generic [ref=e396]:
+          - generic [ref=e400] [cursor=pointer]:
+            - combobox "Service need" [ref=e401]
+            - generic:
+              - generic: Service need
+          - generic [ref=e407]:
+            - generic [ref=e411]:
+              - textbox "Certificate number" [ref=e412]
+              - generic:
+                - generic: Certificate number
+            - generic [ref=e414] [cursor=pointer]:
+              - generic [ref=e415]:
+                - checkbox "Auto generated certificate number" [ref=e416]
+                - generic:
+                  - img
+              - generic [ref=e417]: Auto generated certificate number
+        - heading "Extra details" [level=6] [ref=e418]
+        - generic [ref=e423]:
+          - generic [ref=e425] [cursor=pointer]:
+            - combobox "Infusions purchased" [ref=e426]
+            - generic:
+              - generic:
+                - generic: Infusions purchased
+          - generic [ref=e434]: Will be shown on Reserved plot status only for public
+        - generic [ref=e442]:
+          - spinbutton "label" [ref=e443]
+          - generic:
+            - generic:
+              - generic: Infusions cost
+        - generic [ref=e450]:
+          - spinbutton "label" [ref=e451]
+          - generic:
+            - generic:
+              - generic: Crystal keepsakes cost
+        - generic [ref=e458]:
+          - spinbutton "label" [ref=e459]
+          - generic:
+            - generic:
+              - generic: Weekend surcharge cost
+        - generic [ref=e466]:
+          - textbox "label" [ref=e467]
+          - generic:
+            - generic:
+              - generic: Digging Fee
+        - generic [ref=e470]:
+          - heading "Documents" [level=4] [ref=e471]
+          - generic [ref=e477] [cursor=pointer]:
+            - button "SELECT FILE" [ref=e478]:
+              - generic [ref=e479]:
+                - img [ref=e480]:
+                  - img [ref=e481]
+                - text: SELECT FILE
+            - paragraph [ref=e484]: or drag it here
+            - paragraph [ref=e485]: "Maximum file size: 8 MB"
+      - generic [ref=e486]:
+        - generic [ref=e487]:
+          - button "ROI Holdersx" [ref=e490] [cursor=pointer]:
+            - generic [ref=e491]: ROI Holdersx
+          - button "ROI Applicantx" [ref=e494] [cursor=pointer]:
+            - generic [ref=e495]: ROI Applicantx
+        - textbox "Add Notes" [ref=e501]

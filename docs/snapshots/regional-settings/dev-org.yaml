@@ -1,0 +1,82 @@
+- generic [ref=e307]:
+  - generic [ref=e310]:
+    - img [ref=e312] [cursor=pointer]:
+      - img [ref=e313]
+    - link [ref=e315] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e316]:
+      - generic [ref=e317]: organisation Configuration
+      - generic [ref=e318]: faris+astanaorg@chronicle.rip
+  - generic [ref=e319]:
+    - list [ref=e321]:
+      - listitem [ref=e322] [cursor=pointer]: General
+      - listitem [ref=e323] [cursor=pointer]:
+        - text: Cemeteries
+        - generic [ref=e324]: "1"
+      - listitem [ref=e325] [cursor=pointer]: Access
+      - listitem [ref=e326] [cursor=pointer]: Custom Fields
+      - listitem [ref=e327] [cursor=pointer]: Sales
+      - listitem [ref=e328] [cursor=pointer]: Event Type
+      - listitem [ref=e329] [cursor=pointer]: Business Types
+      - listitem [ref=e330] [cursor=pointer]: Regional Settings
+      - listitem [ref=e331] [cursor=pointer]: Certificates
+      - listitem [ref=e332] [cursor=pointer]: Forms
+    - generic [ref=e337]:
+      - heading "Astana Tegal Gundul" [level=1] [ref=e339]
+      - generic [ref=e340]:
+        - generic [ref=e342]:
+          - generic [ref=e343]:
+            - generic [ref=e344]: Public URLs
+            - generic [ref=e345]:
+              - generic [ref=e346]: https://dev.chronicle.rip/?org=Astana Tegal Gundul
+              - img [ref=e348] [cursor=pointer]:
+                - img [ref=e349]
+          - generic [ref=e352]:
+            - generic [ref=e353]: Business Number
+            - generic [ref=e354]: "1"
+          - generic [ref=e355]:
+            - heading "cemeterys Owner" [level=4] [ref=e356]
+            - generic [ref=e357]:
+              - generic [ref=e358]: Email
+              - link "faris+astanaorg@chronicle.rip" [ref=e360] [cursor=pointer]:
+                - /url: mailto:faris+astanaorg@chronicle.rip
+            - generic [ref=e361]:
+              - generic [ref=e362]: Phone (mobile)
+              - generic [ref=e363]: k
+            - generic [ref=e364]:
+              - generic [ref=e365]: Business address
+              - generic [ref=e366]: denpasar bali gatsu barat 10s, denpasar bali 18110, Indonesia
+          - generic [ref=e367]:
+            - generic [ref=e368]: Multi factor authentication
+            - generic [ref=e369]:
+              - img [ref=e370]: close
+              - generic [ref=e371]: "Off"
+          - generic [ref=e372]:
+            - generic [ref=e373]: SSO/SAML
+            - generic [ref=e374]:
+              - img [ref=e375]: close
+              - generic [ref=e376]: "Off"
+          - generic [ref=e377]:
+            - generic [ref=e378]: Osiris
+            - generic [ref=e379]:
+              - img [ref=e380]: done
+              - generic [ref=e381]: "On"
+          - generic [ref=e382]:
+            - generic [ref=e383]: Payment Gateway
+            - generic [ref=e384]:
+              - img [ref=e385]: done
+              - generic [ref=e386]: Configured
+          - generic [ref=e388] [cursor=pointer]: edit organisation details
+        - generic [ref=e391]:
+          - generic [ref=e393]: Credits
+          - generic [ref=e395]:
+            - generic [ref=e396]:
+              - generic [ref=e397]: Available credits
+              - img "info quota" [ref=e399]
+            - generic [ref=e400]:
+              - img [ref=e401]:
+                - img [ref=e402]
+              - generic [ref=e404]: "93"
+        - generic [ref=e406]:
+          - generic [ref=e407]: Subscription plan
+          - generic [ref=e408]: PRO

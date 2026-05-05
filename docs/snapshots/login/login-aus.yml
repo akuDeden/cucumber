@@ -1,0 +1,148 @@
+- generic [ref=e7]:
+  - generic [ref=e9]:
+    - generic [ref=e12]:
+      - generic [ref=e13]: hahahahaha
+      - generic [ref=e17]:
+        - generic [ref=e19]:
+          - img [ref=e21]:
+            - img [ref=e22]
+          - textbox "Search" [ref=e27]
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - generic [ref=e33]:
+              - img [ref=e34]:
+                - img [ref=e35]
+              - generic [ref=e38]: People
+            - generic [ref=e39]:
+              - img [ref=e40]:
+                - img [ref=e41]
+              - generic [ref=e46]: Plots
+          - heading "within hahahahaha" [level=5] [ref=e47]
+      - generic [ref=e48]:
+        - button "Advanced" [disabled] [ref=e49]:
+          - generic [ref=e52]: Advanced
+        - generic [ref=e55]:
+          - button "Notifications - 2 unread" [ref=e56] [cursor=pointer]:
+            - img "Notification bell" [ref=e58]
+          - generic [ref=e59]: "2"
+    - button "hahahahaha faris+astanaorg@chronicle.rip" [ref=e62] [cursor=pointer]:
+      - generic [ref=e65]:
+        - paragraph [ref=e66]: hahahahaha
+        - generic [ref=e67]: faris+astanaorg@chronicle.rip
+  - generic:
+    - img [ref=e71]
+    - generic [ref=e72]:
+      - generic:
+        - generic:
+          - link "Current location" [ref=e74] [cursor=pointer]:
+            - /url: "#"
+          - generic [ref=e75]:
+            - button "Zoom in" [ref=e76] [cursor=pointer]: +
+            - button "Zoom out" [disabled] [ref=e77]: −
+          - generic [ref=e78]:
+            - link "Leaflet" [ref=e79] [cursor=pointer]:
+              - /url: https://leafletjs.com
+              - img [ref=e80]
+              - text: Leaflet
+            - text: "| Map data ©"
+            - link "OpenStreetMap" [ref=e84] [cursor=pointer]:
+              - /url: https://www.openstreetmap.org/
+            - text: contributors,
+            - link "CC-BY-SA" [ref=e85] [cursor=pointer]:
+              - /url: https://creativecommons.org/licenses/by-sa/2.0/
+  - generic [ref=e86]:
+    - generic [ref=e91] [cursor=pointer]:
+      - group [ref=e93]:
+        - button "Map" [pressed] [ref=e94]:
+          - generic [ref=e95]:
+            - img [ref=e97]:
+              - img [ref=e98]
+            - generic [ref=e100]: Map
+        - button "Tables" [ref=e101]:
+          - generic [ref=e102]:
+            - img [ref=e104]:
+              - img [ref=e105]
+            - generic [ref=e108]: Tables
+        - button "Calendar" [ref=e109]:
+          - generic [ref=e110]:
+            - img [ref=e112]:
+              - img [ref=e113]
+            - generic [ref=e115]: Calendar
+        - button "Request 51" [ref=e116]:
+          - generic [ref=e117]:
+            - img [ref=e119]:
+              - img [ref=e120]
+            - generic [ref=e123]: Request
+            - generic [ref=e124]: "51"
+        - button "Reports" [ref=e125]:
+          - generic [ref=e126]:
+            - img [ref=e128]:
+              - img [ref=e129]
+            - generic [ref=e132]: Reports
+      - group [disabled] [ref=e134]:
+        - button "help" [disabled] [ref=e135]:
+          - link "help" [disabled] [ref=e137]:
+            - /url: https://help.chronicle.rip/
+            - img "help" [ref=e138]
+        - button "home" [disabled] [ref=e139]:
+          - link "home" [disabled] [ref=e141]:
+            - /url: https://chronicle.rip/
+            - img "home" [ref=e142]
+    - generic [ref=e152]:
+      - heading "Cemetery" [level=3] [ref=e155]
+      - generic [ref=e157]:
+        - generic [ref=e158]:
+          - generic [ref=e159]: Sort by
+          - combobox "Creation date (newest first)" [ref=e164] [cursor=pointer]:
+            - generic [ref=e167]: Creation date (newest first)
+        - generic [ref=e170]:
+          - generic [ref=e171]:
+            - progressbar "loading" [ref=e174]
+            - generic [ref=e175]:
+              - progressbar "loading" [ref=e177]
+              - progressbar "loading" [ref=e179]
+          - generic [ref=e180]:
+            - progressbar "loading" [ref=e183]
+            - generic [ref=e184]:
+              - progressbar "loading" [ref=e186]
+              - progressbar "loading" [ref=e188]
+          - generic [ref=e189]:
+            - progressbar "loading" [ref=e192]
+            - generic [ref=e193]:
+              - progressbar "loading" [ref=e195]
+              - progressbar "loading" [ref=e197]
+          - generic [ref=e198]:
+            - progressbar "loading" [ref=e201]
+            - generic [ref=e202]:
+              - progressbar "loading" [ref=e204]
+              - progressbar "loading" [ref=e206]
+          - generic [ref=e207]:
+            - progressbar "loading" [ref=e210]
+            - generic [ref=e211]:
+              - progressbar "loading" [ref=e213]
+              - progressbar "loading" [ref=e215]
+          - generic [ref=e216]:
+            - progressbar "loading" [ref=e219]
+            - generic [ref=e220]:
+              - progressbar "loading" [ref=e222]
+              - progressbar "loading" [ref=e224]
+          - generic [ref=e225]:
+            - progressbar "loading" [ref=e228]
+            - generic [ref=e229]:
+              - progressbar "loading" [ref=e231]
+              - progressbar "loading" [ref=e233]
+          - generic [ref=e234]:
+            - progressbar "loading" [ref=e237]
+            - generic [ref=e238]:
+              - progressbar "loading" [ref=e240]
+              - progressbar "loading" [ref=e242]
+          - generic [ref=e243]:
+            - progressbar "loading" [ref=e246]
+            - generic [ref=e247]:
+              - progressbar "loading" [ref=e249]
+              - progressbar "loading" [ref=e251]
+          - generic [ref=e252]:
+            - progressbar "loading" [ref=e255]
+            - generic [ref=e256]:
+              - progressbar "loading" [ref=e258]
+              - progressbar "loading" [ref=e260]

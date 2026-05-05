@@ -1,10 +1,14 @@
 import { When, Then, Before, After } from '@cucumber/cucumber';
 import { PersonPage } from '../../pages/p0/PersonPage.js';
+import { SalesPage } from '../../pages/p0/SalesPage.js';
 import { replacePlaceholdersInObject, replacePlaceholders } from '../../utils/TestDataHelper.js';
 import { randomFirstName, randomLastName, PERSON_DATA } from '../../data/test-data.js';
+import { NetworkHelper } from '../../utils/NetworkHelper.js';
 
-// Initialize page object
+// Initialize page objects
 let personPage: PersonPage;
+let salesPage: SalesPage;
+let currentPersonFullName: string = '';
 
 // Store random person data (shared across all scenarios in the feature)
 interface RandomPersonData {
@@ -190,7 +194,50 @@ When('I confirm the deletion', async function () {
   await personPage.confirmDelete();
 });
 
-Then('the person {string} should not be in the list', async function (personName: string) {
+When('I navigate to the advance table and open the second person', { timeout: 90000 }, async function () {
+  const page = this.page;
+  personPage = new PersonPage(page);
+  salesPage = new SalesPage(page);
+
+  const baseUrl = page.url().split('/customer-organization')[0];
+  await page.goto(`${baseUrl}/customer-organization/advance-table?tab=persons`, { waitUntil: 'domcontentloaded' });
+
+  const rows = page.locator('mat-row');
+  // Wait for second row to exist AND have populated cell content (API data rendered)
+  await page.waitForFunction(() => {
+    const matRows = document.querySelectorAll('mat-row');
+    if (matRows.length < 2) return false;
+    const cells = matRows[1].querySelectorAll('mat-cell');
+    return Array.from(cells).some((c: any) => (c.textContent?.trim().length || 0) > 2);
+  }, { timeout: 15000 });
+
+  // Read person name from the second row before clicking
+  const secondRow = rows.nth(1);
+  const rowText = (await secondRow.textContent()) || '';
+  this.logger?.info(`Second person row text: ${rowText.trim()}`);
+
+  await secondRow.click();
+  await page.waitForSelector('button:has-text("SAVE"), button:has-text("CANCEL")', { state: 'visible', timeout: 45000 });
+  await NetworkHelper.waitForStabilization(page, { minWait: 300, maxWait: 2000 });
+
+  // Read person name from the edit form fields
+  const firstNameInput = page.locator('input[formcontrolname="firstName"], input[placeholder*="First"], input[name*="firstName"]').first();
+  const lastNameInput = page.locator('input[formcontrolname="lastName"], input[placeholder*="Last"], input[name*="lastName"]').first();
+
+  const firstName = ((await firstNameInput.inputValue().catch(() => '')) || '').trim();
+  const lastName = ((await lastNameInput.inputValue().catch(() => '')) || '').trim();
+  currentPersonFullName = `${firstName} ${lastName}`.trim();
+  this.currentPersonFullName = currentPersonFullName;
+  this.logger?.info(`Opened Edit Person page for: "${currentPersonFullName}". URL: ${page.url()}`);
+});
+
+When('I select the first available item with related plot {string}', { timeout: 60000 }, async function (relatedPlot: string) {
+  if (!salesPage) salesPage = new SalesPage(this.page);
+  const actualRelatedPlot = replacePlaceholders(relatedPlot);
+  await salesPage.selectFirstItemWithRelatedPlot(actualRelatedPlot);
+});
+
+Then('the person {string} should not be in the list', { timeout: 20000 }, async function (personName: string) {
   const usesPlaceholder = personName.includes('<TEST_PERSON_');
 
   let actualName = usesPlaceholder

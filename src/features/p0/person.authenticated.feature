@@ -52,6 +52,15 @@ Feature: Person Management - Authenticated
     And I apply the filter
     Then I should see the person "<TEST_PERSON_FIRSTNAME> <TEST_PERSON_LASTNAME_EDITED>" in the first row of the table
 
+  @add-sale-from-edit-person @smoke @p0
+  Scenario: Add Sale to a person from the Edit Person page
+    When I navigate to the advance table and open the second person
+    And I click the ADD SALE button
+    And I fill sale reference with "<TEST_SALES_REFERENCE>"
+    And I select the first available item with related plot "<TEST_SALES_RELATED_PLOT>"
+    When I click Create and confirm to navigate back to Edit Plot page
+    Then I should see a new sale entry with reference "<TEST_SALES_REFERENCE>" on the Edit Plot page
+
   @delete
   Scenario: Delete person and verify not in list
     When I navigate to the advance table page

@@ -155,7 +155,7 @@ Password: 12345
 
 ```bash
 # Login dulu
-URL: https://staging.chronicle.rip
+URL: https://project.chronicle.rip
 Email: faris+astanaorg@chronicle.rip
 Password: 12345
 

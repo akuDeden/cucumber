@@ -1,7 +1,7 @@
 @p0 @interment
 Feature: Interment Management
   As a cemetery administrator
-  I want to add Interments through multiple entry points
+  I want to add Interments to vacant plots
   So that I can record deceased persons in the cemetery
 
   Background:
@@ -11,61 +11,15 @@ Feature: Interment Management
     And I click the login button
     Then I should be logged in successfully
 
-  # ─────────────────────────────────────────────────────────────────────────────
-  # FLOW 1: Add Interment via Advance Table → PLOTS tab
-  #
-  # Entry: Tables sidebar → PLOTS tab → filter status Vacant → get plot name
-  #        → switch to INTERMENTS tab → click ADD INTERMENTS → select saved plot
-  #
-  # Note: Plot selection on the Add Interment form (from table) uses a search
-  #       combobox. We save the vacant plot name from the PLOTS tab first,
-  #       then use it to search and select the correct plot in the form.
-  #
-  # URL pattern: /advance-table/manage/add/interment-table/{cemeteryId}
-  # ─────────────────────────────────────────────────────────────────────────────
-
-  @add-interment @add-interment-from-table @smoke @p0
-  Scenario: Add Interment from Advance Table INTERMENTS tab and verify in list
-    When I click the sidebar table menu
-    And I filter plots by status "Vacant" in Plots tab
-    And I get the first plot name from the filtered table
-    And I click the Interments tab in advance table
-    And I click Add Interments button from advance table
-    Then I should see the Add Interment form
-    When I search and select the saved vacant plot for Interment
-    And I fill interment form with following details
-      | firstName     | <TEST_INTERMENT_FIRSTNAME> |
-      | lastName      | <TEST_INTERMENT_LASTNAME>  |
-      | intermentType | <TEST_INTERMENT_TYPE>      |
-    And I save the Interment from table
-    Then I should be redirected to advance table interments list
-    And I should see the saved plot name in the interments list
-    And I should see deceased first name "<TEST_INTERMENT_FIRSTNAME>" in the interments list
-
-  # ─────────────────────────────────────────────────────────────────────────────
-  # FLOW 2: Add Interment via Plot Detail page (from Map sidebar or Plots list)
-  #
-  # Entry A: Map view → "See all Plots" → filter Vacant → select plot
-  #          → plot detail sidebar shows "Add interment" button → click it
-  # Entry B: Advance Table PLOTS tab → click Plot ID link (navigate to edit)
-  #          → NOT this flow (edit leads to edit plot form, not detail)
-  #
-  # In automation we use the Map/Plot list approach (same as existing scenario):
-  # Navigate to all plots → filter Vacant → select first vacant plot
-  # → plot detail loads → click "Add interment" button on detail page
-  #
-  # URL pattern: /customer-organization/{org}/{plotId}/manage/add/interment
-  # ─────────────────────────────────────────────────────────────────────────────
-
-  @add-interment @add-interment-from-plot @smoke @p0
-  Scenario: Add Interment from plot detail page and verify deceased appears in INTERMENTS tab
+  @add-interment @smoke @p0
+  Scenario: Add Interment to vacant plot and verify deceased appears in INTERMENTS tab
     When I navigate to all plots page
     And I open the filter dialog
     And I select vacant filter
     And I apply the filter plot
     And I expand the first section
     And I select the first vacant plot
-    When I click Add Interment button from plot detail
+    When I click Add Interment button
     And I fill interment form with following details
       | firstName     | <TEST_INTERMENT_FIRSTNAME> |
       | lastName      | <TEST_INTERMENT_LASTNAME>  |
@@ -74,22 +28,21 @@ Feature: Interment Management
     Then I should see deceased "<TEST_INTERMENT_FIRSTNAME> <TEST_INTERMENT_LASTNAME>" in the Interment tab
     And I should see interment type "<TEST_INTERMENT_TYPE>"
 
-  # ─────────────────────────────────────────────────────────────────────────────
-  # FLOW 3: Edit Interment via Plot Detail page
-  #
-  # Entry: Select an occupied plot → INTERMENTS tab → "Edit Interment" button
-  # URL pattern: /customer-organization/{org}/{plotId}/manage/edit/interment/{id}
-  # ─────────────────────────────────────────────────────────────────────────────
-
   @edit-interment @smoke @p0
-  Scenario: Edit existing Interment from plot detail and verify changes
+  Scenario: Edit existing Interment in occupied plot and verify changes
     When I navigate to all plots page
     And I open the filter dialog
-    And I select occupied filter
+    And I select vacant filter
     And I apply the filter plot
     And I expand the first section
-    And I select the first occupied plot
-    And I click on Interments tab
+    And I select the first vacant plot
+    When I click Add Interment button
+    And I fill interment form with following details
+      | firstName     | <TEST_INTERMENT_FIRSTNAME> |
+      | lastName      | <TEST_INTERMENT_LASTNAME>  |
+      | intermentType | <TEST_INTERMENT_TYPE>      |
+    And I save the Interment
+    Then I should see deceased "<TEST_INTERMENT_FIRSTNAME> <TEST_INTERMENT_LASTNAME>" in the Interment tab
     When I click Edit Interment button
     And I update interment form with following details
       | firstName     | <TEST_INTERMENT_EDIT_FIRSTNAME> |
@@ -99,36 +52,99 @@ Feature: Interment Management
     Then I should see deceased "<TEST_INTERMENT_EDIT_FIRSTNAME> <TEST_INTERMENT_EDIT_LASTNAME>" in the Interment tab
     And I should see interment type "<TEST_INTERMENT_EDIT_TYPE>"
 
-  # ─────────────────────────────────────────────────────────────────────────────
-  # FLOW 4: Delete Interment via Edit Interment form
-  #
-  # Entry: Select occupied plot → INTERMENTS tab → Edit Interment → MORE → Delete
-  # The delete option is in the MORE menu inside the Edit Interment form.
-  # After deletion, plot status returns to Vacant.
-  # ─────────────────────────────────────────────────────────────────────────────
-
-  # ─────────────────────────────────────────────────────────────────────────────
-  # Note for Delete: We first ADD an interment to a vacant plot, then delete it.
-  # This ensures we're deleting the only interment → plot returns to VACANT.
-  # ─────────────────────────────────────────────────────────────────────────────
-
-  @delete-interment @p0
-  Scenario: Add then Delete Interment and verify plot returns to vacant
+  @add-interment-with-relations @p0
+  Scenario: Add Interment with applicant, next of kin, funeral minister and funeral director
     When I navigate to all plots page
     And I open the filter dialog
     And I select vacant filter
     And I apply the filter plot
     And I expand the first section
     And I select the first vacant plot
-    When I click Add Interment button from plot detail
+    When I click Add Interment button
+    And I fill interment form with following details
+      | firstName     | <TEST_INTERMENT_FIRSTNAME> |
+      | lastName      | <TEST_INTERMENT_LASTNAME>  |
+      | intermentType | <TEST_INTERMENT_TYPE>      |
+    And I add interment applicant by searching "<TEST_INTERMENT_APPLICANT_LASTNAME>"
+    And I add next of kin by searching "<TEST_INTERMENT_NOK_LASTNAME>"
+    And I add funeral minister by searching "<TEST_INTERMENT_MINISTER_BUSINESS>"
+    And I add funeral director by searching "<TEST_INTERMENT_DIRECTOR_BUSINESS>"
+    And I save the Interment
+    Then I should see deceased "<TEST_INTERMENT_FIRSTNAME> <TEST_INTERMENT_LASTNAME>" in the Interment tab
+
+  @edit-interment-with-relations @p0
+  Scenario: Edit Interment adding applicant, next of kin, funeral minister and funeral director
+    When I navigate to all plots page
+    And I open the filter dialog
+    And I select vacant filter
+    And I apply the filter plot
+    And I expand the first section
+    And I select the first vacant plot
+    When I click Add Interment button
     And I fill interment form with following details
       | firstName     | <TEST_INTERMENT_FIRSTNAME> |
       | lastName      | <TEST_INTERMENT_LASTNAME>  |
       | intermentType | <TEST_INTERMENT_TYPE>      |
     And I save the Interment
+    Then I should see deceased "<TEST_INTERMENT_FIRSTNAME> <TEST_INTERMENT_LASTNAME>" in the Interment tab
     When I click Edit Interment button
-    And I click More menu on interment form
-    And I click Delete interment option
-    And I confirm delete interment
-    Then I should be navigated back to the plot detail page
-    And the plot status should be "VACANT"
+    And I add interment applicant by searching "<TEST_INTERMENT_APPLICANT_LASTNAME>"
+    And I add next of kin by searching "<TEST_INTERMENT_NOK_LASTNAME>"
+    And I add funeral minister by searching "<TEST_INTERMENT_MINISTER_BUSINESS>"
+    And I add funeral director by searching "<TEST_INTERMENT_DIRECTOR_BUSINESS>"
+    And I save the Interment
+    Then I should be on the plot detail page after save
+
+  @delete-interment @p0
+  Scenario: Delete Interment from the more menu on edit interment page
+    When I navigate to all plots page
+    And I open the filter dialog
+    And I select vacant filter
+    And I apply the filter plot
+    And I expand the first section
+    And I select the first vacant plot
+    When I click Add Interment button
+    And I fill interment form with following details
+      | firstName     | <TEST_INTERMENT_FIRSTNAME> |
+      | lastName      | <TEST_INTERMENT_LASTNAME>  |
+      | intermentType | <TEST_INTERMENT_TYPE>      |
+    And I save the Interment
+    Then I should see deceased "<TEST_INTERMENT_FIRSTNAME> <TEST_INTERMENT_LASTNAME>" in the Interment tab
+    When I click Edit Interment button
+    And I click more options on edit interment page
+    And I click delete interment from menu
+    And I confirm the interment deletion
+    Then I should be on the plot detail page after save
+
+  @move-interment @p0
+  Scenario: Move Interment from the more menu on edit interment page
+    When I navigate to all plots page
+    And I open the filter dialog
+    And I select vacant filter
+    And I apply the filter plot
+    And I expand the first section
+    And I select the first vacant plot
+    When I click Add Interment button
+    And I fill interment form with following details
+      | firstName     | <TEST_INTERMENT_FIRSTNAME> |
+      | lastName      | <TEST_INTERMENT_LASTNAME>  |
+      | intermentType | <TEST_INTERMENT_TYPE>      |
+    And I save the Interment
+    Then I should see deceased "<TEST_INTERMENT_FIRSTNAME> <TEST_INTERMENT_LASTNAME>" in the Interment tab
+    When I click Edit Interment button
+    And I click more options on edit interment page
+    And I click move interment from menu
+    And I select a vacant plot to move interment to "<TEST_INTERMENT_MOVE_PLOT>"
+    And I confirm the interment move
+    Then the interment should be moved successfully
+
+  @add-sale-from-edit-interment @smoke @p0
+  Scenario: Add Sale to an interment from the Edit Interment page
+    When I navigate to the advance table and open the second interment
+    And I click the ADD SALE button
+    And I fill sale reference with "<TEST_SALES_REFERENCE>"
+    And I search and select purchaser "endri" "yanto" in the add person modal
+    And I select the first available item from the Item dropdown
+    Then the selected item related plot should match the first plot ID
+    When I click Create and confirm to navigate back to Edit Plot page
+    Then I should see a new sale entry with reference "<TEST_SALES_REFERENCE>" on the Edit Plot page

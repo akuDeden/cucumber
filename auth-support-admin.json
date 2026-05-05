@@ -2,20 +2,20 @@
   "cookies": [
     {
       "name": "_ga",
-      "value": "GA1.2.1676417061.1774574185",
+      "value": "GA1.2.1861157984.1777517907",
       "domain": ".chronicle.rip",
       "path": "/",
-      "expires": 1809134185.276351,
+      "expires": 1812077909.762387,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
     },
     {
       "name": "_gid",
-      "value": "GA1.2.1046785907.1774574185",
+      "value": "GA1.2.1040424040.1777517910",
       "domain": ".chronicle.rip",
       "path": "/",
-      "expires": 1774660585,
+      "expires": 1777604309,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
@@ -25,79 +25,59 @@
       "value": "1",
       "domain": ".chronicle.rip",
       "path": "/",
-      "expires": 1774574245,
-      "httpOnly": false,
-      "secure": false,
-      "sameSite": "Lax"
-    },
-    {
-      "name": "AMP_MKTG_7eebcf185b",
-      "value": "JTdCJTdE",
-      "domain": ".chronicle.rip",
-      "path": "/",
-      "expires": 1806110185,
+      "expires": 1777517969,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
     },
     {
       "name": "_ga_6MKGHTC7Q2",
-      "value": "GS2.1.s1774574185$o1$g0$t1774574192$j53$l0$h0",
+      "value": "GS2.1.s1777517906$o1$g0$t1777517915$j51$l0$h0",
       "domain": ".chronicle.rip",
       "path": "/",
-      "expires": 1809134192.614503,
+      "expires": 1812077915.675979,
       "httpOnly": false,
       "secure": false,
       "sameSite": "Lax"
     },
     {
       "name": "m",
-      "value": "73c1571f-d70b-468b-9253-a6639fe4661d187f4a",
+      "value": "6ab42121-c35f-4946-9d0a-5358e70c4e913d677b",
       "domain": "m.stripe.com",
       "path": "/",
-      "expires": 1809134213.376258,
+      "expires": 1812077939.935973,
       "httpOnly": true,
       "secure": true,
       "sameSite": "None"
     },
     {
       "name": "__stripe_mid",
-      "value": "adc51f1e-c6a3-4e88-9d7d-4a658555a7f4e8a242",
-      "domain": ".aus.chronicle.rip",
+      "value": "d87ca9e4-f841-492a-b875-ddb33c57a16dfd6d92",
+      "domain": ".project-aus.chronicle.rip",
       "path": "/",
-      "expires": 1806110213,
+      "expires": 1809053939,
       "httpOnly": false,
       "secure": true,
       "sameSite": "Strict"
     },
     {
       "name": "__stripe_sid",
-      "value": "017d5fec-66d1-4b0c-9515-bea75861705b0aee30",
-      "domain": ".aus.chronicle.rip",
+      "value": "fe031fdd-3bc7-45a8-aa7d-f731684724ba8f35fe",
+      "domain": ".project-aus.chronicle.rip",
       "path": "/",
-      "expires": 1774576013,
+      "expires": 1777519739,
       "httpOnly": false,
       "secure": true,
       "sameSite": "Strict"
-    },
-    {
-      "name": "AMP_7eebcf185b",
-      "value": "JTdCJTIyZGV2aWNlSWQlMjIlM0ElMjJmMmJiMDkxMS0xNTlhLTQ4NjItODgxZi0zMTdhNzNhNjVlNWYlMjIlMkMlMjJ1c2VySWQlMjIlM0ElMjJzdXBwb3J0JTQwY2hyb25pY2xlLnJpcCUyMiUyQyUyMnNlc3Npb25JZCUyMiUzQTE3NzQ1NzQxODU1NjclMkMlMjJvcHRPdXQlMjIlM0FmYWxzZSUyQyUyMmxhc3RFdmVudFRpbWUlMjIlM0ExNzc0NTc0MjAyNDk2JTJDJTIybGFzdEV2ZW50SWQlMjIlM0ExMiU3RA==",
-      "domain": ".chronicle.rip",
-      "path": "/",
-      "expires": 1806110202,
-      "httpOnly": false,
-      "secure": false,
-      "sameSite": "Lax"
     }
   ],
   "origins": [
     {
-      "origin": "https://aus.chronicle.rip",
+      "origin": "https://project-aus.chronicle.rip",
       "localStorage": [
         {
           "name": "accessToken",
-          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0NTc3NzkwLCJpYXQiOjE3NzQ1NzQxOTAsImp0aSI6ImE0YWMxYmYzNjljNDRmNjZhMmUyM2Y4M2MxNTk2OGY2IiwidXNlcl9pZCI6NSwibG9jYXRpb24iOm51bGx9.JFQ1pHvz_gS3vSHE8gPZPHsJIv64_LsMleru-6Cfivk"
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc3NTYxMTM0LCJpYXQiOjE3Nzc1MTc5MzQsImp0aSI6ImY5ZTBhYTA4ZmUzMjQ3MTU4OWQ5ZmM5M2IyZWM0YWQxIiwidXNlcl9pZCI6MzQxLCJsb2NhdGlvbiI6IkFVUyJ9.lgcwhPGWznspCIzRn9TsbUj2WBDBCKjH1pIMXiFK2OA"
         },
         {
           "name": "isDemo",
@@ -105,7 +85,7 @@
         },
         {
           "name": "regionalSettingsForCemetery",
-          "value": "{\"cemeteries\":\"Cemeteries\",\"cemetery\":\"Cemetery\",\"sections\":\"Sections\",\"section\":\"Section\",\"rows\":\"Rows\",\"row\":\"Row\",\"plots\":\"Plots\",\"plot\":\"Plot\",\"rois\":\"ROIs\",\"roi\":\"ROI\",\"roi_applicants\":\"ROI Applicants\",\"roi_applicant\":\"ROI Applicant\",\"roi_holders\":\"ROI Holders\",\"roi_holder\":\"ROI Holder\",\"right_of_interment\":\"Right of interment\",\"right_of_interments\":\"Right of interments\",\"for_sale\":\"For Sale\",\"for_sales\":\"For Sales\",\"date_format\":\"DD/MM/YYYY\",\"term_of_rights\":[{\"key\":\"Perpetual\",\"value\":0,\"order\":1,\"is_hidden\":false,\"is_default\":true},{\"key\":\"25 Years\",\"value\":25,\"order\":2,\"is_hidden\":false,\"is_default\":true},{\"key\":\"50 Years\",\"value\":50,\"order\":3,\"is_hidden\":false,\"is_default\":true}],\"special_badge\":[{\"key\":\"Veteran/Returned Service Person\",\"label\":\"Veteransxx\",\"value\":7},{\"key\":\"Citizen\",\"label\":\"Citizen\",\"value\":1},{\"key\":\"Sailors\",\"label\":\"Sailors\",\"value\":2},{\"key\":\"Navy\",\"label\":\"Navy\",\"value\":3},{\"key\":\"Artists\",\"label\":\"Artists\",\"value\":4},{\"key\":\"Notable Characters\",\"label\":\"Notable Characters\",\"value\":5},{\"key\":\"Revolutionary War\",\"label\":\"Revolutionary War\",\"value\":6}],\"returned_service_person\":\"Veteran\",\"always_show_section\":true,\"unassigned_plot\":true,\"is_invoice_integration_enabled\":true,\"organization_spelling\":\"organisation\",\"osiris_enabled\":true,\"is_gfw_enabled\":false}"
+          "value": "{\"cemeteries\":\"Cemeteries\",\"cemetery\":\"Cemetery\",\"sections\":\"Sections\",\"section\":\"Section\",\"rows\":\"Rows\",\"row\":\"Row\",\"plots\":\"Plotst\",\"plot\":\"Plott\",\"rois\":\"ROIsx\",\"roi\":\"ROIx\",\"roi_applicants\":\"ROI Applicants\",\"roi_applicant\":\"ROI Applicantx\",\"roi_holders\":\"ROI Holders\",\"roi_holder\":\"ROI Holdersx\",\"right_of_interment\":\"Right of Intermentx\",\"right_of_interments\":\"Right of Interments\",\"for_sale\":\"For Salee\",\"for_sales\":\"For Sales\",\"reserved\":\"Reserveddd\",\"reserveds\":\"Reserveds\",\"date_format\":\"DD/MM/YYYY\",\"term_of_rights\":[{\"key\":\"Perpetual\",\"value\":0,\"order\":1,\"is_hidden\":false,\"is_default\":true},{\"key\":\"25 Years\",\"value\":25,\"order\":2,\"is_hidden\":false,\"is_default\":true},{\"key\":\"50 Years\",\"value\":50,\"order\":3,\"is_hidden\":false,\"is_default\":true}],\"special_badge\":[{\"key\":\"Returned Service person\",\"label\":\"Vetaranxx\",\"value\":7},{\"key\":\"Citizen\",\"label\":\"Citiz \",\"value\":1},{\"key\":\"Sailors\",\"label\":\"Solar\",\"value\":2},{\"key\":\"Navy\",\"label\":\"Navyyy\",\"value\":3},{\"key\":\"Artists\",\"label\":\"Artistt\",\"value\":4},{\"key\":\"Notable Characters\",\"label\":\"Notable Charactersss\",\"value\":5},{\"key\":\"Revolutionary War\",\"label\":\"Revolutionary Warrrr\",\"value\":6}],\"returned_service_person\":\"Returned Service Person\",\"always_show_section\":true,\"unassigned_plot\":false,\"is_invoice_integration_enabled\":false,\"organization_spelling\":\"organisation\",\"osiris_enabled\":true,\"is_gfw_enabled\":false}"
         },
         {
           "name": "storageType",
@@ -113,7 +93,7 @@
         },
         {
           "name": "refreshToken",
-          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc3NDgzMzM5MCwiaWF0IjoxNzc0NTc0MTkwLCJqdGkiOiJjMWVjMzgzNDk0ODU0NzQzYjA3MWZlMDA3OTI2ZjQ4MyIsInVzZXJfaWQiOjUsImxvY2F0aW9uIjpudWxsfQ.c9UNxerqnlSnEVSCH7lkKZ6pDTB_MkN5BnYYGuzX0xc"
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc3NzYwNDMzNCwiaWF0IjoxNzc3NTE3OTM0LCJqdGkiOiJiMmU0Y2Q2NmQ1ZTU0MzNlOTdhNjgwNjI4NDljNDgwMyIsInVzZXJfaWQiOjM0MSwibG9jYXRpb24iOiJBVVMifQ.Wdg0Lez8Lzi-FjTw6frRTdq7GZaF_oE2pSenFiTJ14w"
         },
         {
           "name": "cemeteriesSortBy",
@@ -121,15 +101,28 @@
         },
         {
           "name": "bugsnag-anonymous-id",
-          "value": "cmn87nmuh00003kbc9tbzio11"
+          "value": "cmokwaaof00003jbg21cjp8l3"
         },
         {
           "name": "produktly_user_id",
-          "value": "user_id::5aa77de4-f629-4b4a-a47d-cec8bcc4f739"
+          "value": "user_id::f6728fb9-4fb3-4a9b-9848-3dda75d7d7ce"
+        }
+      ]
+    },
+    {
+      "origin": "https://aus.chronicle.rip",
+      "localStorage": [
+        {
+          "name": "bugsnag-anonymous-id",
+          "value": "cmokw9k0500003jbjp6gzcidv"
         },
         {
-          "name": "AMP_unsent_7eebcf185b",
-          "value": "[]"
+          "name": "storageType",
+          "value": "localStorage"
+        },
+        {
+          "name": "produktly_user_id",
+          "value": "user_id::3b2be9d3-f813-4cfb-a57f-b6cb3b26026e"
         }
       ]
     },
@@ -137,12 +130,21 @@
       "origin": "https://map.chronicle.rip",
       "localStorage": [
         {
+          "name": "storageType",
+          "value": "localStorage"
+        }
+      ]
+    },
+    {
+      "origin": "https://project.chronicle.rip",
+      "localStorage": [
+        {
           "name": "accessToken",
-          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc0NTc3NzkwLCJpYXQiOjE3NzQ1NzQxOTAsImp0aSI6ImE0YWMxYmYzNjljNDRmNjZhMmUyM2Y4M2MxNTk2OGY2IiwidXNlcl9pZCI6NSwibG9jYXRpb24iOm51bGx9.JFQ1pHvz_gS3vSHE8gPZPHsJIv64_LsMleru-6Cfivk"
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzc3NTYxMTM0LCJpYXQiOjE3Nzc1MTc5MzQsImp0aSI6ImY5ZTBhYTA4ZmUzMjQ3MTU4OWQ5ZmM5M2IyZWM0YWQxIiwidXNlcl9pZCI6MzQxLCJsb2NhdGlvbiI6IkFVUyJ9.lgcwhPGWznspCIzRn9TsbUj2WBDBCKjH1pIMXiFK2OA"
         },
         {
           "name": "refreshToken",
-          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc3NDgzMzM5MCwiaWF0IjoxNzc0NTc0MTkwLCJqdGkiOiJjMWVjMzgzNDk0ODU0NzQzYjA3MWZlMDA3OTI2ZjQ4MyIsInVzZXJfaWQiOjUsImxvY2F0aW9uIjpudWxsfQ.c9UNxerqnlSnEVSCH7lkKZ6pDTB_MkN5BnYYGuzX0xc"
+          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc3NzYwNDMzNCwiaWF0IjoxNzc3NTE3OTM0LCJqdGkiOiJiMmU0Y2Q2NmQ1ZTU0MzNlOTdhNjgwNjI4NDljNDgwMyIsInVzZXJfaWQiOjM0MSwibG9jYXRpb24iOiJBVVMifQ.Wdg0Lez8Lzi-FjTw6frRTdq7GZaF_oE2pSenFiTJ14w"
         },
         {
           "name": "storageType",
@@ -151,14 +153,6 @@
         {
           "name": "location",
           "value": "AUS"
-        },
-        {
-          "name": "AMP_ui",
-          "value": "434467501376"
-        },
-        {
-          "name": "AMP_unsent_7eebcf185b",
-          "value": "[]"
         }
       ]
     }

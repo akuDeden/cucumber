@@ -18,7 +18,7 @@ export const BASE_CONFIG = {
   region: 'aus',
   
   // Auto-generated public URL
-  baseUrl: 'https://staging.chronicle.rip',  // ✅ PUBLIC (no region)
+  baseUrl: 'https://project.chronicle.rip',  // ✅ PUBLIC (no region)
   
   browser: 'chromium',
   headless: false,
@@ -48,11 +48,11 @@ Fungsi-fungsi helper untuk build URL secara dinamis:
 
 // Build cemetery URL
 getCemeteryUrl()
-// Returns: "https://staging.chronicle.rip/astana_tegal_gundul_aus"
+// Returns: "https://project.chronicle.rip/astana_tegal_gundul_aus"
 
 // Build sell plots URL
 getCemeterySellPlotsUrl()
-// Returns: "https://staging.chronicle.rip/astana_tegal_gundul_aus/sell-plots"
+// Returns: "https://project.chronicle.rip/astana_tegal_gundul_aus/sell-plots"
 
 // Get display name dengan region
 getCemeteryDisplayName()
@@ -73,7 +73,7 @@ getCustomerOrgUrl('plots')
 
 **PUBLIC URLs** (untuk sell-plots, public pages):
 - Format: `https://{environment}.chronicle.rip/{cemetery}_{region}`
-- Contoh: `https://staging.chronicle.rip/astana_tegal_gundul_aus`
+- Contoh: `https://project.chronicle.rip/astana_tegal_gundul_aus`
 - Tidak ada region di subdomain
 
 **AUTHENTICATED URLs** (untuk login, customer-organization):
@@ -86,7 +86,7 @@ getCustomerOrgUrl('plots')
 ### ✅ Konsistensi
 - Semua skenario menggunakan cemetery yang sama
 - Format naming konsisten: `astana_tegal_gundul` (bukan campuran US/AUS)
-- Base URL terpusat: `staging.chronicle.rip`
+- Base URL terpusat: `project.chronicle.rip`
 
 ### ✅ Mudah Maintenance
 - Ganti region di satu tempat (`BASE_CONFIG.region`)
@@ -122,7 +122,7 @@ const cemeteryUrl = REQUEST_SALES_FORM_DATA.cemetery.url; // Auto-generated
 ```typescript
 // Otomatis menggunakan URL yang di-generate
 await this.page.goto(REQUEST_SALES_FORM_DATA.cemetery.sellPlotsUrl);
-// Goes to: https://staging.chronicle.rip/astana_tegal_gundul_aus/sell-plots
+// Goes to: https://project.chronicle.rip/astana_tegal_gundul_aus/sell-plots
 ```
 
 ## Environment Variables Override
@@ -173,7 +173,7 @@ const region = BASE_CONFIG.region; // Centralized
 ### ❌ DON'T
 ```typescript
 // Jangan hardcode URLs
-const url = 'https://staging.chronicle.rip/astana_tegal_gundul_us';
+const url = 'https://project.chronicle.rip/astana_tegal_gundul_us';
 
 // Jangan hardcode region
 const region = 'aus';
@@ -201,8 +201,8 @@ REGION=uk npm test -- --tags "@request-sales-form-pre-need"
 export const REQUEST_SALES_FORM_DATA = {
   cemetery: {
     name: getCemeteryDisplayName(),           // Dynamic: "Astana Tegal Gundul AUS"
-    url: getCemeteryUrl(),                    // Dynamic: "https://staging.chronicle.rip/astana_tegal_gundul_aus"
-    sellPlotsUrl: getCemeterySellPlotsUrl(),  // Dynamic: "https://staging.chronicle.rip/astana_tegal_gundul_aus/sell-plots"
+    url: getCemeteryUrl(),                    // Dynamic: "https://project.chronicle.rip/astana_tegal_gundul_aus"
+    sellPlotsUrl: getCemeterySellPlotsUrl(),  // Dynamic: "https://project.chronicle.rip/astana_tegal_gundul_aus/sell-plots"
     uniqueName: CEMETERY_CONFIG.uniqueName,   // Static: "astana_tegal_gundul"
     region: BASE_CONFIG.region,               // Static: "aus"
   },
@@ -225,11 +225,11 @@ export const REQUEST_SALES_FORM_DATA = {
 
 | Configuration | Location | Example Value |
 |--------------|----------|---------------|
-| Base URL | `BASE_CONFIG.baseUrl` | `https://staging.chronicle.rip` |
+| Base URL | `BASE_CONFIG.baseUrl` | `https://project.chronicle.rip` |
 | Region | `BASE_CONFIG.region` | `aus` |
 | Cemetery Slug | `CEMETERY_CONFIG.uniqueName` | `astana_tegal_gundul` |
 | Cemetery Display | `CEMETERY_CONFIG.displayName` | `Astana Tegal Gundul` |
-| Full URL | `getCemeteryUrl()` | `https://staging.chronicle.rip/astana_tegal_gundul_aus` |
+| Full URL | `getCemeteryUrl()` | `https://project.chronicle.rip/astana_tegal_gundul_aus` |
 
 ---
 

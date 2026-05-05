@@ -1,7 +1,7 @@
 /**
  * Selectors for Feedback feature at Cemetery level
  * Multi-step wizard form with 5 expansion panels
- * Based on actual element inspection from staging.chronicle.rip
+ * Based on actual element inspection from project.chronicle.rip
  *
  * NOTE: All continue buttons share the SAME data-testid.
  * Use panel scoping + :visible or button:has-text("continue") to disambiguate.

@@ -1,0 +1,150 @@
+- generic [ref=e1]:
+  - generic [ref=e2884]:
+    - generic [ref=e2886]:
+      - link [ref=e2888] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e2889]:
+        - button [ref=e3082] [cursor=pointer]:
+          - generic [ref=e2892]:
+            - img [ref=e2893]: more_vert
+            - text: MORE
+        - button [ref=e3083] [cursor=pointer]: cancel
+        - button [ref=e3084] [cursor=pointer]: save
+    - generic [ref=e2898]:
+      - banner [ref=e2899]:
+        - generic [ref=e2900]:
+          - heading [level=1] [ref=e3085]: Edit Interment
+          - generic [ref=e2902]:
+            - heading [level=4] [ref=e3086]: Astana Tegal Gundul - A B 8
+            - generic [ref=e2904]:
+              - img [ref=e3087]
+              - paragraph [ref=e2906] [cursor=pointer]: View on map
+        - paragraph [ref=e2911] [cursor=pointer]: Create certificate
+      - generic [ref=e2912]:
+        - generic [ref=e2915]:
+          - button [ref=e3088] [cursor=pointer]:
+            - generic [ref=e2919]: Deceased person
+          - button [ref=e3089] [cursor=pointer]:
+            - generic [ref=e2924]: Interment details
+          - button [ref=e3090] [cursor=pointer]:
+            - generic [ref=e2929]: Story
+          - button [ref=e3091] [cursor=pointer]:
+            - generic [ref=e2934]: Documents
+        - generic [ref=e2936]:
+          - list [ref=e2937]:
+            - listitem [ref=e2938]:
+              - generic [ref=e2940]:
+                - banner [ref=e2941]:
+                  - heading [level=4] [ref=e3092]: Interment Applicant | Next of kin
+                - generic [ref=e2944]:
+                  - heading [level=2] [ref=e3093]: Test Johnson
+                  - button [ref=e3094] [cursor=pointer]:
+                    - generic [ref=e2948]: EDIT CONTACT INFO
+                  - button [ref=e3095] [cursor=pointer]:
+                    - generic [ref=e2953]: REMOVE & REPLACE
+              - generic [ref=e2954]:
+                - paragraph [ref=e2955]: "Also:"
+                - option [selected] [ref=e3096] [cursor=pointer]: Interment Applicant
+            - listitem [ref=e2957]:
+              - generic [ref=e2959]:
+                - banner [ref=e2960]:
+                  - heading [level=4] [ref=e3097]: Funeral minister
+                - generic [ref=e2963]:
+                  - heading [level=2] [ref=e3098]: CV. Maju Bersama
+                  - generic [ref=e2965]:
+                    - generic [ref=e2966]:
+                      - generic [ref=e2967]: "Contact:"
+                      - generic [ref=e2968]: Hendra Gunawan
+                    - generic [ref=e2969]:
+                      - generic [ref=e2970]: "Phone (home):"
+                      - generic [ref=e2971]: "081234567899"
+                    - generic [ref=e2972]:
+                      - generic [ref=e2973]: "Phone (mobile):"
+                      - generic [ref=e2974]: "081234567899"
+                    - generic [ref=e2975]:
+                      - generic [ref=e2976]: "Phone (office):"
+                      - generic [ref=e2977]: "081234567899"
+                    - generic [ref=e2978]:
+                      - generic [ref=e2979]: "E-mail:"
+                      - generic [ref=e2980]: hendra.gunawan@email.com
+                    - generic [ref=e2981]:
+                      - generic [ref=e2982]: "Business address:"
+                      - generic [ref=e2983]: Jl. Pemuda No. 40, Semarang, Jawa Tengah, 50132
+                  - button [ref=e3099] [cursor=pointer]:
+                    - generic [ref=e2986]: EDIT BUSINESS DETAILS
+                  - button [ref=e3100] [cursor=pointer]:
+                    - generic [ref=e2991]: REMOVE & REPLACE
+              - generic [ref=e2992]:
+                - paragraph [ref=e2993]: "Also:"
+                - option [disabled]: Interment Applicant
+            - listitem [ref=e2994]:
+              - generic [ref=e2996]:
+                - banner [ref=e2997]:
+                  - heading [level=4] [ref=e3101]: Funeral director
+                - generic [ref=e3000]:
+                  - heading [level=2] [ref=e3102]: CV. Maju Bersama
+                  - generic [ref=e3002]:
+                    - generic [ref=e3003]:
+                      - generic [ref=e3004]: "Contact:"
+                      - generic [ref=e3005]: Hendra Gunawan
+                    - generic [ref=e3006]:
+                      - generic [ref=e3007]: "Phone (home):"
+                      - generic [ref=e3008]: "081234567899"
+                    - generic [ref=e3009]:
+                      - generic [ref=e3010]: "Phone (mobile):"
+                      - generic [ref=e3011]: "081234567899"
+                    - generic [ref=e3012]:
+                      - generic [ref=e3013]: "Phone (office):"
+                      - generic [ref=e3014]: "081234567899"
+                    - generic [ref=e3015]:
+                      - generic [ref=e3016]: "E-mail:"
+                      - generic [ref=e3017]: hendra.gunawan@email.com
+                    - generic [ref=e3018]:
+                      - generic [ref=e3019]: "Business address:"
+                      - generic [ref=e3020]: Jl. Pemuda No. 40, Semarang, Jawa Tengah, 50132
+                  - button [ref=e3103] [cursor=pointer]:
+                    - generic [ref=e3023]: EDIT BUSINESS DETAILS
+                  - button [ref=e3104] [cursor=pointer]:
+                    - generic [ref=e3028]: REMOVE & REPLACE
+              - generic [ref=e3029]:
+                - paragraph [ref=e3030]: "Also:"
+                - option [disabled]: Interment Applicant
+          - button [ref=e3105] [cursor=pointer]:
+            - generic [ref=e3038]: Add Sale
+          - generic [ref=e3040]:
+            - generic [ref=e3041]:
+              - generic [ref=e3042]: Activity
+              - listbox [ref=e3106]:
+                - generic [ref=e3044]:
+                  - option [selected] [ref=e3107]: Notes
+                  - option [ref=e3108]: Changes
+                  - option [ref=e3109]: All
+              - button [ref=e3048] [cursor=pointer]:
+                - img [ref=e3050]:
+                  - img [ref=e3051]
+                - generic: "1"
+            - generic [ref=e3056]:
+              - textbox [ref=e3110]:
+                - /placeholder: Add Notes
+              - img [ref=e3060] [cursor=pointer]:
+                - img [ref=e3061]
+            - generic [ref=e3066]: No previous activity recorded in Chronicle.
+  - dialog [active] [ref=e3114]:
+    - generic [ref=e3116]:
+      - heading "Move Interment" [level=4] [ref=e3117]
+      - generic [ref=e3119]:
+        - generic [ref=e3123] [cursor=pointer]:
+          - combobox "Cemetery Astana Tegal Gundul" [ref=e3124]:
+            - generic [ref=e3127]: Astana Tegal Gundul
+          - generic:
+            - generic: Cemetery *
+        - generic [ref=e3134] [cursor=pointer]:
+          - combobox "Event Type" [ref=e3135]:
+            - generic [ref=e3138]: All
+          - generic:
+            - generic:
+              - generic: Plott
+              - text: "*"
+      - generic [ref=e3141]:
+        - button "cancel" [ref=e3142] [cursor=pointer]: cancel
+        - button "Assign" [disabled] [ref=e3143]: Assign

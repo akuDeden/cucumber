@@ -59,6 +59,8 @@ export const BASE_CONFIG = {
 
   // Convenience property for public URLs (environment.domain)
   get baseUrl(): string {
+    // Allow full BASE_URL override (e.g., https://project.chronicle.rip)
+    if (process.env.BASE_URL) return process.env.BASE_URL.replace(/\/$/, '');
     // Production uses map.chronicle.rip instead of production.chronicle.rip
     if (this.environment === 'production') {
       return `https://map.${this.baseDomain}`;
@@ -93,7 +95,7 @@ export const CEMETERY_CONFIG = {
 /**
  * Build PUBLIC cemetery URL (no region in subdomain)
  * Format: https://{environment}.chronicle.rip/{unique_name}_{region}
- * Example: https://staging.chronicle.rip/astana_tegal_gundul_aus
+ * Example: https://project.chronicle.rip/astana_tegal_gundul_aus
  */
 export function getCemeteryUrl(uniqueName: string = CEMETERY_CONFIG.uniqueName, region: string = BASE_CONFIG.region): string {
   return `${BASE_CONFIG.baseUrl}/${uniqueName}_${region}`;
@@ -102,7 +104,7 @@ export function getCemeteryUrl(uniqueName: string = CEMETERY_CONFIG.uniqueName, 
 /**
  * Build PUBLIC sell plots URL
  * Format: https://{environment}.chronicle.rip/{unique_name}_{region}/sell-plots
- * Example: https://staging.chronicle.rip/astana_tegal_gundul_aus/sell-plots
+ * Example: https://project.chronicle.rip/astana_tegal_gundul_aus/sell-plots
  */
 export function getCemeterySellPlotsUrl(uniqueName: string = CEMETERY_CONFIG.uniqueName, region: string = BASE_CONFIG.region): string {
   return `${getCemeteryUrl(uniqueName, region)}/sell-plots`;
@@ -232,7 +234,15 @@ export const INTERMENT_DATA = {
     firstName: process.env.TEST_INTERMENT_EDIT_FIRSTNAME || 'Jane',
     lastName: process.env.TEST_INTERMENT_EDIT_LASTNAME || 'Smith',
     intermentType: process.env.TEST_INTERMENT_EDIT_TYPE || 'Cremated'
-  }
+  },
+  // Relations — persons and businesses that exist on staging for autocomplete search
+  relations: {
+    applicantLastName: process.env.TEST_INTERMENT_APPLICANT_LASTNAME || 'Kalla',
+    nokLastName: process.env.TEST_INTERMENT_NOK_LASTNAME || 'Wahid',
+    ministerBusinessName: process.env.TEST_INTERMENT_MINISTER_BUSINESS || 'Masjid Raya Bandung',
+    directorBusinessName: process.env.TEST_INTERMENT_DIRECTOR_BUSINESS || 'Rumah Duka Sejahtera',
+    movePlot: process.env.TEST_INTERMENT_MOVE_PLOT || 'B B 1',
+  },
 };
 
 // ============================================
@@ -366,8 +376,8 @@ export const REQUEST_SALES_FORM_DATA = {
   cemetery: {
     // Use centralized cemetery config
     name: getCemeteryDisplayName(), // e.g., "Astana Tegal Gundul AUS"
-    url: getCemeteryUrl(), // e.g., "https://staging.chronicle.rip/astana_tegal_gundul_aus"
-    sellPlotsUrl: getCemeterySellPlotsUrl(), // e.g., "https://staging.chronicle.rip/astana_tegal_gundul_aus/sell-plots"
+    url: getCemeteryUrl(), // e.g., "https://project.chronicle.rip/astana_tegal_gundul_aus"
+    sellPlotsUrl: getCemeterySellPlotsUrl(), // e.g., "https://project.chronicle.rip/astana_tegal_gundul_aus/sell-plots"
     uniqueName: CEMETERY_CONFIG.uniqueName, // e.g., "astana_tegal_gundul"
     region: BASE_CONFIG.region, // e.g., "aus"
   },
@@ -435,6 +445,7 @@ export const SALES_DATA = {
     issueDate: process.env.TEST_SALES_ISSUE_DATE || '21/01/2026',
     dueDate: process.env.TEST_SALES_DUE_DATE || '22/01/2026',
     note: process.env.TEST_SALES_NOTE || 'this is note test',
+    relatedPlot: process.env.TEST_SALES_RELATED_PLOT || 'A A 1',
 
     // Purchaser info - use random names for dynamic testing
     purchaser: {
@@ -517,6 +528,54 @@ export const SALES_DATA = {
 };
 
 // ============================================
+// PLOT DATA (Create / Edit)
+// ============================================
+// Generate a unique plot number for each test run to avoid duplicate conflicts
+const _uniquePlotNumber = process.env.TEST_PLOT_NEW_NUMBER || String(Math.floor(Math.random() * 8000) + 1000);
+
+export const PLOT_DATA = {
+  // Create new plot data
+  // NOTE: section must be an existing section (e.g., 'A' or 'B') - field uses autocomplete
+  // row can be any value (e.g., 'Z' for a new row)
+  // number is auto-generated as a unique 4-digit number per run to avoid duplicates
+  create: {
+    section: process.env.TEST_PLOT_NEW_SECTION || 'A',
+    row: process.env.TEST_PLOT_NEW_ROW || 'Z',
+    number: _uniquePlotNumber,
+    status: process.env.TEST_PLOT_NEW_STATUS || 'Vacant',
+    plotType: process.env.TEST_PLOT_NEW_TYPE || 'Monumental',
+    direction: process.env.TEST_PLOT_NEW_DIRECTION || '',
+    price: process.env.TEST_PLOT_NEW_PRICE || '',
+    notes: process.env.TEST_PLOT_CREATE_NOTES || 'Created by automated test',
+  },
+  // Edit existing plot data
+  edit: {
+    burialCapacity: process.env.TEST_PLOT_EDIT_BURIAL_CAPACITY || '2',
+    notes: process.env.TEST_PLOT_EDIT_NOTES || 'Updated by automated test',
+  },
+};
+
+// ============================================
+// BUSINESS DATA (Create / Edit)
+// ============================================
+export const BUSINESS_DATA = {
+  create: {
+    name: process.env.TEST_BUSINESS_NAME || 'Test Funeral Services Pty Ltd',
+    abn: process.env.TEST_BUSINESS_ABN || '12 345 678 901',
+    firstName: process.env.TEST_BUSINESS_FIRSTNAME || 'John',
+    lastName: process.env.TEST_BUSINESS_LASTNAME || 'Funeral',
+    phone: process.env.TEST_BUSINESS_PHONE || '+61299990001',
+    email: process.env.TEST_BUSINESS_EMAIL || 'contact@testfuneral.com.au',
+    address: process.env.TEST_BUSINESS_ADDRESS || '1 Cemetery Road, Sydney NSW 2000',
+  },
+  edit: {
+    phone: process.env.TEST_BUSINESS_EDIT_PHONE || '+61299990002',
+    email: process.env.TEST_BUSINESS_EDIT_EMAIL || 'updated@testfuneral.com.au',
+    address: process.env.TEST_BUSINESS_EDIT_ADDRESS || '2 Memorial Lane, Melbourne VIC 3000',
+  },
+};
+
+// ============================================
 // FULL TEST DATA OBJECT (For easy access)
 // ============================================
 export const TEST_DATA = {
@@ -531,7 +590,9 @@ export const TEST_DATA = {
   roi: ROI_DATA,
   person: PERSON_DATA,
   requestSalesForm: REQUEST_SALES_FORM_DATA,
-  sales: SALES_DATA
+  sales: SALES_DATA,
+  plotManagement: PLOT_DATA,
+  business: BUSINESS_DATA,
 };
 
 // ============================================

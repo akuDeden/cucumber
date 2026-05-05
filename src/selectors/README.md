@@ -109,7 +109,7 @@ When UI changes:
 
 ### P0 - Login Selectors
 - **File**: `p0/login.selectors.ts`
-- **Page**: Login page (staging.chronicle.rip/login)
+- **Page**: Login page (project.chronicle.rip/login)
 - **Elements**: Email input, password input, login button, error messages, dashboard elements
 
 More selectors will be added as new features are automated.

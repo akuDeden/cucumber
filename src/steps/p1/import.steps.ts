@@ -153,7 +153,8 @@ Then('I should see the following data categories on the import page', async func
   await NetworkHelper.waitForApiRequestsComplete(this.page, 8000);
 
   const categories = await importPage.getImportCategories();
-  const expectedCategories = dataTable.raw().map((row: string[]) => row[0]);
+  // Use .rows() to skip the header row, then extract first column
+  const expectedCategories = dataTable.rows().map((row: string[]) => row[0]);
 
   for (const expected of expectedCategories) {
     const found = categories.some(c => c.name.toLowerCase() === expected.toLowerCase());

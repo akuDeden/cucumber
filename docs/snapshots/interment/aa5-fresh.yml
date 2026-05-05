@@ -1,0 +1,165 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e7]:
+    - generic [ref=e9]:
+      - generic [ref=e12]:
+        - generic [ref=e13]: hahahahaha
+        - generic [ref=e17]:
+          - generic [ref=e241]:
+            - img [ref=e243]:
+              - img [ref=e244]
+            - textbox "Search" [ref=e249]
+          - generic [ref=e21]:
+            - generic [ref=e22]:
+              - generic [ref=e23]:
+                - img [ref=e24]:
+                  - img [ref=e25]
+                - generic [ref=e28]: People
+              - generic [ref=e29]:
+                - img [ref=e30]:
+                  - img [ref=e31]
+                - generic [ref=e36]: Plots
+            - heading "within Astana Tegal Gundul" [level=5] [ref=e250]
+        - generic [ref=e38]:
+          - button "Advanced" [ref=e39] [cursor=pointer]:
+            - generic [ref=e42]: Advanced
+          - generic [ref=e45]:
+            - button "Notifications - 2 unread" [ref=e251] [cursor=pointer]:
+              - img "Notification bell" [ref=e48]
+            - generic [ref=e252]: "2"
+      - button "hahahahaha faris+astanaorg@chronicle.rip" [ref=e51] [cursor=pointer]:
+        - generic [ref=e54]:
+          - paragraph [ref=e55]: hahahahaha
+          - generic [ref=e56]: faris+astanaorg@chronicle.rip
+    - generic:
+      - generic [ref=e58]:
+        - generic:
+          - generic:
+            - generic:
+              - img
+        - generic:
+          - generic:
+            - button [ref=e640] [cursor=pointer]
+            - button [ref=e641] [cursor=pointer]
+          - generic:
+            - link "Current location" [ref=e60] [cursor=pointer]:
+              - /url: "#"
+            - generic [ref=e61]:
+              - button "Zoom in" [ref=e62] [cursor=pointer]: +
+              - button "Zoom out" [ref=e63] [cursor=pointer]: −
+            - generic [ref=e64]:
+              - link "Leaflet" [ref=e65] [cursor=pointer]:
+                - /url: https://leafletjs.com
+                - img [ref=e66]
+                - text: Leaflet
+              - text: "| Map data ©"
+              - link "OpenStreetMap" [ref=e70] [cursor=pointer]:
+                - /url: https://www.openstreetmap.org/
+              - text: contributors,
+              - link "CC-BY-SA" [ref=e71] [cursor=pointer]:
+                - /url: https://creativecommons.org/licenses/by-sa/2.0/
+      - button [ref=e74] [cursor=pointer]:
+        - img [ref=e76]:
+          - img [ref=e77]
+    - generic [ref=e80]:
+      - generic [ref=e85] [cursor=pointer]:
+        - group [ref=e87]:
+          - button "Map" [pressed] [ref=e88]:
+            - generic [ref=e89]:
+              - img [ref=e91]:
+                - img [ref=e92]
+              - generic [ref=e94]: Map
+          - button "Tables" [ref=e95]:
+            - generic [ref=e96]:
+              - img [ref=e98]:
+                - img [ref=e99]
+              - generic [ref=e102]: Tables
+          - button "Calendar" [ref=e103]:
+            - generic [ref=e104]:
+              - img [ref=e106]:
+                - img [ref=e107]
+              - generic [ref=e109]: Calendar
+          - button "Request 51" [ref=e642]:
+            - generic [ref=e111]:
+              - img [ref=e113]:
+                - img [ref=e114]
+              - generic [ref=e117]: Request
+              - generic [ref=e643]: "51"
+          - button "Reports" [ref=e118]:
+            - generic [ref=e119]:
+              - img [ref=e121]:
+                - img [ref=e122]
+              - generic [ref=e125]: Reports
+        - group [disabled] [ref=e127]:
+          - button "help" [disabled] [ref=e128]:
+            - link "help" [disabled] [ref=e130]:
+              - /url: https://help.chronicle.rip/
+              - img "help" [ref=e131]
+          - button "home" [disabled] [ref=e132]:
+            - link "home" [disabled] [ref=e134]:
+              - /url: https://chronicle.rip/
+              - img "home" [ref=e135]
+      - generic [ref=e148]:
+        - button "Choose File" [ref=e151]
+        - img [ref=e152] [cursor=pointer]:
+          - img [ref=e153]
+        - generic [ref=e156]:
+          - generic [ref=e157]:
+            - generic [ref=e158]:
+              - paragraph [ref=e160]: Astana Tegal Gundul
+              - heading "A A 5" [level=3] [ref=e162]:
+                - generic [ref=e164]: A A 5
+              - generic [ref=e166]:
+                - generic [ref=e168]: 1 / -
+                - generic [ref=e171]: 1 / -
+                - generic [ref=e174]: Monumental
+            - button "Edit" [ref=e176] [cursor=pointer]:
+              - paragraph [ref=e178]: Edit
+          - generic [ref=e644]:
+            - button "Requests" [ref=e645] [cursor=pointer]:
+              - img [ref=e646]:
+                - img [ref=e647]
+              - text: Requests
+              - img [ref=e649]:
+                - img [ref=e650]
+            - button [disabled] [ref=e652]:
+              - img [ref=e654]:
+                - img [ref=e655]
+            - button [ref=e658] [cursor=pointer]:
+              - img [ref=e660]: share_outlined
+          - generic [ref=e180]:
+            - tablist [ref=e183]:
+              - generic [ref=e184]:
+                - tab "INTERMENTS" [selected] [ref=e185] [cursor=pointer]:
+                  - generic [ref=e186]: INTERMENTS
+                - tab "EVENTS" [ref=e187] [cursor=pointer]:
+                  - generic [ref=e188]: EVENTS
+                - tab "ACTIVITY" [ref=e189] [cursor=pointer]:
+                  - generic [ref=e190]: ACTIVITY
+            - generic [ref=e192]:
+              - tabpanel "INTERMENTS" [ref=e193]:
+                - generic [ref=e200]:
+                  - button "John Doe n/a - n/a (n/a y.o)" [expanded] [ref=e201] [cursor=pointer]:
+                    - generic [ref=e204]:
+                      - heading "John Doe" [level=3] [ref=e206]
+                      - paragraph [ref=e207]: n/a - n/a (n/a y.o)
+                  - region "John Doe n/a - n/a (n/a y.o)" [ref=e208]:
+                    - generic [ref=e210]:
+                      - paragraph [ref=e212]: Burial
+                      - generic:
+                        - list
+                      - button "Edit interment" [ref=e214] [cursor=pointer]:
+                        - generic [ref=e215]:
+                          - img [ref=e216]: person
+                          - text: Edit interment
+              - tabpanel "EVENTS" [ref=e217]
+              - tabpanel "ACTIVITY" [ref=e219]
+        - generic [ref=e222]:
+          - button "Add interment" [ref=e224] [cursor=pointer]:
+            - generic [ref=e225]: Add interment
+          - button "Add ROI" [ref=e227] [cursor=pointer]:
+            - generic [ref=e228]: Add ROI
+  - generic [ref=e233]:
+    - generic [ref=e235]: Geolocation is blocked by this browser. Please enable to use this feature.
+    - generic [ref=e236] [cursor=pointer]: Got it!
+    - button [ref=e237] [cursor=pointer]:
+      - img [ref=e239]: close

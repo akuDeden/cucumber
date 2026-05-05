@@ -15,6 +15,12 @@ const PLACEHOLDER_MAP: Record<string, string> = {
   '<TEST_PASSWORD>': TEST_DATA.login.valid.password,
   '<TEST_ORG_NAME>': TEST_DATA.login.valid.organizationName,
 
+  // Role-based credentials (admin org user vs owner org user)
+  '<TEST_ADMIN_EMAIL>': process.env.TEST_ADMIN_EMAIL || '',
+  '<TEST_ADMIN_PASSWORD>': process.env.TEST_ADMIN_PASSWORD || '',
+  '<TEST_OWNER_EMAIL>': process.env.TEST_OWNER_EMAIL || '',
+  '<TEST_OWNER_PASSWORD>': process.env.TEST_OWNER_PASSWORD || '',
+
   // Cemetery & Plot data
   '<TEST_CEMETERY>': TEST_DATA.cemetery,
   '<TEST_SECTION>': TEST_DATA.plot.section,
@@ -41,6 +47,13 @@ const PLACEHOLDER_MAP: Record<string, string> = {
   '<TEST_INTERMENT_EDIT_FIRSTNAME>': TEST_DATA.interment.edit.firstName,
   '<TEST_INTERMENT_EDIT_LASTNAME>': TEST_DATA.interment.edit.lastName,
   '<TEST_INTERMENT_EDIT_TYPE>': TEST_DATA.interment.edit.intermentType,
+
+  // Interment relations
+  '<TEST_INTERMENT_APPLICANT_LASTNAME>': TEST_DATA.interment.relations.applicantLastName,
+  '<TEST_INTERMENT_NOK_LASTNAME>': TEST_DATA.interment.relations.nokLastName,
+  '<TEST_INTERMENT_MINISTER_BUSINESS>': TEST_DATA.interment.relations.ministerBusinessName,
+  '<TEST_INTERMENT_DIRECTOR_BUSINESS>': TEST_DATA.interment.relations.directorBusinessName,
+  '<TEST_INTERMENT_MOVE_PLOT>': TEST_DATA.interment.relations.movePlot,
 
   // ROI data - Basic
   '<TEST_ROI_RIGHT_TYPE>': TEST_DATA.roi.basic.rightType,
@@ -114,8 +127,38 @@ const PLACEHOLDER_MAP: Record<string, string> = {
   '<TEST_PERSON_DELETE_POSTCODE>': TEST_DATA.person.delete.postCode,
   '<TEST_PERSON_DELETE_NOTE>': TEST_DATA.person.delete.note,
 
+  // Plot management data - Cemetery display name (matches the dropdown option, without region suffix)
+  '<TEST_CEMETERY_DISPLAY_NAME>': TEST_DATA.cemetery,
+
+  // Plot management data - Create
+  '<TEST_PLOT_NEW_SECTION>': TEST_DATA.plotManagement.create.section,
+  '<TEST_PLOT_NEW_ROW>': TEST_DATA.plotManagement.create.row,
+  '<TEST_PLOT_NEW_NUMBER>': TEST_DATA.plotManagement.create.number,
+  '<TEST_PLOT_NEW_STATUS>': TEST_DATA.plotManagement.create.status,
+  '<TEST_PLOT_NEW_TYPE>': TEST_DATA.plotManagement.create.plotType,
+  '<TEST_PLOT_CREATE_NOTES>': TEST_DATA.plotManagement.create.notes,
+
+  // Plot management data - Edit
+  '<TEST_PLOT_EDIT_BURIAL_CAPACITY>': TEST_DATA.plotManagement.edit.burialCapacity,
+  '<TEST_PLOT_EDIT_NOTES>': TEST_DATA.plotManagement.edit.notes,
+
+  // Business data - Create
+  '<TEST_BUSINESS_NAME>': TEST_DATA.business.create.name,
+  '<TEST_BUSINESS_ABN>': TEST_DATA.business.create.abn,
+  '<TEST_BUSINESS_FIRSTNAME>': TEST_DATA.business.create.firstName,
+  '<TEST_BUSINESS_LASTNAME>': TEST_DATA.business.create.lastName,
+  '<TEST_BUSINESS_PHONE>': TEST_DATA.business.create.phone,
+  '<TEST_BUSINESS_EMAIL>': TEST_DATA.business.create.email,
+  '<TEST_BUSINESS_ADDRESS>': TEST_DATA.business.create.address,
+
+  // Business data - Edit
+  '<TEST_BUSINESS_EDIT_PHONE>': TEST_DATA.business.edit.phone,
+  '<TEST_BUSINESS_EDIT_EMAIL>': TEST_DATA.business.edit.email,
+  '<TEST_BUSINESS_EDIT_ADDRESS>': TEST_DATA.business.edit.address,
+
   // Sales data
   '<TEST_SALES_REFERENCE>': TEST_DATA.sales.create.reference,
+  '<TEST_SALES_RELATED_PLOT>': TEST_DATA.sales.create.relatedPlot,
   '<TEST_SALES_ISSUE_DATE>': TEST_DATA.sales.create.issueDate,
   '<TEST_SALES_DUE_DATE>': TEST_DATA.sales.create.dueDate,
   '<TEST_SALES_NOTE>': TEST_DATA.sales.create.note,

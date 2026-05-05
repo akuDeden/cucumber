@@ -1,6 +1,6 @@
 /**
  * Interment Page Selectors
- * Real selectors from staging.chronicle.rip
+ * Real selectors from project.chronicle.rip
  * Discovered via MCP Playwright manual exploration
  */
 
@@ -9,8 +9,8 @@ export const IntermentSelectors = {
   addIntermentButton: '[data-testid="plot-details-edit-button-add-interment-btn"]',
 
   // Interment Form - Header
-  saveButton: 'button:has-text("save")',
-  cancelButton: 'button:has-text("cancel")',
+  saveButton: '[data-testid="toolbar-manage-button-toolbar-button-1"]',
+  cancelButton: '[data-testid="toolbar-manage-button-toolbar-button"]',
 
   // Deceased Person section
   firstName: 'input[aria-label="First name"]',
@@ -34,17 +34,58 @@ export const IntermentSelectors = {
   cremationLocationDropdown: 'mat-select[aria-label="Cremation location"]',
   containerTypeDropdown: 'mat-select[aria-label="Container type"]',
 
-  // Right sidebar - Person additions
+  // Right sidebar - Person/Business additions
   addIntermentApplicantButton: 'button:has-text("Interment applicant")',
   addNextOfKinButton: 'button:has-text("Next of kin")',
   addFuneralMinisterButton: 'button:has-text("Funeral minister")',
   addFuneralDirectorButton: 'button:has-text("Funeral director")',
 
+  // Sidebar search input (autocomplete) that appears after clicking role button
+  relationSearchInput: [
+    '[data-testid="autocomplete-input-input-autocomplete-search-input"]',
+    'input[data-testid*="search"]',
+    'input[placeholder*="earch"]',
+    'input[formcontrolname="search"]',
+  ].join(', '),
+  autocompleteOption: (text: string) => `mat-option:has-text("${text}")`,
+
+  // Edit Interment page - toolbar more button and menu items
+  // Menu order: index-0 = "Move Interment", index-1 = "Delete"
+  moreButton: '[data-testid="toolbar-manage-button-more-btn"]',
+  deleteIntermentMenuItem: '[data-testid="button-toolbar-button-1"], button:has-text("Delete")',
+  moveIntermentMenuItem: '[data-testid="button-toolbar-button-0"], button:has-text("Move Interment")',
+
+  // Delete confirmation dialog
+  confirmDeleteIntermentButton: [
+    '[role="dialog"] button:has-text("Delete")',
+    '[role="dialog"] button:has-text("Yes")',
+    '[role="dialog"] button:has-text("Confirm")',
+    'mat-dialog-container button:has-text("Delete")',
+  ].join(', '),
+
+  // Move interment dialog — search input for target plot
+  movePlotSearchInput: '[role="dialog"] [data-testid="input-start-typing-to-search"], mat-dialog-container [data-testid="input-start-typing-to-search"], [role="dialog"] input[type="text"]',
+
+  // Move interment dialog — "Plott *" is the second mat-select (Cemetery is first), confirm is "ASSIGN"
+  movePlotSelect: [
+    '[role="dialog"] mat-select[formcontrolname="plot"]',
+    'mat-dialog-container mat-select[formcontrolname="plot"]',
+    '[role="dialog"] mat-select[formcontrolname="plot_id"]',
+    // Fallback: second mat-select in dialog (first is Cemetery)
+  ].join(', '),
+  moveConfirmButton: [
+    '[role="dialog"] button:has-text("ASSIGN")',
+    '[role="dialog"] button:has-text("Assign")',
+    '[role="dialog"] button:has-text("Move")',
+    'mat-dialog-container button:has-text("Confirm")',
+  ].join(', '),
+
   // Verification - Plot detail page after save
   intermentsTab: '[aria-label="INTERMENTS"]',
-  deceasedNameHeading: (name: string) => `h3:has-text("${name}")`,
-  intermentTypeLabel: (type: string) => `p:has-text("${type}")`,
-  editIntermentButton: 'button:has-text("Edit interment")',
+  deceasedNameHeading: (name: string) => `[data-testid$="person-full-name"]:has-text("${name}")`,
+  intermentTypeLabel: (type: string) => `mat-expansion-panel.mat-expanded p:has-text("${type}")`,
+  editIntermentButton: '[data-testid="interment-item-button-edit-interment"]',
+  intermentListItem: '[role="tabpanel"] button[class*="interment"]',
 
   // Interment types
   intermentTypes: {
@@ -59,4 +100,11 @@ export const IntermentSelectors = {
   plotSidebarHeading: (plotId: string) => `h3:has-text("${plotId}")`,
   // Use specific testid to avoid strict mode violation with interment Edit button
   editButtonInSidebar: '[data-testid="plot-details-edit-button-edit-plot"]'
+};
+
+// ===== Edit Plot form (URL: /manage/edit/plot) =====
+// The "Add" button in the Interments section on the edit plot form page
+export const PlotEditFormSelectors = {
+  addIntermentButton: '[data-testid="plot-edit-button-adding"]',
+  addRoiButton: '[data-testid="plot-edit-div-roi"] [data-testid="plus-item-button-plus-button"]',
 };

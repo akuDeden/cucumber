@@ -1,0 +1,126 @@
+- generic [ref=e1348]:
+  - generic [ref=e1350]:
+    - generic [ref=e1353]:
+      - generic [ref=e1354]: Astana Tegal Gundul
+      - generic [ref=e1358]:
+        - generic [ref=e1360]:
+          - img [ref=e1362]:
+            - img [ref=e1363]
+          - textbox "Search" [ref=e1368]
+        - generic [ref=e1372]:
+          - generic [ref=e1373]:
+            - generic [ref=e1374]:
+              - img [ref=e1375]:
+                - img [ref=e1376]
+              - generic [ref=e1379]: People
+            - generic [ref=e1380]:
+              - img [ref=e1381]:
+                - img [ref=e1382]
+              - generic [ref=e1387]: Plotsttt
+          - heading "within Astana Tegal Gundul" [level=5] [ref=e1388]
+      - generic [ref=e1389]:
+        - button "Advanced" [ref=e1390] [cursor=pointer]:
+          - generic [ref=e1393]: Advanced
+        - generic [ref=e1396]:
+          - button "Notifications - 2 unread" [ref=e1397] [cursor=pointer]:
+            - img "Notification bell" [ref=e1399]
+          - generic [ref=e1400]: "2"
+    - button "Astana Tegal Gundul faris+astanaorg@chronicle.rip" [ref=e1403] [cursor=pointer]:
+      - generic [ref=e1406]:
+        - paragraph [ref=e1407]: Astana Tegal Gundul
+        - generic [ref=e1408]: faris+astanaorg@chronicle.rip
+  - generic [ref=e1410]:
+    - generic:
+      - generic:
+        - generic:
+          - button "Marker" [active] [ref=e1411] [cursor=pointer]
+          - button "Marker" [ref=e1412] [cursor=pointer]
+        - generic:
+          - generic: Astana Tegal Gundul
+          - generic: Another cemetery
+    - generic:
+      - generic:
+        - link "Current location" [ref=e1414] [cursor=pointer]:
+          - /url: "#"
+        - generic [ref=e1415]:
+          - button "Zoom in" [ref=e1416] [cursor=pointer]: +
+          - button "Zoom out" [ref=e1417] [cursor=pointer]: −
+        - generic [ref=e1418]:
+          - link "Leaflet" [ref=e1419] [cursor=pointer]:
+            - /url: https://leafletjs.com
+            - img [ref=e1420]
+            - text: Leaflet
+          - text: "| Map data ©"
+          - link "OpenStreetMap" [ref=e1424] [cursor=pointer]:
+            - /url: https://www.openstreetmap.org/
+          - text: contributors,
+          - link "CC-BY-SA" [ref=e1425] [cursor=pointer]:
+            - /url: https://creativecommons.org/licenses/by-sa/2.0/
+  - generic [ref=e1426]:
+    - generic [ref=e1431] [cursor=pointer]:
+      - group [ref=e1433]:
+        - button "Map" [pressed] [ref=e1434]:
+          - generic [ref=e1435]:
+            - img [ref=e1437]:
+              - img [ref=e1438]
+            - generic [ref=e1440]: Map
+        - button "Tables" [ref=e1441]:
+          - generic [ref=e1442]:
+            - img [ref=e1444]:
+              - img [ref=e1445]
+            - generic [ref=e1448]: Tables
+        - button "Calendar" [ref=e1449]:
+          - generic [ref=e1450]:
+            - img [ref=e1452]:
+              - img [ref=e1453]
+            - generic [ref=e1455]: Calendar
+        - button "Request 12" [ref=e1456]:
+          - generic [ref=e1457]:
+            - img [ref=e1459]:
+              - img [ref=e1460]
+            - generic [ref=e1463]: Request
+            - generic [ref=e1464]: "12"
+        - button "Sales" [ref=e1465]:
+          - generic [ref=e1466]:
+            - img [ref=e1468]:
+              - img [ref=e1469]
+            - generic [ref=e1472]: Sales
+        - button "Reports" [ref=e1473]:
+          - generic [ref=e1474]:
+            - img [ref=e1476]:
+              - img [ref=e1477]
+            - generic [ref=e1480]: Reports
+      - group [disabled] [ref=e1482]:
+        - button "help" [disabled] [ref=e1483]:
+          - link "help" [disabled] [ref=e1485]:
+            - /url: https://help.chronicle.rip/
+            - img "help" [ref=e1486]
+        - button "home" [disabled] [ref=e1487]:
+          - link "home" [disabled] [ref=e1489]:
+            - /url: https://chronicle.rip/
+            - img "home" [ref=e1490]
+    - generic [ref=e1500]:
+      - generic [ref=e1502]:
+        - heading "Cemeteries" [level=3] [ref=e1503]
+        - heading "2" [level=5] [ref=e1504]
+      - generic [ref=e1506]:
+        - generic [ref=e1507]:
+          - generic [ref=e1508]: Sort by
+          - combobox "Creation date (newest first)" [ref=e1513] [cursor=pointer]:
+            - generic [ref=e1516]: Creation date (newest first)
+        - generic [ref=e1519] [cursor=pointer]:
+          - img "Another cemetery" [ref=e1520]
+          - generic [ref=e1521]:
+            - heading "Another cemetery" [level=6] [ref=e1522]
+            - generic [ref=e1523]:
+              - generic [ref=e1524]: PRIVATE
+              - generic [ref=e1525]: Mar 9, 2026
+              - generic [ref=e1526]: jalan, jalan, state, postcode, country
+        - generic [ref=e1527] [cursor=pointer]:
+          - img "Astana Tegal Gundul" [ref=e1528]
+          - generic [ref=e1529]:
+            - heading "Astana Tegal Gundul" [level=6] [ref=e1530]
+            - generic [ref=e1531]:
+              - generic [ref=e1532]: PUBLIC
+              - generic [ref=e1533]: Jul 8, 2025
+              - generic [ref=e1534]: Canggu, Kabupaten Badung, Bali, 80363, Indonesia, Kabupaten Badung, Bali, 80363, Indonesia

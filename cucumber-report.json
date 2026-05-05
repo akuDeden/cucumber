@@ -1,20 +1,20 @@
 [
   {
-    "description": "  As a cemetery administrator\n  I want to manage businesses in the system\n  So that I can associate businesses with cemetery operations",
+    "description": "    As a cemetery administrator (logged-in user)\n    I want to search for plots using advanced search with full access\n    So that I can manage and find plot information efficiently",
     "elements": [
       {
         "description": "",
-        "id": "business-management-(authenticated);add-a-new-business-from-the-business-tab-in-the-advance-table",
-        "keyword": "Scenario",
-        "line": 15,
-        "name": "Add a new business from the Business tab in the advance table",
+        "id": "advanced-search-plot---authenticated-users;advanced-search-plot-by-section,-row,-and-number---a-a-1",
+        "keyword": "Scenario Outline",
+        "line": 30,
+        "name": "Advanced search plot by Section, Row, and Number - A A 1",
         "steps": [
           {
             "keyword": "Before",
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 593948375
+              "duration": 615815458
             }
           },
           {
@@ -27,7 +27,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 8634981707
+              "duration": 8889750998
             }
           },
           {
@@ -40,7 +40,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 2112583374
+              "duration": 2055234748
             }
           },
           {
@@ -53,7 +53,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1979874291
+              "duration": 1972347207
             }
           },
           {
@@ -66,7 +66,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1462790875
+              "duration": 1477561082
             }
           },
           {
@@ -79,119 +79,150 @@
             },
             "result": {
               "status": "passed",
-              "duration": 16762263333
+              "duration": 11393609914
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I navigate to organization home page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 917713000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I navigate to the cemetery map page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/plot.steps.ts:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 9083304457
             }
           },
           {
             "arguments": [],
             "keyword": "When ",
-            "line": 16,
-            "name": "I navigate to the Business tab in the advance table",
+            "line": 18,
+            "name": "I click Advanced search button",
             "match": {
-              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:7"
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:297"
             },
             "result": {
               "status": "passed",
-              "duration": 27255317123
+              "duration": 1565893623
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
-            "line": 17,
-            "name": "I click the Add Business button",
+            "line": 19,
+            "name": "I select section \"A\" in advanced search",
             "match": {
-              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:11"
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:302"
             },
             "result": {
               "status": "passed",
-              "duration": 6477001622
+              "duration": 3816688956
             }
           },
           {
-            "arguments": [
-              {
-                "rows": [
-                  {
-                    "cells": [
-                      "cemetery",
-                      "<TEST_CEMETERY_DISPLAY_NAME>"
-                    ]
-                  },
-                  {
-                    "cells": [
-                      "businessName",
-                      "<TEST_BUSINESS_NAME>"
-                    ]
-                  },
-                  {
-                    "cells": [
-                      "firstName",
-                      "<TEST_BUSINESS_FIRSTNAME>"
-                    ]
-                  },
-                  {
-                    "cells": [
-                      "lastName",
-                      "<TEST_BUSINESS_LASTNAME>"
-                    ]
-                  },
-                  {
-                    "cells": [
-                      "phone",
-                      "<TEST_BUSINESS_PHONE>"
-                    ]
-                  },
-                  {
-                    "cells": [
-                      "email",
-                      "<TEST_BUSINESS_EMAIL>"
-                    ]
-                  },
-                  {
-                    "cells": [
-                      "address",
-                      "<TEST_BUSINESS_ADDRESS>"
-                    ]
-                  }
-                ]
-              }
-            ],
+            "arguments": [],
             "keyword": "And ",
-            "line": 18,
-            "name": "I fill the add business form with following details",
+            "line": 20,
+            "name": "I select row \"A\" in advanced search",
             "match": {
-              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:14"
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:308"
             },
             "result": {
               "status": "passed",
-              "duration": 8978221792
+              "duration": 2007668750
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 21,
+            "name": "I enter plot number \"1\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:314"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1979185956
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 22,
+            "name": "I click Search button in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:320"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4308447915
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 23,
+            "name": "I should see search results containing \"A A 1\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:325"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 947538583
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 24,
+            "name": "I click on plot \"A A 1\" from search results",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:331"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10061164872
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 25,
+            "name": "I should see plot sidebar with plot ID \"A A 1\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:337"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 923775332
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
             "line": 26,
-            "name": "I save the new business",
+            "name": "I should see plot details sidebar",
             "match": {
-              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:27"
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:343"
             },
             "result": {
               "status": "passed",
-              "duration": 4459853373
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "Then ",
-            "line": 27,
-            "name": "the new business should appear in the business table",
-            "match": {
-              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:30"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 27341149707
+              "duration": 921966416
             }
           },
           {
@@ -199,7 +230,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 1248995083
+              "duration": 1229005124
             }
           }
         ],
@@ -209,41 +240,37 @@
             "line": 1
           },
           {
-            "name": "@business",
-            "line": 1
-          },
-          {
             "name": "@authenticated",
             "line": 1
           },
           {
-            "name": "@create-business",
-            "line": 14
+            "name": "@advancesearch-auth",
+            "line": 1
+          },
+          {
+            "name": "@advance-search-plot",
+            "line": 16
           },
           {
             "name": "@smoke",
-            "line": 14
-          },
-          {
-            "name": "@p0",
-            "line": 14
+            "line": 16
           }
         ],
         "type": "scenario"
       },
       {
         "description": "",
-        "id": "business-management-(authenticated);edit-an-existing-business-from-the-business-table",
-        "keyword": "Scenario",
-        "line": 30,
-        "name": "Edit an existing business from the business table",
+        "id": "advanced-search-plot---authenticated-users;advanced-search-plot-by-section,-row,-and-number---b-a-1",
+        "keyword": "Scenario Outline",
+        "line": 31,
+        "name": "Advanced search plot by Section, Row, and Number - B A 1",
         "steps": [
           {
             "keyword": "Before",
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 165214292
+              "duration": 84456708
             }
           },
           {
@@ -256,7 +283,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5482086625
+              "duration": 4411802872
             }
           },
           {
@@ -269,7 +296,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 2400831248
+              "duration": 1988085749
             }
           },
           {
@@ -282,7 +309,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1967857874
+              "duration": 1964905748
             }
           },
           {
@@ -295,7 +322,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1463632081
+              "duration": 1461525708
             }
           },
           {
@@ -308,96 +335,380 @@
             },
             "result": {
               "status": "passed",
-              "duration": 11640979124
+              "duration": 16416747040
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I navigate to organization home page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1528514457
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I navigate to the cemetery map page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/plot.steps.ts:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10441607998
             }
           },
           {
             "arguments": [],
             "keyword": "When ",
-            "line": 31,
-            "name": "I navigate to the Business tab in the advance table",
+            "line": 18,
+            "name": "I click Advanced search button",
             "match": {
-              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:7"
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:297"
             },
             "result": {
               "status": "passed",
-              "duration": 22939063122
+              "duration": 1496136999
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
-            "line": 32,
-            "name": "I click the first business row in the table",
+            "line": 19,
+            "name": "I select section \"B\" in advanced search",
             "match": {
-              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:42"
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:302"
             },
             "result": {
-              "status": "failed",
-              "duration": 60945230915,
-              "error_message": "Error: function timed out, ensure the promise resolves within 60000 milliseconds\n    at Timeout.<anonymous> (/Users/endriyanto/Work/Work_Chronicle/Ai Project/cucumber_3/cucumber/node_modules/@cucumber/cucumber/lib/time.js:54:20)\n    at listOnTimeout (node:internal/timers:588:17)\n    at process.processTimers (node:internal/timers:523:7)"
+              "status": "passed",
+              "duration": 2805978833
             }
           },
           {
-            "arguments": [
-              {
-                "rows": [
-                  {
-                    "cells": [
-                      "phone",
-                      "<TEST_BUSINESS_EDIT_PHONE>"
-                    ]
-                  },
-                  {
-                    "cells": [
-                      "email",
-                      "<TEST_BUSINESS_EDIT_EMAIL>"
-                    ]
-                  },
-                  {
-                    "cells": [
-                      "address",
-                      "<TEST_BUSINESS_EDIT_ADDRESS>"
-                    ]
-                  }
-                ]
-              }
-            ],
+            "arguments": [],
             "keyword": "And ",
-            "line": 33,
-            "name": "I update the business with following details",
+            "line": 20,
+            "name": "I select row \"A\" in advanced search",
             "match": {
-              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:48"
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:308"
             },
             "result": {
-              "status": "skipped",
-              "duration": 0
+              "status": "passed",
+              "duration": 2014594040
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 21,
+            "name": "I enter plot number \"1\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:314"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1988734579
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 22,
+            "name": "I click Search button in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:320"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3797176373
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 23,
+            "name": "I should see search results containing \"B A 1\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:325"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 975758834
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 24,
+            "name": "I click on plot \"B A 1\" from search results",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:331"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8967069667
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 25,
+            "name": "I should see plot sidebar with plot ID \"B A 1\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:337"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 916107373
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 26,
+            "name": "I should see plot details sidebar",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:343"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1023125374
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1225636582
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@p0",
+            "line": 1
+          },
+          {
+            "name": "@authenticated",
+            "line": 1
+          },
+          {
+            "name": "@advancesearch-auth",
+            "line": 1
+          },
+          {
+            "name": "@advance-search-plot",
+            "line": 16
+          },
+          {
+            "name": "@smoke",
+            "line": 16
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "advanced-search-plot---authenticated-users;advanced-search-plot-by-plot-id---b-a-1",
+        "keyword": "Scenario Outline",
+        "line": 45,
+        "name": "Advanced search plot by Plot ID - B A 1",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 85542041
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Chronicle login page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6073027623
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I enter email \"<TEST_EMAIL>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1985581956
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I enter password \"<TEST_PASSWORD>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1971387497
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I click the login button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1462031083
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be logged in successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 14548536999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I navigate to organization home page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1459954580
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I navigate to the cemetery map page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/plot.steps.ts:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 9466419831
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 35,
+            "name": "I click Advanced search button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:297"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1806149250
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 36,
+            "name": "I enter plot ID \"B A 1\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:351"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2577229999
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
             "line": 37,
-            "name": "I save the business changes",
+            "name": "I click Search button in advanced search",
             "match": {
-              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:56"
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:320"
             },
             "result": {
-              "status": "skipped",
-              "duration": 0
+              "status": "passed",
+              "duration": 4393772331
             }
           },
           {
             "arguments": [],
             "keyword": "Then ",
             "line": 38,
-            "name": "the business should be updated successfully",
+            "name": "I should see search results containing \"B A 1\"",
             "match": {
-              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:59"
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:325"
             },
             "result": {
-              "status": "skipped",
-              "duration": 0
+              "status": "passed",
+              "duration": 1134334333
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 39,
+            "name": "I click on plot \"B A 1\" from search results",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:331"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8351225331
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 40,
+            "name": "I should see plot sidebar with plot ID \"B A 1\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:337"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 927262373
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 41,
+            "name": "I should see plot details sidebar",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:343"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 943110165
             }
           },
           {
@@ -405,7 +716,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 2160892583
+              "duration": 1227523625
             }
           }
         ],
@@ -415,41 +726,37 @@
             "line": 1
           },
           {
-            "name": "@business",
-            "line": 1
-          },
-          {
             "name": "@authenticated",
             "line": 1
           },
           {
-            "name": "@edit-business",
-            "line": 29
+            "name": "@advancesearch-auth",
+            "line": 1
           },
           {
-            "name": "@smoke",
-            "line": 29
+            "name": "@advance-search-plot-id",
+            "line": 33
           },
           {
             "name": "@p0",
-            "line": 29
+            "line": 33
           }
         ],
         "type": "scenario"
       },
       {
         "description": "",
-        "id": "business-management-(authenticated);delete-a-business-from-the-business-table",
-        "keyword": "Scenario",
-        "line": 41,
-        "name": "Delete a business from the business table",
+        "id": "advanced-search-plot---authenticated-users;advanced-search-plot-by-plot-id---a-a-1",
+        "keyword": "Scenario Outline",
+        "line": 46,
+        "name": "Advanced search plot by Plot ID - A A 1",
         "steps": [
           {
             "keyword": "Before",
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 94161374
+              "duration": 111328957
             }
           },
           {
@@ -462,7 +769,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 5316181625
+              "duration": 6316887164
             }
           },
           {
@@ -475,7 +782,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 2029343999
+              "duration": 1984525874
             }
           },
           {
@@ -488,7 +795,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1972120207
+              "duration": 2165419207
             }
           },
           {
@@ -501,7 +808,7 @@
             },
             "result": {
               "status": "passed",
-              "duration": 1468689374
+              "duration": 1453203500
             }
           },
           {
@@ -514,73 +821,124 @@
             },
             "result": {
               "status": "passed",
-              "duration": 13083578957
+              "duration": 15404663875
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I navigate to organization home page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1534335041
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I navigate to the cemetery map page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/plot.steps.ts:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 8326920581
             }
           },
           {
             "arguments": [],
             "keyword": "When ",
-            "line": 42,
-            "name": "I navigate to the Business tab in the advance table",
+            "line": 35,
+            "name": "I click Advanced search button",
             "match": {
-              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:7"
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:297"
             },
             "result": {
               "status": "passed",
-              "duration": 24156422333
+              "duration": 1903867792
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
-            "line": 43,
-            "name": "I click the first business row in the table",
+            "line": 36,
+            "name": "I enter plot ID \"A A 1\" in advanced search",
             "match": {
-              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:42"
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:351"
             },
             "result": {
               "status": "passed",
-              "duration": 16600666958
+              "duration": 1974691041
             }
           },
           {
             "arguments": [],
             "keyword": "And ",
-            "line": 44,
-            "name": "I click the Delete Business button",
+            "line": 37,
+            "name": "I click Search button in advanced search",
             "match": {
-              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:66"
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:320"
             },
             "result": {
               "status": "passed",
-              "duration": 2559130249
-            }
-          },
-          {
-            "arguments": [],
-            "keyword": "And ",
-            "line": 45,
-            "name": "I confirm the business deletion",
-            "match": {
-              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:69"
-            },
-            "result": {
-              "status": "passed",
-              "duration": 6776679415
+              "duration": 4295417163
             }
           },
           {
             "arguments": [],
             "keyword": "Then ",
-            "line": 46,
-            "name": "the business should no longer be in the table",
+            "line": 38,
+            "name": "I should see search results containing \"A A 1\"",
             "match": {
-              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/business.steps.ts:72"
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:325"
             },
             "result": {
-              "status": "failed",
-              "duration": 25942687790,
-              "error_message": "Error: function timed out, ensure the promise resolves within 25000 milliseconds\n    at Timeout.<anonymous> (/Users/endriyanto/Work/Work_Chronicle/Ai Project/cucumber_3/cucumber/node_modules/@cucumber/cucumber/lib/time.js:54:20)\n    at listOnTimeout (node:internal/timers:588:17)\n    at process.processTimers (node:internal/timers:523:7)"
+              "status": "passed",
+              "duration": 1049525125
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 39,
+            "name": "I click on plot \"A A 1\" from search results",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:331"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4679033124
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 40,
+            "name": "I should see plot sidebar with plot ID \"A A 1\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:337"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1034358205
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 41,
+            "name": "I should see plot details sidebar",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:343"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 917313291
             }
           },
           {
@@ -588,7 +946,7 @@
             "hidden": true,
             "result": {
               "status": "passed",
-              "duration": 6818900332
+              "duration": 1223550416
             }
           }
         ],
@@ -598,7 +956,259 @@
             "line": 1
           },
           {
-            "name": "@business",
+            "name": "@authenticated",
+            "line": 1
+          },
+          {
+            "name": "@advancesearch-auth",
+            "line": 1
+          },
+          {
+            "name": "@advance-search-plot-id",
+            "line": 33
+          },
+          {
+            "name": "@p0",
+            "line": 33
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "advanced-search-plot---authenticated-users;advanced-search-plot-by-plot-type-and-validate",
+        "keyword": "Scenario Outline",
+        "line": 62,
+        "name": "Advanced search plot by Plot type and validate",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 81839666
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Chronicle login page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5325986207
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I enter email \"<TEST_EMAIL>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1985250874
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I enter password \"<TEST_PASSWORD>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1967061292
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I click the login button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1458747165
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be logged in successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 22143409956
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I navigate to organization home page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 922745872
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I navigate to the cemetery map page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/plot.steps.ts:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 16446230708
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 50,
+            "name": "I click Advanced search button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:297"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1612970540
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 51,
+            "name": "I select plot type \"Garden\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:357"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1995146333
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 52,
+            "name": "I click Search button in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:320"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3362966914
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 53,
+            "name": "I should see search results information",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:198"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1559848289
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 54,
+            "name": "I click on first plot from search results",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:400"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5650798541
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 55,
+            "name": "I should see plot details sidebar",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:343"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1217887289
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 56,
+            "name": "I click Edit plot button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:405"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10339944873
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 57,
+            "name": "I should see plot type \"Garden\" in edit plot page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:410"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5801628042
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 58,
+            "name": "I close edit plot page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:422"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2125830665
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1226986082
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@p0",
             "line": 1
           },
           {
@@ -606,35 +1216,2733 @@
             "line": 1
           },
           {
-            "name": "@delete-business",
-            "line": 40
+            "name": "@advancesearch-auth",
+            "line": 1
+          },
+          {
+            "name": "@advance-search-plot-type",
+            "line": 48
           },
           {
             "name": "@p0",
-            "line": 40
+            "line": 48
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "advanced-search-plot---authenticated-users;advanced-search-plot-by-plot-type-and-validate",
+        "keyword": "Scenario Outline",
+        "line": 63,
+        "name": "Advanced search plot by Plot type and validate",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 86628292
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Chronicle login page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7357264707
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I enter email \"<TEST_EMAIL>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1956537750
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I enter password \"<TEST_PASSWORD>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1963136166
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I click the login button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1478455998
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be logged in successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 20964149041
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I navigate to organization home page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1229435498
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I navigate to the cemetery map page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/plot.steps.ts:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10737757500
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 50,
+            "name": "I click Advanced search button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:297"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1697494750
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 51,
+            "name": "I select plot type \"Monumental\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:357"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2539946915
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 52,
+            "name": "I click Search button in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:320"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2484087457
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 53,
+            "name": "I should see search results information",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:198"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1138377707
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 54,
+            "name": "I click on first plot from search results",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:400"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4652483957
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 55,
+            "name": "I should see plot details sidebar",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:343"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 930025791
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 56,
+            "name": "I click Edit plot button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:405"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5619992460
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 57,
+            "name": "I should see plot type \"Monumental\" in edit plot page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:410"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3269203916
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 58,
+            "name": "I close edit plot page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:422"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2340413082
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1245877208
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@p0",
+            "line": 1
+          },
+          {
+            "name": "@authenticated",
+            "line": 1
+          },
+          {
+            "name": "@advancesearch-auth",
+            "line": 1
+          },
+          {
+            "name": "@advance-search-plot-type",
+            "line": 48
+          },
+          {
+            "name": "@p0",
+            "line": 48
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "advanced-search-plot---authenticated-users;advanced-search-plot-by-price---500",
+        "keyword": "Scenario Outline",
+        "line": 74,
+        "name": "Advanced search plot by Price - 500",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 83835083
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Chronicle login page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6353289583
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I enter email \"<TEST_EMAIL>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2003990124
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I enter password \"<TEST_PASSWORD>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1969306374
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I click the login button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1472735873
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be logged in successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10052095622
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I navigate to organization home page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1415032333
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I navigate to the cemetery map page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/plot.steps.ts:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10044851830
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 67,
+            "name": "I click Advanced search button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:297"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1534924167
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 68,
+            "name": "I enter price \"500\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:369"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2178945833
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 69,
+            "name": "I click Search button in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:320"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2793176247
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 70,
+            "name": "I should see search results information",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:198"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1048735332
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1244680999
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@p0",
+            "line": 1
+          },
+          {
+            "name": "@authenticated",
+            "line": 1
+          },
+          {
+            "name": "@advancesearch-auth",
+            "line": 1
+          },
+          {
+            "name": "@advance-search-price",
+            "line": 65
+          },
+          {
+            "name": "@p0",
+            "line": 65
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "advanced-search-plot---authenticated-users;advanced-search-plot-by-price---1000",
+        "keyword": "Scenario Outline",
+        "line": 75,
+        "name": "Advanced search plot by Price - 1000",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 82735749
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Chronicle login page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5647237040
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I enter email \"<TEST_EMAIL>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2054639289
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I enter password \"<TEST_PASSWORD>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1973666164
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I click the login button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1475199248
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be logged in successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 14907645290
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I navigate to organization home page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1524167707
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I navigate to the cemetery map page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/plot.steps.ts:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7016854666
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 67,
+            "name": "I click Advanced search button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:297"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1485520375
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 68,
+            "name": "I enter price \"1000\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:369"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2512755623
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 69,
+            "name": "I click Search button in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:320"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2595875540
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 70,
+            "name": "I should see search results information",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:198"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1133712583
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1236766125
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@p0",
+            "line": 1
+          },
+          {
+            "name": "@authenticated",
+            "line": 1
+          },
+          {
+            "name": "@advancesearch-auth",
+            "line": 1
+          },
+          {
+            "name": "@advance-search-price",
+            "line": 65
+          },
+          {
+            "name": "@p0",
+            "line": 65
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "advanced-search-plot---authenticated-users;advanced-search-plot-by-capacity---b:2-e:0-c:0",
+        "keyword": "Scenario Outline",
+        "line": 88,
+        "name": "Advanced search plot by Capacity - B:2 E:0 C:0",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 84514499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Chronicle login page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 9838535542
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I enter email \"<TEST_EMAIL>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1976935205
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I enter password \"<TEST_PASSWORD>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1966415875
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I click the login button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1474374957
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be logged in successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 11394587083
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I navigate to organization home page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1235714749
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I navigate to the cemetery map page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/plot.steps.ts:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 14278817040
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 79,
+            "name": "I click Advanced search button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:297"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1709444000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 80,
+            "name": "I enter burial capacity \"2\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:375"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2072553916
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 81,
+            "name": "I enter entombment capacity \"0\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:381"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1974177374
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 82,
+            "name": "I enter cremation capacity \"0\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:387"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1989658250
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 83,
+            "name": "I click Search button in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:320"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3376295997
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 84,
+            "name": "I should see search results information",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:198"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 926150748
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1239719415
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@p0",
+            "line": 1
+          },
+          {
+            "name": "@authenticated",
+            "line": 1
+          },
+          {
+            "name": "@advancesearch-auth",
+            "line": 1
+          },
+          {
+            "name": "@advance-search-capacity",
+            "line": 77
+          },
+          {
+            "name": "@p0",
+            "line": 77
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "advanced-search-plot---authenticated-users;advanced-search-plot-by-capacity---b:1-e:0-c:0",
+        "keyword": "Scenario Outline",
+        "line": 89,
+        "name": "Advanced search plot by Capacity - B:1 E:0 C:0",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 81670250
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Chronicle login page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5182742583
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I enter email \"<TEST_EMAIL>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1981601124
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I enter password \"<TEST_PASSWORD>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1975874459
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I click the login button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1467196872
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be logged in successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10225672708
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I navigate to organization home page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2033953331
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I navigate to the cemetery map page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/plot.steps.ts:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 12399990957
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 79,
+            "name": "I click Advanced search button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:297"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2128286499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 80,
+            "name": "I enter burial capacity \"1\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:375"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1968315790
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 81,
+            "name": "I enter entombment capacity \"0\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:381"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2165223666
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 82,
+            "name": "I enter cremation capacity \"0\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:387"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1983579875
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 83,
+            "name": "I click Search button in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:320"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2772307332
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 84,
+            "name": "I should see search results information",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:198"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1033366664
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1240504542
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@p0",
+            "line": 1
+          },
+          {
+            "name": "@authenticated",
+            "line": 1
+          },
+          {
+            "name": "@advancesearch-auth",
+            "line": 1
+          },
+          {
+            "name": "@advance-search-capacity",
+            "line": 77
+          },
+          {
+            "name": "@p0",
+            "line": 77
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "advanced-search-plot---authenticated-users;advanced-search-plot-by-interments-qty---0-to-2",
+        "keyword": "Scenario Outline",
+        "line": 100,
+        "name": "Advanced search plot by Interments Qty - 0 to 2",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 87481833
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Chronicle login page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 11091970916
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I enter email \"<TEST_EMAIL>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1985964125
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I enter password \"<TEST_PASSWORD>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1975928540
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I click the login button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1465098541
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be logged in successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 15889359747
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I navigate to organization home page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1413758998
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I navigate to the cemetery map page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/plot.steps.ts:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 12781052913
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 93,
+            "name": "I click Advanced search button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:297"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2271155124
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 94,
+            "name": "I enter interments qty from \"0\" to \"2\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:393"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1950338209
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 95,
+            "name": "I click Search button in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:320"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3396164500
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 96,
+            "name": "I should see search results information",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:198"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1141895498
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1236116042
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@p0",
+            "line": 1
+          },
+          {
+            "name": "@authenticated",
+            "line": 1
+          },
+          {
+            "name": "@advancesearch-auth",
+            "line": 1
+          },
+          {
+            "name": "@advance-search-interments-qty",
+            "line": 91
+          },
+          {
+            "name": "@p0",
+            "line": 91
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "advanced-search-plot---authenticated-users;advanced-search-plot-by-interments-qty---1-to-5",
+        "keyword": "Scenario Outline",
+        "line": 101,
+        "name": "Advanced search plot by Interments Qty - 1 to 5",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 85446915
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Chronicle login page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4583085415
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I enter email \"<TEST_EMAIL>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1991114957
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I enter password \"<TEST_PASSWORD>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1965297124
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I click the login button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1465592164
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be logged in successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 12513588375
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I navigate to organization home page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1218934456
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I navigate to the cemetery map page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/plot.steps.ts:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 11362977583
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 93,
+            "name": "I click Advanced search button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:297"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1508677124
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 94,
+            "name": "I enter interments qty from \"1\" to \"5\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:393"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1941342540
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 95,
+            "name": "I click Search button in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:320"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2791489998
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 96,
+            "name": "I should see search results information",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:198"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 949349706
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1237342291
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@p0",
+            "line": 1
+          },
+          {
+            "name": "@authenticated",
+            "line": 1
+          },
+          {
+            "name": "@advancesearch-auth",
+            "line": 1
+          },
+          {
+            "name": "@advance-search-interments-qty",
+            "line": 91
+          },
+          {
+            "name": "@p0",
+            "line": 91
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "advanced-search-plot---authenticated-users;advanced-search-plot-by-multiple-filters---b-a-monumental",
+        "keyword": "Scenario Outline",
+        "line": 119,
+        "name": "Advanced search plot by multiple filters - B A Monumental",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 83460333
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Chronicle login page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4949943831
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I enter email \"<TEST_EMAIL>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1967369207
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I enter password \"<TEST_PASSWORD>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1974513915
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I click the login button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1469350456
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be logged in successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 10921817582
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I navigate to organization home page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1221764166
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I navigate to the cemetery map page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/plot.steps.ts:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7891932123
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 105,
+            "name": "I click Advanced search button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:297"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1524227413
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 106,
+            "name": "I select section \"B\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:302"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2618086290
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 107,
+            "name": "I select row \"A\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:308"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2007792958
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 108,
+            "name": "I select plot type \"Monumental\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:357"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2258478332
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 109,
+            "name": "I click Search button in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:320"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3796773123
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 110,
+            "name": "I should see search results information",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:198"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1269208248
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 111,
+            "name": "I click on first plot from search results",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:400"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6422023497
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 112,
+            "name": "I should see plot details sidebar",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:343"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 929567249
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 113,
+            "name": "I click Edit plot button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:405"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 9563904875
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 114,
+            "name": "I should see plot type \"Monumental\" in edit plot page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:410"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4275845167
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 115,
+            "name": "I close edit plot page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:422"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2335085292
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1244016874
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@p0",
+            "line": 1
+          },
+          {
+            "name": "@authenticated",
+            "line": 1
+          },
+          {
+            "name": "@advancesearch-auth",
+            "line": 1
+          },
+          {
+            "name": "@advance-search-combined",
+            "line": 103
+          },
+          {
+            "name": "@p0",
+            "line": 103
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "advanced-search-plot---authenticated-users;advanced-search-plot-by-multiple-filters---a-a-columbarium",
+        "keyword": "Scenario Outline",
+        "line": 120,
+        "name": "Advanced search plot by multiple filters - A A Columbarium",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 95541124
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Chronicle login page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 7331155498
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I enter email \"<TEST_EMAIL>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1991726209
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I enter password \"<TEST_PASSWORD>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1975048623
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I click the login button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1476984499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be logged in successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 15326301041
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I navigate to organization home page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1420836040
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I navigate to the cemetery map page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/plot.steps.ts:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 16200259540
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 105,
+            "name": "I click Advanced search button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:297"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1513610624
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 106,
+            "name": "I select section \"A\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:302"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3318511749
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 107,
+            "name": "I select row \"A\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:308"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2019329624
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 108,
+            "name": "I select plot type \"Columbarium\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:357"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2036753207
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 109,
+            "name": "I click Search button in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:320"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3311802707
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 110,
+            "name": "I should see search results information",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:198"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 952041372
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 111,
+            "name": "I click on first plot from search results",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:400"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5179017082
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 112,
+            "name": "I should see plot details sidebar",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:343"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 915430876
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 113,
+            "name": "I click Edit plot button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:405"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6905558999
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 114,
+            "name": "I should see plot type \"Columbarium\" in edit plot page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:410"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1259311664
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 115,
+            "name": "I close edit plot page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:422"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2133496623
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1236013207
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@p0",
+            "line": 1
+          },
+          {
+            "name": "@authenticated",
+            "line": 1
+          },
+          {
+            "name": "@advancesearch-auth",
+            "line": 1
+          },
+          {
+            "name": "@advance-search-combined",
+            "line": 103
+          },
+          {
+            "name": "@p0",
+            "line": 103
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "advanced-search-plot---authenticated-users;advanced-search-plot-by-section-row-with-price-filter---b-a",
+        "keyword": "Scenario Outline",
+        "line": 133,
+        "name": "Advanced search plot by Section Row with Price filter - B A",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 87138959
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Chronicle login page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4520761664
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I enter email \"<TEST_EMAIL>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1989374706
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I enter password \"<TEST_PASSWORD>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1976244206
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I click the login button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1473175750
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be logged in successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 11026364247
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I navigate to organization home page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1118202750
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I navigate to the cemetery map page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/plot.steps.ts:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6784545791
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 124,
+            "name": "I click Advanced search button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:297"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1912379041
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 125,
+            "name": "I select section \"B\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:302"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2610378247
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 126,
+            "name": "I select row \"A\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:308"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1999893081
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 127,
+            "name": "I enter price \"500\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:369"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1989523498
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 128,
+            "name": "I click Search button in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:320"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3812156456
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 129,
+            "name": "I should see search results information",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:198"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1264158750
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1243501083
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@p0",
+            "line": 1
+          },
+          {
+            "name": "@authenticated",
+            "line": 1
+          },
+          {
+            "name": "@advancesearch-auth",
+            "line": 1
+          },
+          {
+            "name": "@advance-search-combined-price",
+            "line": 122
+          },
+          {
+            "name": "@p0",
+            "line": 122
+          },
+          {
+            "name": "@fail",
+            "line": 122
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "advanced-search-plot---authenticated-users;advanced-search-plot-by-section-row-with-price-filter---a-a",
+        "keyword": "Scenario Outline",
+        "line": 134,
+        "name": "Advanced search plot by Section Row with Price filter - A A",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 86257457
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Chronicle login page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 5416471164
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I enter email \"<TEST_EMAIL>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2509204288
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I enter password \"<TEST_PASSWORD>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1964174415
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I click the login button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1466407499
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be logged in successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 15989746832
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I navigate to organization home page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 912249665
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I navigate to the cemetery map page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/plot.steps.ts:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 9380996206
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 124,
+            "name": "I click Advanced search button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:297"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1609975373
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 125,
+            "name": "I select section \"A\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:302"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2640125291
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 126,
+            "name": "I select row \"A\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:308"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3618107833
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 127,
+            "name": "I enter price \"1000\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:369"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1995247957
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 128,
+            "name": "I click Search button in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:320"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 4297041541
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 129,
+            "name": "I should see search results information",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:198"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 965830080
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1246754499
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@p0",
+            "line": 1
+          },
+          {
+            "name": "@authenticated",
+            "line": 1
+          },
+          {
+            "name": "@advancesearch-auth",
+            "line": 1
+          },
+          {
+            "name": "@advance-search-combined-price",
+            "line": 122
+          },
+          {
+            "name": "@p0",
+            "line": 122
+          },
+          {
+            "name": "@fail",
+            "line": 122
+          }
+        ],
+        "type": "scenario"
+      },
+      {
+        "description": "",
+        "id": "advanced-search-plot---authenticated-users;advanced-search-plot-by-section-row-with-capacity---b-a",
+        "keyword": "Scenario Outline",
+        "line": 148,
+        "name": "Advanced search plot by Section Row with Capacity - B A",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 82857291
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I am on the Chronicle login page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 6373578458
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I enter email \"<TEST_EMAIL>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:14"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2025922793
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "I enter password \"<TEST_PASSWORD>\"",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1977728666
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "I click the login button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:24"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1465961747
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 12,
+            "name": "I should be logged in successfully",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:28"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 12512384416
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 13,
+            "name": "I navigate to organization home page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/login.steps.ts:56"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1123633458
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 14,
+            "name": "I navigate to the cemetery map page",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/plot.steps.ts:83"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 9996082289
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 138,
+            "name": "I click Advanced search button",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:297"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1603506333
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 139,
+            "name": "I select section \"B\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:302"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2019660247
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 140,
+            "name": "I select row \"A\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:308"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2034844001
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 141,
+            "name": "I enter burial capacity \"1\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:375"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2000794582
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 142,
+            "name": "I enter cremation capacity \"0\" in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:387"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 1977432665
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 143,
+            "name": "I click Search button in advanced search",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:320"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3294782831
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 144,
+            "name": "I should see search results information",
+            "match": {
+              "location": "file:/Users/endriyanto/Work/Work_Chronicle/Ai%20Project/cucumber_3/cucumber/src/steps/p0/advanceSearch.steps.ts:198"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 936783539
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "result": {
+              "status": "passed",
+              "duration": 1242508207
+            }
+          }
+        ],
+        "tags": [
+          {
+            "name": "@p0",
+            "line": 1
+          },
+          {
+            "name": "@authenticated",
+            "line": 1
+          },
+          {
+            "name": "@advancesearch-auth",
+            "line": 1
+          },
+          {
+            "name": "@advance-search-combined-capacity",
+            "line": 136
+          },
+          {
+            "name": "@p0",
+            "line": 136
+          },
+          {
+            "name": "@fail",
+            "line": 136
           }
         ],
         "type": "scenario"
       }
     ],
-    "id": "business-management-(authenticated)",
+    "id": "advanced-search-plot---authenticated-users",
     "line": 2,
     "keyword": "Feature",
-    "name": "Business Management (Authenticated)",
+    "name": "Advanced Search Plot - Authenticated Users",
     "tags": [
       {
         "name": "@p0",
         "line": 1
       },
       {
-        "name": "@business",
+        "name": "@authenticated",
         "line": 1
       },
       {
-        "name": "@authenticated",
+        "name": "@advancesearch-auth",
         "line": 1
       }
     ],
-    "uri": "src/features/p0/business.authenticated.feature"
+    "uri": "src/features/p0/advanceSearch.authenticated.feature"
   }
 ]

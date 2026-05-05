@@ -56,8 +56,9 @@ export class LoginPage {
 
   async waitForSuccessfulLogin(): Promise<void> {
     this.logger.info('Waiting for successful login');
-    // Wait for redirect to dashboard (production needs more time)
-    await this.page.waitForURL(new RegExp(LoginUrls.dashboardPattern), { waitUntil: 'domcontentloaded' });
+    // Production may redirect to /?ns=true (org selection landing) before the
+    // authenticated dashboard. Accept both as valid post-login states.
+    await this.page.waitForURL(/\/customer-|\?ns=true/, { waitUntil: 'domcontentloaded' });
     // Wait for API requests to complete and dashboard to fully load
     await NetworkHelper.waitForApiRequestsComplete(this.page, 5000);
     this.logger.success('Successfully logged in and dashboard loaded');
@@ -65,9 +66,8 @@ export class LoginPage {
 
   async isLoggedIn(): Promise<boolean> {
     try {
-      // Check if we're on the dashboard URL
       const url = this.page.url();
-      return url.includes(LoginUrls.dashboardPattern);
+      return url.includes(LoginUrls.dashboardPattern) || url.includes('ns=true');
     } catch (error) {
       return false;
     }

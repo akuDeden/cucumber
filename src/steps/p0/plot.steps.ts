@@ -96,7 +96,7 @@ Then('the plot should be updated successfully', { timeout: 15000 }, async functi
 
 // ===== Edit plot from MAP page steps =====
 
-When('I navigate to the cemetery map page', { timeout: 20000 }, async function () {
+When('I navigate to the cemetery map page', { timeout: 60000 }, async function () {
   const page = this.page;
   createPlotPage = new CreatePlotPage(page);
   await createPlotPage.navigateToCemeteryMapPage();

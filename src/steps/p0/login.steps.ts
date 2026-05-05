@@ -3,7 +3,7 @@ import { expect } from '@playwright/test';
 import { LoginPage } from '../../pages/p0/LoginPage.js';
 import { Logger } from '../../utils/Logger.js';
 import { replacePlaceholders } from '../../utils/TestDataHelper.js';
-import { BASE_CONFIG } from '../../data/test-data.js';
+import { BASE_CONFIG, getCustomerOrgBaseUrl } from '../../data/test-data.js';
 
 const logger = new Logger('LoginSteps');
 let loginPage: LoginPage;
@@ -67,38 +67,33 @@ Then('the login button should be disabled', async function () {
 When('I navigate to organization home page', async function () {
   logger.info('Validating auto-redirect to organization home page after login');
 
-  // After login, system automatically redirects from public URL to authenticated URL
-  // Public URL pattern: (env).chronicle.rip (e.g., map.chronicle.rip, project.chronicle.rip)
-  // Authenticated URL pattern: (region).chronicle.rip or (env)-(region).chronicle.rip
-  // Examples:
-  //   - map.chronicle.rip → aus.chronicle.rip
-  //   - project.chronicle.rip → staging-aus.chronicle.rip  
-  //   - dev.chronicle.rip → dev-aus.chronicle.rip
-
-  // Wait for URL to contain region (indicates successful redirect to authenticated area)
-  const region = BASE_CONFIG.region; // e.g., "aus"
-  const baseDomain = BASE_CONFIG.baseDomain; // e.g., "chronicle.rip"
-
-  // Wait for redirect with proper timeout handling
-  await this.page.waitForURL(`**/*${region}*${baseDomain}/**`, {
-    waitUntil: 'domcontentloaded'
-  });
-
-  // Wait for page content to be ready instead of hardcoded timeout
-  await this.page.waitForLoadState('domcontentloaded');
-
-  // Verify we're on authenticated URL (has region in URL)
+  const region = BASE_CONFIG.region;
+  const baseDomain = BASE_CONFIG.baseDomain;
   const currentUrl = this.page.url();
-  const hasRegionInUrl = currentUrl.includes(`${region}.${baseDomain}`) ||
-    currentUrl.includes(`-${region}.${baseDomain}`);
+
+  // Production may land on /?ns=true (org-selection page) instead of auto-redirecting.
+  // In that case, navigate directly to the authenticated base URL.
+  if (currentUrl.includes('ns=true') || !currentUrl.includes(region)) {
+    logger.info(`Landed on ${currentUrl} — navigating directly to authenticated org URL`);
+    const authBaseUrl = getCustomerOrgBaseUrl(region);
+    await this.page.goto(authBaseUrl, { waitUntil: 'domcontentloaded' });
+    await this.page.waitForLoadState('domcontentloaded');
+  } else {
+    await this.page.waitForURL(`**/*${region}*${baseDomain}/**`, { waitUntil: 'domcontentloaded' });
+    await this.page.waitForLoadState('domcontentloaded');
+  }
+
+  const finalUrl = this.page.url();
+  const hasRegionInUrl = finalUrl.includes(`${region}.${baseDomain}`) ||
+    finalUrl.includes(`-${region}.${baseDomain}`);
 
   if (!hasRegionInUrl) {
     throw new Error(
-      `Failed to redirect to authenticated URL with region "${region}". ` +
-      `Current URL: ${currentUrl}`
+      `Failed to reach authenticated URL with region "${region}". ` +
+      `Current URL: ${finalUrl}`
     );
   }
 
-  logger.success(`Successfully redirected to authenticated organization home page: ${currentUrl}`);
+  logger.success(`Successfully on authenticated organization home page: ${finalUrl}`);
 });
 

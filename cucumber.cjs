@@ -1,17 +1,17 @@
-export default {
+module.exports = {
   default: {
     format: [
-      'progress-bar',
+      './src/formatters/tail-formatter.ts',
       'html:cucumber-report.html',
       'json:cucumber-report.json',
     ],
     formatOptions: {
-      snippetInterface: 'async-await'
+      snippetInterface: 'async-await',
     },
     import: ['src/steps/**/*.ts', 'src/hooks/**/*.ts'],
     paths: ['src/features/**/*.feature'],
     publishQuiet: true,
-    tags: 'not @skip', // Exclude scenarios tagged with @skip
-    timeout: 120000 // Increase timeout to 120 seconds (2 minutes)
-  }
-};
+    tags: 'not @skip',
+    timeout: 120000,
+  },
+}

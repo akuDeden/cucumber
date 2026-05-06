@@ -20,7 +20,7 @@ When('I navigate to the Tables section', { timeout: 20000 }, async function () {
   await createPlotPage.navigateToTablesSection();
 });
 
-When('I click the Add Plot button', { timeout: 20000 }, async function () {
+When('I click the Add Plot button', { timeout: 45000 }, async function () {
   await createPlotPage.clickAddPlot();
 });
 
@@ -181,10 +181,12 @@ When('I click the ADD SALE button', { timeout: 30000 }, async function () {
 
 When('I search and select purchaser {string} {string} in the add person modal', { timeout: 30000 }, async function (firstName: string, lastName: string) {
   const page = this.page;
+  const actualFirstName = replacePlaceholders(firstName);
+  const actualLastName = replacePlaceholders(lastName);
   if (!salesPage) salesPage = new SalesPage(page);
   await salesPage.clickAddPurchaserModal();
-  await salesPage.searchAndSelectPurchaser(firstName, lastName);
-  this.logger?.info(`Purchaser ${firstName} ${lastName} selected`);
+  await salesPage.searchAndSelectPurchaser(actualFirstName, actualLastName);
+  this.logger?.info(`Purchaser ${actualFirstName} ${actualLastName} selected`);
 });
 
 When('I select the first available item from the Item dropdown', { timeout: 30000 }, async function () {

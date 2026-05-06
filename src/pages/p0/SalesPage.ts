@@ -1002,11 +1002,14 @@ export class SalesPage {
     this.logger.info(`Typed last name: ${lastName}`);
 
     // Wait for dropdown suggestions to appear — the suggestion list is a custom div, not mat-option.
-    // Use getByText with exact match to find the name row without matching the entire dialog.
+    // Use data-testid to find the name header in the suggestion list.
+    // exact:true was removed — system may store middle names (e.g. "Gibran Rakabuming Raka")
+    // so an exact "Gibran Raka" match never fires; filter by first name is sufficient.
     this.logger.info('Waiting for dropdown suggestion to appear...');
     const dialog = this.page.locator('mat-dialog-container').first();
-    // Wait for the name text to appear in the dialog (inside the suggestion dropdown)
-    const suggestionOption = dialog.getByText(`${firstName} ${lastName}`, { exact: true }).first();
+    const suggestionOption = dialog.locator('[data-testid="autocomplete-wrapper-header-name"]')
+      .filter({ hasText: firstName })
+      .first();
     await suggestionOption.waitFor({ state: 'visible', timeout: 15000 });
     this.logger.info(`Found suggestion for "${firstName} ${lastName}", clicking...`);
     await suggestionOption.click();

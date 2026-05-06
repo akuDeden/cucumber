@@ -89,15 +89,55 @@ When('I fill ROI form with following details', async function (dataTable: any) {
 });
 
 When('I select the first vacant plot', async function () {
-  const plotName = await plotPage.selectFirstVacantPlot();
-  this.selectedPlotName = plotName; // Store for later reference
-  // Click the plot to navigate to plot detail page
-  // Plot items are inside overflow-hidden scroll container — use JS click to bypass visibility checks
-  await plotPage.page.getByText(`${plotName} Vacant`).evaluate(el => (el as HTMLElement).click());
-  // Wait for navigation to plot detail page to complete (same as selectFirstReservedPlot)
-  await plotPage.page.waitForURL('**/plots/**');
-  // Wait for plot detail tablist to be visible (Angular components fully initialized)
-  await plotPage.page.locator('[role="tablist"]').waitFor({ state: 'visible' });
+  const page = plotPage.page;
+
+  // Retry up to 3 times in case of stale filter data
+  const maxAttempts = 3;
+  // Specific regex matches plot IDs like "A E 5 Vacant". The filter badge chip has text
+  // "Status Vacant" which does NOT match (no digit in the middle), and the treeitem ancestor
+  // has a very long combined text (hundreds of chars). Shortest-text strategy picks the
+  // individual plot listitem (~11 chars) rather than the treeitem ancestor.
+  const plotItemRegex = /\w+\s+\w+\s+\d+\s+Vacant$/;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const plotName = await plotPage.selectFirstVacantPlot();
+    this.selectedPlotName = plotName;
+
+    // Find all elements matching the regex, pick the shortest one — it will be the
+    // individual plot row, not the treeitem ancestor whose text concatenates all plots.
+    const allEls = await page.getByText(plotItemRegex).all();
+    if (allEls.length === 0) {
+      throw new Error('No vacant plot elements found on page after filter');
+    }
+    let clickTarget = allEls[0];
+    let shortestLen = Infinity;
+    for (const el of allEls) {
+      const text = ((await el.textContent()) ?? '').trim();
+      if (text.endsWith('Vacant') && text.length < shortestLen) {
+        shortestLen = text.length;
+        clickTarget = el;
+      }
+    }
+
+    await clickTarget.evaluate(el => (el as HTMLElement).click());
+    await page.waitForURL('**/plots/**', { timeout: 20000 });
+    await page.locator('[role="tablist"]').waitFor({ state: 'visible' });
+
+    // Verify the plot detail page actually shows Vacant — list data can be stale in production
+    // mat-chip excluded: activity log chips ("All","Activity","System") appear before the status badge in DOM order
+    const statusChip = page.locator('[data-testid*="plot-status"]').first();
+    const statusText = (await statusChip.textContent().catch(() => '')) ?? '';
+    if (statusText.toLowerCase().includes('vacant')) {
+      this.logger?.info(`Vacant plot confirmed on detail page: ${plotName}`);
+      return;
+    }
+
+    this.logger?.warn(`Attempt ${attempt}: plot "${plotName}" shows "${statusText.trim()}" — stale data. Going back to retry.`);
+    await page.goBack();
+    await page.locator('[role="tablist"], button[data-testid^="shared-all-plots-button-toggle-"]').first().waitFor({ state: 'visible' });
+  }
+
+  throw new Error(`Could not find a truly Vacant plot after ${maxAttempts} attempts — test data may be exhausted.`);
 });
 
 When('I select the first reserved plot', async function () {
@@ -129,29 +169,47 @@ When('I search and select ROI holder {string}', async function (personName: stri
 When('I save the ROI', async function () {
   ensurePageObjects(this.page);
   const page = this.page;
-  
+
+  // Capture add/roi URL before saving — needed to construct plot detail URL if the app
+  // redirects back to the edit plot page (which has no tablist) instead of plot detail.
+  // Pattern: /customer-organization/{orgSlug}/{plotName}/manage/add/roi
+  const addRoiUrl = page.url();
+  const urlMatch = addRoiUrl.match(/\/customer-organization\/([^/]+)\/([^/?#]+)\/manage\/add\/roi/);
+
   await roiPage.saveRoi();
-  
-  // After save, we're redirected to plot detail page
+
+  // When Add ROI is triggered from the edit plot page, the app redirects back to edit plot page
+  // (backTo param points to /manage/edit/plot). Edit plot page has no [role="tablist"], so we
+  // must navigate to the plot detail page for subsequent status/ROI tab assertions to work.
+  const currentUrl = page.url();
+  if (!currentUrl.includes('/plots/') && urlMatch) {
+    const [, orgSlug, encodedPlotName] = urlMatch;
+    const baseOrigin = new URL(page.url()).origin;
+    const detailUrl = `${baseOrigin}/customer-organization/${orgSlug}/plots/${encodedPlotName}`;
+    this.logger?.info(`Redirected to edit plot page — navigating to detail: ${detailUrl}`);
+    await page.goto(detailUrl, { waitUntil: 'domcontentloaded' });
+  }
+
+  // After save, we're on the plot detail page
   // Wait for tab list to be visible
   await page.locator('[role="tablist"]').waitFor({ state: 'visible' });
-  
+
   // Click ROI tab explicitly (same as search scenario)
   const roiTab = page.getByRole('tab', { name: 'ROI' });
   await roiTab.waitFor({ state: 'visible' });
   await roiTab.click();
-  
+
   // Verify ROI tab is actually selected after click (with retry)
   await NetworkHelper.waitForAnimation(page);
   const isSelected = await roiTab.getAttribute('aria-selected');
-  
+
   if (isSelected !== 'true') {
     // Tab click didn't work, try again
     console.log('ROI tab not selected, clicking again...');
     await roiTab.click();
     await NetworkHelper.waitForAnimation(page);
   }
-  
+
   // Wait for ROI data to load completely
   await NetworkHelper.waitForApiRequestsComplete(page);
 });

@@ -429,6 +429,14 @@ export const REQUEST_SALES_FORM_DATA = {
 };
 
 // ============================================
+// PURCHASER (existing person to search & select on Add Sale modal)
+// ============================================
+export const PURCHASER_DATA = {
+  firstName: process.env.TEST_PURCHASER_FIRST || 'Gibran',
+  lastName: process.env.TEST_PURCHASER_LAST || 'Raka',
+};
+
+// ============================================
 // SALES DATA
 // ============================================
 // Generate random purchaser name once (will be consistent per test run)

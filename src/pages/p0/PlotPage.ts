@@ -58,7 +58,15 @@ export class PlotPage {
    */
   async selectVacantFilter(): Promise<void> {
     this.logger.info('Selecting vacant filter option');
-    await this.page.click(RoiSelectors.vacantFilterOption);
+    // Vacant is the first status filter button; use starts-with selector to handle
+    // data-testid variants like "statuses-div-control-button-0" vs "statuses-div-control-button"
+    const statusOptions = await this.page.locator('[data-testid^="statuses-div-control-button"]').all();
+    if (statusOptions.length > 0) {
+      await statusOptions[0].click();
+    } else {
+      // Fallback to exact selector for backward compatibility
+      await this.page.click(RoiSelectors.vacantFilterOption);
+    }
     this.logger.success('Vacant filter selected');
   }
 
@@ -189,21 +197,37 @@ export class PlotPage {
    */
   async selectFirstVacantPlot(): Promise<string> {
     this.logger.info('Getting first vacant plot name from the list');
-    // Wait for at least one vacant plot in the expanded section (items may be overflow-hidden in scroll container)
-    await this.page.getByText(/\w+\s+\w+\s+\d+\s+Vacant$/).first().waitFor({ state: 'attached' });
-    
-    // Use getByText to find elements containing "Vacant"
-    const vacantPlots = await this.page.getByText(/\w+\s+\w+\s+\d+\s+Vacant$/).all();
-    
-    if (vacantPlots.length === 0) {
+    // Use waitForFunction to poll the DOM directly — avoids getByText() which returns
+    // ancestor elements (treeitem, whose combined innerText matches the regex too).
+    // Scoping to [role="tree"] excludes the filter badge list outside the tree.
+    await this.page.waitForFunction(() => {
+      const tree = document.querySelector('[role="tree"]');
+      if (!tree) return false;
+      // ul li covers Angular Material CdkTree's native list structure
+      const items = tree.querySelectorAll('ul li, [role="list"] [role="listitem"]');
+      return Array.from(items).some(item =>
+        (item.textContent ?? '').toLowerCase().includes('vacant')
+      );
+    }, { timeout: 30000 });
+
+    const plotName = await this.page.evaluate(() => {
+      const tree = document.querySelector('[role="tree"]');
+      if (!tree) return '';
+      const items = tree.querySelectorAll('ul li, [role="list"] [role="listitem"]');
+      for (const item of Array.from(items)) {
+        const text = (item.textContent ?? '').trim();
+        if (text.toLowerCase().includes('vacant')) {
+          // Strip trailing "Vacant" (with or without leading space) to get the plot ID
+          return text.replace(/\s*[Vv]acant\s*$/, '').trim();
+        }
+      }
+      return '';
+    });
+
+    if (!plotName) {
       throw new Error('No vacant plots found in the list');
     }
-    
-    // Get the first plot
-    const firstPlot = vacantPlots[0];
-    const plotText = await firstPlot.textContent();
-    const plotName = plotText?.replace(/\s*Vacant\s*$/, '').trim() || 'Unknown';
-    
+
     this.logger.info(`Found first vacant plot: ${plotName}`);
     this.logger.success(`First vacant plot name retrieved: ${plotName}`);
     return plotName;
@@ -302,7 +326,7 @@ export class PlotPage {
    */
   async getPlotStatus(): Promise<string> {
     this.logger.info('Getting plot status');
-    const statusElement = await this.page.locator(RoiSelectors.plotStatusBadge).first();
+    const statusElement = this.page.locator(RoiSelectors.plotStatusBadge).first();
     await statusElement.waitFor({ state: 'attached', timeout: 10000 });
     // Status is determined by CSS class (reserved/vacant/occupied), not text content
     const className = await statusElement.getAttribute('class') || '';

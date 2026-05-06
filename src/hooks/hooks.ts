@@ -12,6 +12,7 @@ interface ScenarioResult {
   name: string;
   status: 'PASS' | 'FAIL';
   failedStep?: string;
+  errorMessage?: string;
 }
 
 const runResults: ScenarioResult[] = [];
@@ -64,7 +65,7 @@ function saveTxtReport(): void {
   const now = new Date();
   const date = now.toISOString().slice(0, 10);
   const time = now.toTimeString().slice(0, 5).replace(':', '');
-  const env = process.env.ENVIRONMENT ?? 'local';
+  const env = BASE_CONFIG.environment;
   const region = process.env.REGION ?? '';
   const duration = fmtDuration(Date.now() - runStartTime);
 
@@ -146,6 +147,11 @@ function saveTxtReport(): void {
       const scen = pad(r.name, W_SCEN);
       const step = pad(r.failedStep ?? '—', W_STEP);
       lines.push(` ${num} | ${feat} | ${scen} | ${step}`);
+      if (r.errorMessage) {
+        const firstLine = r.errorMessage.split('\n')[0].trim();
+        const truncated = firstLine.length > 110 ? firstLine.slice(0, 107) + '…' : firstLine;
+        lines.push(`      └ ${truncated}`);
+      }
     });
     lines.push(divider);
     lines.push('');
@@ -190,6 +196,7 @@ Before(async function (scenario) {
   this.page = await browserManager.createPage(scenario.pickle.name);
   this.scenarioName = scenario.pickle.name;
   this.failedStep = undefined;
+  this.failedStepError = undefined;
 
   // Attach request throttler to prevent Sentry rate limiting
   await RequestThrottler.attach(this.page);
@@ -215,6 +222,7 @@ BeforeStep(async function () {
 AfterStep(async function ({ pickleStep, result }) {
   if (result?.status === 'FAILED' && !this.failedStep) {
     this.failedStep = pickleStep.text;
+    this.failedStepError = (result as any).error?.message ?? '';
   }
 });
 
@@ -300,7 +308,7 @@ After({ timeout: 30000 }, async function (scenario) {
     .replace(/\.(authenticated|public)$/i, '')
     .replace(/[-_]/g, ' ')
     .replace(/\b\w/g, (c: string) => c.toUpperCase());
-  runResults.push({ feature: featureName, name: scenario.pickle.name, status: status === 'PASSED' ? 'PASS' : 'FAIL', failedStep: this.failedStep });
+  runResults.push({ feature: featureName, name: scenario.pickle.name, status: status === 'PASSED' ? 'PASS' : 'FAIL', failedStep: this.failedStep, errorMessage: this.failedStepError });
 
   if (status === 'PASSED') {
     Logger.success(`Scenario Passed: ${scenario.pickle.name}`);

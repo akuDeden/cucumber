@@ -14,6 +14,12 @@ Given('I am on the Chronicle login page', async function () {
   await loginPage.navigate();
 });
 
+Given('I am on the Chronicle map login page', async function () {
+  logger.info('Navigating to Chronicle map login page (US admin)');
+  loginPage = new LoginPage(this.page);
+  await loginPage.navigate('https://map.chronicle.rip/login');
+});
+
 When('I enter email {string}', async function (email: string) {
   const actualEmail = replacePlaceholders(email);
   logger.info(`Entering email: ${actualEmail}`);

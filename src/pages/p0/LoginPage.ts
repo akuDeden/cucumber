@@ -12,11 +12,11 @@ export class LoginPage {
     this.page = page;
   }
 
-  async navigate(): Promise<void> {
+  async navigate(loginUrl?: string): Promise<void> {
     this.logger.info('Navigating to login page');
-    const baseUrl = BASE_CONFIG.baseUrl;
-    this.logger.info(`Using BASE_URL: ${baseUrl}`);
-    await this.page.goto(`${baseUrl}${LoginUrls.loginPage}`, { waitUntil: 'domcontentloaded' });
+    const url = loginUrl ?? `${BASE_CONFIG.baseUrl}${LoginUrls.loginPage}`;
+    this.logger.info(`Using login URL: ${url}`);
+    await this.page.goto(url, { waitUntil: 'domcontentloaded' });
   }
 
   async enterEmail(email: string): Promise<void> {

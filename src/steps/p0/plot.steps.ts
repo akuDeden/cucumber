@@ -120,6 +120,13 @@ When('I click the first plot row in the table', { timeout: 15000 }, async functi
   this.logger?.info(`Clicked plot row: ${lastClickedPlotId}`);
 });
 
+When('I click the first deletable plot row in the table', { timeout: 120000 }, async function () {
+  const page = this.page;
+  if (!createPlotPage) createPlotPage = new CreatePlotPage(page);
+  lastClickedPlotId = await createPlotPage.clickFirstDeletablePlotRow();
+  this.logger?.info(`Found deletable plot row: ${lastClickedPlotId}`);
+});
+
 When('I click the more options menu', { timeout: 10000 }, async function () {
   await createPlotPage.clickMoreOptionsMenu();
 });

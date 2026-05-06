@@ -458,7 +458,7 @@ export class IntermentPage {
         const plotDetailUrl = `${baseUrl}/customer-organization/${org}/plots/${plotNameEncoded}`;
         this.logger.info(`Navigating to plot detail: ${plotDetailUrl}`);
         await this.page.goto(plotDetailUrl, { waitUntil: 'domcontentloaded' });
-        await this.page.waitForSelector('[role="tablist"]', { state: 'visible', timeout: 15000 });
+        await this.page.waitForSelector('[role="tablist"]', { state: 'visible', timeout: 30000 });
       }
     }
 

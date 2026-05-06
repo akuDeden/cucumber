@@ -53,7 +53,7 @@ Feature: Plot Management (Authenticated)
   @delete-plot @p0
   Scenario: Delete a plot from the tables section
     When I navigate to the Tables section
-    And I click the first plot row in the table
+    And I click the first deletable plot row in the table
     And I click the more options menu
     And I click delete plot
     And I confirm the plot deletion

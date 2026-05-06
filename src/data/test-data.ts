@@ -49,7 +49,8 @@ export function randomFullName(): string {
 export const BASE_CONFIG = {
   // Environment: staging, map, production, etc. (used for domain)
   // ENVIRONMENT shell var takes priority over ENV in .env file
-  environment: process.env.ENVIRONMENT || process.env.ENV || 'dev',
+  // Default: production — PROD is the primary reference for all test runs
+  environment: process.env.ENVIRONMENT || process.env.ENV || 'production',
 
   // Base domain (will be combined with environment)
   baseDomain: process.env.BASE_DOMAIN || 'chronicle.rip',

@@ -28,7 +28,7 @@
 
 #### ✅ `/src/pages/p0/PlotPage.ts`
 **Status**: Refactored
-- Replaced hardcoded `https://staging-aus.chronicle.rip/...`
+- Replaced hardcoded `https://project-aus.chronicle.rip/...`
 - Now builds URLs dynamically from `BASE_CONFIG` and `CEMETERY_CONFIG`
 
 #### ✅ `/src/steps/p0/advanceSearch.steps.ts`
@@ -75,7 +75,7 @@ npm test -- --tags "@request-sales-form-pre-need" --dry-run
 
 ### ✅ Hardcoded URLs Check
 ```bash
-grep -r "https://staging.*chronicle.rip" src/**/*.ts
+grep -r "https://project.*chronicle.rip" src/**/*.ts
 # Result: ✅ ONLY found in test-data.ts (centralized config)
 ```
 
@@ -100,7 +100,7 @@ CEMETERY_CONFIG = {
 Cemetery URL: https://project.chronicle.rip/astana_tegal_gundul_aus
 Sell Plots URL: https://project.chronicle.rip/astana_tegal_gundul_aus/sell-plots
 Display Name: Astana Tegal Gundul AUS
-Customer Org URL: https://staging-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/...
+Customer Org URL: https://project-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/...
 ```
 
 ## Usage Examples
@@ -188,7 +188,7 @@ npm test -- --tags "@request-sales-form-pre-need"
 ## Next Steps (Optional Improvements)
 
 ### High Priority
-- [ ] Create `.env.staging`, `.env.production` files
+- [ ] Create `.env.project`, `.env.production` files
 - [ ] Add validation for region values
 - [ ] Document region-specific differences
 

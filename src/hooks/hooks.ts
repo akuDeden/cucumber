@@ -1,4 +1,4 @@
-import { Before, After, BeforeAll, AfterAll, BeforeStep, setDefaultTimeout } from '@cucumber/cucumber';
+import { Before, After, AfterStep, BeforeAll, AfterAll, BeforeStep, setDefaultTimeout } from '@cucumber/cucumber';
 import { BrowserManager } from '../core/BrowserManager.js';
 import { Logger } from '../utils/Logger.js';
 import { NetworkHelper } from '../utils/NetworkHelper.js';
@@ -11,9 +11,12 @@ interface ScenarioResult {
   feature: string;
   name: string;
   status: 'PASS' | 'FAIL';
+  failedStep?: string;
+  errorMessage?: string;
 }
 
 const runResults: ScenarioResult[] = [];
+let runStartTime = Date.now();
 
 /**
  * Global Hooks for Cucumber
@@ -22,6 +25,7 @@ const runResults: ScenarioResult[] = [];
 setDefaultTimeout(120000);
 
 BeforeAll(async function () {
+  runStartTime = Date.now();
   Logger.info('Starting test execution...');
   Logger.info('Default step timeout set to 120s');
 
@@ -43,10 +47,27 @@ AfterAll(async function () {
   }
 });
 
+function fmtDuration(ms: number): string {
+  const s = Math.floor(ms / 1000);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  if (h > 0) return `${h}h ${m}m ${sec}s`;
+  if (m > 0) return `${m}m ${sec}s`;
+  return `${sec}s`;
+}
+
+function pad(str: string, len: number): string {
+  return str.length >= len ? str.slice(0, len) : str + ' '.repeat(len - str.length);
+}
+
 function saveTxtReport(): void {
-  const date = new Date().toISOString().slice(0, 10);
-  const env = process.env.ENVIRONMENT ?? 'local';
+  const now = new Date();
+  const date = now.toISOString().slice(0, 10);
+  const time = now.toTimeString().slice(0, 5).replace(':', '');
+  const env = BASE_CONFIG.environment;
   const region = process.env.REGION ?? '';
+  const duration = fmtDuration(Date.now() - runStartTime);
 
   const tagsIdx = process.argv.indexOf('--tags');
   const rawTags = tagsIdx >= 0 ? (process.argv[tagsIdx + 1] ?? '') : '';
@@ -57,7 +78,7 @@ function saveTxtReport(): void {
     || 'all';
 
   const envPart = region ? `${env}_${region}` : env;
-  const filename = `${date}_${tagSlug}_${envPart}.txt`;
+  const filename = `${date}_${time}_${tagSlug}_${envPart}.txt`;
   const outputDir = path.join(process.cwd(), 'docs', 'reports');
   fs.mkdirSync(outputDir, { recursive: true });
 
@@ -76,15 +97,19 @@ function saveTxtReport(): void {
   const sep = '-'.repeat(80);
   const lines: string[] = [];
 
+  // ── HEADER ──────────────────────────────────────────────────────────────────
   lines.push(SEP);
   lines.push(`TEST REPORT`);
   lines.push(`Date       : ${date}`);
+  lines.push(`Time       : ${now.toTimeString().slice(0, 5)}`);
   lines.push(`Environment: ${envDisplay}`);
   lines.push(`Tags       : ${rawTags || 'all'}`);
+  lines.push(`Duration   : ${duration}`);
   lines.push(`Result     : ${passed} passed, ${failed} failed, ${total} total`);
   lines.push(SEP);
   lines.push('');
 
+  // ── SCENARIO RESULTS BY FEATURE ─────────────────────────────────────────────
   for (const [feature, scenarios] of byFeature) {
     const fP = scenarios.filter(s => s.status === 'PASS').length;
     const fF = scenarios.filter(s => s.status === 'FAIL').length;
@@ -98,22 +123,61 @@ function saveTxtReport(): void {
     lines.push('');
   }
 
+  // ── FAILURES DETAIL ──────────────────────────────────────────────────────────
   if (failed > 0) {
+    const failedResults = runResults.filter(r => r.status === 'FAIL');
+
+    // compute column widths dynamically
+    const W_NUM = 3;
+    const W_FEAT = Math.min(20, Math.max(7, ...failedResults.map(r => r.feature.length)));
+    const W_SCEN = Math.min(52, Math.max(8, ...failedResults.map(r => r.name.length)));
+    const W_STEP = Math.min(48, Math.max(11, ...failedResults.map(r => (r.failedStep ?? '—').length)));
+
+    const divider = `${'-'.repeat(W_NUM + 2)}+${'-'.repeat(W_FEAT + 2)}+${'-'.repeat(W_SCEN + 2)}+${'-'.repeat(W_STEP + 2)}`;
+    const header  = ` ${pad('#', W_NUM)} | ${pad('Feature', W_FEAT)} | ${pad('Scenario', W_SCEN)} | ${pad('Failed Step', W_STEP)}`;
+
     lines.push(SEP);
-    lines.push(`FAILURES (${failed})`);
-    lines.push(sep);
-    runResults.filter(r => r.status === 'FAIL').forEach((r, i) => {
-      lines.push(` ${String(i + 1).padStart(2)}. [${r.feature}] ${r.name}`);
+    lines.push(`FAILURES DETAIL (${failed})`);
+    lines.push(divider);
+    lines.push(header);
+    lines.push(divider);
+    failedResults.forEach((r, i) => {
+      const num  = pad(String(i + 1), W_NUM);
+      const feat = pad(r.feature, W_FEAT);
+      const scen = pad(r.name, W_SCEN);
+      const step = pad(r.failedStep ?? '—', W_STEP);
+      lines.push(` ${num} | ${feat} | ${scen} | ${step}`);
+      if (r.errorMessage) {
+        const firstLine = r.errorMessage.split('\n')[0].trim();
+        const truncated = firstLine.length > 110 ? firstLine.slice(0, 107) + '…' : firstLine;
+        lines.push(`      └ ${truncated}`);
+      }
     });
+    lines.push(divider);
     lines.push('');
   }
 
+  // ── SUMMARY ──────────────────────────────────────────────────────────────────
+  const sumFeatures = Array.from(byFeature.entries());
+  const W_SUITE = Math.max(7, ...sumFeatures.map(([f]) => f.length));
+
+  const sumDivider = `${'-'.repeat(W_SUITE + 2)}+${'─'.repeat(12)}+${'─'.repeat(6)}+${'─'.repeat(6)}+${'─'.repeat(7)}`;
+  const sumHeader  = ` ${pad('Feature', W_SUITE)} | ${pad('Env', 10)} | ${pad('Pass', 4)} | ${pad('Fail', 4)} | ${pad('Total', 5)}`;
+
   lines.push(SEP);
   lines.push(`SUMMARY`);
-  lines.push(sep);
-  lines.push(` Pass  : ${passed}`);
-  lines.push(` Fail  : ${failed}`);
-  lines.push(` Total : ${total}`);
+  lines.push(sumDivider);
+  lines.push(sumHeader);
+  lines.push(sumDivider);
+  for (const [feature, scenarios] of sumFeatures) {
+    const fP = scenarios.filter(s => s.status === 'PASS').length;
+    const fF = scenarios.filter(s => s.status === 'FAIL').length;
+    lines.push(` ${pad(feature, W_SUITE)} | ${pad(envDisplay, 10)} | ${String(fP).padStart(4)} | ${String(fF).padStart(4)} | ${String(scenarios.length).padStart(5)}`);
+  }
+  lines.push(sumDivider);
+  lines.push(` ${pad('TOTAL', W_SUITE)} | ${pad('', 10)} | ${String(passed).padStart(4)} | ${String(failed).padStart(4)} | ${String(total).padStart(5)}`);
+  lines.push(sumDivider);
+  lines.push('');
   lines.push(SEP);
 
   const outputPath = path.join(outputDir, filename);
@@ -131,6 +195,8 @@ Before(async function (scenario) {
   await browserManager.closeContext(); // Close previous context if exists
   this.page = await browserManager.createPage(scenario.pickle.name);
   this.scenarioName = scenario.pickle.name;
+  this.failedStep = undefined;
+  this.failedStepError = undefined;
 
   // Attach request throttler to prevent Sentry rate limiting
   await RequestThrottler.attach(this.page);
@@ -150,6 +216,13 @@ BeforeStep(async function () {
     await NetworkHelper.waitForStabilization(this.page, { minWait: 200, maxWait: 1000 });
   } catch {
     // Page may have navigated or closed — safe to ignore
+  }
+});
+
+AfterStep(async function ({ pickleStep, result }) {
+  if (result?.status === 'FAILED' && !this.failedStep) {
+    this.failedStep = pickleStep.text;
+    this.failedStepError = (result as any).error?.message ?? '';
   }
 });
 
@@ -235,7 +308,7 @@ After({ timeout: 30000 }, async function (scenario) {
     .replace(/\.(authenticated|public)$/i, '')
     .replace(/[-_]/g, ' ')
     .replace(/\b\w/g, (c: string) => c.toUpperCase());
-  runResults.push({ feature: featureName, name: scenario.pickle.name, status: status === 'PASSED' ? 'PASS' : 'FAIL' });
+  runResults.push({ feature: featureName, name: scenario.pickle.name, status: status === 'PASSED' ? 'PASS' : 'FAIL', failedStep: this.failedStep, errorMessage: this.failedStepError });
 
   if (status === 'PASSED') {
     Logger.success(`Scenario Passed: ${scenario.pickle.name}`);

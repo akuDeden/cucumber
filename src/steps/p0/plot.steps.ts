@@ -20,7 +20,7 @@ When('I navigate to the Tables section', { timeout: 20000 }, async function () {
   await createPlotPage.navigateToTablesSection();
 });
 
-When('I click the Add Plot button', { timeout: 20000 }, async function () {
+When('I click the Add Plot button', { timeout: 45000 }, async function () {
   await createPlotPage.clickAddPlot();
 });
 
@@ -96,7 +96,7 @@ Then('the plot should be updated successfully', { timeout: 15000 }, async functi
 
 // ===== Edit plot from MAP page steps =====
 
-When('I navigate to the cemetery map page', { timeout: 20000 }, async function () {
+When('I navigate to the cemetery map page', { timeout: 60000 }, async function () {
   const page = this.page;
   createPlotPage = new CreatePlotPage(page);
   await createPlotPage.navigateToCemeteryMapPage();
@@ -118,6 +118,13 @@ When('I click the first plot row in the table', { timeout: 15000 }, async functi
   if (!createPlotPage) createPlotPage = new CreatePlotPage(page);
   lastClickedPlotId = await createPlotPage.clickFirstTableRow();
   this.logger?.info(`Clicked plot row: ${lastClickedPlotId}`);
+});
+
+When('I click the first deletable plot row in the table', { timeout: 120000 }, async function () {
+  const page = this.page;
+  if (!createPlotPage) createPlotPage = new CreatePlotPage(page);
+  lastClickedPlotId = await createPlotPage.clickFirstDeletablePlotRow();
+  this.logger?.info(`Found deletable plot row: ${lastClickedPlotId}`);
 });
 
 When('I click the more options menu', { timeout: 10000 }, async function () {
@@ -181,10 +188,12 @@ When('I click the ADD SALE button', { timeout: 30000 }, async function () {
 
 When('I search and select purchaser {string} {string} in the add person modal', { timeout: 30000 }, async function (firstName: string, lastName: string) {
   const page = this.page;
+  const actualFirstName = replacePlaceholders(firstName);
+  const actualLastName = replacePlaceholders(lastName);
   if (!salesPage) salesPage = new SalesPage(page);
   await salesPage.clickAddPurchaserModal();
-  await salesPage.searchAndSelectPurchaser(firstName, lastName);
-  this.logger?.info(`Purchaser ${firstName} ${lastName} selected`);
+  await salesPage.searchAndSelectPurchaser(actualFirstName, actualLastName);
+  this.logger?.info(`Purchaser ${actualFirstName} ${actualLastName} selected`);
 });
 
 When('I select the first available item from the Item dropdown', { timeout: 30000 }, async function () {

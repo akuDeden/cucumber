@@ -1,0 +1,258 @@
+- generic [ref=e1]:
+  - generic [ref=e8]:
+    - generic [ref=e9]:
+      - generic [ref=e16]:
+        - button [ref=e687] [cursor=pointer]:
+          - img [ref=e688]
+        - generic [ref=e20]: "6"
+      - button [ref=e689] [cursor=pointer]:
+        - generic [ref=e26]:
+          - paragraph [ref=e27]: Astana Tegal Gundul
+          - generic [ref=e28]: faris+astanaorg@chronicle.rip
+    - generic [ref=e31]:
+      - generic [ref=e36] [cursor=pointer]:
+        - group [ref=e38]:
+          - button [ref=e690]:
+            - generic [ref=e40]:
+              - img [ref=e42]:
+                - img [ref=e43]
+              - generic [ref=e47]: Map
+          - button [ref=e691]:
+            - generic [ref=e49]:
+              - img [ref=e51]:
+                - img [ref=e52]
+              - generic [ref=e55]: Tables
+          - button [pressed] [ref=e692]:
+            - generic [ref=e57]:
+              - img [ref=e59]:
+                - img [ref=e60]
+              - generic [ref=e62]: Calendar
+          - button [ref=e693]:
+            - generic [ref=e64]:
+              - img [ref=e66]:
+                - img [ref=e67]
+              - generic [ref=e70]: Request
+              - generic [ref=e71]: "113"
+          - button [ref=e694]:
+            - generic [ref=e73]:
+              - img [ref=e75]:
+                - img [ref=e76]
+              - generic [ref=e79]: Sales
+          - button [ref=e695]:
+            - generic [ref=e81]:
+              - img [ref=e83]:
+                - img [ref=e84]
+              - generic [ref=e87]: Reports
+        - group [disabled] [ref=e89]:
+          - button [disabled] [ref=e696]:
+            - link [disabled] [ref=e697]:
+              - /url: https://help.chronicle.rip/
+              - img [ref=e698]
+          - button [disabled] [ref=e699]:
+            - link [disabled] [ref=e700]:
+              - /url: https://chronicle.rip/
+              - img [ref=e701]
+      - generic [ref=e105]:
+        - generic [ref=e106]:
+          - generic [ref=e108]:
+            - generic [ref=e109]:
+              - img [ref=e110] [cursor=pointer]: keyboard_backspace
+              - text: Calendar
+            - button [ref=e702] [cursor=pointer]:
+              - img [ref=e703]
+          - list [ref=e118]:
+            - listitem [ref=e126]:
+              - generic [ref=e127]:
+                - generic [ref=e128]: RESPONSIBLE PERSON
+                - generic [ref=e129]: Juan Francisco fasss
+              - button [ref=e130] [cursor=pointer]:
+                - img [ref=e132]: close
+            - listitem [ref=e133]:
+              - generic [ref=e134]:
+                - generic [ref=e135]: COMPLETION STATUS
+                - generic [ref=e136]: Open
+              - button [ref=e137] [cursor=pointer]:
+                - img [ref=e139]: close
+          - generic [ref=e416]:
+            - generic [ref=e417] [cursor=pointer]:
+              - generic [ref=e418]: CHR24 Test Debug Event
+              - generic [ref=e419]:
+                - img [ref=e420]
+                - generic [ref=e421]: Astana T...
+            - generic [ref=e422] [cursor=pointer]:
+              - generic [ref=e423]: Burial
+              - generic [ref=e425]: Unpaid
+            - separator [ref=e426]
+            - generic [ref=e427]:
+              - generic [ref=e428]:
+                - generic [ref=e429]: Upcoming
+                - generic [ref=e430]: 05/07/2026
+              - button [ref=e704] [cursor=pointer]:
+                - generic [ref=e433]: Complete
+          - button [ref=e705] [cursor=pointer]:
+            - generic [ref=e148]: add new event
+        - generic [ref=e150]:
+          - generic [ref=e153]:
+            - button [ref=e706] [cursor=pointer]:
+              - img [ref=e156]
+            - generic [ref=e157]: May, 2026
+            - button [ref=e707] [cursor=pointer]:
+              - img [ref=e160]
+            - button [ref=e708] [cursor=pointer]: Today
+          - generic [ref=e436] [cursor=pointer]:
+            - text:  
+            - grid [ref=e439]:
+              - rowgroup [ref=e440]:
+                - row [ref=e710]:
+                  - columnheader [ref=e711]:
+                    - generic [ref=e712]: Sun
+                  - columnheader [ref=e713]:
+                    - generic [ref=e714]: Mon
+                  - columnheader [ref=e715]:
+                    - generic [ref=e716]: Tue
+                  - columnheader [ref=e717]:
+                    - generic [ref=e718]: Wed
+                  - columnheader [ref=e719]:
+                    - generic [ref=e720]: Thu
+                  - columnheader [ref=e721]:
+                    - generic [ref=e722]: Fri
+                  - columnheader [ref=e723]:
+                    - generic [ref=e724]: Sat
+              - rowgroup [ref=e466]:
+                - generic [ref=e469]:
+                  - row [ref=e725]:
+                    - gridcell [ref=e726]:
+                      - generic [ref=e727]: "26"
+                    - gridcell [ref=e728]:
+                      - generic [ref=e729]: "27"
+                    - gridcell [ref=e730]:
+                      - generic [ref=e731]: "28"
+                    - gridcell [ref=e732]:
+                      - generic [ref=e733]: "29"
+                    - gridcell [ref=e734]:
+                      - generic [ref=e735]: "30"
+                    - gridcell [ref=e736]:
+                      - generic [ref=e737]: "1"
+                    - gridcell [ref=e738]:
+                      - generic [ref=e739]: "2"
+                  - row [ref=e740]:
+                    - gridcell [ref=e741]:
+                      - generic [ref=e742]: "3"
+                    - gridcell [ref=e743]:
+                      - generic [ref=e744]: "4"
+                    - gridcell [ref=e745]:
+                      - generic [ref=e746]: "5"
+                    - gridcell [ref=e747]:
+                      - generic [ref=e748]: "6"
+                    - gridcell [ref=e749]:
+                      - generic [ref=e750]: "7"
+                    - gridcell [ref=e751]:
+                      - generic [ref=e752]: "8"
+                    - gridcell [ref=e753]:
+                      - generic [ref=e754]: "9"
+                  - row [ref=e755]:
+                    - gridcell [ref=e756]:
+                      - generic [ref=e757]: "10"
+                    - gridcell [ref=e758]:
+                      - generic [ref=e759]: "11"
+                    - gridcell [ref=e760]:
+                      - generic [ref=e761]: "12"
+                    - gridcell [ref=e762]:
+                      - generic [ref=e763]: "13"
+                    - gridcell [ref=e764]:
+                      - generic [ref=e765]: "14"
+                    - gridcell [ref=e766]:
+                      - generic [ref=e767]: "15"
+                    - gridcell [ref=e768]:
+                      - generic [ref=e769]: "16"
+                  - row [ref=e770]:
+                    - gridcell [ref=e771]:
+                      - generic [ref=e772]: "17"
+                    - gridcell [ref=e773]:
+                      - generic [ref=e774]: "18"
+                    - gridcell [ref=e775]:
+                      - generic [ref=e776]: "19"
+                    - gridcell [ref=e777]:
+                      - generic [ref=e778]: "20"
+                    - gridcell [ref=e779]:
+                      - generic [ref=e780]: "21"
+                    - gridcell [ref=e781]:
+                      - generic [ref=e782]: "22"
+                    - gridcell [ref=e783]:
+                      - generic [ref=e784]: "23"
+                  - row [ref=e785]:
+                    - gridcell [ref=e786]:
+                      - generic [ref=e787]: "24"
+                    - gridcell [ref=e788]:
+                      - generic [ref=e789]: "25"
+                    - gridcell [ref=e790]:
+                      - generic [ref=e791]: "26"
+                    - gridcell [ref=e792]:
+                      - generic [ref=e793]: "27"
+                    - gridcell [ref=e794]:
+                      - generic [ref=e795]: "28"
+                    - gridcell [ref=e796]:
+                      - generic [ref=e797]: "29"
+                    - gridcell [ref=e798]:
+                      - generic [ref=e799]: "30"
+                  - row [ref=e800]:
+                    - gridcell [ref=e801]:
+                      - generic [ref=e802]: "31"
+                    - gridcell [ref=e803]:
+                      - generic [ref=e804]: "1"
+                    - gridcell [ref=e805]:
+                      - generic [ref=e806]: "2"
+                    - gridcell [ref=e807]:
+                      - generic [ref=e808]: "3"
+                    - gridcell [ref=e809]:
+                      - generic [ref=e810]: "4"
+                    - gridcell [ref=e811]:
+                      - generic [ref=e812]: "5"
+                    - gridcell [ref=e813]:
+                      - generic [ref=e814]: "6"
+  - dialog [active] [ref=e818]:
+    - generic [ref=e819]:
+      - generic [ref=e820]:
+        - generic [ref=e821]:
+          - generic [ref=e822]:
+            - text: Event
+            - generic [ref=e823]: Upcoming
+          - generic [ref=e824] [cursor=pointer]: clear
+        - heading "CHR24 Test Debug Event" [level=2] [ref=e825]
+        - heading "Burial" [level=4] [ref=e826]
+        - generic [ref=e827]:
+          - generic [ref=e828]:
+            - generic [ref=e829]:
+              - heading "Where" [level=5] [ref=e830]
+              - paragraph [ref=e831]: "Location type :"
+              - paragraph [ref=e832]: "Location : Astana Tegal Gundul"
+              - paragraph [ref=e833]: "Related interment :"
+              - paragraph [ref=e834]: "Cremation location :"
+            - generic [ref=e835]:
+              - heading "When" [level=5] [ref=e836]
+              - paragraph [ref=e837]: "Date : 05/07/2026"
+              - paragraph [ref=e838]: "Time : 10:00 - 12:00"
+          - generic [ref=e839]:
+            - heading "Details" [level=5] [ref=e840]
+            - paragraph [ref=e841]: "Responsible person : faris+astanaorg@chronicle.rip (Juan Francisco fasss)"
+            - paragraph [ref=e842]: "Payment amount : $0.00"
+            - paragraph [ref=e843]: "Payment status : Unpaid"
+      - generic [ref=e844]:
+        - generic [ref=e845]:
+          - button "edit event" [ref=e846] [cursor=pointer]:
+            - generic [ref=e847]: edit event
+          - button "Create certificate create certificate" [ref=e848] [cursor=pointer]:
+            - generic [ref=e849]:
+              - img "Create certificate" [ref=e850]
+              - text: create certificate
+          - button "add to calendar" [ref=e851] [cursor=pointer]:
+            - generic [ref=e852]:
+              - img [ref=e853]:
+                - img [ref=e854]
+              - text: add to calendar
+        - generic [ref=e857]:
+          - button "Delete" [ref=e858] [cursor=pointer]: Delete
+          - button "Complete" [ref=e859] [cursor=pointer]:
+            - generic [ref=e860]:
+              - img [ref=e861]
+              - text: Complete

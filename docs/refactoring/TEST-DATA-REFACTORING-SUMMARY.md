@@ -16,7 +16,7 @@ Meningkatkan konsistensi dan maintainability test data dengan mensentralkan konf
    
 2. **Hardcoded URLs**:
    - `'https://project.chronicle.rip/astana_tegal_gundul_us'`
-   - `'https://staging-aus.chronicle.rip/customer-organization/...'`
+   - `'https://project-aus.chronicle.rip/customer-organization/...'`
    
 3. **Region Tidak Terpusat**:
    - Mix antara `us` dan `aus`
@@ -100,13 +100,13 @@ Given('I am on the sell plots page for cemetery', async function () {
 
 ```typescript
 // BEFORE
-const addRoiUrl = `https://staging-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/${encodedPlotName}/manage/add/roi`;
+const addRoiUrl = `https://project-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/${encodedPlotName}/manage/add/roi`;
 
 // AFTER
 import { BASE_CONFIG, CEMETERY_CONFIG } from '../../data/test-data.js';
 
 const region = BASE_CONFIG.region;
-const baseUrl = BASE_CONFIG.baseUrl.replace('https://', `https://staging-${region}.`);
+const baseUrl = BASE_CONFIG.baseUrl.replace('https://', `https://project-${region}.`);
 const orgName = CEMETERY_CONFIG.displayName.replace(/ /g, '_');
 const addRoiUrl = `${baseUrl}/customer-organization/${orgName}/${encodedPlotName}/manage/add/roi`;
 ```
@@ -198,7 +198,7 @@ npm test -- --tags "@request-sales-form-pre-need"
 ### Future (Recommended 📋)
 - [ ] Update other feature files dengan hardcoded cemetery names
 - [ ] Update other page objects dengan hardcoded URLs
-- [ ] Add environment-specific config files (.env.staging, .env.production)
+- [ ] Add environment-specific config files (.env.project, .env.production)
 - [ ] Create script untuk auto-generate test data documentation
 
 ## Monitoring

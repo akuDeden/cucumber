@@ -435,7 +435,7 @@ export class ImportPage extends BasePage {
    * Uses setInputFiles() directly on the hidden <input type="file"> inside the
    * cl-section-item. This bypasses the visible drop zone entirely, which is necessary
    * because the drop zone has unstable testids (Angular alternates suffixes per render
-   * cycle) and different text content across staging vs production environments.
+   * cycle) and different text content across project vs production environments.
    *
    * Unlock order after wipe (count=0):
    *   Available immediately: Sections, Plots (geojson+csv), Persons, LOT, Notes, Invoices
@@ -468,7 +468,7 @@ export class ImportPage extends BasePage {
     // Strategy 1: scroll drag container into view, then click and intercept native file chooser.
     // Longer timeout (15 s) to handle pages with many staged files where Angular is busy.
     try {
-      await dragContainer.scrollIntoViewIfNeeded().catch(() => {});
+      await dragContainer.scrollIntoViewIfNeeded().catch(() => { });
       const [fileChooser] = await Promise.all([
         this.page.waitForEvent('filechooser', { timeout: 15000 }),
         dragContainer.click({ force: true }),

@@ -78,7 +78,7 @@ export class LoginPage {
 2. **Document selectors**: Add comments to group related selectors
 3. **Use const assertions**: Add `as const` to prevent modifications
 4. **Keep organized**: Group by functionality (inputs, buttons, messages, etc.)
-5. **Real selectors only**: Extract selectors from actual staging/production environment
+5. **Real selectors only**: Extract selectors from actual project/production environment
 
 ## Selector Priority Guidelines
 
@@ -100,7 +100,7 @@ export class LoginPage {
 ## Maintenance
 
 When UI changes:
-1. Inspect the new element in staging/production
+1. Inspect the new element in project/production
 2. Update the selector in the appropriate file
 3. Run affected tests to verify
 4. Document the change if significant

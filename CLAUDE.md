@@ -105,7 +105,116 @@ cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/p0/file.
 ENVIRONMENT=map REGION=us npm test -- --tags "@p0"
 ```
 
-See `package.json` scripts for all test commands (`test:staging`, `test:p0`, etc.).
+See `package.json` scripts for all test commands (`test:project`, `test:p0`, etc.).
+
+## Debug & Fix Protocol — WAJIB Sebelum Menulis Kode
+
+**DILARANG KERAS** menulis atau mengubah kode untuk memperbaiki test yang gagal tanpa melakukan investigasi langsung terlebih dahulu via playwright-cli.
+
+playwright-cli adalah alat debug penuh — bukan sekadar snapshot. Gunakan untuk **mereproduksi, menginvestigasi, memverifikasi selector, menjalankan JS, dan mengkonfirmasi fix** sebelum menyentuh kode.
+
+### Kapabilitas playwright-cli yang Wajib Dimanfaatkan:
+
+| Kebutuhan | Perintah | Contoh |
+|-----------|----------|--------|
+| Buka browser | `playwright-cli open <url>` | `playwright-cli open https://map.chronicle.rip` |
+| Load auth session | `playwright-cli state-load <file>` | `playwright-cli state-load auth-support-admin.json` |
+| Klik elemen | `playwright-cli click e{ref}` | `playwright-cli click e492` |
+| Isi input | `playwright-cli fill e{ref} "text"` | `playwright-cli fill e210 "Gibran"` |
+| Ambil accessibility tree | `playwright-cli snapshot` | lihat semua elemen + ref + role |
+| Screenshot seluruh halaman | `playwright-cli screenshot` | verifikasi visual state |
+| Screenshot satu elemen | `playwright-cli screenshot e{ref}` | crop langsung ke elemen |
+| Jalankan JavaScript | `playwright-cli evaluate "js"` | `playwright-cli evaluate "document.querySelector('[role=tree]')?.innerText"` |
+| Verifikasi selector CSS | `playwright-cli evaluate "document.querySelectorAll('selector').length"` | konfirmasi selector match sebelum dipakai di kode |
+| Cek teks elemen | `playwright-cli evaluate "document.querySelector('sel')?.textContent"` | lihat nilai aktual |
+| Navigate URL | `playwright-cli navigate <url>` | pindah halaman tanpa buka baru |
+
+### Alur Wajib Saat Ada Test Failure:
+
+1. **Baca error** — identifikasi step yang gagal, selector, dan timeout yang terjadi
+2. **Reproduksi manual via playwright-cli** — lakukan langkah-langkah yang sama persis seperti test:
+   - Buka halaman, load auth, klik filter, expand section, dsb.
+   - Sampai ke kondisi tepat saat step tersebut seharusnya berjalan
+3. **Snapshot** — ambil accessibility tree, simpan ke `docs/snapshots/<feature>/`
+4. **Verifikasi selector langsung di browser**:
+   ```bash
+   # Cek apakah selector ada di DOM
+   playwright-cli evaluate "document.querySelectorAll('[data-testid^=statuses-div]').length"
+   # Lihat teks elemen yang dimaksud
+   playwright-cli evaluate "document.querySelector('[role=tree]')?.innerText?.slice(0,200)"
+   ```
+5. **Test fix di browser sebelum nulis kode** — simulasikan fix dengan JS evaluate:
+   ```bash
+   # Contoh: verifikasi bahwa JS click pada li pertama di tree benar-benar navigasi
+   playwright-cli evaluate "document.querySelector('[role=tree] ul li')?.click()"
+   # Cek URL setelah klik
+   playwright-cli evaluate "location.href"
+   ```
+6. **BARU tulis kode** — setelah tahu fix benar-benar works di browser
+
+### Yang TIDAK Boleh Dilakukan:
+- Menulis fix berdasarkan snapshot lama / asumsi tentang DOM
+- Mengubah selector/regex berulang-ulang tanpa melihat DOM sesungguhnya
+- Trial-and-error run: **jalankan test → gagal → ubah kode → jalankan lagi** tanpa debug
+- Menganggap snapshot lama masih valid — selalu ambil snapshot fresh untuk state yang relevan
+
+---
+
+### STEP 0 — Failure Classification (Wajib Sebelum Investigasi)
+
+Setiap kali ada test failure, **langkah pertama** adalah klasifikasikan jenis failure-nya. Ini menentukan aksi wajib berikutnya:
+
+| Klasifikasi | Kondisi | Aksi Wajib Berikutnya |
+|-------------|---------|----------------------|
+| `SELECTOR_UNKNOWN` | Tidak tahu struktur DOM / belum punya snapshot state ini | Ambil snapshot fresh via playwright-cli dulu |
+| `SELECTOR_MISMATCH` | Punya snapshot tapi selector di kode tidak match DOM | Verifikasi via `evaluate querySelectorAll` di browser |
+| `TIMING_ISSUE` | Selector ada dan match, tapi element tidak muncul tepat waktu | Observasi timing di browser, cek network/animation |
+| `DATA_ISSUE` | Kode dan selector benar, tapi test data tidak ada di environment | Cek keberadaan data di browser langsung |
+| `LOGIC_ISSUE` | Selector match, data ada, tapi aksi tidak menghasilkan hasil yang diharapkan | Simulasi aksi via JS evaluate, verifikasi hasilnya |
+
+Output klasifikasi wajib ditulis eksplisit sebelum lanjut:
+> *"Klasifikasi: `SELECTOR_UNKNOWN` — belum ada snapshot untuk kondisi filter Vacant applied + section expanded di prod."*
+
+---
+
+### STEP 1 — Investigation Report (Wajib Sebelum Menulis Fix)
+
+Setelah investigasi via playwright-cli selesai, **wajib output laporan** ini sebelum menulis satu baris kode apapun:
+
+```
+## Investigation Report
+- Klasifikasi        : SELECTOR_UNKNOWN / SELECTOR_MISMATCH / TIMING_ISSUE / DATA_ISSUE / LOGIC_ISSUE
+- URL diinvestigasi  : https://...
+- State saat error   : (misal: filter Vacant applied, section A expanded)
+- Snapshot diambil   : docs/snapshots/<feature>/<filename>.yaml
+- Evaluate dijalankan: document.querySelectorAll('[role="tree"] ul li').length = 18
+- JS simulation      : document.querySelector('[role="tree"] ul li').click() → URL = /plots/123 ✓
+- Root cause         : [kesimpulan berdasarkan fakta, bukan asumsi]
+- Fix yang diusulkan : [deskripsi fix sebelum implementasi]
+```
+
+**Aturan ketat:**
+- Field `Snapshot diambil` harus diisi dengan path file nyata → berarti saya benar-benar menjalankan playwright-cli
+- Field `Evaluate dijalankan` harus diisi dengan output aktual dari browser → bukan perkiraan
+- Field `JS simulation` harus diisi dengan hasil nyata → konfirmasi fix works sebelum kode ditulis
+- Jika ada field yang tidak bisa diisi → investigasi belum cukup → lanjutkan dulu via playwright-cli
+
+---
+
+### STEP 2 — Konfirmasi Mr Deden Sebelum Implementasi
+
+Setelah Investigation Report selesai, **wajib minta persetujuan** sebelum menulis kode:
+
+> *"Ini hasil investigasi saya [tempel Investigation Report]. Root cause-nya adalah [X] karena [Y berdasarkan fakta di atas]. Fix yang saya usulkan adalah [Z]. Boleh saya lanjut implementasi?"*
+
+Saya **tidak boleh langsung menulis kode** sebelum Mr Deden menyetujui analisis dan fix yang diusulkan. Ini memastikan:
+- Mr Deden punya visibility penuh sebelum kode berubah
+- Analisis saya bisa dikoreksi sebelum implementasi yang salah
+- Tidak ada lagi 5-6 iterasi fix yang buang waktu
+
+**Pengecualian** (tidak perlu konfirmasi): fix yang bersifat typo / obvious satu baris dan bukan terkait selector/DOM logic.
+
+---
 
 ## Critical Rules
 
@@ -166,7 +275,7 @@ Accessibility tree snapshots disimpan di `docs/snapshots/<feature>/` sebagai ref
 ### Cara Capture
 ```bash
 # 1. Buka browser & navigasi ke halaman target
-playwright-cli open https://staging-aus.chronicle.rip
+playwright-cli open https://project-aus.chronicle.rip
 
 # 2. Ambil snapshot → simpan ke .yml
 playwright-cli snapshot
@@ -211,4 +320,4 @@ docs/snapshots/
 
 ## Environment
 
-`.env` files: `.env` (active), `.env.chronicle` (staging), `.env.chronicle.prod` (prod), `.env.dev`, `.env.map`. Never commit `.env`.
+`.env` files: `.env` (active), `.env.chronicle` (project), `.env.chronicle.prod` (prod), `.env.dev`, `.env.map`. Never commit `.env`.

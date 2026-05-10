@@ -25,6 +25,8 @@ export const RegionalSettingsSelectors = {
 };
 
 export const RegionalSettingsUrls = {
+  // URL varies per env: /customer-organization/organizations/{id}/details (project) or /customer-organization/{slug} (prod)
+  // Do NOT use for waitForURL — use element wait instead
   orgSettings: '/customer-organization/organizations',
   regionalSettingsQuery: '?q=regionalsettings',
 };

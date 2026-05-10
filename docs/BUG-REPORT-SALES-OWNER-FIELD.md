@@ -4,7 +4,7 @@
 Sales form submission fails due to Angular Material owner dropdown bug where the field appears selected in the UI but the form control value remains empty, causing backend validation to reject the submission.
 
 ## Environment
-- **URL**: https://staging-aus.chronicle.rip/customer-organization/sales/create
+- **URL**: https://project-aus.chronicle.rip/customer-organization/sales/create
 - **Date**: 2026-01-22
 - **Browser**: Chromium (Playwright automation)
 
@@ -42,7 +42,7 @@ Angular Material `mat-select` component bug:
 [INFO] [SalesPage] Owner selected
 [WARN] [SalesPage] Empty required fields found (may be UI bug): ["Owner"]
 [INFO] [SalesPage] CREATE button clicked
-[INFO] [SalesPage] URL after CREATE click: https://staging-aus.chronicle.rip/customer-organization/sales/create
+[INFO] [SalesPage] URL after CREATE click: https://project-aus.chronicle.rip/customer-organization/sales/create
 [ERROR] [SalesPage] Form submission failed - URL did not change
 [ERROR] [SalesPage] This is likely due to Angular Material owner field bug where formControl value is empty despite UI showing selection
 ```

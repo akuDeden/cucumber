@@ -1,8 +1,10 @@
 import { Page, expect } from '@playwright/test';
 import { Logger } from '../../utils/Logger.js';
 import { NetworkHelper } from '../../utils/NetworkHelper.js';
-import { getCustomerOrgBaseUrl, getCustomerOrgUrl } from '../../data/test-data.js';
 import { InvoiceFromSalesRequestSelectors as Sel } from '../../selectors/p0/invoice-from-sales-request/invoice-from-sales-request.selectors.js';
+
+// US org — independent from AUS global config
+const US_BASE_URL = process.env.BASE_URL || 'https://us.chronicle.rip';
 
 export interface GenerateInvoiceResult {
   status: number;
@@ -24,7 +26,7 @@ export class InvoiceFromSalesRequestPage {
 
   async navigateToAdminRequests(): Promise<void> {
     this.logger.info('Navigating to admin requests page');
-    const url = `${getCustomerOrgBaseUrl()}/customer-admin/request`;
+    const url = `${US_BASE_URL}/customer-admin/request`;
     await this.page.goto(url, { waitUntil: 'domcontentloaded' });
     await this.page.locator(Sel.loadingOverlay).waitFor({ state: 'hidden', timeout: 15000 });
     await NetworkHelper.waitForNetworkIdle(this.page);
@@ -32,7 +34,7 @@ export class InvoiceFromSalesRequestPage {
 
   async navigateToOwnerRequests(): Promise<void> {
     this.logger.info('Navigating to owner requests page');
-    const url = `${getCustomerOrgBaseUrl()}/customer-organization/request`;
+    const url = `${US_BASE_URL}/customer-organization/request`;
     await this.page.goto(url, { waitUntil: 'domcontentloaded' });
     await this.page.locator(Sel.loadingOverlay).waitFor({ state: 'hidden', timeout: 15000 });
     await NetworkHelper.waitForNetworkIdle(this.page);
@@ -40,7 +42,7 @@ export class InvoiceFromSalesRequestPage {
 
   async navigateToAdminDashboard(): Promise<void> {
     this.logger.info('Navigating to admin dashboard');
-    const url = `${getCustomerOrgBaseUrl()}/customer-admin`;
+    const url = `${US_BASE_URL}/customer-admin`;
     await this.page.goto(url, { waitUntil: 'domcontentloaded' });
     await this.page.locator(Sel.loadingOverlay).waitFor({ state: 'hidden', timeout: 15000 });
     await NetworkHelper.waitForNetworkIdle(this.page);

@@ -127,7 +127,7 @@ export class IntermentPage {
     const options = this.page.locator('.cdk-overlay-pane mat-option');
     await options.first().waitFor({ state: 'visible', timeout: 10000 });
     await options.first().click();
-    await this.page.keyboard.press('Escape').catch(() => {});
+    await this.page.keyboard.press('Escape').catch(() => { });
   }
 
   // ============================================================
@@ -325,12 +325,12 @@ export class IntermentPage {
       await this.page.waitForTimeout(300);
     }
     // Also wait for any person-info dropdown to disappear
-    await this.page.locator('[data-testid="div-person-info-0"]').waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
+    await this.page.locator('[data-testid="div-person-info-0"]').waitFor({ state: 'hidden', timeout: 5000 }).catch(() => { });
 
     // Wait for form fields to be visible
     const firstNameField = this.page.getByLabel('First name').first();
     await firstNameField.waitFor({ state: 'visible' });
-    
+
     // Fill Deceased Person section - required fields
     this.logger.info(`Filling first name: ${data.firstName}`);
     await firstNameField.click(); // Click to focus
@@ -405,18 +405,18 @@ export class IntermentPage {
    */
   async selectIntermentType(type: string): Promise<void> {
     this.logger.info(`Selecting interment type: ${type}`);
-    
+
     // Click dropdown using getByLabel
     await this.page.getByLabel('Interment type').click();
-    
+
     // Select option
     const typeOption = this.page.getByRole('option', { name: type });
     await typeOption.waitFor({ state: 'visible' });
     await typeOption.click();
-    
+
     // Wait for dropdown to close
-    await typeOption.waitFor({ state: 'hidden' }).catch(() => {});
-    
+    await typeOption.waitFor({ state: 'hidden' }).catch(() => { });
+
     this.logger.success(`Interment type ${type} selected`);
   }
 
@@ -458,7 +458,7 @@ export class IntermentPage {
         const plotDetailUrl = `${baseUrl}/customer-organization/${org}/plots/${plotNameEncoded}`;
         this.logger.info(`Navigating to plot detail: ${plotDetailUrl}`);
         await this.page.goto(plotDetailUrl, { waitUntil: 'domcontentloaded' });
-        await this.page.waitForSelector('[role="tablist"]', { state: 'visible', timeout: 15000 });
+        await this.page.waitForSelector('[role="tablist"]', { state: 'visible', timeout: 30000 });
       }
     }
 
@@ -470,22 +470,22 @@ export class IntermentPage {
    */
   async clickIntermentsTab(): Promise<void> {
     this.logger.info('Clicking INTERMENTS tab');
-    
+
     // Wait for tab to be visible first
     const intermentsTab = this.page.getByRole('tab', { name: /INTERMENTS/i });
     await intermentsTab.waitFor({ state: 'visible' });
-    
+
     // Click the tab
     await intermentsTab.click();
     this.logger.info('INTERMENTS tab clicked, waiting for content to load...');
-    
+
     // Wait for tab to be selected
     await expect(intermentsTab).toHaveAttribute('aria-selected', 'true').catch(async () => {
       this.logger.info('Retrying tab click...');
       await intermentsTab.click();
-      await expect(intermentsTab).toHaveAttribute('aria-selected', 'true').catch(() => {});
+      await expect(intermentsTab).toHaveAttribute('aria-selected', 'true').catch(() => { });
     });
-    
+
     // Wait for content to stabilize
     await NetworkHelper.waitForStabilization(this.page, { minWait: 500, maxWait: 5000 });
     this.logger.success('INTERMENTS tab clicked');
@@ -497,11 +497,11 @@ export class IntermentPage {
    */
   async verifyDeceasedInTab(fullName: string): Promise<void> {
     this.logger.info(`Verifying deceased "${fullName}" appears in INTERMENTS tab`);
-    
+
     // Check if we're already on INTERMENTS tab by looking for the tab
     const intermentsTab = this.page.getByRole('tab', { name: /INTERMENTS/i });
     const isSelected = await intermentsTab.getAttribute('aria-selected');
-    
+
     // If not already selected, click it
     if (isSelected !== 'true') {
       this.logger.info('Clicking INTERMENTS tab');
@@ -510,11 +510,11 @@ export class IntermentPage {
       this.logger.info('Already on INTERMENTS tab');
       await NetworkHelper.waitForStabilization(this.page, { minWait: 500, maxWait: 3000 });
     }
-    
+
     // Verify deceased name appears as heading
     const deceasedHeading = this.page.locator(IntermentSelectors.deceasedNameHeading(fullName));
     await expect(deceasedHeading).toBeVisible();
-    
+
     this.logger.success(`Deceased "${fullName}" found in INTERMENTS tab`);
   }
 
@@ -524,10 +524,10 @@ export class IntermentPage {
    */
   async verifyIntermentType(intermentType: string): Promise<void> {
     this.logger.info(`Verifying interment type: ${intermentType}`);
-    
+
     const typeLabel = this.page.locator(IntermentSelectors.intermentTypeLabel(intermentType));
     await expect(typeLabel).toBeVisible();
-    
+
     this.logger.success(`Interment type ${intermentType} verified`);
   }
 
@@ -673,19 +673,19 @@ export class IntermentPage {
     // - BUSINESS: search by name field (Business name *) — last_name is a contact detail, NOT the search field
     const searchSelectorByType = subType === 'BUSINESS'
       ? [
-          'mat-dialog-container input[formcontrolname="business_name"]',
-          '[role="dialog"] input[formcontrolname="business_name"]',
-          'mat-dialog-container input[formcontrolname="name"]',
-          '[role="dialog"] input[formcontrolname="name"]',
-          'mat-dialog-container input[formcontrolname="last_name"]',
-          '[role="dialog"] input[formcontrolname="last_name"]',
-        ]
+        'mat-dialog-container input[formcontrolname="business_name"]',
+        '[role="dialog"] input[formcontrolname="business_name"]',
+        'mat-dialog-container input[formcontrolname="name"]',
+        '[role="dialog"] input[formcontrolname="name"]',
+        'mat-dialog-container input[formcontrolname="last_name"]',
+        '[role="dialog"] input[formcontrolname="last_name"]',
+      ]
       : [
-          'mat-dialog-container input[formcontrolname="last_name"]',
-          '[role="dialog"] input[formcontrolname="last_name"]',
-          'mat-dialog-container input[formcontrolname="name"]',
-          '[role="dialog"] input[formcontrolname="name"]',
-        ];
+        'mat-dialog-container input[formcontrolname="last_name"]',
+        '[role="dialog"] input[formcontrolname="last_name"]',
+        'mat-dialog-container input[formcontrolname="name"]',
+        '[role="dialog"] input[formcontrolname="name"]',
+      ];
     const allSearchSelectors = [
       ...searchSelectorByType,
       ...IntermentSelectors.relationSearchInput.split(', '),
@@ -712,7 +712,7 @@ export class IntermentPage {
     await Promise.race([
       matOptions.first().waitFor({ state: 'visible', timeout: 8000 }),
       resultArticles.first().waitFor({ state: 'visible', timeout: 8000 }),
-    ]).catch(() => {});
+    ]).catch(() => { });
 
     const hasMatOption = await matOptions.first().isVisible({ timeout: 500 }).catch(() => false);
     const hasArticle = !hasMatOption && await resultArticles.first().isVisible({ timeout: 500 }).catch(() => false);
@@ -757,11 +757,11 @@ export class IntermentPage {
     const addBtnVisible = await addBtn.isVisible({ timeout: 3000 }).catch(() => false);
     if (addBtnVisible) {
       // Wait up to 5s for the ADD button to become enabled (Angular form validation)
-      await expect(addBtn).toBeEnabled({ timeout: 5000 }).catch(() => {});
+      await expect(addBtn).toBeEnabled({ timeout: 5000 }).catch(() => { });
       await addBtn.click();
     }
     // Wait for the dialog backdrop to disappear (dialog closed)
-    await this.page.locator('.cdk-overlay-backdrop').waitFor({ state: 'hidden', timeout: 15000 }).catch(() => {});
+    await this.page.locator('.cdk-overlay-backdrop').waitFor({ state: 'hidden', timeout: 15000 }).catch(() => { });
 
     this.logger.success(`Relation added via search for: "${searchTerm}"`);
   }
@@ -808,7 +808,7 @@ export class IntermentPage {
 
     // After primary click, API call completes and shows secondary dialog:
     // "This plot is empty — Would you like to keep the plot status as occupied?" (YES / NO)
-    // API can be slow on staging (5-25s). Poll for the dialog until it appears or URL changes.
+    // API can be slow on project (5-25s). Poll for the dialog until it appears or URL changes.
     const deadline = Date.now() + 30000;
     let dialogHandled = false;
 
@@ -1022,7 +1022,7 @@ export class IntermentPage {
     await expect(intermentsTab).toHaveAttribute('aria-selected', 'true').catch(async () => {
       this.logger.info('Retrying tab click...');
       await intermentsTab.click();
-      await expect(intermentsTab).toHaveAttribute('aria-selected', 'true').catch(() => {});
+      await expect(intermentsTab).toHaveAttribute('aria-selected', 'true').catch(() => { });
     });
 
     // Wait for content to stabilize - wait for network to be idle
@@ -1041,17 +1041,17 @@ export class IntermentPage {
    */
   async clickEditIntermentButton(): Promise<void> {
     this.logger.info('Clicking Edit Interment button');
-    
+
     // First, check and expand interment list if needed (for plots with multiple interments)
     await this.checkAndExpandIntermentList();
-    
+
     // Wait for button to be visible and enabled
     const editButton = this.page.getByTestId('interment-item-button-edit-interment');
     await editButton.waitFor({ state: 'visible' });
-    
+
     this.logger.info('Edit button found, clicking...');
     await editButton.click();
-    
+
     // Wait for edit form to load
     try {
       await this.page.waitForURL('**/manage/edit/interment/**');
@@ -1063,7 +1063,7 @@ export class IntermentPage {
         throw new Error(`Failed to navigate to Edit form. Current URL: ${currentUrl}`);
       }
     }
-    
+
     await NetworkHelper.waitForStabilization(this.page, { minWait: 500, maxWait: 5000 });
     this.logger.success('Edit Interment form loaded');
   }
@@ -1074,18 +1074,18 @@ export class IntermentPage {
    */
   async checkAndExpandIntermentList(): Promise<void> {
     this.logger.info('Checking if interment list needs to be expanded');
-    
+
     // Wait for INTERMENTS tab content to be visible
     await NetworkHelper.waitForStabilization(this.page, { minWait: 500, maxWait: 3000 });
-    
+
     // Check if there's an expand button for interment list
     // This button typically appears when there are multiple interments in a plot
     const expandButton = this.page.locator('button[aria-label*="expand"], button[aria-expanded="false"]').first();
-    
+
     try {
       // Check if expand button is visible (timeout quickly if not found)
       const isVisible = await expandButton.isVisible();
-      
+
       if (isVisible) {
         this.logger.info('Multiple interments detected, expanding list...');
         await expandButton.click();

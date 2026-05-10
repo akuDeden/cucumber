@@ -8,7 +8,7 @@ Plot detail panel & Edit Plot form.
 | `ac5-plot.yml` | Plot detail | Occupied | Plot AC5 — versi lain / state berbeda |
 | `edit-plot-form-with-roi.yml` | Edit Plot form | Reserved | Form Edit Plot dengan ROI section + Activity panel — plot BG6 |
 | `reserved-plots.yml` | Plot list / detail | Reserved | Plot dengan status Reserved — map atau table view |
-| `staging-plot.yml` | Plot detail | — | Plot detail — staging env |
+| `project-plot.yml` | Plot detail | — | Plot detail — project env |
 | `plots-after-goback.yaml` | Tables > Plots | — | Tab Plots setelah navigasi go-back |
 | `plots-filtered-expanded.yaml` | Tables > Plots | — | Tab Plots dengan filter expanded |
 

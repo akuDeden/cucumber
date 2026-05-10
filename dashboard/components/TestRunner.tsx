@@ -11,7 +11,7 @@ interface TestRunnerProps {
 
 const environments: { value: Environment; label: string; description: string; icon: string; color: string; activeColor: string }[] = [
   { value: 'dev', label: 'Dev', description: 'Server Development', icon: '🛠', color: 'border-blue-500/30 bg-blue-500/5', activeColor: 'border-blue-500 bg-blue-500/20 text-blue-300 shadow-blue-500/10' },
-  { value: 'staging', label: 'Staging', description: 'Server Pre-Production', icon: '🧪', color: 'border-yellow-500/30 bg-yellow-500/5', activeColor: 'border-yellow-500 bg-yellow-500/20 text-yellow-300 shadow-yellow-500/10' },
+  { value: 'project', label: 'project', description: 'Server Pre-Production', icon: '🧪', color: 'border-yellow-500/30 bg-yellow-500/5', activeColor: 'border-yellow-500 bg-yellow-500/20 text-yellow-300 shadow-yellow-500/10' },
   { value: 'prod', label: 'Production', description: 'Server Live/Aktif', icon: '🚀', color: 'border-red-500/30 bg-red-500/5', activeColor: 'border-red-500 bg-red-500/20 text-red-300 shadow-red-500/10' },
   { value: 'map', label: 'Map', description: 'Server Peta', icon: '🗺', color: 'border-purple-500/30 bg-purple-500/5', activeColor: 'border-purple-500 bg-purple-500/20 text-purple-300 shadow-purple-500/10' },
 ];
@@ -32,7 +32,7 @@ const TAG_DESCRIPTIONS: Record<string, string> = {
 
 export function TestRunner({ availableTags, onRun, isRunning }: TestRunnerProps) {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [selectedEnvironment, setSelectedEnvironment] = useState<Environment>('staging');
+  const [selectedEnvironment, setSelectedEnvironment] = useState<Environment>('project');
   const [customTag, setCustomTag] = useState('');
   const [showAllTags, setShowAllTags] = useState(false);
 
@@ -103,15 +103,13 @@ export function TestRunner({ availableTags, onRun, isRunning }: TestRunnerProps)
                 onClick={() => setSelectedEnvironment(env.value)}
                 disabled={isRunning}
                 title={env.description}
-                className={`flex flex-col items-center gap-0.5 px-2 py-2 rounded-lg border text-sm font-medium transition-all ${
-                  isRunning
+                className={`flex flex-col items-center gap-0.5 px-2 py-2 rounded-lg border text-sm font-medium transition-all ${isRunning
                     ? 'opacity-50 cursor-not-allowed'
                     : ''
-                } ${
-                  selectedEnvironment === env.value
+                  } ${selectedEnvironment === env.value
                     ? `${env.activeColor} shadow-md`
                     : `${env.color} text-zinc-300 hover:text-white`
-                }`}
+                  }`}
               >
                 <span className="text-base">{env.icon}</span>
                 <span className="text-xs">{env.label}</span>
@@ -137,13 +135,11 @@ export function TestRunner({ availableTags, onRun, isRunning }: TestRunnerProps)
                 onClick={() => toggleTag(tag)}
                 disabled={isRunning}
                 title={TAG_DESCRIPTIONS[tag] || `Test @${tag}`}
-                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${
-                  isRunning ? 'opacity-50 cursor-not-allowed' : ''
-                } ${
-                  selectedTags.includes(tag)
+                className={`px-2.5 py-1 rounded-md text-xs font-medium transition-all ${isRunning ? 'opacity-50 cursor-not-allowed' : ''
+                  } ${selectedTags.includes(tag)
                     ? 'bg-emerald-500/25 text-emerald-300 border border-emerald-500/40'
                     : 'bg-zinc-700 text-zinc-300 border border-zinc-600 hover:border-zinc-500 hover:text-white'
-                }`}
+                  }`}
               >
                 @{tag}
               </button>
@@ -172,13 +168,11 @@ export function TestRunner({ availableTags, onRun, isRunning }: TestRunnerProps)
                       key={tag}
                       onClick={() => toggleTag(tag)}
                       disabled={isRunning}
-                      className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
-                        isRunning ? 'opacity-50 cursor-not-allowed' : ''
-                      } ${
-                        selectedTags.includes(tag)
+                      className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${isRunning ? 'opacity-50 cursor-not-allowed' : ''
+                        } ${selectedTags.includes(tag)
                           ? 'bg-emerald-500/25 text-emerald-300'
                           : 'bg-zinc-700 text-zinc-300 hover:text-white'
-                      }`}
+                        }`}
                     >
                       @{tag}
                     </button>
@@ -193,22 +187,22 @@ export function TestRunner({ availableTags, onRun, isRunning }: TestRunnerProps)
         <div>
           <label className="block text-[11px] text-zinc-500 mb-1">Atau ketik tag secara manual:</label>
           <div className="flex gap-2">
-          <input
-            type="text"
-            value={customTag}
-            onChange={(e) => setCustomTag(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && addCustomTag()}
-            placeholder="Ketik nama tag..."
-            disabled={isRunning}
-            className={`flex-1 bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-1.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all ${isRunning ? 'opacity-50 cursor-not-allowed' : ''}`}
-          />
-          <button
-            onClick={addCustomTag}
-            disabled={isRunning || !customTag.trim()}
-            className="px-3 py-1.5 bg-zinc-700 text-zinc-200 rounded-lg hover:bg-zinc-600 hover:text-white transition-all text-sm font-medium disabled:opacity-30"
-          >
-            Tambah
-          </button>
+            <input
+              type="text"
+              value={customTag}
+              onChange={(e) => setCustomTag(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && addCustomTag()}
+              placeholder="Ketik nama tag..."
+              disabled={isRunning}
+              className={`flex-1 bg-zinc-800 border border-zinc-600 rounded-lg px-3 py-1.5 text-sm text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 focus:border-emerald-500 transition-all ${isRunning ? 'opacity-50 cursor-not-allowed' : ''}`}
+            />
+            <button
+              onClick={addCustomTag}
+              disabled={isRunning || !customTag.trim()}
+              className="px-3 py-1.5 bg-zinc-700 text-zinc-200 rounded-lg hover:bg-zinc-600 hover:text-white transition-all text-sm font-medium disabled:opacity-30"
+            >
+              Tambah
+            </button>
           </div>
         </div>
 
@@ -233,11 +227,10 @@ export function TestRunner({ availableTags, onRun, isRunning }: TestRunnerProps)
                 return (
                   <span
                     key={tag}
-                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium group ${
-                      isValidTag
+                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-medium group ${isValidTag
                         ? 'bg-emerald-500/15 text-emerald-300 border border-emerald-500/30'
                         : 'bg-yellow-500/15 text-yellow-300 border border-yellow-500/30'
-                    }`}
+                      }`}
                     title={isValidTag ? 'Valid tag' : 'Warning: Tag not found in any feature file'}
                   >
                     {!isValidTag && '⚠️ '}
@@ -280,11 +273,10 @@ export function TestRunner({ availableTags, onRun, isRunning }: TestRunnerProps)
         <button
           onClick={handleRun}
           disabled={isRunning || selectedTags.length === 0}
-          className={`w-full py-2.5 rounded-lg font-semibold text-sm transition-all ${
-            isRunning || selectedTags.length === 0
+          className={`w-full py-2.5 rounded-lg font-semibold text-sm transition-all ${isRunning || selectedTags.length === 0
               ? 'bg-zinc-700 text-zinc-500 cursor-not-allowed'
               : 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-400 hover:to-teal-400 shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 active:scale-[0.98]'
-          }`}
+            }`}
         >
           {isRunning ? (
             <span className="flex items-center justify-center gap-2">

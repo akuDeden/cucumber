@@ -53,7 +53,7 @@ Feature: Plot Management (Authenticated)
   @delete-plot @p0
   Scenario: Delete a plot from the tables section
     When I navigate to the Tables section
-    And I click the first plot row in the table
+    And I click the first deletable plot row in the table
     And I click the more options menu
     And I click delete plot
     And I confirm the plot deletion
@@ -130,7 +130,7 @@ Feature: Plot Management (Authenticated)
     When I navigate to the advance table and open the first plot
     And I click the ADD SALE button
     And I fill sale reference with "<TEST_SALES_REFERENCE>"
-    And I search and select purchaser "endri" "yanto" in the add person modal
+    And I search and select purchaser "<TEST_PURCHASER_FIRST>" "<TEST_PURCHASER_LAST>" in the add person modal
     And I select the first available item from the Item dropdown
     Then the selected item related plot should match the first plot ID
     When I click Create and confirm to navigate back to Edit Plot page

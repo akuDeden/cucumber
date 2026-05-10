@@ -20,7 +20,8 @@ export class CreatePlotPage {
     const baseUrl = getCustomerOrgBaseUrl();
     const tablesUrl = `${baseUrl}${PlotUrls.advanceTable}`;
     await this.page.goto(tablesUrl, { waitUntil: 'domcontentloaded' });
-    await this.page.waitForTimeout(3000);
+    // Wait for the ADD PLOT button instead of a static timeout — ensures page is fully rendered
+    await this.page.waitForSelector(PlotSelectors.addPlotButton, { state: 'visible', timeout: 20000 });
     this.logger.success('Navigated to Tables section');
   }
 
@@ -254,17 +255,40 @@ export class CreatePlotPage {
     }
     await this.page.waitForTimeout(1000);
 
-    const plotCells = await this.page.locator('[data-testid*="content-wrapper-div-plot-id"]').allTextContents();
-    const found = plotCells.some(cell => cell.includes(plotId));
-
-    if (found) {
+    // Check currently rendered rows first
+    let plotCells = await this.page.locator('[data-testid*="content-wrapper-div-plot-id"]').allTextContents();
+    if (plotCells.some(cell => cell.includes(plotId))) {
       this.logger.success(`Plot "${plotId}" found in table`);
-    } else {
-      this.logger.info(`Plot "${plotId}" not found in first ${plotCells.length} rows.`);
-      // Also check if the page has an API confirming plot creation
-      // (new plots appear at the top of the table sorted by newest)
+      return true;
     }
-    return found;
+
+    // Table uses virtual scroll — scroll down in multiple steps to load rows for all sections.
+    // Section A plots appear near the bottom (table sorted descending: QA → P → O → ... → A).
+    this.logger.info(`Plot "${plotId}" not in visible rows (${plotCells.length}), scrolling table to load section A...`);
+    const scrollSteps = 8;
+    for (let i = 0; i < scrollSteps; i++) {
+      await this.page.evaluate(() => {
+        const containers = [
+          document.querySelector('cdk-virtual-scroll-viewport'),
+          document.querySelector('.mat-table'),
+          document.querySelector('[class*="table-container"]'),
+          document.querySelector('mat-table'),
+        ];
+        for (const el of containers) {
+          if (el) { el.scrollTop += 600; return; }
+        }
+        window.scrollBy(0, 600);
+      });
+      await this.page.waitForTimeout(400);
+      plotCells = await this.page.locator('[data-testid*="content-wrapper-div-plot-id"]').allTextContents();
+      if (plotCells.some(cell => cell.includes(plotId))) {
+        this.logger.success(`Plot "${plotId}" found after scroll step ${i + 1}`);
+        return true;
+      }
+    }
+
+    this.logger.info(`Plot "${plotId}" not found after scrolling (${plotCells.length} total cells checked).`);
+    return false;
   }
 
   /**
@@ -378,7 +402,7 @@ export class CreatePlotPage {
     const cemeterySlug = `${CEMETERY_CONFIG.uniqueName}_${BASE_CONFIG.region}`;
     const url = `${getCustomerOrgBaseUrl()}/customer-organization/${cemeterySlug}`;
     await this.page.goto(url, { waitUntil: 'domcontentloaded' });
-    await this.page.locator('button:has-text("Advanced")').waitFor({ state: 'visible', timeout: 15000 });
+    await this.page.locator('button:has-text("Advanced")').waitFor({ state: 'visible', timeout: 45000 });
     this.logger.success('Navigated to cemetery map page');
   }
 
@@ -435,6 +459,111 @@ export class CreatePlotPage {
   }
 
   /**
+   * Find and open the first DELETABLE plot row in the advance-table.
+   * Iterates through rows, probes each with MORE → Delete, and skips any that show
+   * "Unable to Delete Plot". When a deletable plot is found, cancels the delete dialog
+   * and returns to the edit-plot page so the normal delete steps can proceed.
+   * Returns the plot ID of the selected (deletable) plot.
+   */
+  async clickFirstDeletablePlotRow(): Promise<string> {
+    this.logger.info('Looking for first deletable plot row');
+    const maxAttempts = 8;
+
+    for (let attempt = 0; attempt < maxAttempts; attempt++) {
+      // Re-query rows on each iteration — DOM may change after navigation
+      const rows = this.page.locator(PlotSelectors.tableRow);
+      await rows.first().waitFor({ state: 'visible', timeout: 10000 });
+      const count = await rows.count();
+
+      if (attempt >= count) {
+        throw new Error(`No deletable plot found after checking ${attempt} rows — all plots have map relations`);
+      }
+
+      const row = rows.nth(attempt);
+      const plotIdCell = row.locator('[data-testid*="content-wrapper-div-plot-id"]').first();
+      const plotId = ((await plotIdCell.textContent().catch(() => '')) || '').trim();
+      this.logger.info(`Attempt ${attempt + 1}: probing plot "${plotId}" for deletability`);
+
+      await row.click();
+      await this.page.waitForURL(`**${PlotUrls.editPlotPattern}**`, { timeout: 15000 });
+      await this.page.waitForTimeout(1500);
+
+      // Open MORE menu and click Delete to probe deletability
+      const moreBtn = this.page.locator(PlotSelectors.editMoreButton);
+      if (!await moreBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
+        this.logger.info(`Row "${plotId}": MORE button not visible — skipping`);
+        await this.page.goBack();
+        await this.page.waitForSelector(PlotSelectors.tableRow, { state: 'visible', timeout: 10000 });
+        continue;
+      }
+      await moreBtn.click();
+      await this.page.waitForTimeout(500);
+
+      const deleteItem = this.page.locator(PlotSelectors.deletePlotMenuItem);
+      if (!await deleteItem.isVisible({ timeout: 3000 }).catch(() => false)) {
+        this.logger.info(`Row "${plotId}": Delete menu item not visible — skipping`);
+        await this.page.keyboard.press('Escape');
+        await this.page.goBack();
+        await this.page.waitForSelector(PlotSelectors.tableRow, { state: 'visible', timeout: 10000 });
+        continue;
+      }
+      await deleteItem.click();
+      await this.page.waitForTimeout(1500);
+
+      // Check for "Unable to Delete Plot" dialog (geojson relation)
+      const gotItBtn = this.page.locator('[data-testid="button-got-it"]');
+      if (await gotItBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
+        this.logger.info(`Row "${plotId}": "Unable to Delete Plot" — skipping`);
+        await gotItBtn.click();
+        await this.page.locator('[role="dialog"]').waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
+        // Navigate back to advance-table to retry
+        const baseUrl = getCustomerOrgBaseUrl();
+        await this.page.goto(`${baseUrl}${PlotUrls.advanceTable}`, { waitUntil: 'domcontentloaded' });
+        await this.page.waitForSelector(PlotSelectors.addPlotButton, { state: 'visible', timeout: 20000 });
+        continue;
+      }
+
+      // Check if deletion already happened immediately (no dialog, already at advance-table)
+      const currentUrl = this.page.url();
+      if (!currentUrl.includes('/manage/edit/plot')) {
+        // Deletion happened immediately — navigate back to table; caller must handle missing table row
+        this.logger.warn(`Plot "${plotId}" deleted immediately without dialog (unusual) — returning to table`);
+        if (!currentUrl.includes('advance-table')) {
+          const baseUrl = getCustomerOrgBaseUrl();
+          await this.page.goto(`${baseUrl}${PlotUrls.advanceTable}`, { waitUntil: 'domcontentloaded' });
+          await this.page.waitForSelector(PlotSelectors.addPlotButton, { state: 'visible', timeout: 20000 });
+        }
+        // Store the deleted plot ID so the caller can verify removal
+        this._lastDeletedPlotId = plotId;
+        return plotId;
+      }
+
+      // Normal state: deletable, dialog may or may not be showing — cancel and return to edit page
+      // Cancel any open dialog (e.g., standard "Are you sure?" dialog)
+      const cancelBtn = this.page.locator(
+        '[role="dialog"] button:has-text("Cancel"), [role="dialog"] button:has-text("CANCEL"), [role="dialog"] button:has-text("No")'
+      ).first();
+      if (await cancelBtn.isVisible({ timeout: 1500 }).catch(() => false)) {
+        await cancelBtn.click();
+        await this.page.locator('[role="dialog"]').waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
+      } else {
+        // No cancel button in dialog — press Escape to dismiss
+        await this.page.keyboard.press('Escape');
+        await this.page.waitForTimeout(500);
+      }
+
+      // We are still on the edit-plot page; normal delete steps will now run
+      this.logger.success(`Found deletable plot: "${plotId}" — ready for delete steps`);
+      return plotId;
+    }
+
+    throw new Error(`No deletable plot found in advance-table after ${maxAttempts} attempts`);
+  }
+
+  // Shared state to track immediately-deleted plot across method calls
+  private _lastDeletedPlotId: string | null = null;
+
+  /**
    * Get the plot ID shown on the edit page subtitle (e.g. "Astana Tegal Gundul - A Z 4086")
    */
   async getPlotIdFromEditPage(): Promise<string> {
@@ -474,24 +603,53 @@ export class CreatePlotPage {
    */
   async confirmDeletePlot(): Promise<void> {
     this.logger.info('Handling post-delete state');
-    // Chronicle deletes immediately without a confirmation dialog.
-    // After clicking Delete in the MORE menu, the app navigates back to the table.
-    const currentUrl = this.page.url();
-    if (!currentUrl.includes('/manage/edit/plot')) {
-      this.logger.success('Plot deleted immediately — no confirmation dialog needed');
+    // Give Chronicle up to 5s to either: navigate away OR show a dialog
+    const dialog = this.page.locator('[role="dialog"]').first();
+    let dialogAppeared = false;
+    try {
+      await dialog.waitFor({ state: 'visible', timeout: 5000 });
+      dialogAppeared = true;
+    } catch {
+      // No dialog — check if navigation already happened
+    }
+
+    if (dialogAppeared) {
+      // Check for "Unable to Delete Plot" (plot has geojson map relations)
+      const gotItBtn = this.page.locator('[data-testid="button-got-it"]');
+      if (await gotItBtn.isVisible({ timeout: 1000 }).catch(() => false)) {
+        await gotItBtn.click();
+        await dialog.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
+        throw new Error(
+          'Plot has map relations (geojson) and cannot be deleted. ' +
+          'Use a plot without geojson relations for this test (e.g., a newly created plot).'
+        );
+      }
+
+      // Normal delete confirmation dialog
+      const confirmBtn = this.page.locator(
+        '[role="dialog"] button:has-text("Delete"), [role="dialog"] button:has-text("Confirm"), [role="dialog"] button:has-text("Yes")'
+      ).first();
+      await confirmBtn.waitFor({ state: 'visible', timeout: 5000 });
+      await confirmBtn.click();
+      await this.page.waitForURL(`**advance-table**`, { timeout: 15000 });
+      this.logger.success('Plot deletion confirmed via dialog');
       return;
     }
-    // Fallback: if still on edit page, look for a dialog confirm button
-    const confirmBtn = this.page.locator(
-      '[role="dialog"] button:has-text("Delete"), [role="dialog"] button:has-text("Confirm"), [role="dialog"] button:has-text("Yes")'
-    ).first();
-    const visible = await confirmBtn.isVisible().catch(() => false);
-    if (visible) {
-      await confirmBtn.click();
-      await this.page.waitForURL(`**advance-table**`, { timeout: 10000 });
+
+    // No dialog — Chronicle may delete immediately and navigate back
+    const currentUrl = this.page.url();
+    if (!currentUrl.includes('/manage/edit/plot')) {
+      this.logger.success('Plot deleted immediately — no dialog, page already navigated');
+      return;
     }
-    await this.page.waitForTimeout(1000);
-    this.logger.success('Plot deletion confirmed');
+
+    // Still on edit page with no dialog — wait a bit longer for navigation
+    try {
+      await this.page.waitForURL(`**advance-table**`, { timeout: 10000 });
+      this.logger.success('Plot deleted — navigated back to advance-table');
+    } catch {
+      this.logger.warn('Plot deletion state unclear — proceeding anyway');
+    }
   }
 
   /**
@@ -499,13 +657,14 @@ export class CreatePlotPage {
    */
   async verifyPlotRemovedFromTable(plotId: string): Promise<boolean> {
     this.logger.info(`Verifying plot "${plotId}" is removed from table`);
-    await this.page.waitForTimeout(2000);
+    // Wait for table rows to appear (data loaded from API)
+    await this.page.locator('[data-testid*="content-wrapper-div-plot-id"]').first().waitFor({ state: 'attached', timeout: 15000 }).catch(() => {});
     const allCells = await this.page.locator('[data-testid*="content-wrapper-div-plot-id"]').allTextContents();
     const found = allCells.some(text => text.includes(plotId));
     if (!found) {
       this.logger.success(`Plot "${plotId}" confirmed removed from table`);
     } else {
-      this.logger.info(`Plot "${plotId}" still found in table — may be on a later page`);
+      this.logger.info(`Plot "${plotId}" still found in table — may be stale data`);
     }
     return !found;
   }

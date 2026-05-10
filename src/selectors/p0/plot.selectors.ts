@@ -1,6 +1,6 @@
 /**
  * Plot Selectors
- * Real selectors from staging-aus.chronicle.rip
+ * Real selectors from project-aus.chronicle.rip
  * Discovered via Playwright CLI manual exploration
  */
 

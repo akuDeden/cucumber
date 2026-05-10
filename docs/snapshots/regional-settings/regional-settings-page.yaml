@@ -1,0 +1,286 @@
+- generic [ref=e311]:
+  - generic [ref=e314]:
+    - img [ref=e316] [cursor=pointer]:
+      - img [ref=e317]
+    - link [ref=e319] [cursor=pointer]:
+      - /url: /
+    - generic [ref=e320]:
+      - generic [ref=e321]: organisation Configuration
+      - generic [ref=e322]: faris+astanaorg@chronicle.rip
+  - generic [ref=e323]:
+    - list [ref=e325]:
+      - listitem [ref=e326] [cursor=pointer]: General
+      - listitem [ref=e327] [cursor=pointer]:
+        - text: Cemeteries
+        - generic [ref=e328]: "1"
+      - listitem [ref=e329] [cursor=pointer]: Access
+      - listitem [ref=e330] [cursor=pointer]: Custom Fields
+      - listitem [ref=e331] [cursor=pointer]: Sales
+      - listitem [ref=e332] [cursor=pointer]: Event Type
+      - listitem [ref=e333] [cursor=pointer]: Business Types
+      - listitem [ref=e334] [cursor=pointer]: Regional Settings
+      - listitem [ref=e335] [cursor=pointer]: Certificates
+      - listitem [ref=e336] [cursor=pointer]: Forms
+    - generic [ref=e414]:
+      - heading "Regional Settings" [level=1] [ref=e415]
+      - generic [ref=e416]:
+        - generic [ref=e419] [cursor=pointer]:
+          - generic [ref=e420]:
+            - checkbox "Keep sections on at high zoom by default" [checked] [ref=e421]
+            - generic:
+              - img
+          - generic [ref=e422]: Keep sections on at high zoom by default
+        - generic [ref=e423]:
+          - paragraph [ref=e425]: Cemetery
+          - generic [ref=e427]:
+            - generic [ref=e429]:
+              - generic [ref=e431]:
+                - textbox "Cemetery" [ref=e432]
+                - generic:
+                  - generic: Cemetery
+              - generic [ref=e435]: Singular
+            - generic [ref=e438]:
+              - generic [ref=e440]:
+                - textbox "Cemeteries" [ref=e441]
+                - generic:
+                  - generic: Cemeteries
+              - generic [ref=e444]: Plural
+        - generic [ref=e446]:
+          - paragraph [ref=e448]: Section
+          - generic [ref=e450]:
+            - generic [ref=e452]:
+              - generic [ref=e454]:
+                - textbox "Section" [ref=e455]
+                - generic:
+                  - generic: Section
+              - generic [ref=e458]: Singular
+            - generic [ref=e461]:
+              - generic [ref=e463]:
+                - textbox "Sections" [ref=e464]
+                - generic:
+                  - generic: Sections
+              - generic [ref=e467]: Plural
+        - generic [ref=e469]:
+          - paragraph [ref=e471]: Row
+          - generic [ref=e473]:
+            - generic [ref=e475]:
+              - generic [ref=e477]:
+                - textbox "Row" [ref=e478]
+                - generic:
+                  - generic: Row
+              - generic [ref=e481]: Singular
+            - generic [ref=e484]:
+              - generic [ref=e486]:
+                - textbox "Rows" [ref=e487]
+                - generic:
+                  - generic: Rows
+              - generic [ref=e490]: Plural
+        - generic [ref=e492]:
+          - paragraph [ref=e494]: Plot
+          - generic [ref=e496]:
+            - generic [ref=e498]:
+              - generic [ref=e500]:
+                - textbox "Plot" [ref=e501]: Plott
+                - generic:
+                  - generic: Plot
+              - generic [ref=e504]: Singular
+            - generic [ref=e507]:
+              - generic [ref=e509]:
+                - textbox "Plots" [ref=e510]: Plotst
+                - generic:
+                  - generic: Plots
+              - generic [ref=e513]: Plural
+          - generic [ref=e515]:
+            - generic [ref=e519]:
+              - textbox "For Sale" [ref=e520]: For Salee
+              - generic:
+                - generic: For Sale
+            - generic [ref=e524]:
+              - textbox "Reserved" [ref=e525]: Reserveddd
+              - generic:
+                - generic: Reserved
+        - generic [ref=e526]:
+          - paragraph [ref=e529]: ROI
+          - generic [ref=e531]:
+            - generic [ref=e532]:
+              - generic [ref=e534]:
+                - generic [ref=e536]:
+                  - textbox "ROI" [ref=e537]: ROIx
+                  - generic:
+                    - generic: ROI
+                - generic [ref=e540]: Singular
+              - generic [ref=e543]:
+                - generic [ref=e545]:
+                  - textbox "ROIs" [ref=e546]: ROIsx
+                  - generic:
+                    - generic: ROIs
+                - generic [ref=e549]: Plural
+            - generic [ref=e551]:
+              - generic [ref=e553]:
+                - generic [ref=e555]:
+                  - textbox "ROI Holder" [ref=e556]: ROI Holdersx
+                  - generic:
+                    - generic: ROI Holder
+                - generic [ref=e559]: Singular
+              - generic [ref=e562]:
+                - generic [ref=e564]:
+                  - textbox "ROI Holders" [ref=e565]
+                  - generic:
+                    - generic: ROI Holders
+                - generic [ref=e568]: Plural
+            - generic [ref=e570]:
+              - generic [ref=e572]:
+                - generic [ref=e574]:
+                  - textbox "ROI Applicant" [ref=e575]: ROI Applicantx
+                  - generic:
+                    - generic: ROI Applicant
+                - generic [ref=e578]: Singular
+              - generic [ref=e581]:
+                - generic [ref=e583]:
+                  - textbox "ROI Applicants" [ref=e584]
+                  - generic:
+                    - generic: ROI Applicants
+                - generic [ref=e587]: Plural
+            - generic [ref=e589]:
+              - generic [ref=e591]:
+                - generic [ref=e593]:
+                  - textbox "Right of interment" [ref=e594]: Right of Intermentx
+                  - generic:
+                    - generic: Right of interment
+                - generic [ref=e597]: Singular
+              - generic [ref=e600]:
+                - generic [ref=e602]:
+                  - textbox "Right of interments" [ref=e603]: Right of Interments
+                  - generic:
+                    - generic: Right of interments
+                - generic [ref=e606]: Plural
+        - generic [ref=e612] [cursor=pointer]:
+          - combobox "Date format DD/MM/YYYY" [ref=e613]:
+            - generic [ref=e616]: DD/MM/YYYY
+          - generic:
+            - generic: Date format
+        - generic [ref=e619]:
+          - heading "Notable Person" [level=6] [ref=e620]
+          - generic [ref=e621]:
+            - img [ref=e623]:
+              - img [ref=e624]
+            - generic [ref=e633]:
+              - textbox "Key" [disabled] [ref=e634]: Returned Service person
+              - generic:
+                - generic: Key
+            - generic [ref=e638]:
+              - textbox "Label" [ref=e639]: Vetaranxx
+              - generic:
+                - generic: Label
+          - generic [ref=e640]:
+            - img [ref=e642]:
+              - img [ref=e643]
+            - generic [ref=e650]:
+              - textbox "Key" [disabled] [ref=e651]: Citizen
+              - generic:
+                - generic: Key
+            - generic [ref=e655]:
+              - textbox "Label" [ref=e656]: Citiz
+              - generic:
+                - generic: Label
+          - generic [ref=e657]:
+            - img [ref=e659]:
+              - img [ref=e660]
+            - generic [ref=e668]:
+              - textbox "Key" [disabled] [ref=e669]: Sailors
+              - generic:
+                - generic: Key
+            - generic [ref=e673]:
+              - textbox "Label" [ref=e674]: Solar
+              - generic:
+                - generic: Label
+          - generic [ref=e675]:
+            - img [ref=e677]:
+              - img [ref=e678]
+            - generic [ref=e687]:
+              - textbox "Key" [disabled] [ref=e688]: Navy
+              - generic:
+                - generic: Key
+            - generic [ref=e692]:
+              - textbox "Label" [ref=e693]: Navyyy
+              - generic:
+                - generic: Label
+          - generic [ref=e694]:
+            - img [ref=e696]:
+              - img [ref=e697]
+            - generic [ref=e706]:
+              - textbox "Key" [disabled] [ref=e707]: Artists
+              - generic:
+                - generic: Key
+            - generic [ref=e711]:
+              - textbox "Label" [ref=e712]: Artistt
+              - generic:
+                - generic: Label
+          - generic [ref=e713]:
+            - img [ref=e715]:
+              - img [ref=e716]
+            - generic [ref=e723]:
+              - textbox "Key" [disabled] [ref=e724]: Notable Characters
+              - generic:
+                - generic: Key
+            - generic [ref=e728]:
+              - textbox "Label" [ref=e729]: Notable Charactersss
+              - generic:
+                - generic: Label
+          - generic [ref=e730]:
+            - img [ref=e732]:
+              - img [ref=e733]
+            - generic [ref=e740]:
+              - textbox "Key" [disabled] [ref=e741]: Revolutionary War
+              - generic:
+                - generic: Key
+            - generic [ref=e745]:
+              - textbox "Label" [ref=e746]: Revolutionary Warrrr
+              - generic:
+                - generic: Label
+        - generic [ref=e751]:
+          - heading "Term of right" [level=6] [ref=e752]
+          - generic [ref=e753]:
+            - generic [ref=e754] [cursor=pointer]:
+              - img [ref=e755]: drag_indicator
+              - generic [ref=e759]:
+                - textbox "Key" [disabled] [ref=e760]: Perpetual
+                - generic:
+                  - generic: Key
+              - generic [ref=e764]:
+                - spinbutton "Value" [disabled] [ref=e765]: "0"
+                - generic:
+                  - generic: Value
+              - generic [ref=e767]:
+                - switch "Hide" [ref=e769]
+                - generic [ref=e772]: Hide
+            - generic [ref=e773] [cursor=pointer]:
+              - img [ref=e774]: drag_indicator
+              - generic [ref=e778]:
+                - textbox "Key" [disabled] [ref=e779]: 25 Years
+                - generic:
+                  - generic: Key
+              - generic [ref=e783]:
+                - spinbutton "Value" [disabled] [ref=e784]: "25"
+                - generic:
+                  - generic: Value
+              - generic [ref=e786]:
+                - switch "Hide" [ref=e788]
+                - generic [ref=e791]: Hide
+            - generic [ref=e792] [cursor=pointer]:
+              - img [ref=e793]: drag_indicator
+              - generic [ref=e797]:
+                - textbox "Key" [disabled] [ref=e798]: 50 Years
+                - generic:
+                  - generic: Key
+              - generic [ref=e802]:
+                - spinbutton "Value" [disabled] [ref=e803]: "50"
+                - generic:
+                  - generic: Value
+              - generic [ref=e805]:
+                - switch "Hide" [ref=e807]
+                - generic [ref=e810]: Hide
+          - button "ADD" [ref=e811] [cursor=pointer]:
+            - generic [ref=e812]:
+              - img [ref=e813]: add
+              - text: ADD

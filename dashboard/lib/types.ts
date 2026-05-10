@@ -1,5 +1,5 @@
 export type TestStatus = 'pending' | 'running' | 'passed' | 'failed' | 'cancelled';
-export type Environment = 'dev' | 'staging' | 'prod' | 'map';
+export type Environment = 'dev' | 'project' | 'prod' | 'map';
 
 export interface TestRun {
   id: string;

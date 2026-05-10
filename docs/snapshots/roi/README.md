@@ -32,7 +32,7 @@ Penamaan prefix `bg{n}` / `ad{n}` / `prod-bg{n}` merujuk ke nomor tiket.
 | **Tiket BG8** | | |
 | `plot-bg8-detail.yml` | Plot detail | Plot BG8 detail — tiket BG8 |
 | **Tiket BG13 / prod-BG13** | | |
-| `roi-edit-bg13.yml` | Edit ROI form | Form Edit ROI — tiket BG13 staging |
+| `roi-edit-bg13.yml` | Edit ROI form | Form Edit ROI — tiket BG13 project |
 | `prod-bg13-roi-edit-after-replace.yml` | Edit ROI form | Form Edit ROI setelah replace — tiket BG13 production |
 
 **Entry point**: Tables > PLOTS tab (filter Vacant/Reserved) → pilih plot → Add/Edit ROI

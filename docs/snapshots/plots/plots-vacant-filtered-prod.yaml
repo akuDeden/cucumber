@@ -1,0 +1,223 @@
+- generic [ref=e1]:
+  - generic [ref=e1405]:
+    - generic [ref=e1408]:
+      - link [ref=e1410] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e1411]:
+        - button [ref=e1688] [cursor=pointer]: SAVE
+        - generic [ref=e1414]:
+          - button [ref=e1689] [cursor=pointer]: CANCEL
+          - button [ref=e1690] [cursor=pointer]: CREATE
+    - generic [ref=e1417]:
+      - generic [ref=e1420]: Create Sale
+      - generic [ref=e1421]:
+        - generic [ref=e1424]:
+          - generic [ref=e1427]:
+            - generic [ref=e1432]:
+              - textbox [ref=e1691]
+              - generic:
+                - generic: Reference *
+            - generic [ref=e1434]:
+              - generic [ref=e1437]:
+                - generic [ref=e1438]:
+                  - textbox [ref=e1692]: 06/05/2026
+                  - generic:
+                    - generic: Issue date *
+                - button [ref=e1693] [cursor=pointer]:
+                  - img [ref=e1443]
+              - generic [ref=e1449]:
+                - generic [ref=e1450]:
+                  - textbox [ref=e1694]: 09/05/2026
+                  - generic:
+                    - generic: Due date *
+                - button [ref=e1695] [cursor=pointer]:
+                  - img [ref=e1455]
+            - generic [ref=e1461]:
+              - generic [ref=e1463] [cursor=pointer]:
+                - combobox [ref=e1696]:
+                  - generic [ref=e1467]: Juan Francisco fasss (faris+astanaorg@chronicle.rip)
+                - generic:
+                  - generic: Owner *
+              - generic [ref=e1472]: Internal use only
+            - generic [ref=e1476]:
+              - generic [ref=e1478]:
+                - textbox [ref=e1697]
+                - generic:
+                  - generic: Note
+              - generic [ref=e1482]: Internal use only
+          - generic [ref=e1485]:
+            - generic [ref=e1487]: Purchaser
+            - button [ref=e1698] [cursor=pointer]:
+              - generic [ref=e1491]:
+                - img [ref=e1492]: add
+                - text: ADD PURCHASER
+          - generic [ref=e1496]:
+            - heading [level=4] [ref=e1699]: Documents
+            - generic [ref=e1503] [cursor=pointer]:
+              - button [ref=e1700]:
+                - generic [ref=e1505]:
+                  - img [ref=e1506]:
+                    - img [ref=e1507]
+                  - text: SELECT FILE
+              - paragraph [ref=e1510]: or drag it here
+              - paragraph [ref=e1511]: "Maximum file size: 8 MB"
+        - generic [ref=e1514]:
+          - generic [ref=e1515]:
+            - generic [ref=e1516]:
+              - generic [ref=e1569]:
+                - generic [ref=e1570]: Item
+                - generic [ref=e1571]: Related Plot
+                - generic [ref=e1572]: Qty
+                - generic [ref=e1573]: Price
+                - generic [ref=e1574]: Discount (amt)
+                - generic [ref=e1575]: Total
+              - generic [ref=e1577]:
+                - img [ref=e1578]:
+                  - img [ref=e1579]
+                - generic [ref=e1587] [cursor=pointer]:
+                  - combobox [ref=e1589]
+                  - img [ref=e1596]:
+                    - img [ref=e1597]
+                - generic [ref=e1604]:
+                  - combobox [disabled] [ref=e1701]:
+                    - generic [ref=e1608]: A 1 1
+                  - generic:
+                    - generic:
+                      - generic: Plot
+                - textbox [ref=e1616]: "1"
+                - textbox [ref=e1622]: "0"
+                - textbox [ref=e1628]: "0"
+                - generic [ref=e1630]: $0.00
+                - button [ref=e1702] [cursor=pointer]: Add description
+            - generic [ref=e1528]:
+              - button [ref=e1703] [cursor=pointer]:
+                - generic [ref=e1636]:
+                  - img [ref=e1637]:
+                    - img [ref=e1638]
+                  - text: ADD ITEM
+              - generic [ref=e1641]:
+                - generic [ref=e1642]:
+                  - generic [ref=e1643]: Subtotal
+                  - generic [ref=e1645]: $0.00
+                - generic [ref=e1646]:
+                  - generic [ref=e1647]: Discount
+                  - generic [ref=e1649]: $0.00
+                - generic [ref=e1650]:
+                  - generic [ref=e1651]: VAT
+                  - generic [ref=e1652]: 10%
+                  - generic [ref=e1653]:
+                    - generic [ref=e1654]: $0.00
+                    - img [ref=e1655]:
+                      - img [ref=e1656]
+                - separator [ref=e1659]
+                - generic [ref=e1660]:
+                  - generic [ref=e1661]: Total
+                  - generic [ref=e1663]: $0.00
+          - generic [ref=e1667]:
+            - switch [ref=e1672]
+            - heading [level=2] [ref=e1704]: Financing
+          - generic [ref=e1541]:
+            - generic [ref=e1542]: Payments
+            - generic [ref=e1543]:
+              - generic [ref=e1676]:
+                - generic [ref=e1677]: Date
+                - generic [ref=e1678]: Time
+                - generic [ref=e1679]: Method
+                - generic [ref=e1680]: Note
+                - generic [ref=e1681]: Payment
+              - button [ref=e1705] [cursor=pointer]:
+                - generic [ref=e1683]:
+                  - img [ref=e1684]:
+                    - img [ref=e1685]
+                  - text: ADD PAYMENT
+  - dialog [ref=e1709]:
+    - generic [ref=e1712]:
+      - banner [ref=e1713]:
+        - heading "Add person" [level=4] [ref=e1714]
+      - generic [ref=e1718]:
+        - generic [ref=e1719]:
+          - generic [ref=e1721]:
+            - generic [ref=e1725]:
+              - textbox "First name" [ref=e1726]: Gibran
+              - generic:
+                - generic: First name *
+            - generic [ref=e1730]:
+              - textbox "Last name" [active] [ref=e1731]: Raka
+              - generic:
+                - generic: Last name *
+          - generic [ref=e1837]:
+            - article [ref=e1838] [cursor=pointer]:
+              - generic [ref=e1839]: Gibran Rakabuming Raka
+              - paragraph [ref=e1840]: Jl. Sudirman No. 10, Jakarta, DKI Jakarta, 10110, Indonesia
+              - paragraph [ref=e1841]: 081234567936 | 081234567936 | 081234567936 | gibran.raka@email.com
+            - button "NO ONE FROM THIS LIST" [ref=e1842] [cursor=pointer]: NO ONE FROM THIS LIST
+        - generic [ref=e1736]:
+          - textbox "Middle name" [ref=e1737]
+          - generic:
+            - generic: Middle name
+        - generic [ref=e1743] [cursor=pointer]:
+          - combobox "Relationship" [ref=e1744]
+          - generic:
+            - generic: Relationship
+        - generic [ref=e1751]:
+          - generic [ref=e1755]:
+            - textbox "Title" [ref=e1756]
+            - generic:
+              - generic: Title
+          - generic [ref=e1760] [cursor=pointer]:
+            - combobox "Gender" [ref=e1761]
+            - generic:
+              - generic: Gender
+        - generic [ref=e1767]:
+          - generic [ref=e1771]:
+            - textbox "Phone (mobile)" [ref=e1772]
+            - generic:
+              - generic: Phone (mobile)
+          - generic [ref=e1776]:
+            - textbox "Phone (home)" [ref=e1777]
+            - generic:
+              - generic: Phone (home)
+        - generic [ref=e1782]:
+          - textbox "Phone (office)" [ref=e1783]
+          - generic:
+            - generic: Phone (office)
+        - generic [ref=e1789]:
+          - textbox "E-mail" [ref=e1790]
+          - generic:
+            - generic: E-mail *
+        - generic [ref=e1795]:
+          - textbox "Note" [ref=e1796]
+          - generic:
+            - generic: Note
+        - heading "Home address" [level=6] [ref=e1797]
+        - generic [ref=e1802]:
+          - textbox "Address" [ref=e1803]
+          - generic:
+            - generic: Address
+        - generic [ref=e1804]:
+          - generic [ref=e1808]:
+            - textbox "City / Town / Suburb" [ref=e1809]
+            - generic:
+              - generic: City / Town / Suburb
+          - generic [ref=e1813]:
+            - textbox "State" [ref=e1814]
+            - generic:
+              - generic: State
+        - generic [ref=e1815]:
+          - generic [ref=e1819]:
+            - textbox "Country" [ref=e1820]
+            - generic:
+              - generic: Country
+          - generic [ref=e1824]:
+            - textbox "Post code" [ref=e1825]
+            - generic:
+              - generic: Post code
+        - generic [ref=e1828] [cursor=pointer]:
+          - generic [ref=e1829]:
+            - checkbox "Postal address different" [ref=e1830]
+            - generic:
+              - img
+          - generic [ref=e1831]: Postal address different
+      - generic [ref=e1832]:
+        - button "cancel" [ref=e1833] [cursor=pointer]: cancel
+        - button "add" [disabled] [ref=e1834]: add

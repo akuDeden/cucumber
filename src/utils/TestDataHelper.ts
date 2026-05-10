@@ -3,7 +3,7 @@
  * Provides helper functions to replace placeholder variables with actual test data
  */
 
-import { TEST_DATA } from '../data/test-data.js';
+import { TEST_DATA, PURCHASER_DATA } from '../data/test-data.js';
 
 /**
  * Map of placeholder keys to their actual values
@@ -16,10 +16,10 @@ const PLACEHOLDER_MAP: Record<string, string> = {
   '<TEST_ORG_NAME>': TEST_DATA.login.valid.organizationName,
 
   // Role-based credentials (admin org user vs owner org user)
-  '<TEST_ADMIN_EMAIL>': process.env.TEST_ADMIN_EMAIL || '',
-  '<TEST_ADMIN_PASSWORD>': process.env.TEST_ADMIN_PASSWORD || '',
-  '<TEST_OWNER_EMAIL>': process.env.TEST_OWNER_EMAIL || '',
-  '<TEST_OWNER_PASSWORD>': process.env.TEST_OWNER_PASSWORD || '',
+  '<TEST_ADMIN_EMAIL>': process.env.TEST_ADMIN_EMAIL || process.env.ADMIN_EMAIL || 'eko+demous@chronicle.rip',
+  '<TEST_ADMIN_PASSWORD>': process.env.TEST_ADMIN_PASSWORD || process.env.ADMIN_PASSWORD || 'P@ssw0rd',
+  '<TEST_OWNER_EMAIL>': process.env.TEST_OWNER_EMAIL || process.env.OWNER_EMAIL || 'demo+us@chronicle.rip',
+  '<TEST_OWNER_PASSWORD>': process.env.TEST_OWNER_PASSWORD || process.env.OWNER_PASSWORD || 'Demo324^',
 
   // Cemetery & Plot data
   '<TEST_CEMETERY>': TEST_DATA.cemetery,
@@ -155,6 +155,10 @@ const PLACEHOLDER_MAP: Record<string, string> = {
   '<TEST_BUSINESS_EDIT_PHONE>': TEST_DATA.business.edit.phone,
   '<TEST_BUSINESS_EDIT_EMAIL>': TEST_DATA.business.edit.email,
   '<TEST_BUSINESS_EDIT_ADDRESS>': TEST_DATA.business.edit.address,
+
+  // Purchaser (existing person to search & select in Add Sale modal)
+  '<TEST_PURCHASER_FIRST>': PURCHASER_DATA.firstName,
+  '<TEST_PURCHASER_LAST>': PURCHASER_DATA.lastName,
 
   // Sales data
   '<TEST_SALES_REFERENCE>': TEST_DATA.sales.create.reference,

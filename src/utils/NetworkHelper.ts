@@ -37,22 +37,35 @@ export class NetworkHelper {
     let lastRequestTime = startTime;
 
     while (Date.now() - startTime < timeout) {
-      const pendingRequests = await page.evaluate(() => {
-        // @ts-ignore - accessing performance API
-        const entries = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
-        const now = performance.now();
-        // Count requests that started in last 100ms
-        return entries.filter(e => e.startTime > now - 100).length;
-      });
+      try {
+        const pendingRequests = await page.evaluate(() => {
+          // @ts-ignore - accessing performance API
+          const entries = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
+          const now = performance.now();
+          // Count requests that started in last 100ms
+          return entries.filter(e => e.startTime > now - 100).length;
+        });
 
-      if (pendingRequests === 0) {
-        const timeSinceLastRequest = Date.now() - lastRequestTime;
-        if (timeSinceLastRequest > 500) {
-          this.logger.info('API requests completed');
+        if (pendingRequests === 0) {
+          const timeSinceLastRequest = Date.now() - lastRequestTime;
+          if (timeSinceLastRequest > 500) {
+            this.logger.info('API requests completed');
+            return;
+          }
+        } else {
+          lastRequestTime = Date.now();
+        }
+      } catch (e) {
+        const msg = (e as Error).message || '';
+        if (
+          msg.includes('Execution context was destroyed') ||
+          msg.includes('Target page, context or browser has been closed')
+        ) {
+          // Page navigated while polling — login succeeded, stop gracefully
+          this.logger.info('Execution context destroyed during navigation, stopping wait');
           return;
         }
-      } else {
-        lastRequestTime = Date.now();
+        throw e;
       }
 
       await page.waitForTimeout(100);

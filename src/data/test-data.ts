@@ -49,7 +49,8 @@ export function randomFullName(): string {
 export const BASE_CONFIG = {
   // Environment: staging, map, production, etc. (used for domain)
   // ENVIRONMENT shell var takes priority over ENV in .env file
-  environment: process.env.ENVIRONMENT || process.env.ENV || 'dev',
+  // Default: production — PROD is the primary reference for all test runs
+  environment: process.env.ENVIRONMENT || process.env.ENV || 'production',
 
   // Base domain (will be combined with environment)
   baseDomain: process.env.BASE_DOMAIN || 'chronicle.rip',
@@ -429,6 +430,14 @@ export const REQUEST_SALES_FORM_DATA = {
 };
 
 // ============================================
+// PURCHASER (existing person to search & select on Add Sale modal)
+// ============================================
+export const PURCHASER_DATA = {
+  firstName: process.env.TEST_PURCHASER_FIRST || 'Gibran',
+  lastName: process.env.TEST_PURCHASER_LAST || 'Raka',
+};
+
+// ============================================
 // SALES DATA
 // ============================================
 // Generate random purchaser name once (will be consistent per test run)
@@ -575,6 +584,26 @@ export const BUSINESS_DATA = {
   },
 };
 
+
+// ============================================
+// EVENT DATA (Create / Edit / Delete CRUD)
+// ============================================
+export const EVENT_DATA = {
+  create: {
+    eventName: process.env.TEST_EVENT_NAME || 'CHR24 Automation Test Event',
+    date: process.env.TEST_EVENT_DATE || '01/15/2026',
+    startTime: process.env.TEST_EVENT_START_TIME || '10:00',
+    endTime: process.env.TEST_EVENT_END_TIME || '12:00',
+    eventType: process.env.TEST_EVENT_TYPE || 'Burial',
+    description: process.env.TEST_EVENT_CREATE_DESC || 'Created by automated test for CHR-24',
+  },
+  edit: {
+    eventName: process.env.TEST_EVENT_EDIT_NAME || 'CHR24 Automation Test Event EDITED',
+  },
+  // Static event ID for CHR-24 bug verification (existing event)
+  chr24EventId: process.env.TEST_CHR24_EVENT_ID || '62217',
+};
+
 // ============================================
 // FULL TEST DATA OBJECT (For easy access)
 // ============================================
@@ -593,6 +622,7 @@ export const TEST_DATA = {
   sales: SALES_DATA,
   plotManagement: PLOT_DATA,
   business: BUSINESS_DATA,
+  event: EVENT_DATA,
 };
 
 // ============================================

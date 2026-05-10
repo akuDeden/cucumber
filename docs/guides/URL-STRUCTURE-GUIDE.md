@@ -9,8 +9,8 @@ Digunakan untuk halaman public seperti sell-plots, public cemetery pages.
 
 **Contoh**:
 ```
-Staging AUS: https://project.chronicle.rip/astana_tegal_gundul_aus
-Staging US:  https://project.chronicle.rip/astana_tegal_gundul_us
+project AUS: https://project.chronicle.rip/astana_tegal_gundul_aus
+project US:  https://project.chronicle.rip/astana_tegal_gundul_us
 Map AUS:     https://map.chronicle.rip/astana_tegal_gundul_aus
 Map US:      https://map.chronicle.rip/astana_tegal_gundul_us
 ```
@@ -27,8 +27,8 @@ Digunakan untuk halaman yang memerlukan autentikasi.
 
 **Contoh**:
 ```
-Staging AUS: https://staging-aus.chronicle.rip/login
-Staging US:  https://staging-us.chronicle.rip/login
+project AUS: https://project-aus.chronicle.rip/login
+project US:  https://project-us.chronicle.rip/login
 Map AUS:     https://map-aus.chronicle.rip/customer-organization/...
 Map US:      https://map-us.chronicle.rip/customer-organization/...
 ```
@@ -44,8 +44,8 @@ Map US:      https://map-us.chronicle.rip/customer-organization/...
 ### Environment Variables
 
 ```bash
-# Environment: staging, map, production
-ENVIRONMENT=staging  # Default
+# Environment: project, map, production
+ENVIRONMENT=project  # Default
 
 # Region: aus, us, uk, etc.
 REGION=aus          # Default
@@ -62,7 +62,7 @@ TEST_ORG_NAME="astana tegal gundul"
 // In src/data/test-data.ts
 
 export const BASE_CONFIG = {
-  environment: 'staging',   // staging | map | production
+  environment: 'project',   // project | map | production
   baseDomain: 'chronicle.rip',
   region: 'aus',           // aus | us | uk
   
@@ -96,27 +96,27 @@ getCemeterySellPlotsUrl()
 ```typescript
 // Get authenticated base URL
 getCustomerOrgBaseUrl()
-// → https://staging-aus.chronicle.rip
+// → https://project-aus.chronicle.rip
 
 // Build login URL
 `${getCustomerOrgBaseUrl()}/login`
-// → https://staging-aus.chronicle.rip/login
+// → https://project-aus.chronicle.rip/login
 
 // Get customer org URL
 getCustomerOrgUrl('plots')
-// → https://staging-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/plots
+// → https://project-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/plots
 ```
 
 ## Testing Different Environments
 
-### Staging (Default)
+### project (Default)
 
 ```bash
 npm test -- --tags "@request-sales-form-pre-need"
 
 # URLs generated:
 # Public: https://project.chronicle.rip/astana_tegal_gundul_aus
-# Auth:   https://staging-aus.chronicle.rip
+# Auth:   https://project-aus.chronicle.rip
 ```
 
 ### Map Environment
@@ -136,7 +136,7 @@ REGION=us npm test -- --tags "@request-sales-form-pre-need"
 
 # URLs generated:
 # Public: https://project.chronicle.rip/astana_tegal_gundul_us
-# Auth:   https://staging-us.chronicle.rip
+# Auth:   https://project-us.chronicle.rip
 ```
 
 ### Combine Environment + Region
@@ -155,7 +155,7 @@ ENVIRONMENT=map REGION=us npm test -- --tags "@request-sales-form-pre-need"
 
 ```typescript
 // Bad - hardcoded URLs
-const url = 'https://staging-aus.chronicle.rip/login';
+const url = 'https://project-aus.chronicle.rip/login';
 const sellUrl = 'https://project.chronicle.rip/astana_tegal_gundul_us/sell-plots';
 ```
 
@@ -189,7 +189,7 @@ import { getCustomerOrgBaseUrl, LOGIN_DATA } from './data/test-data.js';
 // Navigate to login
 const loginUrl = `${getCustomerOrgBaseUrl()}/login`;
 await page.goto(loginUrl);
-// → https://staging-aus.chronicle.rip/login
+// → https://project-aus.chronicle.rip/login
 
 // Fill credentials
 await page.fill('input[name="email"]', LOGIN_DATA.valid.email);
@@ -204,7 +204,7 @@ import { getCustomerOrgUrl } from './data/test-data.js';
 const plotName = 'A A 1';
 const addRoiUrl = getCustomerOrgUrl(`${encodeURIComponent(plotName)}/manage/add/roi`);
 await page.goto(addRoiUrl);
-// → https://staging-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/A%20A%201/manage/add/roi
+// → https://project-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/A%20A%201/manage/add/roi
 ```
 
 ## FAQ
@@ -213,7 +213,7 @@ await page.goto(addRoiUrl);
 **A**: Public URLs dirancang untuk bisa diakses langsung tanpa perlu tahu region server. Region hanya ada di path (`/cemetery_aus`) untuk membedakan data.
 
 ### Q: Kenapa authenticated URLs ada region di subdomain?
-**A**: Authenticated URLs perlu tahu region server untuk routing ke database dan resources yang benar. Region di subdomain (`staging-aus`) menentukan server mana yang digunakan.
+**A**: Authenticated URLs perlu tahu region server untuk routing ke database dan resources yang benar. Region di subdomain (`project-aus`) menentukan server mana yang digunakan.
 
 ### Q: Bagaimana cara test di production?
 **A**: Untuk saat ini production environment belum tersedia. Nantinya bisa dengan:
@@ -232,7 +232,7 @@ BASE_DOMAIN=customdomain.com npm test
 | Type | Format | Example |
 |------|--------|---------|
 | **Public** | `{env}.domain/{cem}_{reg}` | `project.chronicle.rip/astana_tegal_gundul_aus` |
-| **Auth** | `{env}-{reg}.domain` | `staging-aus.chronicle.rip/login` |
+| **Auth** | `{env}-{reg}.domain` | `project-aus.chronicle.rip/login` |
 
 **Key Points**:
 - ✅ Public = No region in subdomain

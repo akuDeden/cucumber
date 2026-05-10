@@ -27,14 +27,14 @@
           - button "Tutup panduan" [ref=e31] [cursor=pointer]:
             - img [ref=e32]
         - generic [ref=e34]:
-          - button "1 🚀 Jalankan Test Pilih environment (Dev/Staging/Production), lalu pilih tag test yang ingin dijalankan, kemudian klik tombol Run. Klik untuk mulai →" [ref=e35] [cursor=pointer]:
+          - button "1 🚀 Jalankan Test Pilih environment (Dev/project/Production), lalu pilih tag test yang ingin dijalankan, kemudian klik tombol Run. Klik untuk mulai →" [ref=e35] [cursor=pointer]:
             - generic [ref=e36]:
               - generic [ref=e37]: "1"
               - generic [ref=e38]: 🚀 Jalankan Test
             - paragraph [ref=e39]:
               - text: Pilih
               - strong [ref=e40]: environment
-              - text: (Dev/Staging/Production), lalu pilih
+              - text: (Dev/project/Production), lalu pilih
               - strong [ref=e41]: tag
               - text: test yang ingin dijalankan, kemudian klik tombol
               - strong [ref=e42]: Run
@@ -79,7 +79,7 @@
                 - text: = server tujuan test.
                 - code [ref=e74]: Dev
                 - text: untuk development,
-                - code [ref=e75]: Staging
+                - code [ref=e75]: project
                 - text: untuk pre-production.
             - generic [ref=e76]:
               - generic [ref=e77]: •
@@ -128,9 +128,9 @@
                   - generic [ref=e117]: 🛠
                   - generic [ref=e118]: Dev
                   - generic [ref=e119]: Server Development
-                - button "🧪 Staging Server Pre-Production" [ref=e120] [cursor=pointer]:
+                - button "🧪 project Server Pre-Production" [ref=e120] [cursor=pointer]:
                   - generic [ref=e121]: 🧪
-                  - generic [ref=e122]: Staging
+                  - generic [ref=e122]: project
                   - generic [ref=e123]: Server Pre-Production
                 - button "🚀 Production Server Live/Aktif" [ref=e124] [cursor=pointer]:
                   - generic [ref=e125]: 🚀
@@ -176,9 +176,9 @@
             - heading "Test Terakhir" [level=3] [ref=e163]
             - button "Lihat semua →" [ref=e164] [cursor=pointer]
           - generic [ref=e166]:
-            - button "staging @novanda 1✓ 25m ago" [ref=e175] [cursor=pointer]:
+            - button "project @novanda 1✓ 25m ago" [ref=e175] [cursor=pointer]:
               - generic [ref=e178]:
-                - generic [ref=e179]: staging
+                - generic [ref=e179]: project
                 - generic [ref=e180]: "@novanda"
               - generic [ref=e181]:
                 - generic [ref=e183]: 1✓

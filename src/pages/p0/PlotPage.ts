@@ -20,7 +20,7 @@ export class PlotPage {
   async clickSeeAllPlots(): Promise<void> {
     this.logger.info('Navigating to plots page');
     // Try clicking the button first; if it doesn't appear within 8s, fall back to direct URL navigation
-    // (the statistics widget can be slow to render on staging servers)
+    // (the statistics widget can be slow to render on project servers)
     const btn = this.page.locator(RoiSelectors.seeAllPlotsButton);
     const btnVisible = await btn.isVisible({ timeout: 8000 }).catch(() => false);
     if (btnVisible) {
@@ -58,7 +58,15 @@ export class PlotPage {
    */
   async selectVacantFilter(): Promise<void> {
     this.logger.info('Selecting vacant filter option');
-    await this.page.click(RoiSelectors.vacantFilterOption);
+    // Vacant is the first status filter button; use starts-with selector to handle
+    // data-testid variants like "statuses-div-control-button-0" vs "statuses-div-control-button"
+    const statusOptions = await this.page.locator('[data-testid^="statuses-div-control-button"]').all();
+    if (statusOptions.length > 0) {
+      await statusOptions[0].click();
+    } else {
+      // Fallback to exact selector for backward compatibility
+      await this.page.click(RoiSelectors.vacantFilterOption);
+    }
     this.logger.success('Vacant filter selected');
   }
 
@@ -104,12 +112,12 @@ export class PlotPage {
       // Neither appeared — DOM may still be transitioning, do a final check
       const hasToggles = await sectionToggles.isVisible().catch(() => false);
       if (!hasToggles) {
-        throw new Error('Filter applied but no plots found and no "No results" message — staging may have no plots matching the filter');
+        throw new Error('Filter applied but no plots found and no "No results" message — project may have no plots matching the filter');
       }
     }
     const hasToggles = await sectionToggles.isVisible().catch(() => false);
     if (!hasToggles) {
-      throw new Error('Filter returned no matching plots — staging test data may need to be refreshed (0 vacant/filtered plots)');
+      throw new Error('Filter returned no matching plots — project test data may need to be refreshed (0 vacant/filtered plots)');
     }
     this.logger.success('Filter applied');
   }
@@ -150,13 +158,13 @@ export class PlotPage {
     // Get the first visible button
     const firstButton = toggleButtons[0];
     const testId = await firstButton.getAttribute('data-testid');
-    
+
     // Extract section letter from data-testid (e.g., "shared-all-plots-button-toggle-a-0" -> "a")
     const sectionMatch = testId?.match(/shared-all-plots-button-toggle-([a-z])-\d+/);
     const sectionLetter = sectionMatch ? sectionMatch[1] : 'unknown';
-    
+
     this.logger.info(`Found first section: ${sectionLetter.toUpperCase()}`);
-    
+
     // Click the first section toggle button
     await firstButton.click();
     // Wait for section expansion animation to complete and plot items to become visible
@@ -172,13 +180,13 @@ export class PlotPage {
    */
   async selectPlot(plotName: string): Promise<void> {
     this.logger.info(`Selecting plot: ${plotName}`);
-    
+
     // Plot items are inside overflow-hidden scroll container — use JS click to bypass visibility checks
     const plotLocator = this.page.getByText(`${plotName} Vacant`, { exact: true })
       .or(this.page.getByText(plotName).first());
     await plotLocator.first().waitFor({ state: 'attached' });
     await plotLocator.first().evaluate(el => (el as HTMLElement).click());
-    
+
     await this.page.waitForURL(`**${RoiUrls.plotDetailPattern}**`);
     this.logger.success(`Plot ${plotName} selected`);
   }
@@ -189,21 +197,32 @@ export class PlotPage {
    */
   async selectFirstVacantPlot(): Promise<string> {
     this.logger.info('Getting first vacant plot name from the list');
-    // Wait for at least one vacant plot in the expanded section (items may be overflow-hidden in scroll container)
-    await this.page.getByText(/\w+\s+\w+\s+\d+\s+Vacant$/).first().waitFor({ state: 'attached' });
-    
-    // Use getByText to find elements containing "Vacant"
-    const vacantPlots = await this.page.getByText(/\w+\s+\w+\s+\d+\s+Vacant$/).all();
-    
-    if (vacantPlots.length === 0) {
+    await this.page.waitForFunction(() => {
+      const tree = document.querySelector('[role="tree"]');
+      if (!tree) return false;
+      const items = tree.querySelectorAll('ul li, [role="list"] [role="listitem"]');
+      return Array.from(items).some(item =>
+        (item.textContent ?? '').toLowerCase().includes('vacant')
+      );
+    }, { timeout: 30000 });
+
+    const plotName = await this.page.evaluate(() => {
+      const tree = document.querySelector('[role="tree"]');
+      if (!tree) return '';
+      const items = tree.querySelectorAll('ul li, [role="list"] [role="listitem"]');
+      for (const item of Array.from(items)) {
+        const text = (item.textContent ?? '').trim();
+        if (text.toLowerCase().includes('vacant')) {
+          return text.replace(/\s*[Vv]acant\s*$/, '').trim();
+        }
+      }
+      return '';
+    });
+
+    if (!plotName) {
       throw new Error('No vacant plots found in the list');
     }
-    
-    // Get the first plot
-    const firstPlot = vacantPlots[0];
-    const plotText = await firstPlot.textContent();
-    const plotName = plotText?.replace(/\s*Vacant\s*$/, '').trim() || 'Unknown';
-    
+
     this.logger.info(`Found first vacant plot: ${plotName}`);
     this.logger.success(`First vacant plot name retrieved: ${plotName}`);
     return plotName;
@@ -285,15 +304,15 @@ export class PlotPage {
   async navigateToAddRoi(plotName: string): Promise<void> {
     this.logger.info(`Navigating directly to add ROI page for plot: ${plotName}`);
     const encodedPlotName = encodeURIComponent(plotName);
-    
+
     // Build URL using centralized helper function
     const addRoiUrl = getCustomerOrgUrl(`${encodedPlotName}/manage/add/roi`);
-    
+
     this.logger.info(`Constructed URL: ${addRoiUrl}`);
     await this.page.goto(addRoiUrl);
     // Wait for ROI form title to appear (form fully loaded)
     await this.page.waitForSelector(RoiSelectors.roiFormTitle, { state: 'visible' });
-    
+
     this.logger.success(`Navigated to add ROI page for plot: ${plotName}`);
   }
 
@@ -302,7 +321,7 @@ export class PlotPage {
    */
   async getPlotStatus(): Promise<string> {
     this.logger.info('Getting plot status');
-    const statusElement = await this.page.locator(RoiSelectors.plotStatusBadge).first();
+    const statusElement = this.page.locator(RoiSelectors.plotStatusBadge).first();
     await statusElement.waitFor({ state: 'attached', timeout: 10000 });
     // Status is determined by CSS class (reserved/vacant/occupied), not text content
     const className = await statusElement.getAttribute('class') || '';
@@ -325,11 +344,11 @@ export class PlotPage {
    */
   async verifyStatusChanged(expectedStatus: string): Promise<boolean> {
     this.logger.info(`Verifying plot status is: ${expectedStatus}`);
-    
+
     // Wait for API to complete before reading status
     await NetworkHelper.waitForApiEndpoint(this.page, '/details/cemetery/', 15000, { optional: true });
     await NetworkHelper.waitForApiRequestsComplete(this.page, 5000);
-    
+
     const currentStatus = await this.getPlotStatus();
     const isCorrect = currentStatus.toUpperCase().includes(expectedStatus.toUpperCase());
 
@@ -350,66 +369,66 @@ export class PlotPage {
    */
   async findReservedPlotByCertificateNumber(certificateNumber: string): Promise<string> {
     this.logger.info(`Searching for reserved plot with certificate number: ${certificateNumber}`);
-    
+
     const roiPage = new ROIPage(this.page);
-    
+
     // Wait for section toggle buttons to appear (plot list loaded after filter)
     await this.page.locator('button[data-testid^="shared-all-plots-button-toggle-"]').first().waitFor({ state: 'visible' });
-    
+
     // Find all section toggle buttons
     const sectionButtons = await this.page.locator('button[data-testid^="shared-all-plots-button-toggle-"]').all();
     this.logger.info(`Found ${sectionButtons.length} section(s) to scan`);
-    
+
     for (let s = 0; s < sectionButtons.length; s++) {
       // Re-query section buttons each time (DOM may change after navigation)
       const currentSectionButtons = await this.page.locator('button[data-testid^="shared-all-plots-button-toggle-"]').all();
       if (s >= currentSectionButtons.length) break;
-      
+
       const sectionBtn = currentSectionButtons[s];
       const testId = await sectionBtn.getAttribute('data-testid');
       const sectionMatch = testId?.match(/shared-all-plots-button-toggle-([a-z])-\d+/);
       const sectionLetter = sectionMatch ? sectionMatch[1] : 'unknown';
-      
+
       this.logger.info(`Expanding section ${sectionLetter.toUpperCase()}`);
       await sectionBtn.click();
       // Wait for section expansion animation to complete
       await NetworkHelper.waitForStabilization(this.page, { minWait: 500, maxWait: 3000 });
-      
+
       // Find all reserved plots in this section
       const reservedPlots = await this.page.getByText(/\w+\s+\w+\s+\d+\s+Reserved$/).all();
       this.logger.info(`Found ${reservedPlots.length} reserved plot(s) in section ${sectionLetter.toUpperCase()}`);
-      
+
       for (let p = 0; p < reservedPlots.length; p++) {
         // Re-query reserved plots (DOM refreshes after back navigation)
         const currentReservedPlots = await this.page.getByText(/\w+\s+\w+\s+\d+\s+Reserved$/).all();
         if (p >= currentReservedPlots.length) break;
-        
+
         const plot = currentReservedPlots[p];
         const plotText = await plot.textContent();
         const plotName = plotText?.replace(/\s*Reserved\s*$/, '').trim() || 'Unknown';
-        
+
         this.logger.info(`Checking plot: ${plotName}`);
-        
+
         // Click the plot to go to detail page
         await plot.click();
         await this.page.waitForURL('**/plots/**');
         await this.page.locator('[role="tablist"]').waitFor({ state: 'visible' });
-        
+
         // Check certificate number in the ROI tab
         const certNumber = await roiPage.getCertificateNumberFromRoiTab();
-        
+
         if (certNumber === certificateNumber) {
           this.logger.success(`✓ Found matching plot: ${plotName} with certificate number ${certificateNumber}`);
           return plotName;
         }
-        
+
         this.logger.info(`Plot ${plotName} has cert "${certNumber}" - not a match, going back`);
-        
+
         // Go back to plot list
         await this.page.goBack();
         // Wait for plots page to reload — section toggles appear when ready
         await this.page.locator('button[data-testid^="shared-all-plots-button-toggle-"]').first().waitFor({ state: 'visible' });
-        
+
         // After going back, the section may be collapsed - re-expand it
         const refreshedSectionBtns = await this.page.locator('button[data-testid^="shared-all-plots-button-toggle-"]').all();
         if (s < refreshedSectionBtns.length) {
@@ -423,7 +442,7 @@ export class PlotPage {
           }
         }
       }
-      
+
       // Collapse this section before moving to next
       const collapseButtons = await this.page.locator('button[data-testid^="shared-all-plots-button-toggle-"]').all();
       if (s < collapseButtons.length) {
@@ -431,7 +450,7 @@ export class PlotPage {
         await NetworkHelper.waitForAnimation(this.page);
       }
     }
-    
+
     throw new Error(`No reserved plot found with certificate number "${certificateNumber}"`);
   }
 }

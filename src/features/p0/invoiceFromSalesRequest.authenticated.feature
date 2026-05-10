@@ -7,7 +7,7 @@ Feature: Invoice from Sales Request — Admin Access Fix
   # TC-01: Core bug fix — admin must NOT get 403 when generating invoice from request
   @tc-01 @smoke @invoice-from-sales-request-admin-generate
   Scenario: TC-01 — Admin can generate invoice from approved request
-    Given I am on the Chronicle login page
+    Given I am on the Chronicle map login page
     When I enter email "<TEST_ADMIN_EMAIL>"
     And I enter password "<TEST_ADMIN_PASSWORD>"
     And I click the login button
@@ -21,7 +21,7 @@ Feature: Invoice from Sales Request — Admin Access Fix
   # TC-02: When invoice already exists, 400 error must say "already exists" not "access denied"
   @tc-02 @smoke @invoice-from-sales-request-already-exists
   Scenario: TC-02 — Admin sees correct error when invoice already exists
-    Given I am on the Chronicle login page
+    Given I am on the Chronicle map login page
     When I enter email "<TEST_ADMIN_EMAIL>"
     And I enter password "<TEST_ADMIN_PASSWORD>"
     And I click the login button
@@ -35,7 +35,7 @@ Feature: Invoice from Sales Request — Admin Access Fix
   # TC-03: Regression — owner user must still be able to generate invoice
   @tc-03 @smoke @invoice-from-sales-request-owner-regression
   Scenario: TC-03 — Owner user can still generate invoice (regression check)
-    Given I am on the Chronicle login page
+    Given I am on the Chronicle map login page
     When I enter email "<TEST_OWNER_EMAIL>"
     And I enter password "<TEST_OWNER_PASSWORD>"
     And I click the login button
@@ -49,7 +49,7 @@ Feature: Invoice from Sales Request — Admin Access Fix
   # TC-04: Regression — admin must still reach the Sales menu
   @tc-04 @smoke @invoice-from-sales-request-sales-menu-regression
   Scenario: TC-04 — Admin can still access the Sales menu (regression check)
-    Given I am on the Chronicle login page
+    Given I am on the Chronicle map login page
     When I enter email "<TEST_ADMIN_EMAIL>"
     And I enter password "<TEST_ADMIN_PASSWORD>"
     And I click the login button

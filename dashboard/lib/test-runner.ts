@@ -185,7 +185,7 @@ export async function runTests(
   // Build env file path and load environment variables
   const envFile = environment === 'dev' ? '.env.dev'
     : environment === 'map' ? '.env.map'
-      : environment === 'staging' ? '.env.chronicle'
+      : environment === 'project' ? '.env.chronicle'
         : '.env.chronicle.prod';
 
   const envFilePath = path.join(PROJECT_ROOT, envFile);

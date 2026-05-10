@@ -7,8 +7,10 @@ import { setWorldConstructor, World } from '@cucumber/cucumber';
 export class CustomWorld extends World {
   public page: any;
   public browser: any;
-  // Add any shared state variables here
   public testData: Map<string, any> = new Map();
+  public failedStep?: string;
+  public failedStepError?: string;
+  public scenarioName?: string;
 
   constructor(options: any) {
     super(options);

@@ -713,7 +713,7 @@ npm test -- --tags "@advance-search"
 ```typescript
 // Via MCP Playwright
 mcp_playwright_browser_navigate({
-  url: "https://chronicle-staging.rip/advance-search"
+  url: "https://chronicle-project.rip/advance-search"
 })
 ```
 
@@ -763,7 +763,7 @@ npm test -- --tags "@advance-search"
 ```typescript
 // Navigate to login page
 mcp_playwright_browser_navigate({
-  url: "https://chronicle-staging.rip/login"
+  url: "https://chronicle-project.rip/login"
 })
 ```
 

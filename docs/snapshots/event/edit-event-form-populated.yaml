@@ -1,0 +1,246 @@
+- generic [ref=e863]:
+  - generic [ref=e865]:
+    - generic [ref=e868]:
+      - generic [ref=e869]: Astana Tegal Gundul
+      - generic [ref=e873]:
+        - generic [ref=e875]:
+          - img [ref=e877]:
+            - img [ref=e878]
+          - textbox "Search" [ref=e883]
+        - generic [ref=e887]:
+          - generic [ref=e888]:
+            - generic [ref=e889]:
+              - img [ref=e890]:
+                - img [ref=e891]
+              - generic [ref=e894]: People
+            - generic [ref=e895]:
+              - img [ref=e896]:
+                - img [ref=e897]
+              - generic [ref=e902]: Plotst
+          - heading "within your Cemeteries" [level=5] [ref=e903]
+      - generic [ref=e904]:
+        - button "Advanced" [ref=e905] [cursor=pointer]:
+          - generic [ref=e908]: Advanced
+        - generic [ref=e911]:
+          - button "Notifications - 6 unread" [ref=e912] [cursor=pointer]:
+            - img "Notification bell" [ref=e914]
+          - generic [ref=e915]: "6"
+    - button "Astana Tegal Gundul faris+astanaorg@chronicle.rip" [ref=e918] [cursor=pointer]:
+      - generic [ref=e921]:
+        - paragraph [ref=e922]: Astana Tegal Gundul
+        - generic [ref=e923]: faris+astanaorg@chronicle.rip
+  - generic:
+    - generic [ref=e925]:
+      - generic:
+        - generic:
+          - generic:
+            - generic [ref=e928] [cursor=pointer]: Section LOT A2
+            - generic [ref=e930] [cursor=pointer]: Section LOT A1
+            - generic [ref=e932] [cursor=pointer]: Section LOT B1
+      - generic:
+        - generic:
+          - button [ref=e934] [cursor=pointer]
+          - button [ref=e935] [cursor=pointer]
+        - generic:
+          - link "Current location" [ref=e937] [cursor=pointer]:
+            - /url: "#"
+          - generic [ref=e938]:
+            - button "Zoom in" [ref=e939] [cursor=pointer]: +
+            - button "Zoom out" [ref=e940] [cursor=pointer]: −
+          - generic [ref=e941]:
+            - link "Leaflet" [ref=e942] [cursor=pointer]:
+              - /url: https://leafletjs.com
+              - img [ref=e943]
+              - text: Leaflet
+            - text: "| Map data ©"
+            - link "OpenStreetMap" [ref=e947] [cursor=pointer]:
+              - /url: https://www.openstreetmap.org/
+            - text: contributors,
+            - link "CC-BY-SA" [ref=e948] [cursor=pointer]:
+              - /url: https://creativecommons.org/licenses/by-sa/2.0/
+    - button [disabled] [ref=e951]:
+      - img [ref=e953]:
+        - img [ref=e954]
+  - generic [ref=e957]:
+    - generic [ref=e962] [cursor=pointer]:
+      - group [ref=e964]:
+        - button "Map" [pressed] [ref=e965]:
+          - generic [ref=e966]:
+            - img [ref=e968]:
+              - img [ref=e969]
+            - generic [ref=e971]: Map
+        - button "Tables" [ref=e972]:
+          - generic [ref=e973]:
+            - img [ref=e975]:
+              - img [ref=e976]
+            - generic [ref=e979]: Tables
+        - button "Calendar" [ref=e980]:
+          - generic [ref=e981]:
+            - img [ref=e983]:
+              - img [ref=e984]
+            - generic [ref=e986]: Calendar
+        - button "Request 113" [ref=e987]:
+          - generic [ref=e988]:
+            - img [ref=e990]:
+              - img [ref=e991]
+            - generic [ref=e994]: Request
+            - generic [ref=e995]: "113"
+        - button "Sales" [ref=e996]:
+          - generic [ref=e997]:
+            - img [ref=e999]:
+              - img [ref=e1000]
+            - generic [ref=e1003]: Sales
+        - button "Reports" [ref=e1004]:
+          - generic [ref=e1005]:
+            - img [ref=e1007]:
+              - img [ref=e1008]
+            - generic [ref=e1011]: Reports
+      - group [disabled] [ref=e1013]:
+        - button "help" [disabled] [ref=e1014]:
+          - link "help" [disabled] [ref=e1016]:
+            - /url: https://help.chronicle.rip/
+            - img "help" [ref=e1017]
+        - button "home" [disabled] [ref=e1018]:
+          - link "home" [disabled] [ref=e1020]:
+            - /url: https://chronicle.rip/
+            - img "home" [ref=e1021]
+    - generic [ref=e1032]:
+      - generic [ref=e1033]:
+        - generic [ref=e1034]: Edit event
+        - button [ref=e1036] [cursor=pointer]
+      - generic [ref=e1040]:
+        - generic [ref=e1041]:
+          - generic [ref=e1042]:
+            - generic [ref=e1047]:
+              - textbox "Event Name" [ref=e1048]
+              - generic:
+                - generic: Event name *
+            - generic [ref=e1054] [cursor=pointer]:
+              - combobox "Event Type" [ref=e1055]:
+                - generic [ref=e1058]: All
+              - generic:
+                - generic:
+                  - generic: Event type
+                  - text: "*"
+            - generic [ref=e1063] [cursor=pointer]:
+              - switch "Public" [ref=e1065]
+              - generic [ref=e1068]: Public
+            - generic [ref=e1073]:
+              - textbox "Description" [ref=e1074]
+              - generic:
+                - generic: Description
+            - heading "Where" [level=6] [ref=e1076]
+            - generic [ref=e1081] [cursor=pointer]:
+              - combobox "Cemeteries Lists" [ref=e1082]:
+                - generic [ref=e1085]: none
+              - generic:
+                - generic: Cemetery *
+            - heading "When" [level=6] [ref=e1088]
+            - generic [ref=e1089]:
+              - generic [ref=e1092]:
+                - generic [ref=e1093]:
+                  - textbox "Date" [ref=e1094]
+                  - generic:
+                    - generic: Date *
+                - button "Open calendar" [ref=e1097] [cursor=pointer]:
+                  - img [ref=e1098]
+              - generic [ref=e1102]:
+                - generic [ref=e1106]:
+                  - textbox "Start time" [ref=e1107]
+                  - generic:
+                    - generic: Start time
+                - generic [ref=e1111]:
+                  - textbox "End Time" [ref=e1112]
+                  - generic:
+                    - generic: End time
+            - heading "Responsible Person" [level=6] [ref=e1113]
+            - generic [ref=e1118] [cursor=pointer]:
+              - combobox "Event Type" [ref=e1119]:
+                - generic [ref=e1122]: All
+              - generic:
+                - generic:
+                  - generic: Responsible
+            - generic [ref=e1125]:
+              - generic [ref=e1126]:
+                - heading "Assigned Business" [level=6] [ref=e1127]
+                - generic [ref=e1132]:
+                  - combobox "Event Type" [disabled] [ref=e1133]:
+                    - generic [ref=e1136]: All
+                  - generic:
+                    - generic:
+                      - generic: Assign Business
+              - generic [ref=e1141] [cursor=pointer]:
+                - generic [ref=e1142]:
+                  - checkbox "Email Notification" [ref=e1143]
+                  - generic:
+                    - img
+                - generic [ref=e1144]: Email Notification
+          - generic [ref=e1145]:
+            - heading "Purchase details" [level=6] [ref=e1146]
+            - generic [ref=e1147]:
+              - generic [ref=e1151]:
+                - spinbutton "Payment Amount" [ref=e1152]
+                - generic:
+                  - generic: Payment amount
+              - generic [ref=e1154] [cursor=pointer]:
+                - generic [ref=e1155]:
+                  - checkbox "Paid" [ref=e1156]
+                  - generic:
+                    - img
+                - generic [ref=e1157]: Paid
+            - generic [ref=e1164]:
+              - textbox "Purchaser" [ref=e1166]
+              - generic:
+                - generic: Purchaser
+            - generic [ref=e1167]:
+              - generic [ref=e1171]:
+                - textbox "Purchaser Email" [ref=e1172]
+                - generic:
+                  - generic: Purchaser Email
+              - generic [ref=e1176]:
+                - textbox "Purchaser Phone" [ref=e1177]
+                - generic:
+                  - generic: Purchaser Phone
+            - generic [ref=e1182]:
+              - textbox "Address" [ref=e1183]
+              - generic:
+                - generic: Address
+            - generic [ref=e1184]:
+              - generic [ref=e1188]:
+                - textbox "Suburb" [ref=e1189]
+                - generic:
+                  - generic: City / Town / Suburb
+              - generic [ref=e1193]:
+                - textbox "State" [ref=e1194]
+                - generic:
+                  - generic: State
+            - generic [ref=e1195]:
+              - generic [ref=e1199]:
+                - textbox "Country" [ref=e1200]
+                - generic:
+                  - generic: Country
+              - generic [ref=e1204]:
+                - textbox "Post Code" [ref=e1205]
+                - generic:
+                  - generic: Post code
+            - generic [ref=e1208] [cursor=pointer]:
+              - generic [ref=e1209]:
+                - checkbox "Postal Address Different" [ref=e1210]
+                - generic:
+                  - img
+              - generic [ref=e1211]: Postal address different
+            - heading "Documents" [level=6] [ref=e1212]
+            - generic [ref=e1215]:
+              - heading [level=4]
+              - generic [ref=e1221] [cursor=pointer]:
+                - button "SELECT FILE" [ref=e1222]:
+                  - generic [ref=e1223]:
+                    - img [ref=e1224]:
+                      - img [ref=e1225]
+                    - text: SELECT FILE
+                - paragraph [ref=e1228]: or drag it here
+                - paragraph [ref=e1229]: "Maximum file size: 8 MB"
+        - generic [ref=e1230]:
+          - button "Cancel" [ref=e1231] [cursor=pointer]: Cancel
+          - button "save" [ref=e1232] [cursor=pointer]: save
+          - button "Save & Create Certificate" [disabled] [ref=e1233]: Save & Create Certificate

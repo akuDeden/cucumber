@@ -105,7 +105,7 @@ cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/p0/file.
 ENVIRONMENT=map REGION=us npm test -- --tags "@p0"
 ```
 
-See `package.json` scripts for all test commands (`test:staging`, `test:p0`, etc.).
+See `package.json` scripts for all test commands (`test:project`, `test:p0`, etc.).
 
 ## Debug & Fix Protocol — WAJIB Sebelum Menulis Kode
 
@@ -275,7 +275,7 @@ Accessibility tree snapshots disimpan di `docs/snapshots/<feature>/` sebagai ref
 ### Cara Capture
 ```bash
 # 1. Buka browser & navigasi ke halaman target
-playwright-cli open https://staging-aus.chronicle.rip
+playwright-cli open https://project-aus.chronicle.rip
 
 # 2. Ambil snapshot → simpan ke .yml
 playwright-cli snapshot
@@ -320,4 +320,4 @@ docs/snapshots/
 
 ## Environment
 
-`.env` files: `.env` (active), `.env.chronicle` (staging), `.env.chronicle.prod` (prod), `.env.dev`, `.env.map`. Never commit `.env`.
+`.env` files: `.env` (active), `.env.chronicle` (project), `.env.chronicle.prod` (prod), `.env.dev`, `.env.map`. Never commit `.env`.

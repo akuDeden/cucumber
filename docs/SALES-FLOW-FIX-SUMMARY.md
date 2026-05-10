@@ -40,7 +40,7 @@ Berdasarkan gambar yang dikirimkan user, flow untuk menambah item pada Sales For
 
 **Sesudah:**
 - Items menggunakan plot **B F 1, B F 2, B F 3, B F 4, B F 5** (sesuai gambar)
-- Item terakhir diubah ke **"item e"** (karena di staging environment hanya tersedia item a-e)
+- Item terakhir diubah ke **"item e"** (karena di project environment hanya tersedia item a-e)
 
 ```typescript
 items: [
@@ -134,12 +134,12 @@ items: [
 ## Catatan Penting
 
 ### 1. Item Availability
-- Di staging environment, hanya tersedia **item a, b, c, d, e**
+- Di project environment, hanya tersedia **item a, b, c, d, e**
 - Tidak ada **"item f"**
 - Jika butuh item f, perlu ditambahkan di backend
 
 ### 2. Plot Availability
-- Plot **B F 1 sampai B F 5** di staging environment berstatus **(Occupied)**
+- Plot **B F 1 sampai B F 5** di project environment berstatus **(Occupied)**
 - Test akan memilih **"none"** jika plot yang diminta sudah Occupied
 - Untuk test yang sukses, pastikan plot B F 1-5 dalam status **Available** atau **(Reserved)**
 
@@ -217,12 +217,12 @@ Item 2:
 ## Next Steps
 
 1. **Pastikan Plot Available**
-   - Cek status plot B F 1-5 di staging
+   - Cek status plot B F 1-5 di project
    - Set ke status Available atau Reserved (bukan Occupied)
 
 2. **Tambah Item f (Optional)**
    - Jika memang perlu item f sesuai requirement
-   - Bisa ditambahkan di backend staging
+   - Bisa ditambahkan di backend project
 
 3. **Run Test**
    ```bash

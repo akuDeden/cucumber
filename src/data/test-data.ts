@@ -584,6 +584,26 @@ export const BUSINESS_DATA = {
   },
 };
 
+
+// ============================================
+// EVENT DATA (Create / Edit / Delete CRUD)
+// ============================================
+export const EVENT_DATA = {
+  create: {
+    eventName: process.env.TEST_EVENT_NAME || 'CHR24 Automation Test Event',
+    date: process.env.TEST_EVENT_DATE || '01/15/2026',
+    startTime: process.env.TEST_EVENT_START_TIME || '10:00',
+    endTime: process.env.TEST_EVENT_END_TIME || '12:00',
+    eventType: process.env.TEST_EVENT_TYPE || 'Burial',
+    description: process.env.TEST_EVENT_CREATE_DESC || 'Created by automated test for CHR-24',
+  },
+  edit: {
+    eventName: process.env.TEST_EVENT_EDIT_NAME || 'CHR24 Automation Test Event EDITED',
+  },
+  // Static event ID for CHR-24 bug verification (existing event)
+  chr24EventId: process.env.TEST_CHR24_EVENT_ID || '62217',
+};
+
 // ============================================
 // FULL TEST DATA OBJECT (For easy access)
 // ============================================
@@ -602,6 +622,7 @@ export const TEST_DATA = {
   sales: SALES_DATA,
   plotManagement: PLOT_DATA,
   business: BUSINESS_DATA,
+  event: EVENT_DATA,
 };
 
 // ============================================

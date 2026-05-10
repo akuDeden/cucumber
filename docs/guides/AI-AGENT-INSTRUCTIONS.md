@@ -99,7 +99,7 @@ All test data and URLs are centralized in `src/data/test-data.ts`:
 ```typescript
 // Base configuration
 export const BASE_CONFIG = {
-  environment: 'staging',      // staging | map | production
+  environment: 'project',      // project | map | production
   baseDomain: 'chronicle.rip',
   region: 'aus',               // aus | us | uk
   
@@ -127,7 +127,7 @@ export const CEMETERY_CONFIG = {
 **AUTHENTICATED URLs** (with region in subdomain):
 - Format: `https://{environment}-{region}.chronicle.rip/{path}`
 - Used for: login, customer-organization, add/edit ROI
-- Example: `https://staging-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/...`
+- Example: `https://project-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/...`
 
 #### 3.3 Helper Functions for URLs
 
@@ -148,9 +148,9 @@ const cemeteryUrl = getCemeteryUrl();                // https://project.chronicl
 const sellPlotsUrl = getCemeterySellPlotsUrl();      // https://project.chronicle.rip/astana_tegal_gundul_aus/sell-plots
 
 // Authenticated URLs
-const authBaseUrl = getCustomerOrgBaseUrl();         // https://staging-aus.chronicle.rip
-const loginUrl = `${authBaseUrl}/login`;             // https://staging-aus.chronicle.rip/login
-const addRoiUrl = getCustomerOrgUrl('A A 1/manage/add/roi'); // https://staging-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/A A 1/manage/add/roi
+const authBaseUrl = getCustomerOrgBaseUrl();         // https://project-aus.chronicle.rip
+const loginUrl = `${authBaseUrl}/login`;             // https://project-aus.chronicle.rip/login
+const addRoiUrl = getCustomerOrgUrl('A A 1/manage/add/roi'); // https://project-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/A A 1/manage/add/roi
 ```
 
 #### 3.4 Test Data with Placeholders
@@ -174,7 +174,7 @@ When('I enter email {string}', async function (email: string) {
 #### 3.5 Testing Different Environments
 
 ```bash
-# Default: staging + aus
+# Default: project + aus
 npm test -- --tags "@roi"
 
 # Map environment + US region
@@ -186,7 +186,7 @@ ENVIRONMENT=production REGION=uk npm test
 
 **CRITICAL RULES:**
 - ✅ **ALWAYS** use helper functions for URLs
-- ✅ **NEVER** hardcode `https://project.chronicle.rip` or `https://staging-aus.chronicle.rip`
+- ✅ **NEVER** hardcode `https://project.chronicle.rip` or `https://project-aus.chronicle.rip`
 - ✅ Use `BASE_CONFIG.baseUrl` for public URLs
 - ✅ Use `getCustomerOrgBaseUrl()` for authenticated URLs
 - ❌ **DON'T** mix environment variables in URLs manually
@@ -365,7 +365,7 @@ Simpan accessibility tree snapshot dari `playwright-cli snapshot` ke `docs/snaps
 #### 5.1 Capture & Simpan Snapshot
 ```bash
 # 1. Debug di browser
-playwright-cli open https://staging-aus.chronicle.rip
+playwright-cli open https://project-aus.chronicle.rip
 playwright-cli snapshot
 
 # 2. Simpan output ke file
@@ -439,7 +439,7 @@ npm test -- --tags "@p0 and @authenticated"
 npm test -- --tags "@search and @public"
 
 # Different environments
-ENVIRONMENT=staging npm test -- --tags "@p0"
+ENVIRONMENT=project npm test -- --tags "@p0"
 ENVIRONMENT=map REGION=us npm test -- --tags "@p0"
 
 # Headless mode
@@ -563,7 +563,7 @@ async navigateToAddRoi(plotName: string) {
 
 ### Pattern 3: Environment-Specific Testing
 ```bash
-# Test in staging (default)
+# Test in project (default)
 npm test -- --tags "@roi"
 
 # Test in map environment with US region
@@ -617,8 +617,8 @@ export class FeaturePage {
 | `BASE_CONFIG.baseUrl` | `https://project.chronicle.rip` | Public base URL |
 | `getCemeteryUrl()` | `https://project.chronicle.rip/astana_tegal_gundul_aus` | Public cemetery URL |
 | `getCemeterySellPlotsUrl()` | `https://project.chronicle.rip/.../sell-plots` | Public sell plots page |
-| `getCustomerOrgBaseUrl()` | `https://staging-aus.chronicle.rip` | Auth base URL |
-| `getCustomerOrgUrl(path)` | `https://staging-aus.chronicle.rip/customer-organization/...` | Auth customer org pages |
+| `getCustomerOrgBaseUrl()` | `https://project-aus.chronicle.rip` | Auth base URL |
+| `getCustomerOrgUrl(path)` | `https://project-aus.chronicle.rip/customer-organization/...` | Auth customer org pages |
 
 **See [URL-STRUCTURE-GUIDE.md](URL-STRUCTURE-GUIDE.md) for complete URL documentation**
 

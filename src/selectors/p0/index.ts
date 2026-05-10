@@ -15,3 +15,4 @@ export * from './roi/index.js';
 export * from './sales/index.js';
 export * from './advance-table/index.js';
 export * from './regional-settings/index.js';
+export * from './event/index.js';

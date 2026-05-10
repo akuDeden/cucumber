@@ -4,7 +4,7 @@ A web automation framework for Chronicle using Playwright, Cucumber, and TypeScr
 
 ## ⚠️ Known Issues
 
-**Add ROI Bug in Staging** (Dec 28, 2025): The "Add ROI" button on plot detail pages does not navigate to the form. See [BUG-REPORT.md](BUG-REPORT.md) for details. Screenshot evidence available in `screenshots/` directory.
+**Add ROI Bug in project** (Dec 28, 2025): The "Add ROI" button on plot detail pages does not navigate to the form. See [BUG-REPORT.md](BUG-REPORT.md) for details. Screenshot evidence available in `screenshots/` directory.
 
 ## 📁 Project Structure
 
@@ -96,7 +96,7 @@ automation_web/
    
    Edit `.env` to configure your test environment:
    ```bash
-   ENV=staging
+   ENV=project
    BASE_URL=https://project.chronicle.rip
    CHRONICLE_EMAIL=your-email@domain.com
    CHRONICLE_PASSWORD=your-password
@@ -135,7 +135,7 @@ Framework ini menggunakan **Centralized Configuration Pattern** dengan fallback 
 
 ```bash
 # .env (Auto-loaded untuk SEMUA test commands)
-ENV=staging                              # Environment: dev/staging/map/production
+ENV=project                              # Environment: dev/project/map/production
 BASE_URL=https://project.chronicle.rip  # Target URL
 BROWSER=chromium                         # Browser type
 HEADLESS=false                           # Headless mode
@@ -149,7 +149,7 @@ CHRONICLE_PASSWORD=12345
 - ✅ **Single source** - Edit 1 file untuk semua setting
 - ✅ **Auto-loaded** - Semua test commands baca dari `.env` otomatis
 - ✅ **No command duplication** - Tidak perlu buat command terpisah per environment
-- ✅ **Report naming** - Video/screenshot otomatis pakai env name (e.g., `pass_staging_*.webm`)
+- ✅ **Report naming** - Video/screenshot otomatis pakai env name (e.g., `pass_project_*.webm`)
 
 ### 📁 File Structure
 
@@ -183,7 +183,7 @@ CHRONICLE_PASSWORD=12345
 - **Note**: File ini TIDAK dipakai langsung oleh test
 
 #### 4. `.env.chronicle` & `.env.chronicle.prod` - Legacy Files
-- **Fungsi**: Untuk command spesifik seperti `npm run test:staging`
+- **Fungsi**: Untuk command spesifik seperti `npm run test:project`
 - **Note**: Tidak diperlukan jika pakai `.env` centralized
 
 ### 🎯 Cara Mengubah Environment
@@ -192,8 +192,8 @@ CHRONICLE_PASSWORD=12345
 
 Edit [.env](.env) untuk switch environment:
 ```bash
-# Staging
-ENV=staging
+# project
+ENV=project
 BASE_URL=https://project.chronicle.rip
 
 # atau Map/Production  
@@ -209,7 +209,7 @@ Kemudian run test biasa:
 ```bash
 npm run test:headless -- --tags "@p0"
 # Akan otomatis pakai environment dari .env
-# Video: pass_staging_*.webm (bukan pass_dev_*.webm)
+# Video: pass_project_*.webm (bukan pass_dev_*.webm)
 ```
 
 #### Cara 2: Override Test Data via `.env`
@@ -217,7 +217,7 @@ npm run test:headless -- --tags "@p0"
 Override test data specific:
 ```bash
 # .env
-ENV=staging
+ENV=project
 TEST_EMAIL=custom@email.com
 TEST_CEMETERY_NAME=Different Cemetery
 TEST_ADVANCE_SECTION_A=B
@@ -234,27 +234,27 @@ Semua test akan pakai nilai dari `.env`, kalau tidak ada baru pakai default dari
          │
          ▼
 ┌─────────────────┐
-│ Cek .env file   │  ← ENV=staging
+│ Cek .env file   │  ← ENV=project
 └────────┬────────┘
          │
          ▼
 ┌─────────────────────────────┐
 │ Load test-data.ts           │
-│ environment = ENV || 'dev'  │  ← Pakai 'staging' dari .env
+│ environment = ENV || 'dev'  │  ← Pakai 'project' dari .env
 └────────┬────────────────────┘
          │
          ▼
 ┌─────────────────────────────┐
 │ Generate URL & Run Test     │
-│ baseUrl: staging.rip        │
-│ Video: pass_staging_*.webm  │
+│ baseUrl: project.rip        │
+│ Video: pass_project_*.webm  │
 └─────────────────────────────┘
 ```
 
 ### 🎬 Video/Screenshot Naming
 
 Naming otomatis menggunakan environment dari `.env`:
-- `pass_staging_scenario_name.webm` (ENV=staging)
+- `pass_project_scenario_name.webm` (ENV=project)
 - `fail_map_scenario_name.webm` (ENV=map)
 - `pass_dev_scenario_name.webm` (ENV=dev atau tidak di-set)
 
@@ -431,7 +431,7 @@ npm run test:headless -- --tags "@p0"
 | Environment | With Browser | Headless |
 |-------------|--------------|----------|
 | **Dev** | `npm run test:dev -- --tags "@tag"` | `npm run test:dev:headless -- --tags "@tag"` |
-| **Staging** | `npm run test -- --tags "@tag"` | `npm run test:headless -- --tags "@tag"` |
+| **project** | `npm run test -- --tags "@tag"` | `npm run test:headless -- --tags "@tag"` |
 | **Map** | `npm run test:map -- --tags "@tag"` | `npm run test:map:headless -- --tags "@tag"` |
 
 **Contoh:**
@@ -442,13 +442,13 @@ npm run test:dev:headless -- --tags "@add-interment"
 # Run @p0 di map environment (dengan browser)
 npm run test:map -- --tags "@p0"
 
-# Run smoke test di staging (headless)
+# Run smoke test di project (headless)
 npm run test:headless -- --tags "@smoke"
 ```
 
 **Environment files:**
 - `.env.dev` → dev.chronicle.rip
-- `.env.staging` → project.chronicle.rip
+- `.env.project` → project.chronicle.rip
 - `.env.map` → map.chronicle.rip
 
 ### Run all tests
@@ -510,7 +510,7 @@ npm run test:debug
    ```typescript
    // src/selectors/p0/new-feature.selectors.ts
    export const NewFeatureSelectors = {
-     element: '[data-testid="real-testid-from-staging"]'
+     element: '[data-testid="real-testid-from-project"]'
    } as const;
    ```
 
@@ -535,13 +535,13 @@ npm run test:debug
 
 ### Best Practices
 
-- ✅ Always use real `data-testid` selectors from staging environment
+- ✅ Always use real `data-testid` selectors from project environment
 - ✅ Click on input fields before filling (they may be readonly initially)
 - ✅ Wait for network idle after navigation
 - ✅ Use proper logging for debugging
 - ✅ Organize tests by priority (p0, p1, p2)
 - ✅ Tag scenarios appropriately (@smoke, @negative, @login, etc.)
-- ✅ Test against real staging environment
+- ✅ Test against real project environment
 
 ### Important Notes
 

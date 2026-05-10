@@ -14,21 +14,21 @@ on:
       environment:
         description: 'Target environment'
         required: true
-        default: 'staging'
+        default: 'project'
         type: choice
         options:
-          - staging
+          - project
           - prod
           - dev
 
 env:
   # Default values for scheduled runs (cron)
   DEFAULT_TAGS: '@smoke'
-  DEFAULT_ENV: 'staging'
+  DEFAULT_ENV: 'project'
 
 jobs:
   run-tests:
-    name: Run Tests [${{ github.event.inputs.tags || '@smoke' }}] on [${{ github.event.inputs.environment || 'staging' }}]
+    name: Run Tests [${{ github.event.inputs.tags || '@smoke' }}] on [${{ github.event.inputs.environment || 'project' }}]
     runs-on: ubuntu-latest
     timeout-minutes: 60
 
@@ -48,15 +48,15 @@ jobs:
       - name: Install Playwright browsers
         run: npx playwright install --with-deps chromium
 
-      - name: Create .env file (staging)
-        if: ${{ (github.event.inputs.environment || 'staging') == 'staging' }}
+      - name: Create .env file (project)
+        if: ${{ (github.event.inputs.environment || 'project') == 'project' }}
         run: |
           cat <<EOF > .env.chronicle
-          BASE_URL=${{ secrets.STAGING_BASE_URL }}
-          USERNAME=${{ secrets.STAGING_USERNAME }}
-          PASSWORD=${{ secrets.STAGING_PASSWORD }}
-          CEMETERY=${{ secrets.STAGING_CEMETERY }}
-          REGION=${{ secrets.STAGING_REGION }}
+          BASE_URL=${{ secrets.project_BASE_URL }}
+          USERNAME=${{ secrets.project_USERNAME }}
+          PASSWORD=${{ secrets.project_PASSWORD }}
+          CEMETERY=${{ secrets.project_CEMETERY }}
+          REGION=${{ secrets.project_REGION }}
           EOF
 
       - name: Create .env file (prod)
@@ -89,7 +89,7 @@ jobs:
 
           echo "Running tag(s): $TAGS on environment: $ENV"
 
-          if [ "$ENV" = "staging" ]; then
+          if [ "$ENV" = "project" ]; then
             dotenv -e .env.chronicle -- cross-env HEADLESS=true NODE_OPTIONS='--loader ts-node/esm' \
               npx cucumber-js 'src/features/**/*.feature' \
               --import 'src/**/*.ts' \

@@ -1,6 +1,6 @@
 /**
  * Business Selectors
- * Discovered from staging-aus.chronicle.rip via Playwright CLI manual exploration
+ * Discovered from project-aus.chronicle.rip via Playwright CLI manual exploration
  */
 
 export const BusinessSelectors = {

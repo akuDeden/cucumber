@@ -7,7 +7,7 @@
 #
 # Usage (flags):
 #   ./runner.sh --env prod --region us,aus --tag @login-valid --loop 5 --headless
-#   ./runner.sh -e staging -r aus -t @smoke -l 3
+#   ./runner.sh -e project -r aus -t @smoke -l 3
 #   ./runner.sh -e prod -r us -t "@login-valid and @smoke"
 #
 # Usage (interactive):
@@ -42,7 +42,7 @@ INTERACTIVE=true
 get_env_file() {
   case "$1" in
     dev)        echo ".env.dev" ;;
-    staging)    echo ".env.chronicle" ;;
+    project)    echo ".env.chronicle" ;;
     prod|production) echo ".env.chronicle.prod" ;;
     *)          echo ".env" ;;
   esac
@@ -51,7 +51,7 @@ get_env_file() {
 get_env_display() {
   case "$1" in
     dev)        echo "Development" ;;
-    staging)    echo "Staging" ;;
+    project)    echo "project" ;;
     prod|production) echo "Production" ;;
     *)          echo "$1" ;;
   esac
@@ -110,7 +110,7 @@ while [[ $# -gt 0 ]]; do
       echo "  ./runner.sh [flags]                            # Flag mode"
       echo ""
       echo -e "${CYAN}Flags:${NC}"
-      echo "  -e, --env       Environment: dev, staging, prod       (required)"
+      echo "  -e, --env       Environment: dev, project, prod       (required)"
       echo "  -r, --region    Region: aus, us, or aus,us for both   (required)"
       echo "  -t, --tag       Cucumber tag: @login-valid, @smoke    (required unless -f)"
       echo "  -f, --feature   Feature file path (alternative to -t)"
@@ -121,9 +121,9 @@ while [[ $# -gt 0 ]]; do
       echo ""
       echo -e "${CYAN}Examples:${NC}"
       echo "  ./runner.sh -e prod -r us,aus -t @login-valid -l 5 --headless"
-      echo "  ./runner.sh -e staging -r aus -t @smoke"
+      echo "  ./runner.sh -e project -r aus -t @smoke"
       echo "  ./runner.sh -e prod -r us -t \"@login-valid and @smoke\" -l 3"
-      echo "  ./runner.sh -e staging -r aus -f src/features/p0/login.feature"
+      echo "  ./runner.sh -e project -r aus -f src/features/p0/login.feature"
       echo ""
       echo -e "${CYAN}Available Tags:${NC}"
       printf "  %s\n" "${AVAILABLE_TAGS[@]}"
@@ -149,13 +149,13 @@ if [ "$INTERACTIVE" = true ]; then
   # 1. Environment
   echo -e "${BOLD}1. Environment${NC}"
   echo -e "   ${DIM}1)${NC} dev"
-  echo -e "   ${DIM}2)${NC} staging"
+  echo -e "   ${DIM}2)${NC} project"
   echo -e "   ${DIM}3)${NC} prod"
   echo ""
   read -p "   Select [1-3]: " env_choice
   case "$env_choice" in
     1) ENV="dev" ;;
-    2) ENV="staging" ;;
+    2) ENV="project" ;;
     3) ENV="prod" ;;
     *) echo -e "${RED}Invalid choice${NC}"; exit 1 ;;
   esac

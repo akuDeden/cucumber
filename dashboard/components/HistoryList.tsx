@@ -69,7 +69,7 @@ export function HistoryList({ history, onSelectRun, selectedRun, onClearHistory,
 
   const envColors: Record<string, string> = {
     dev: 'text-blue-400 bg-blue-500/10',
-    staging: 'text-yellow-400 bg-yellow-500/10',
+    project: 'text-yellow-400 bg-yellow-500/10',
     prod: 'text-red-400 bg-red-500/10',
     map: 'text-purple-400 bg-purple-500/10',
   };
@@ -90,17 +90,15 @@ export function HistoryList({ history, onSelectRun, selectedRun, onClearHistory,
                 <button
                   key={run.id}
                   onClick={() => onSelectRun(run)}
-                  className={`w-full flex items-center gap-2.5 px-3 py-2 text-left transition-all hover:bg-zinc-700/50 ${
-                    selectedRun?.id === run.id ? 'bg-zinc-700/70' : ''
-                  }`}
+                  className={`w-full flex items-center gap-2.5 px-3 py-2 text-left transition-all hover:bg-zinc-700/50 ${selectedRun?.id === run.id ? 'bg-zinc-700/70' : ''
+                    }`}
                 >
                   {/* Status dot */}
-                  <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                    run.status === 'passed' ? 'bg-emerald-500' :
-                    run.status === 'failed' ? 'bg-red-500' :
-                    run.status === 'running' ? 'bg-blue-500 animate-pulse' :
-                    'bg-zinc-500'
-                  }`} />
+                  <div className={`w-2 h-2 rounded-full flex-shrink-0 ${run.status === 'passed' ? 'bg-emerald-500' :
+                      run.status === 'failed' ? 'bg-red-500' :
+                        run.status === 'running' ? 'bg-blue-500 animate-pulse' :
+                          'bg-zinc-500'
+                    }`} />
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5">
@@ -172,13 +170,12 @@ export function HistoryList({ history, onSelectRun, selectedRun, onClearHistory,
             <button
               key={f}
               onClick={() => setFilter(f)}
-              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-                filter === f
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${filter === f
                   ? f === 'passed' ? 'bg-emerald-500/20 text-emerald-400'
                     : f === 'failed' ? 'bg-red-500/20 text-red-400'
-                    : 'bg-zinc-600 text-white'
+                      : 'bg-zinc-600 text-white'
                   : 'text-zinc-400 hover:text-white hover:bg-zinc-700'
-              }`}
+                }`}
             >
               {f.charAt(0).toUpperCase() + f.slice(1)}
             </button>
@@ -203,20 +200,18 @@ export function HistoryList({ history, onSelectRun, selectedRun, onClearHistory,
               <button
                 key={run.id}
                 onClick={() => onSelectRun(run)}
-                className={`w-full px-5 py-3 text-left transition-all hover:bg-zinc-700/40 ${
-                  isSelected ? 'bg-zinc-700/60 border-l-2 border-l-emerald-500' : 'border-l-2 border-l-transparent'
-                }`}
+                className={`w-full px-5 py-3 text-left transition-all hover:bg-zinc-700/40 ${isSelected ? 'bg-zinc-700/60 border-l-2 border-l-emerald-500' : 'border-l-2 border-l-transparent'
+                  }`}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
                     {/* Status + Environment */}
                     <div className="flex items-center gap-1.5 mb-1">
-                      <span className={`w-2 h-2 rounded-full flex-shrink-0 ${
-                        run.status === 'passed' ? 'bg-emerald-500' :
-                        run.status === 'failed' ? 'bg-red-500' :
-                        run.status === 'running' ? 'bg-blue-500 animate-pulse' :
-                        'bg-zinc-500'
-                      }`} />
+                      <span className={`w-2 h-2 rounded-full flex-shrink-0 ${run.status === 'passed' ? 'bg-emerald-500' :
+                          run.status === 'failed' ? 'bg-red-500' :
+                            run.status === 'running' ? 'bg-blue-500 animate-pulse' :
+                              'bg-zinc-500'
+                        }`} />
                       <span className={`text-xs px-1.5 py-0.5 rounded font-medium ${envColors[run.environment] || 'text-zinc-300 bg-zinc-700'}`}>
                         {run.environment}
                       </span>

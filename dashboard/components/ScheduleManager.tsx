@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { ScheduledRun, Environment } from '@/lib/types';
 
-const environments = ['dev', 'staging', 'prod', 'map'] as const;
+const environments = ['dev', 'project', 'prod', 'map'] as const;
 
 const commonCronExpressions = [
   { expression: '0 0 * * *', label: 'Daily at midnight' },
@@ -19,7 +19,7 @@ export function ScheduleManager() {
   const [newSchedule, setNewSchedule] = useState({
     name: '',
     tags: [] as string[],
-    environment: 'staging' as Environment,
+    environment: 'project' as Environment,
     cronExpression: '0 0 * * *',
     enabled: true,
   });
@@ -59,7 +59,7 @@ export function ScheduleManager() {
         setNewSchedule({
           name: '',
           tags: [],
-          environment: 'staging',
+          environment: 'project',
           cronExpression: '0 0 * * *',
           enabled: true,
         });
@@ -246,11 +246,10 @@ export function ScheduleManager() {
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => toggleSchedule(schedule.id, !schedule.enabled)}
-                    className={`px-3 py-1 rounded text-sm font-medium ${
-                      schedule.enabled
+                    className={`px-3 py-1 rounded text-sm font-medium ${schedule.enabled
                         ? 'bg-emerald-500/20 text-emerald-400'
                         : 'bg-zinc-700 text-zinc-400'
-                    }`}
+                      }`}
                   >
                     {schedule.enabled ? 'Enabled' : 'Disabled'}
                   </button>

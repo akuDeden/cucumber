@@ -60,7 +60,7 @@ Baca ini sebelum menyentuh file apapun — hindari buka 4 file hanya untuk tahu 
 | Steps | `src/steps/p0/advanceTable.steps.ts` |
 | Page object | `src/pages/p0/AdvanceTablePage.ts` (15 methods) |
 | Selectors | `src/selectors/p0/advance-table/advance-table.selectors.ts` |
-| Snapshots | `docs/snapshots/advance-table/` — 6 files (Plots tab & ROIs tab, staging + dev) |
+| Snapshots | `docs/snapshots/advance-table/` — 6 files (Plots tab & ROIs tab, project + dev) |
 | Tags | `@p0 @advance-table @authenticated` |
 | Scenarios | 1 |
 | Entry point | Dashboard nav > **Tables** > tab **Advanced Table** |
@@ -277,5 +277,5 @@ npm run test:headless -- --tags "@sales"
 cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/p0/roi.feature' --import 'src/**/*.ts'
 
 # Run dengan environment berbeda
-ENVIRONMENT=staging REGION=aus npm test -- --tags "@p0"
+ENVIRONMENT=project REGION=aus npm test -- --tags "@p0"
 ```

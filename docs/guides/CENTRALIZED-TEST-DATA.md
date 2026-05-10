@@ -8,8 +8,8 @@ Test data telah di-refactor untuk memastikan konsistensi dan kemudahan maintenan
 ### 1. Base Configuration
 ```typescript
 export const BASE_CONFIG = {
-  // Environment: staging, map, production, etc.
-  environment: 'staging',
+  // Environment: project, map, production, etc.
+  environment: 'project',
   
   // Base domain
   baseDomain: 'chronicle.rip',
@@ -62,11 +62,11 @@ getCemeteryDisplayName()
 
 // Build customer org base URL
 getCustomerOrgBaseUrl()
-// Returns: "https://staging-aus.chronicle.rip"
+// Returns: "https://project-aus.chronicle.rip"
 
 // Build customer org URL with path
 getCustomerOrgUrl('plots')
-// Returns: "https://staging-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/plots"
+// Returns: "https://project-aus.chronicle.rip/customer-organization/Astana_Tegal_Gundul/plots"
 ```
 
 ### 📌 Perbedaan PUBLIC vs AUTHENTICATED URLs
@@ -78,7 +78,7 @@ getCustomerOrgUrl('plots')
 
 **AUTHENTICATED URLs** (untuk login, customer-organization):
 - Format: `https://{environment}-{region}.chronicle.rip/...`
-- Contoh: `https://staging-aus.chronicle.rip/login`
+- Contoh: `https://project-aus.chronicle.rip/login`
 - Ada region di subdomain
 
 ## Keuntungan Refactoring

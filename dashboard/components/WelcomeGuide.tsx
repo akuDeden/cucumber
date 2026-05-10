@@ -82,8 +82,8 @@ export function WelcomeGuide({ onNavigate }: WelcomeGuideProps) {
             <span className="text-sm font-semibold text-white group-hover:text-emerald-400 transition-colors">🚀 Jalankan Test</span>
           </div>
           <p className="text-xs text-zinc-400 leading-relaxed">
-            Pilih <strong className="text-zinc-300">environment</strong> (Dev/Staging/Production), 
-            lalu pilih <strong className="text-zinc-300">tag</strong> test yang ingin dijalankan, 
+            Pilih <strong className="text-zinc-300">environment</strong> (Dev/project/Production),
+            lalu pilih <strong className="text-zinc-300">tag</strong> test yang ingin dijalankan,
             kemudian klik tombol <strong className="text-emerald-400">Run</strong>.
           </p>
           <div className="mt-2 text-xs text-emerald-400/70 group-hover:text-emerald-400 transition-colors">
@@ -101,7 +101,7 @@ export function WelcomeGuide({ onNavigate }: WelcomeGuideProps) {
             <span className="text-sm font-semibold text-white group-hover:text-blue-400 transition-colors">📊 Lihat Hasil</span>
           </div>
           <p className="text-xs text-zinc-400 leading-relaxed">
-            Setelah test selesai, lihat hasilnya secara otomatis. 
+            Setelah test selesai, lihat hasilnya secara otomatis.
             Hasil juga disimpan di <strong className="text-zinc-300">History</strong> untuk dilihat kapan saja.
           </p>
           <div className="mt-2 text-xs text-blue-400/70 group-hover:text-blue-400 transition-colors">
@@ -119,7 +119,7 @@ export function WelcomeGuide({ onNavigate }: WelcomeGuideProps) {
             <span className="text-sm font-semibold text-white group-hover:text-purple-400 transition-colors">📁 Jelajahi Test</span>
           </div>
           <p className="text-xs text-zinc-400 leading-relaxed">
-            Browse semua <strong className="text-zinc-300">skenario test</strong> yang tersedia. 
+            Browse semua <strong className="text-zinc-300">skenario test</strong> yang tersedia.
             Lihat fitur apa saja yang sudah dicover oleh automation test.
           </p>
           <div className="mt-2 text-xs text-purple-400/70 group-hover:text-purple-400 transition-colors">
@@ -132,8 +132,8 @@ export function WelcomeGuide({ onNavigate }: WelcomeGuideProps) {
       <div className="bg-zinc-800/40 rounded-lg p-3">
         <h4 className="text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-2 flex items-center gap-1.5">
           <svg className="w-3.5 h-3.5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM4 11a1 1 0 100-2H3a1 1 0 000 2h1zM10 18a1 1 0 001-1v-1a1 1 0 10-2 0v1a1 1 0 001 1z"/>
-            <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z" clipRule="evenodd"/>
+            <path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM4 11a1 1 0 100-2H3a1 1 0 000 2h1zM10 18a1 1 0 001-1v-1a1 1 0 10-2 0v1a1 1 0 001 1z" />
+            <path fillRule="evenodd" d="M10 2a8 8 0 100 16 8 8 0 000-16zm0 14a6 6 0 110-12 6 6 0 010 12z" clipRule="evenodd" />
           </svg>
           Tips Cepat
         </h4>
@@ -144,7 +144,7 @@ export function WelcomeGuide({ onNavigate }: WelcomeGuideProps) {
           </div>
           <div className="flex items-start gap-2">
             <span className="text-blue-400 mt-0.5">•</span>
-            <span><strong className="text-zinc-300">Environment</strong> = server tujuan test. <code className="text-blue-300 bg-zinc-700/50 px-1 rounded">Dev</code> untuk development, <code className="text-yellow-300 bg-zinc-700/50 px-1 rounded">Staging</code> untuk pre-production.</span>
+            <span><strong className="text-zinc-300">Environment</strong> = server tujuan test. <code className="text-blue-300 bg-zinc-700/50 px-1 rounded">Dev</code> untuk development, <code className="text-yellow-300 bg-zinc-700/50 px-1 rounded">project</code> untuk pre-production.</span>
           </div>
           <div className="flex items-start gap-2">
             <span className="text-yellow-400 mt-0.5">•</span>

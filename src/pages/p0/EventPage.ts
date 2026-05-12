@@ -46,6 +46,25 @@ export class EventPage {
     await this.page.waitForTimeout(5000);
   }
 
+  /**
+   * Navigate directly to the add event page via URL.
+   * Bypasses the rotted ADD NEW EVENT calendar button (CHRA-21):
+   * on prod the button click registers but does not navigate.
+   * Mirrors navigateToEditEvent direct-URL pattern.
+   * Waits past the slow "Loading Resources, Please Wait..." overlay
+   * (sample_007 hydration delay — see CHRA-20). Form may take 15-60s to hydrate.
+   */
+  async navigateToAddEventDirect(orgSlug: string) {
+    const url = `${getCustomerOrgBaseUrl()}/customer-organization/${orgSlug}/events/add`;
+    await this.page.goto(url, { waitUntil: 'domcontentloaded' });
+    await this.page
+      .locator(EventSelectors.eventNameInput)
+      .first()
+      .waitFor({ state: 'visible', timeout: 90000 })
+      .catch(() => {});
+    await this.page.waitForTimeout(2000);
+  }
+
   // ===== Form Field Readers =====
 
   /**
@@ -271,11 +290,13 @@ export class EventPage {
   }
 
   /**
-   * Check if the add event page has loaded correctly
+   * Check if the add event page has loaded correctly.
+   * Uses Event Name input as load signal — heading text varies ("New Event" on prod
+   * vs older "Add event") and may render after form is interactive.
    */
   async isAddEventPageLoaded(): Promise<boolean> {
-    const heading = this.page.locator(EventSelectors.addEventHeading);
-    return heading.isVisible({ timeout: 10000 }).catch(() => false);
+    const nameInput = this.page.locator(EventSelectors.eventNameInput).first();
+    return nameInput.isVisible({ timeout: 90000 }).catch(() => false);
   }
 
   /**

@@ -3,7 +3,7 @@
  * Steps for event management tests: Create, Edit, Delete (CRUD) + CHR-24 bug reproduction
  */
 
-import { When, Then } from '@cucumber/cucumber';
+import { Given, When, Then } from '@cucumber/cucumber';
 import { EventPage } from '../../pages/p0/EventPage.js';
 import { expect } from '@playwright/test';
 
@@ -13,6 +13,23 @@ const ORG_SLUG = 'astana_tegal_gundul_aus';
 function getEventPage(context: any): EventPage {
   return new EventPage(context.page);
 }
+
+// ===== Seed / Fixture Steps =====
+
+// CHRA-22: scenario-local fixture so @edit-event runs independently of @create-event.
+// Uses the same direct-URL add-event flow as @create-event (CHRA-21 pattern).
+Given('an event {string} exists on the calendar', async function (eventName: string) {
+  const eventPage = getEventPage(this);
+  await eventPage.navigateToAddEventDirect(ORG_SLUG);
+  await eventPage.fillEventForm({
+    eventName,
+    date: '01/15/2026',
+    startTime: '10:00',
+    endTime: '12:00',
+    eventType: 'Burial',
+  });
+  await eventPage.saveEvent();
+});
 
 // ===== Navigation Steps =====
 
@@ -24,6 +41,11 @@ When('I navigate to the calendar view', async function () {
 When('I navigate to edit event page for event {string}', async function (eventId: string) {
   const eventPage = getEventPage(this);
   await eventPage.navigateToEditEvent(ORG_SLUG, eventId);
+});
+
+When('I navigate directly to the add event page', async function () {
+  const eventPage = getEventPage(this);
+  await eventPage.navigateToAddEventDirect(ORG_SLUG);
 });
 
 // ===== Create Event Steps =====

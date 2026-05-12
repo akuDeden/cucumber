@@ -67,7 +67,8 @@ export const EventSelectors = {
 
   // Event form heading
   editEventHeading: 'text=Edit event',
-  addEventHeading: 'text=Add event',
+  // Prod renders "New Event" heading (not "Add event") — confirmed via add-event-form.yaml snapshot
+  addEventHeading: 'text=New Event',
 
   // Paid checkbox/toggle
   paidToggle: 'input[aria-label="Paid"]',

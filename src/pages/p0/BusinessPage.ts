@@ -20,23 +20,16 @@ export class BusinessPage {
   async navigateToBusinessTab(): Promise<void> {
     this.logger.info('Navigating to Business tab in advance table');
     const baseUrl = getCustomerOrgBaseUrl();
-    await this.page.goto(`${baseUrl}${BusinessUrls.advanceTable}`, { waitUntil: 'domcontentloaded' });
-    await NetworkHelper.waitForApiRequestsComplete(this.page, 8000);
-
-    this.logger.info('Clicking BUSINESS tab');
-    const businessTab = this.page.locator(BusinessSelectors.businessTab);
-    await businessTab.waitFor({ state: 'visible', timeout: 10000 });
-    await businessTab.click();
-
-    // Wait for business list API to complete — captures both the response and its data
-    const response = await this.page.waitForResponse(
-      resp => resp.url().includes('/business-org') &&
-              resp.request().method() === 'GET',
-      { timeout: 15000 }
+    // Navigate directly to the business tab URL — avoids needing to find and click the tab
+    const responsePromise = this.page.waitForResponse(
+      resp => resp.url().includes('/business-org') && resp.request().method() === 'GET',
+      { timeout: 20000 }
     ).catch(() => null);
-    this.businessListResponse = response;
 
-    await NetworkHelper.waitForApiRequestsComplete(this.page, 8000);
+    await this.page.goto(`${baseUrl}${BusinessUrls.advanceTable}?tab=business`, { waitUntil: 'domcontentloaded' });
+    this.businessListResponse = await responsePromise;
+
+    await NetworkHelper.waitForApiRequestsComplete(this.page, 10000);
     this.logger.success('Navigated to Business tab');
   }
 
@@ -204,83 +197,60 @@ export class BusinessPage {
 
   /**
    * Click the first data row in the business table to open the edit form.
-   * Clicks each name cell to trigger the Angular router's API call, captures
-   * the business ID from the network request, then navigates directly to the
-   * edit URL — robust against broken rows (500) and tooltip interception.
+   * Clicks the ROW element (cursor:pointer) — navigation takes ~5s, URL changes to edit/business/{id}/.
+   * Falls back to next row if navigation doesn't happen within 20s.
    */
   async clickFirstTableRow(): Promise<string> {
     this.logger.info('Clicking first business row in table');
 
     await this.page.waitForSelector('mat-row', { state: 'visible', timeout: 15000 });
 
-    // Wait for cell content to be rendered (data loaded, not skeleton rows)
+    // Wait for actual data (not "Loading..." placeholders) to be rendered
     await this.page.waitForFunction(
       () => {
         const cell = document.querySelector('mat-row mat-cell');
-        return cell && (cell.textContent || '').trim().length > 0;
+        const text = (cell?.textContent || '').trim();
+        return text.length > 0 && !text.startsWith('Loading');
       },
-      { timeout: 15000 }
+      { timeout: 30000 }
     );
 
     const rows = this.page.locator('mat-row');
     const rowCount = await rows.count();
-    const baseUrl = this.page.url().split('/customer-organization')[0]; // e.g. https://aus.chronicle.rip
-    const cemeterySlug = baseUrl.includes('aus.') ? 'astana_tegal_gundul_aus' : 'astana_tegal_gundul';
 
     for (let i = 0; i < Math.min(rowCount, 8); i++) {
       const row = rows.nth(i);
       const nameCell = row.locator('mat-cell').first();
       const rowText = ((await nameCell.textContent().catch(() => '')) || '').trim();
 
-      // Move mouse to top-left to dismiss any tooltip from previous hover
-      await this.page.mouse.move(0, 0);
-      await this.page.waitForTimeout(400);
+      if (rowText.startsWith('Loading') || rowText.length === 0) continue;
 
-      // Set up request listener to capture business ID from the API call triggered by clicking
-      let capturedBusinessId: string | null = null;
-      const reqHandler = (req: import('@playwright/test').Request) => {
-        const match = req.url().match(/\/business-org\/(\d+)\//);
-        if (match) capturedBusinessId = match[1];
-      };
-      this.page.on('request', reqHandler);
-
-      await nameCell.click({ timeout: 8000, force: true });
-      await this.page.waitForTimeout(1500); // allow request to fire
-
-      this.page.off('request', reqHandler);
-
-      if (!capturedBusinessId) {
-        this.logger.info(`Row ${i} ("${rowText}") did not trigger a business API request, trying next row`);
-        continue;
-      }
-
-      this.logger.info(`Row ${i} ("${rowText}") triggered request for business ID: ${capturedBusinessId}`);
-
-      // Navigate directly to the edit URL (bypasses Angular routing issues)
-      const editUrl = `${baseUrl}/customer-organization/advance-table/manage/edit/business/${capturedBusinessId}/cemetery/${cemeterySlug}?from=table`;
-      await this.page.goto(editUrl);
+      await row.click();
 
       try {
-        await this.page.waitForURL(`**/manage/edit/business/${capturedBusinessId}/**`, { timeout: 10000 });
+        // Navigation takes ~5s — wait for URL to include edit/business pattern
+        await this.page.waitForURL(/\/manage\/edit\/business\//, { timeout: 20000 });
         const saveVisible = await this.page.locator(BusinessSelectors.saveButton).first().isVisible().catch(() => false);
         if (saveVisible) {
           this.logger.success(`Opened edit form for: "${rowText}" — ${this.page.url()}`);
           return rowText;
         }
-        this.logger.info(`Edit form for business ${capturedBusinessId} has no save button (likely 500), trying next row`);
+        this.logger.info(`Edit form for "${rowText}" has no save button, trying next row`);
       } catch {
-        this.logger.info(`Edit URL for business ${capturedBusinessId} timed out, trying next row`);
+        this.logger.info(`Row ${i} ("${rowText}") navigation timed out, trying next row`);
       }
 
-      // Navigate back to the business tab for next retry
-      await this.page.goto(`${baseUrl}/customer-organization/advance-table?tab=business`);
-      await this.page.waitForSelector('mat-row', { state: 'visible', timeout: 10000 });
+      // Navigate back to business tab for next attempt
+      const baseUrl = this.page.url().split('/customer-organization')[0];
+      await this.page.goto(`${baseUrl}/customer-organization/advance-table?tab=business`, { waitUntil: 'domcontentloaded' });
+      await this.page.waitForSelector('mat-row', { state: 'visible', timeout: 15000 });
       await this.page.waitForFunction(
         () => {
           const cell = document.querySelector('mat-row mat-cell');
-          return cell && (cell.textContent || '').trim().length > 0;
+          const text = (cell?.textContent || '').trim();
+          return text.length > 0 && !text.startsWith('Loading');
         },
-        { timeout: 10000 }
+        { timeout: 20000 }
       ).catch(() => {});
     }
 

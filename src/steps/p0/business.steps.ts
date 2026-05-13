@@ -49,7 +49,7 @@ Then('the new business should appear in the business table', { timeout: 45000 },
 // ===== Edit Business steps =====
 // Clicking a row navigates directly to the edit form — no separate "Edit" button
 
-When('I click the first business row in the table', { timeout: 60000 }, async function () {
+When('I click the first business row in the table', { timeout: 120000 }, async function () {
   if (!businessPage) businessPage = new BusinessPage(this.page);
   lastClickedBusinessName = await businessPage.clickFirstTableRow();
   this.logger?.info(`Clicked business row: ${lastClickedBusinessName}`);

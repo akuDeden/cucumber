@@ -21,7 +21,7 @@ export class CreatePlotPage {
     const tablesUrl = `${baseUrl}${PlotUrls.advanceTable}`;
     await this.page.goto(tablesUrl, { waitUntil: 'domcontentloaded' });
     // Wait for the ADD PLOT button instead of a static timeout — ensures page is fully rendered
-    await this.page.waitForSelector(PlotSelectors.addPlotButton, { state: 'visible', timeout: 20000 });
+    await this.page.waitForSelector(PlotSelectors.addPlotButton, { state: 'visible', timeout: 45000 });
     this.logger.success('Navigated to Tables section');
   }
 
@@ -485,7 +485,7 @@ export class CreatePlotPage {
       this.logger.info(`Attempt ${attempt + 1}: probing plot "${plotId}" for deletability`);
 
       await row.click();
-      await this.page.waitForURL(`**${PlotUrls.editPlotPattern}**`, { timeout: 15000 });
+      await this.page.waitForURL(`**${PlotUrls.editPlotPattern}**`, { waitUntil: 'domcontentloaded', timeout: 30000 });
       await this.page.waitForTimeout(1500);
 
       // Open MORE menu and click Delete to probe deletability
@@ -508,18 +508,15 @@ export class CreatePlotPage {
         continue;
       }
       await deleteItem.click();
-      await this.page.waitForTimeout(1500);
 
-      // Check for "Unable to Delete Plot" dialog (geojson relation)
+      // Wait up to 6s for "Unable to Delete Plot" dialog (server may take several seconds to validate geojson)
       const gotItBtn = this.page.locator('[data-testid="button-got-it"]');
-      if (await gotItBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
+      if (await gotItBtn.waitFor({ state: 'visible', timeout: 6000 }).then(() => true).catch(() => false)) {
         this.logger.info(`Row "${plotId}": "Unable to Delete Plot" — skipping`);
         await gotItBtn.click();
         await this.page.locator('[role="dialog"]').waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
-        // Navigate back to advance-table to retry
-        const baseUrl = getCustomerOrgBaseUrl();
-        await this.page.goto(`${baseUrl}${PlotUrls.advanceTable}`, { waitUntil: 'domcontentloaded' });
-        await this.page.waitForSelector(PlotSelectors.addPlotButton, { state: 'visible', timeout: 20000 });
+        await this.page.goBack();
+        await this.page.waitForSelector(PlotSelectors.tableRow, { state: 'visible', timeout: 20000 });
         continue;
       }
 
@@ -531,7 +528,7 @@ export class CreatePlotPage {
         if (!currentUrl.includes('advance-table')) {
           const baseUrl = getCustomerOrgBaseUrl();
           await this.page.goto(`${baseUrl}${PlotUrls.advanceTable}`, { waitUntil: 'domcontentloaded' });
-          await this.page.waitForSelector(PlotSelectors.addPlotButton, { state: 'visible', timeout: 20000 });
+          await this.page.waitForSelector(PlotSelectors.addPlotButton, { state: 'visible', timeout: 45000 });
         }
         // Store the deleted plot ID so the caller can verify removal
         this._lastDeletedPlotId = plotId;
@@ -549,7 +546,8 @@ export class CreatePlotPage {
       } else {
         // No cancel button in dialog — press Escape to dismiss
         await this.page.keyboard.press('Escape');
-        await this.page.waitForTimeout(500);
+        // Wait for any dialog to be fully hidden before returning (backdrop can intercept next click if still visible)
+        await this.page.locator('[role="dialog"]').waitFor({ state: 'hidden', timeout: 3000 }).catch(() => {});
       }
 
       // We are still on the edit-plot page; normal delete steps will now run

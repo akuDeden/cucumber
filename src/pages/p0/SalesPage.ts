@@ -589,8 +589,8 @@ export class SalesPage {
           return null;
         });
 
-        // Type the plot name to search (triggers the API call)
-        await plotSearchInput.fill(item.related_plot);
+        // Type the plot name to search — pressSequentially triggers Angular (input) event; fill does not
+        await plotSearchInput.pressSequentially(item.related_plot, { delay: 80 });
 
         // Wait for the API response (if called)
         const response = await apiPromise;

@@ -17,14 +17,13 @@ import { Logger } from '../../utils/Logger.js';
 // ============================================
 
 When('I click the sidebar table menu', async function () {
-    // Use verified selector with fallback
     const tableButton = this.page.locator(RoiTableSelectors.sidebarTableButton)
         .or(this.page.locator(RoiTableSelectors.sidebarTableButtonAlt));
 
+    // Register listener BEFORE click so response is not missed
+    const apiWait = NetworkHelper.waitForApiEndpoint(this.page, '/adv_table/plots/', 20000);
     await tableButton.click();
-
-    // Wait for API endpoint to load table data
-    await NetworkHelper.waitForApiEndpoint(this.page, '/adv_table/plots/', 15000);
+    await apiWait;
 });
 
 Then('I should see the tables page', async function () {
@@ -189,7 +188,7 @@ Then('I should see the Add ROI form', async function () {
 
 Then('I should see toast message {string}', async function (expectedMessage: string) {
     const toast = this.page.locator(`text=${expectedMessage}`);
-    await expect(toast).toBeVisible();
+    await expect(toast).toBeVisible({ timeout: 15000 });
     Logger.info(`[ROITable] Toast message verified: "${expectedMessage}"`);
 });
 
@@ -269,55 +268,55 @@ Then('I should see ROI in the table', async function () {
 // EDIT ROI FROM TABLE STEPS
 // ============================================
 
-When('I click edit on the first ROI row', async function () {
-    // Wait for table to be visible and populated
-    await NetworkHelper.waitForListPopulated(this.page, RoiTableSelectors.tableRows, 1, 15000);
-
-    // Find the first row that is NOT an "Unassigned-" plot (those don't have coordinates)
-    // Rows starting with "Unassigned-" show a popup instead of navigating to edit page
+When('I click edit on the first ROI row', { timeout: 120000 }, async function () {
     const allRows = this.page.locator('mat-row');
-    const rowCount = await allRows.count();
+    const editFormTitle = this.page.locator(RoiTableSelectors.roiFormTitle);
 
-    let clickedCell: any = null;
-    for (let i = 0; i < rowCount; i++) {
-        const row = allRows.nth(i);
-        const plotIdCell = row.locator('mat-cell').nth(1); // Second cell (index 1) is Plot ID
-        const plotIdText = await plotIdCell.textContent();
+    // Retry loop: navigation takes ~8s and may need a second attempt if redirected back
+    for (let attempt = 0; attempt < 3; attempt++) {
+        // Wait for ROI table rows (handles fresh load OR return from redirect)
+        await NetworkHelper.waitForListPopulated(this.page, RoiTableSelectors.tableRows, 1, 20000);
 
-        // Skip Unassigned plots - they don't have coordinates and won't navigate
-        if (plotIdText && !plotIdText.startsWith('Unassigned-')) {
-            clickedCell = plotIdCell;
-            await plotIdCell.click();
-            break;
+        const rowCount = await allRows.count();
+        let clicked = false;
+        for (let i = 0; i < rowCount; i++) {
+            const row = allRows.nth(i);
+            const plotIdCell = row.locator('mat-cell').nth(1);
+            const plotIdText = await plotIdCell.textContent();
+            // Skip Unassigned plots — they show a popup instead of navigating to edit page
+            if (plotIdText && !plotIdText.startsWith('Unassigned-')) {
+                await row.click();
+                clicked = true;
+                break;
+            }
+        }
+
+        if (!clicked) break;
+
+        // Confirm BOTH URL changed AND h1 is visible (navigation fully completed)
+        try {
+            await this.page.waitForURL(/\/edit\/roi\//, { timeout: 20000 });
+            await editFormTitle.waitFor({ state: 'visible', timeout: 15000 });
+            return; // navigation succeeded
+        } catch {
+            Logger.info(`[ROITable] Edit ROI navigation attempt ${attempt + 1} failed, retrying`);
         }
     }
-
-    // Wait for navigation to edit page; retry click if first didn't trigger navigation
-    try {
-        await this.page.waitForURL(/\/edit\/roi\//, { timeout: 15000 });
-    } catch {
-        if (clickedCell) {
-            await clickedCell.click();
-            await this.page.waitForURL(/\/edit\/roi\//, { timeout: 30000 });
-        }
-    }
-    await NetworkHelper.waitForApiRequestsComplete(this.page, 10000);
+    throw new Error('Could not navigate to Edit ROI form after 3 attempts');
 });
 
 Then('I should see the Edit ROI form', async function () {
-    // Verify form is visible
     const formTitle = this.page.locator(RoiTableSelectors.roiFormTitle);
-    await expect(formTitle).toBeVisible();
+    await expect(formTitle).toBeVisible({ timeout: 15000 });
 });
 
 Then('I should see updated ROI in the table', async function () {
-    // Verify we're back on the ROI table list page
-    // Use tab=rois pattern instead of full path to handle different URL structures
-    await expect(this.page).toHaveURL(/tab=rois/);
+    // Wait for navigation back to ROI table list page after save
+    await this.page.waitForURL(/tab=rois/, { timeout: 30000 });
 
     // Verify table has rows and data is loaded
     const tableRows = this.page.locator(RoiTableSelectors.tableRows);
-    await expect(tableRows.first()).toBeVisible();
+    await expect(tableRows.first()).toBeVisible({ timeout: 15000 });
 });
 
 Then('I should see fee {string} in the ROI row', async function (expectedFee: string) {

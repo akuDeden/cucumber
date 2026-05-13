@@ -303,7 +303,7 @@ export const ROI_DATA = {
 
   // ROI Remove & Replace scenario — creates a brand-new person each run (random name)
   removeReplace: {
-    plotId: process.env.TEST_ROI_REPLACE_PLOT_ID || 'B A 13',
+    plotId: process.env.TEST_ROI_REPLACE_PLOT_ID || 'A A 1',
     newHolderFirstName: process.env.TEST_ROI_NEW_HOLDER_FIRSTNAME || randomFirstName(),
     newHolderLastName: process.env.TEST_ROI_NEW_HOLDER_LASTNAME || randomLastName()
   }

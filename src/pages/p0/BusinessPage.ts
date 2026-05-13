@@ -8,6 +8,7 @@ export class BusinessPage {
   readonly page: Page;
   private logger: Logger;
   private businessListResponse: import('@playwright/test').Response | null = null;
+  private lastBusinessEditUrl: string = '';
 
   constructor(page: Page) {
     this.page = page;
@@ -232,7 +233,8 @@ export class BusinessPage {
         await this.page.waitForURL(/\/manage\/edit\/business\//, { timeout: 20000 });
         const saveVisible = await this.page.locator(BusinessSelectors.saveButton).first().isVisible().catch(() => false);
         if (saveVisible) {
-          this.logger.success(`Opened edit form for: "${rowText}" — ${this.page.url()}`);
+          this.lastBusinessEditUrl = this.page.url();
+          this.logger.success(`Opened edit form for: "${rowText}" — ${this.lastBusinessEditUrl}`);
           return rowText;
         }
         this.logger.info(`Edit form for "${rowText}" has no save button, trying next row`);
@@ -337,20 +339,32 @@ export class BusinessPage {
   }
 
   /**
-   * Verify that a business is no longer visible in the table
+   * Verify that a business is no longer accessible.
+   * Primary: navigate to the edit URL captured at click-time and confirm redirect away
+   * (handles duplicate business names in the table).
+   * Fallback: name-based row scan.
    */
   async verifyBusinessRemovedFromTable(businessName: string): Promise<boolean> {
-    this.logger.info(`Verifying business "${businessName}" is removed from table`);
-    await this.page.waitForTimeout(2000);
+    this.logger.info(`Verifying business "${businessName}" is removed`);
 
+    if (this.lastBusinessEditUrl) {
+      await this.page.goto(this.lastBusinessEditUrl, { waitUntil: 'domcontentloaded' });
+      await NetworkHelper.waitForApiRequestsComplete(this.page, 5000);
+      const currentUrl = this.page.url();
+      const isGone = !currentUrl.includes('/manage/edit/business/');
+      if (isGone) {
+        this.logger.success(`Business "${businessName}" confirmed deleted — edit URL redirected away`);
+      } else {
+        this.logger.info(`Business "${businessName}" still accessible at edit URL`);
+      }
+      return isGone;
+    }
+
+    // Fallback: name-based check (may false-negative on duplicate names)
+    await NetworkHelper.waitForApiRequestsComplete(this.page, 5000);
     const rows = await this.page.locator('mat-row').allTextContents();
     const found = rows.some(r => r.includes(businessName));
-
-    if (!found) {
-      this.logger.success(`Business "${businessName}" confirmed removed`);
-    } else {
-      this.logger.info(`Business "${businessName}" still present`);
-    }
+    if (!found) this.logger.success(`Business "${businessName}" confirmed removed`);
     return !found;
   }
 }

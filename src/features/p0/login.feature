@@ -17,7 +17,7 @@ Feature: Login to Chronicle
 
     Examples:
       | region | email                           | password |
-      | aus    | faris+astanaorg@chronicle.rip   | 12345    |
+      | aus    | endri+TPUSD@chronicle.rip       | Asdf!234 |
       | us     | faris+astanaorgus@chronicle.rip | 12345    |
 
   @login-invalid @negative

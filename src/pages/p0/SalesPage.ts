@@ -2,6 +2,7 @@ import { Page, expect } from '@playwright/test';
 import { Logger } from '../../utils/Logger.js';
 import { NetworkHelper } from '../../utils/NetworkHelper.js';
 import { salesSelectors } from '../../selectors/p0/sales/index.js';
+import { getCustomerOrgBaseUrl } from '../../data/test-data.js';
 
 export interface SaleItem {
   description: string;
@@ -44,13 +45,14 @@ export class SalesPage {
   }
 
   /**
-   * Navigate to Sales page by clicking the Sales menu button
+   * Navigate to Sales page via direct URL (robust — works from any starting page)
    */
   async navigateToSales(): Promise<void> {
     this.logger.info('Navigating to Sales page');
-    await this.page.locator(salesSelectors.salesMenuButton).click();
-    await this.page.waitForLoadState('domcontentloaded');
-    await this.page.waitForSelector(salesSelectors.salesTable, { state: 'visible' });
+    const baseUrl = getCustomerOrgBaseUrl();
+    await this.page.goto(`${baseUrl}/customer-organization/sales-table`, { waitUntil: 'domcontentloaded' });
+    await this.page.waitForSelector(salesSelectors.salesTable, { state: 'visible', timeout: 15000 });
+    this.logger.success('Sales page loaded');
   }
 
   /**

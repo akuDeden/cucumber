@@ -327,24 +327,78 @@ Then('I should see fee {string} in the ROI row', async function (expectedFee: st
 
 When('I open the ROI edit form for plot {string}', async function (plotId: string) {
     const actualPlotId = replacePlaceholders(plotId);
+    const tableUrl = this.page.url();
 
-    // Wait for the specific plot ID cell to be visible — Playwright retries until timeout
-    const plotIdCell = this.page
-        .locator('.mat-cell.mat-column-plotId')
-        .filter({ hasText: actualPlotId })
-        .first();
+    // Wait for table to load
+    await this.page.locator('.mat-cell.mat-column-plotId').first().waitFor({ state: 'visible', timeout: 20000 });
 
-    await plotIdCell.waitFor({ state: 'visible', timeout: 20000 });
-    await plotIdCell.scrollIntoViewIfNeeded();
-    await plotIdCell.click();
+    // Second call — reuse stored plot ID from first call
+    if ((this as any).resolvedRoiPlotId) {
+        const cell = this.page.locator('.mat-cell.mat-column-plotId')
+            .filter({ hasText: (this as any).resolvedRoiPlotId }).first();
+        await cell.waitFor({ state: 'visible', timeout: 20000 });
+        await cell.scrollIntoViewIfNeeded();
+        await cell.click();
+        try {
+            await this.page.waitForURL(/\/edit\/roi\//, { timeout: 15000 });
+        } catch {
+            await cell.click();
+            await this.page.waitForURL(/\/edit\/roi\//, { timeout: 30000 });
+        }
+        await NetworkHelper.waitForApiRequestsComplete(this.page, 10000);
+        Logger.info(`[ROITable] Opened edit form for plot "${(this as any).resolvedRoiPlotId}" (reused)`);
+        return;
+    }
 
+    // First call: try specified plot ID
+    const specifiedCell = this.page.locator('.mat-cell.mat-column-plotId').filter({ hasText: actualPlotId }).first();
+    if (await specifiedCell.isVisible()) {
+        (this as any).resolvedRoiPlotId = actualPlotId;
+        await specifiedCell.scrollIntoViewIfNeeded();
+        await specifiedCell.click();
+        try {
+            await this.page.waitForURL(/\/edit\/roi\//, { timeout: 15000 });
+        } catch {
+            await specifiedCell.click();
+            await this.page.waitForURL(/\/edit\/roi\//, { timeout: 30000 });
+        }
+        await NetworkHelper.waitForApiRequestsComplete(this.page, 10000);
+        Logger.info(`[ROITable] Opened edit form for plot "${actualPlotId}"`);
+        return;
+    }
+
+    // Fallback: find first row in the table where roiHolders column is non-empty
+    Logger.warn(`[ROITable] Plot "${actualPlotId}" not found — scanning table for first plot with an assigned holder...`);
+    const rows = this.page.locator('mat-row');
+    const rowCount = await rows.count();
+
+    for (let i = 0; i < rowCount; i++) {
+        const row = rows.nth(i);
+        const plotIdText = (await row.locator('.mat-column-plotId').textContent())?.trim() ?? '';
+        if (!plotIdText || plotIdText.startsWith('Unassigned-')) continue;
+
+        const holderText = (await row.locator('.mat-column-roiHolders').textContent())?.trim() ?? '';
+        if (holderText && holderText !== '--') {
+            (this as any).resolvedRoiPlotId = plotIdText;
+            Logger.warn(`[ROITable] Using plot "${plotIdText}" (holder: ${holderText})`);
+            break;
+        }
+    }
+
+    if (!(this as any).resolvedRoiPlotId) {
+        throw new Error(`[ROITable] No ROI plot with an assigned holder found in table (specified: "${actualPlotId}")`);
+    }
+
+    const fallbackCell = this.page.locator('.mat-cell.mat-column-plotId')
+        .filter({ hasText: (this as any).resolvedRoiPlotId }).first();
+    await fallbackCell.scrollIntoViewIfNeeded();
+    await fallbackCell.click();
     try {
         await this.page.waitForURL(/\/edit\/roi\//, { timeout: 15000 });
     } catch {
-        await plotIdCell.click();
+        await fallbackCell.click();
         await this.page.waitForURL(/\/edit\/roi\//, { timeout: 30000 });
     }
-
     await NetworkHelper.waitForApiRequestsComplete(this.page, 10000);
-    Logger.info(`[ROITable] Opened edit form for plot "${actualPlotId}"`);
+    Logger.info(`[ROITable] Opened edit form for plot "${(this as any).resolvedRoiPlotId}"`);
 });

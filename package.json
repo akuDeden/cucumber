@@ -30,7 +30,9 @@
     "test:interment:prod": "node scripts/check-playwright.js && dotenv -e .env.chronicle.prod -- cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/**/*.feature' --import 'src/**/*.ts' --tags '@interment'",
     "test:advanced-search-plot": "node scripts/check-playwright.js && cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/**/*.feature' --import 'src/**/*.ts' --tags '@advanced-search-plot'",
     "test:parallel": "node scripts/check-playwright.js && cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/**/*.feature' --import 'src/**/*.ts' --parallel 3",
-    "test:debug": "node scripts/check-playwright.js && cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/**/*.feature' --import 'src/**/*.ts' --format 'html:cucumber-report.html'"
+    "test:debug": "node scripts/check-playwright.js && cross-env NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/**/*.feature' --import 'src/**/*.ts' --format 'html:cucumber-report.html'",
+    "test:login:healthcheck:staging": "node scripts/check-playwright.js && dotenv -e .env.chronicle -- cross-env HEADLESS=true NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/p0/login.feature' --import 'src/**/*.ts' --tags '@healthcheck'",
+    "test:login:healthcheck:prod": "node scripts/check-playwright.js && dotenv -e .env.chronicle.prod -- cross-env HEADLESS=true NODE_OPTIONS='--loader ts-node/esm' cucumber-js 'src/features/p0/login.feature' --import 'src/**/*.ts' --tags '@healthcheck'"
   },
   "keywords": [
     "automation",

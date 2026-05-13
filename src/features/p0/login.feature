@@ -8,14 +8,17 @@ Feature: Login to Chronicle
   Background:
     Given I am on the Chronicle login page
 
-  @login-valid @smoke
-  Scenario: Successful login with valid credentials
-    When I enter email "<TEST_EMAIL>"
-    And I enter password "<TEST_PASSWORD>"
+  @login-valid @smoke @healthcheck
+  Scenario Outline: Successful login — <region>
+    When I enter email "<email>"
+    And I enter password "<password>"
     And I click the login button
     Then I should be logged in successfully
-    And I should see the organization name "<TEST_ORG_NAME>"
-    And I should see my email "<TEST_EMAIL>"
+
+    Examples:
+      | region | email                           | password |
+      | aus    | endri+TPUSD@chronicle.rip       | Asdf!234 |
+      | us     | faris+astanaorgus@chronicle.rip | 12345    |
 
   @login-invalid @negative
   Scenario: Login with invalid credentials

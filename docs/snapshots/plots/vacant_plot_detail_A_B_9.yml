@@ -1,0 +1,161 @@
+- generic [ref=e7]:
+  - generic [ref=e9]:
+    - generic [ref=e12]:
+      - generic [ref=e13]: Astana Tegal Gundul
+      - generic [ref=e17]:
+        - generic [ref=e19]:
+          - img [ref=e21]:
+            - img [ref=e22]
+          - textbox "Search" [ref=e451]
+        - generic [ref=e31]:
+          - generic [ref=e32]:
+            - generic [ref=e33]:
+              - img [ref=e34]:
+                - img [ref=e35]
+              - generic [ref=e38]: People
+            - generic [ref=e39]:
+              - img [ref=e40]:
+                - img [ref=e41]
+              - generic [ref=e46]: Plotst
+          - heading "within Astana Tegal Gundul" [level=5] [ref=e452]
+      - generic [ref=e48]:
+        - button "Advanced" [ref=e453] [cursor=pointer]:
+          - generic [ref=e52]: Advanced
+        - generic [ref=e55]:
+          - button "Notifications - 5 unread" [ref=e454] [cursor=pointer]:
+            - img "Notification bell" [ref=e455]
+          - generic [ref=e296]: "5"
+    - button "Astana Tegal Gundul faris+astanaorg@chronicle.rip" [ref=e456] [cursor=pointer]:
+      - generic [ref=e64]:
+        - paragraph [ref=e65]: Astana Tegal Gundul
+        - generic [ref=e66]: faris+astanaorg@chronicle.rip
+  - generic:
+    - generic [ref=e68]:
+      - generic:
+        - generic:
+          - generic:
+            - generic [ref=e624] [cursor=pointer]: Section LOT A2
+            - generic [ref=e625] [cursor=pointer]: Section LOT A1
+            - generic [ref=e626] [cursor=pointer]: Section LOT B1
+      - generic:
+        - generic:
+          - button [ref=e628] [cursor=pointer]
+          - button [ref=e629] [cursor=pointer]
+        - generic:
+          - link "Current location" [ref=e457] [cursor=pointer]:
+            - /url: "#"
+          - generic [ref=e81]:
+            - button "Zoom in" [ref=e458] [cursor=pointer]: +
+            - button "Zoom out" [ref=e459] [cursor=pointer]: −
+          - generic [ref=e84]:
+            - link "Leaflet" [ref=e460] [cursor=pointer]:
+              - /url: https://leafletjs.com
+              - img [ref=e86]
+              - text: Leaflet
+            - text: "| Map data ©"
+            - link "OpenStreetMap" [ref=e461] [cursor=pointer]:
+              - /url: https://www.openstreetmap.org/
+            - text: contributors,
+            - link "CC-BY-SA" [ref=e462] [cursor=pointer]:
+              - /url: https://creativecommons.org/licenses/by-sa/2.0/
+    - button [ref=e94] [cursor=pointer]:
+      - img [ref=e96]:
+        - img [ref=e97]
+  - generic [ref=e100]:
+    - generic [ref=e105] [cursor=pointer]:
+      - group [ref=e107]:
+        - button "Map" [pressed] [ref=e463]:
+          - generic [ref=e109]:
+            - img [ref=e111]:
+              - img [ref=e112]
+            - generic [ref=e114]: Map
+        - button "Tables" [ref=e464]:
+          - generic [ref=e116]:
+            - img [ref=e118]:
+              - img [ref=e119]
+            - generic [ref=e122]: Tables
+        - button "Calendar" [ref=e465]:
+          - generic [ref=e124]:
+            - img [ref=e126]:
+              - img [ref=e127]
+            - generic [ref=e129]: Calendar
+        - button "Request 112" [ref=e466]:
+          - generic [ref=e131]:
+            - img [ref=e133]:
+              - img [ref=e134]
+            - generic [ref=e137]: Request
+            - generic [ref=e138]: "112"
+        - button "Sales" [ref=e467]:
+          - generic [ref=e140]:
+            - img [ref=e142]:
+              - img [ref=e143]
+            - generic [ref=e146]: Sales
+        - button "Reports" [ref=e468]:
+          - generic [ref=e148]:
+            - img [ref=e150]:
+              - img [ref=e151]
+            - generic [ref=e154]: Reports
+      - group [disabled] [ref=e156]:
+        - button "help" [disabled] [ref=e469]:
+          - link "help" [disabled] [ref=e470]:
+            - /url: https://help.chronicle.rip/
+            - img "help" [ref=e471]
+        - button "home" [disabled] [ref=e472]:
+          - link "home" [disabled] [ref=e473]:
+            - /url: https://chronicle.rip/
+            - img "home" [ref=e474]
+    - generic [ref=e633]:
+      - button "Choose File" [ref=e643]
+      - img [ref=e644] [cursor=pointer]:
+        - img [ref=e645]
+      - generic [ref=e648]:
+        - generic [ref=e649]:
+          - generic [ref=e650]:
+            - paragraph [ref=e652]: Astana Tegal Gundul
+            - heading "A B 9 VACANT" [level=3] [ref=e654]:
+              - generic [ref=e656]: A B 9
+              - generic [ref=e657]: VACANT
+            - generic [ref=e659]:
+              - generic [ref=e661]: "- / 1"
+              - generic [ref=e664]: "- / 1"
+              - generic [ref=e666]:
+                - generic [ref=e667]: west
+                - generic [ref=e668]: W
+              - generic [ref=e671]: Monumental
+          - button "Edit" [ref=e673] [cursor=pointer]:
+            - paragraph [ref=e675]: Edit
+        - paragraph [ref=e677]
+        - generic [ref=e680]:
+          - button "Requests" [ref=e681] [cursor=pointer]:
+            - img [ref=e682]:
+              - img [ref=e683]
+            - text: Requests
+            - img [ref=e685]:
+              - img [ref=e686]
+          - button [ref=e688] [cursor=pointer]:
+            - img [ref=e690]:
+              - img [ref=e691]
+          - button [ref=e694] [cursor=pointer]:
+            - img [ref=e696]: share_outlined
+        - generic [ref=e698]:
+          - tablist [ref=e701]:
+            - generic [ref=e702]:
+              - tab "EVENTS" [selected] [ref=e703] [cursor=pointer]:
+                - generic [ref=e704]: EVENTS
+              - tab "ACTIVITY" [ref=e705] [cursor=pointer]:
+                - generic [ref=e706]: ACTIVITY
+          - generic [ref=e708]:
+            - tabpanel "EVENTS" [ref=e709]:
+              - generic [ref=e712]:
+                - button "GO TO TODAY" [ref=e715] [cursor=pointer]: GO TO TODAY
+                - generic [ref=e716]:
+                  - button "ADD NEW EVENT" [ref=e717] [cursor=pointer]:
+                    - generic [ref=e718]: ADD NEW EVENT
+                  - button "filter" [ref=e719] [cursor=pointer]:
+                    - img [ref=e721]
+            - tabpanel "ACTIVITY" [ref=e722]
+      - generic [ref=e724]:
+        - button "Add interment" [ref=e726] [cursor=pointer]:
+          - generic [ref=e727]: Add interment
+        - button "Add ROIx" [ref=e729] [cursor=pointer]:
+          - generic [ref=e730]: Add ROIx

@@ -1,0 +1,179 @@
+- generic [ref=e455]:
+  - generic [ref=e457]:
+    - generic [ref=e458]:
+      - link [ref=e459] [cursor=pointer]:
+        - /url: /
+      - link:
+        - /url: /
+    - generic [ref=e460]:
+      - button "MORE" [ref=e462] [cursor=pointer]:
+        - generic [ref=e463]:
+          - img [ref=e464]: more_vert
+          - text: MORE
+      - button "cancel" [ref=e465] [cursor=pointer]: cancel
+      - button "save" [ref=e466] [cursor=pointer]: save
+  - generic [ref=e468]:
+    - generic [ref=e469]:
+      - generic [ref=e470]:
+        - heading "Edit Plott" [level=1] [ref=e471]
+        - generic [ref=e472]:
+          - heading "Astana Tegal Gundul - B F 13" [level=4] [ref=e473]
+          - generic [ref=e474]:
+            - img "icon marker" [ref=e475]
+            - paragraph [ref=e476] [cursor=pointer]: View on map
+      - paragraph [ref=e481] [cursor=pointer]: Create certificate
+    - generic [ref=e482]:
+      - generic [ref=e484]:
+        - generic [ref=e485]:
+          - generic [ref=e489] [cursor=pointer]:
+            - combobox "Status Occupied" [ref=e490]:
+              - generic [ref=e493]: Occupied
+            - generic:
+              - generic: Status *
+          - generic [ref=e499] [cursor=pointer]:
+            - combobox "Plott type Monumental" [ref=e500]:
+              - generic [ref=e503]: Monumental
+            - generic:
+              - generic: Plott type
+        - generic [ref=e506]:
+          - generic [ref=e510]:
+            - spinbutton "Burial capacity" [ref=e511]: "1"
+            - generic:
+              - generic: Burial capacity
+          - generic [ref=e515]:
+            - spinbutton "Entombment capacity" [ref=e516]: "0"
+            - generic:
+              - generic: Entombment capacity
+        - generic [ref=e517]:
+          - generic [ref=e521]:
+            - spinbutton "Cremation capacity" [ref=e522]: "0"
+            - generic:
+              - generic: Cremation capacity
+          - generic [ref=e526]:
+            - spinbutton "Total capacity" [ref=e527]: "1"
+            - generic:
+              - generic: Total capacity
+        - generic [ref=e528]:
+          - generic [ref=e532] [cursor=pointer]:
+            - combobox "Direction West" [ref=e533]:
+              - generic [ref=e536]: West
+            - generic:
+              - generic: Direction
+          - generic [ref=e541]:
+            - generic [ref=e542]: $
+            - generic [ref=e543]:
+              - spinbutton "Price" [ref=e544]: "0"
+              - generic:
+                - generic: Price
+            - generic [ref=e547] [cursor=pointer]:
+              - generic [ref=e548]:
+                - checkbox "Hide" [checked] [ref=e549]
+                - generic:
+                  - img
+              - generic [ref=e550]: Hide
+        - heading "Extra details" [level=6] [ref=e551]
+        - generic [ref=e556]:
+          - generic [ref=e558]:
+            - textbox "label" [ref=e559]
+            - generic:
+              - generic:
+                - generic: Plaque details
+          - generic [ref=e562]: Will be shown on Vacant plot status only for public
+        - generic [ref=e568]:
+          - generic [ref=e570]:
+            - textbox "label" [ref=e571]
+            - generic:
+              - generic:
+                - generic: plot text area 001
+          - generic [ref=e574]: Will be shown on Vacant plot status only for public
+        - generic [ref=e582]:
+          - textbox "label" [ref=e583]
+          - generic:
+            - generic:
+              - generic: plot text 002
+        - generic [ref=e588]:
+          - generic [ref=e590]:
+            - textbox "label" [ref=e591]
+            - generic:
+              - generic:
+                - generic: Temp Plot ID
+          - generic [ref=e594]: Will be shown on Vacant plot status only for public
+        - generic [ref=e602]:
+          - textbox "label" [ref=e603]
+          - generic:
+            - generic:
+              - generic: plot text 003
+        - generic [ref=e610] [cursor=pointer]:
+          - combobox "Vault Status" [ref=e611]
+          - generic:
+            - generic:
+              - generic: Vault Status
+        - generic [ref=e622]:
+          - generic [ref=e623]:
+            - textbox "Vault Charged Date" [ref=e624]
+            - generic:
+              - generic:
+                - generic: Vault Charged Date
+          - button "Open calendar" [ref=e627] [cursor=pointer]:
+            - img [ref=e628]
+        - generic [ref=e638]:
+          - textbox "label" [ref=e639]
+          - generic:
+            - generic:
+              - generic: Exhumed
+        - generic [ref=e646]:
+          - textbox "label" [ref=e647]
+          - generic:
+            - generic:
+              - generic: testt
+        - generic [ref=e648]:
+          - heading "Headstone photo" [level=5] [ref=e650]
+          - generic [ref=e651]:
+            - generic [ref=e655]:
+              - img [ref=e657]:
+                - img [ref=e658]
+              - generic [ref=e660]:
+                - generic [ref=e661]: Use AI to extract details from headstone
+                - button "Analyze" [ref=e663] [cursor=pointer]: Analyze
+              - img [ref=e665]: close
+            - generic [ref=e667]:
+              - heading [level=4]
+              - list [ref=e669]:
+                - listitem [ref=e670] [cursor=pointer]
+                - listitem [ref=e671] [cursor=pointer]:
+                  - img [ref=e672]:
+                    - img [ref=e673]
+        - generic [ref=e678]:
+          - textbox "Headstone inscription" [ref=e679]
+          - generic:
+            - generic: Headstone inscription
+      - generic [ref=e680]:
+        - generic [ref=e681]:
+          - heading "Right of Intermentx" [level=4] [ref=e682]
+          - generic [ref=e683] [cursor=pointer]:
+            - generic [ref=e684]: Sandiaga Salahuddin
+            - paragraph [ref=e685]:
+              - generic [ref=e686]: Both
+        - generic [ref=e687]:
+          - heading "Interments" [level=4] [ref=e689] [cursor=pointer]
+          - generic [ref=e692] [cursor=pointer]: Anak Ketiga belas Kaesang
+        - button "Send to Osiris" [ref=e693] [cursor=pointer]: Send to Osiris
+        - button "Add Sale" [ref=e700] [cursor=pointer]:
+          - generic [ref=e701]: Add Sale
+        - generic [ref=e703]:
+          - generic [ref=e704]:
+            - generic [ref=e705]: Activity
+            - listbox "Filter Selection" [ref=e706]:
+              - generic [ref=e707]:
+                - option "Notes" [selected] [ref=e708]: Notes
+                - option "Changes" [ref=e709]: Changes
+                - option "All" [ref=e710]: All
+            - button [ref=e711] [cursor=pointer]:
+              - img [ref=e713]:
+                - img [ref=e714]
+              - generic: "1"
+          - generic [ref=e719]:
+            - textbox "Add Notes" [ref=e721]
+            - img [ref=e723] [cursor=pointer]:
+              - img [ref=e724]
+          - generic [ref=e729]: No previous activity recorded in Chronicle.

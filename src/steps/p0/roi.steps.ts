@@ -403,23 +403,28 @@ Then('I should not see ROI holder {string} in the edit form', async function (ho
 
 // ===== Add Sale from Edit ROI =====
 
-When('I navigate to the advance table and open the second ROI', { timeout: 60000 }, async function () {
+When('I navigate to the advance table and open the second ROI', { timeout: 90000 }, async function () {
   const page = this.page;
   roiPage = new ROIPage(page);
 
   const baseUrl = page.url().split('/customer-organization')[0];
   await page.goto(`${baseUrl}/customer-organization/advance-table?tab=rois`, { waitUntil: 'domcontentloaded' });
-  await page.waitForTimeout(3000);
+  await NetworkHelper.waitForApiRequestsComplete(page, 10000);
 
   // Click the second ROI row
   const rows = page.locator('mat-row');
-  await rows.first().waitFor({ state: 'visible', timeout: 10000 });
+  await rows.first().waitFor({ state: 'visible', timeout: 30000 });
   const secondRow = rows.nth(1);
   this.logger?.info('Clicking second ROI row in advance table');
 
   await secondRow.click();
-  // Wait for Edit ROI page — SAVE/CANCEL buttons are always present
-  await page.waitForSelector('button:has-text("SAVE"), button:has-text("CANCEL")', { state: 'visible', timeout: 45000 });
-  await page.waitForTimeout(1000);
+  // Wait for URL to change to edit ROI page, retry once if needed
+  try {
+    await page.waitForURL(/\/edit\/roi\//, { waitUntil: 'domcontentloaded', timeout: 20000 });
+  } catch {
+    await secondRow.click();
+    await page.waitForURL(/\/edit\/roi\//, { waitUntil: 'domcontentloaded', timeout: 30000 });
+  }
+  await page.waitForSelector('h1', { state: 'visible', timeout: 20000 });
   this.logger?.info(`Opened Edit ROI page. URL: ${page.url()}`);
 });

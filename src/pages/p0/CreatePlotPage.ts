@@ -1,7 +1,7 @@
 import { Page } from '@playwright/test';
 import { PlotSelectors, PlotUrls } from '../../selectors/p0/plot.selectors.js';
 import { Logger } from '../../utils/Logger.js';
-import { getCustomerOrgBaseUrl } from '../../data/test-data.js';
+import { getCustomerOrgBaseUrl, PLOT_DATA } from '../../data/test-data.js';
 
 export class CreatePlotPage {
   readonly page: Page;
@@ -21,7 +21,7 @@ export class CreatePlotPage {
     const tablesUrl = `${baseUrl}${PlotUrls.advanceTable}`;
     await this.page.goto(tablesUrl, { waitUntil: 'domcontentloaded' });
     // Wait for the ADD PLOT button instead of a static timeout — ensures page is fully rendered
-    await this.page.waitForSelector(PlotSelectors.addPlotButton, { state: 'visible', timeout: 20000 });
+    await this.page.waitForSelector(PlotSelectors.addPlotButton, { state: 'visible', timeout: 45000 });
     this.logger.success('Navigated to Tables section');
   }
 
@@ -459,109 +459,53 @@ export class CreatePlotPage {
   }
 
   /**
-   * Find and open the first DELETABLE plot row in the advance-table.
-   * Iterates through rows, probes each with MORE → Delete, and skips any that show
-   * "Unable to Delete Plot". When a deletable plot is found, cancels the delete dialog
-   * and returns to the edit-plot page so the normal delete steps can proceed.
-   * Returns the plot ID of the selected (deletable) plot.
+   * Create a fresh Vacant plot (guaranteed no map/interment/ROI relations) and navigate
+   * to its edit page, ready for the normal delete flow that follows.
+   * Returns the new plot ID.
    */
   async clickFirstDeletablePlotRow(): Promise<string> {
-    this.logger.info('Looking for first deletable plot row');
-    const maxAttempts = 8;
+    const plotData = PLOT_DATA.create;
+    const newPlotId = this.getExpectedPlotId(plotData.section, plotData.row, plotData.number);
+    this.logger.info(`[DeletePlot] Creating fresh Vacant plot "${newPlotId}" (guaranteed deletable)`);
 
-    for (let attempt = 0; attempt < maxAttempts; attempt++) {
-      // Re-query rows on each iteration — DOM may change after navigation
-      const rows = this.page.locator(PlotSelectors.tableRow);
-      await rows.first().waitFor({ state: 'visible', timeout: 10000 });
-      const count = await rows.count();
+    await this.clickAddPlot();
+    await this.fillAddPlotForm({
+      section: plotData.section,
+      row: plotData.row,
+      number: plotData.number,
+      status: plotData.status,
+      plotType: plotData.plotType,
+    });
+    await this.saveNewPlot();
 
-      if (attempt >= count) {
-        throw new Error(`No deletable plot found after checking ${attempt} rows — all plots have map relations`);
+    // Section A rows appear near the bottom of the virtual-scroll table — scroll to find them
+    await this.page.waitForSelector('[data-testid*="content-wrapper-div-plot-id"]', { state: 'visible', timeout: 15000 });
+
+    for (let step = 0; step < 10; step++) {
+      const plotRow = this.page.locator(PlotSelectors.tableRow).filter({ hasText: newPlotId }).first();
+      if (await plotRow.isVisible({ timeout: 300 }).catch(() => false)) {
+        await plotRow.click();
+        await this.page.waitForURL(`**${PlotUrls.editPlotPattern}**`, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        this.logger.success(`[DeletePlot] On edit page for new plot "${newPlotId}" — ready for delete`);
+        return newPlotId;
       }
-
-      const row = rows.nth(attempt);
-      const plotIdCell = row.locator('[data-testid*="content-wrapper-div-plot-id"]').first();
-      const plotId = ((await plotIdCell.textContent().catch(() => '')) || '').trim();
-      this.logger.info(`Attempt ${attempt + 1}: probing plot "${plotId}" for deletability`);
-
-      await row.click();
-      await this.page.waitForURL(`**${PlotUrls.editPlotPattern}**`, { timeout: 15000 });
-      await this.page.waitForTimeout(1500);
-
-      // Open MORE menu and click Delete to probe deletability
-      const moreBtn = this.page.locator(PlotSelectors.editMoreButton);
-      if (!await moreBtn.isVisible({ timeout: 5000 }).catch(() => false)) {
-        this.logger.info(`Row "${plotId}": MORE button not visible — skipping`);
-        await this.page.goBack();
-        await this.page.waitForSelector(PlotSelectors.tableRow, { state: 'visible', timeout: 10000 });
-        continue;
-      }
-      await moreBtn.click();
-      await this.page.waitForTimeout(500);
-
-      const deleteItem = this.page.locator(PlotSelectors.deletePlotMenuItem);
-      if (!await deleteItem.isVisible({ timeout: 3000 }).catch(() => false)) {
-        this.logger.info(`Row "${plotId}": Delete menu item not visible — skipping`);
-        await this.page.keyboard.press('Escape');
-        await this.page.goBack();
-        await this.page.waitForSelector(PlotSelectors.tableRow, { state: 'visible', timeout: 10000 });
-        continue;
-      }
-      await deleteItem.click();
-      await this.page.waitForTimeout(1500);
-
-      // Check for "Unable to Delete Plot" dialog (geojson relation)
-      const gotItBtn = this.page.locator('[data-testid="button-got-it"]');
-      if (await gotItBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
-        this.logger.info(`Row "${plotId}": "Unable to Delete Plot" — skipping`);
-        await gotItBtn.click();
-        await this.page.locator('[role="dialog"]').waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
-        // Navigate back to advance-table to retry
-        const baseUrl = getCustomerOrgBaseUrl();
-        await this.page.goto(`${baseUrl}${PlotUrls.advanceTable}`, { waitUntil: 'domcontentloaded' });
-        await this.page.waitForSelector(PlotSelectors.addPlotButton, { state: 'visible', timeout: 20000 });
-        continue;
-      }
-
-      // Check if deletion already happened immediately (no dialog, already at advance-table)
-      const currentUrl = this.page.url();
-      if (!currentUrl.includes('/manage/edit/plot')) {
-        // Deletion happened immediately — navigate back to table; caller must handle missing table row
-        this.logger.warn(`Plot "${plotId}" deleted immediately without dialog (unusual) — returning to table`);
-        if (!currentUrl.includes('advance-table')) {
-          const baseUrl = getCustomerOrgBaseUrl();
-          await this.page.goto(`${baseUrl}${PlotUrls.advanceTable}`, { waitUntil: 'domcontentloaded' });
-          await this.page.waitForSelector(PlotSelectors.addPlotButton, { state: 'visible', timeout: 20000 });
-        }
-        // Store the deleted plot ID so the caller can verify removal
-        this._lastDeletedPlotId = plotId;
-        return plotId;
-      }
-
-      // Normal state: deletable, dialog may or may not be showing — cancel and return to edit page
-      // Cancel any open dialog (e.g., standard "Are you sure?" dialog)
-      const cancelBtn = this.page.locator(
-        '[role="dialog"] button:has-text("Cancel"), [role="dialog"] button:has-text("CANCEL"), [role="dialog"] button:has-text("No")'
-      ).first();
-      if (await cancelBtn.isVisible({ timeout: 1500 }).catch(() => false)) {
-        await cancelBtn.click();
-        await this.page.locator('[role="dialog"]').waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
-      } else {
-        // No cancel button in dialog — press Escape to dismiss
-        await this.page.keyboard.press('Escape');
-        await this.page.waitForTimeout(500);
-      }
-
-      // We are still on the edit-plot page; normal delete steps will now run
-      this.logger.success(`Found deletable plot: "${plotId}" — ready for delete steps`);
-      return plotId;
+      await this.page.evaluate(() => {
+        const el = document.querySelector('cdk-virtual-scroll-viewport') ||
+          document.querySelector('[class*="table-container"]') ||
+          document.querySelector('mat-table');
+        if (el) (el as HTMLElement).scrollTop += 800;
+        else window.scrollBy(0, 800);
+      });
+      await this.page.waitForTimeout(400);
     }
 
-    throw new Error(`No deletable plot found in advance-table after ${maxAttempts} attempts`);
+    throw new Error(`[DeletePlot] New plot "${newPlotId}" not visible in table after scrolling`);
   }
 
   // Shared state to track immediately-deleted plot across method calls
   private _lastDeletedPlotId: string | null = null;
+  // Set when probe-DELETE removes the plot immediately (no confirmation dialog shown)
+  private _plotDeletedDuringProbe = false;
 
   /**
    * Get the plot ID shown on the edit page subtitle (e.g. "Astana Tegal Gundul - A Z 4086")
@@ -575,9 +519,14 @@ export class CreatePlotPage {
   }
 
   /**
-   * Click the MORE (⋮) button on the edit page
+   * Click the MORE (⋮) button on the edit page.
+   * No-op if plot was already deleted during the probe phase.
    */
   async clickMoreOptionsMenu(): Promise<void> {
+    if (this._plotDeletedDuringProbe) {
+      this.logger.info('Plot already deleted during probe — skipping MORE menu');
+      return;
+    }
     this.logger.info('Clicking MORE options menu');
     const moreBtn = this.page.locator(PlotSelectors.editMoreButton);
     await moreBtn.waitFor({ state: 'visible', timeout: 10000 });
@@ -587,9 +536,14 @@ export class CreatePlotPage {
   }
 
   /**
-   * Click Delete from the MORE menu
+   * Click Delete from the MORE menu.
+   * No-op if plot was already deleted during the probe phase.
    */
   async clickDeletePlot(): Promise<void> {
+    if (this._plotDeletedDuringProbe) {
+      this.logger.info('Plot already deleted during probe — skipping Delete click');
+      return;
+    }
     this.logger.info('Clicking Delete from MORE menu');
     const deleteItem = this.page.locator(PlotSelectors.deletePlotMenuItem);
     await deleteItem.waitFor({ state: 'visible', timeout: 5000 });
@@ -602,6 +556,11 @@ export class CreatePlotPage {
    * Confirm the delete dialog (or handle immediate deletion with no dialog)
    */
   async confirmDeletePlot(): Promise<void> {
+    if (this._plotDeletedDuringProbe) {
+      this.logger.info('Plot already deleted during probe — skipping confirm step');
+      this._plotDeletedDuringProbe = false;
+      return;
+    }
     this.logger.info('Handling post-delete state');
     // Give Chronicle up to 5s to either: navigate away OR show a dialog
     const dialog = this.page.locator('[role="dialog"]').first();

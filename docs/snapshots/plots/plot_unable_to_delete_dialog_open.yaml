@@ -1,0 +1,184 @@
+- generic [ref=e1]:
+  - generic [ref=e1134]:
+    - generic [ref=e1136]:
+      - link [ref=e1138] [cursor=pointer]:
+        - /url: /
+      - generic [ref=e1139]:
+        - button [ref=e1425] [cursor=pointer]:
+          - generic [ref=e1142]:
+            - img [ref=e1143]: more_vert
+            - text: MORE
+        - button [ref=e1426] [cursor=pointer]: cancel
+        - button [ref=e1427] [cursor=pointer]: save
+    - generic [ref=e1147]:
+      - generic [ref=e1148]:
+        - generic [ref=e1149]:
+          - heading [level=1] [ref=e1428]: Edit Plot
+          - heading [level=4] [ref=e1429]: Astana Tegal Gundul - A Z 1
+        - paragraph [ref=e1157] [cursor=pointer]: Create certificate
+      - generic [ref=e1158]:
+        - generic [ref=e1160]:
+          - generic [ref=e1161]:
+            - generic [ref=e1165] [cursor=pointer]:
+              - combobox [ref=e1430]:
+                - generic [ref=e1169]: Occupied
+              - generic:
+                - generic: Status *
+            - generic [ref=e1175] [cursor=pointer]:
+              - combobox [ref=e1431]:
+                - generic [ref=e1179]: Columbarium
+              - generic:
+                - generic: Plot type
+          - generic [ref=e1182]:
+            - generic [ref=e1186]:
+              - spinbutton [ref=e1432]: "0"
+              - generic:
+                - generic: Burial capacity
+            - generic [ref=e1191]:
+              - spinbutton [ref=e1433]: "0"
+              - generic:
+                - generic: Entombment capacity
+          - generic [ref=e1193]:
+            - generic [ref=e1197]:
+              - spinbutton [ref=e1434]: "0"
+              - generic:
+                - generic: Cremation capacity
+            - generic [ref=e1202]:
+              - spinbutton [ref=e1435]: "0"
+              - generic:
+                - generic: Total capacity
+          - generic [ref=e1204]:
+            - generic [ref=e1208] [cursor=pointer]:
+              - combobox [ref=e1436]
+              - generic:
+                - generic: Direction
+            - generic [ref=e1217]:
+              - generic [ref=e1218]: $
+              - generic [ref=e1219]:
+                - spinbutton [ref=e1437]
+                - generic:
+                  - generic: Price
+              - generic [ref=e1223] [cursor=pointer]:
+                - generic [ref=e1224]:
+                  - checkbox [checked] [ref=e1438]
+                  - generic:
+                    - img
+                - generic [ref=e1226]: Hide
+          - heading [level=6] [ref=e1439]: Extra details
+          - generic [ref=e1232]:
+            - generic [ref=e1234]:
+              - textbox [ref=e1440]
+              - generic:
+                - generic:
+                  - generic: Plaque details
+            - generic [ref=e1238]: Will be shown on Vacant plot status only for public
+          - generic [ref=e1244]:
+            - generic [ref=e1246]:
+              - textbox [ref=e1441]
+              - generic:
+                - generic:
+                  - generic: plot text area 001
+            - generic [ref=e1250]: Will be shown on Vacant plot status only for public
+          - generic [ref=e1258]:
+            - textbox [ref=e1442]
+            - generic:
+              - generic:
+                - generic: plot text 002
+          - generic [ref=e1264]:
+            - generic [ref=e1266]:
+              - textbox [ref=e1443]
+              - generic:
+                - generic:
+                  - generic: Temp Plot ID
+            - generic [ref=e1270]: Will be shown on Vacant plot status only for public
+          - generic [ref=e1278]:
+            - textbox [ref=e1444]
+            - generic:
+              - generic:
+                - generic: plot text 003
+          - generic [ref=e1286] [cursor=pointer]:
+            - combobox [ref=e1445]
+            - generic:
+              - generic:
+                - generic: Vault Status
+          - generic [ref=e1298]:
+            - generic [ref=e1299]:
+              - textbox [ref=e1446]
+              - generic:
+                - generic:
+                  - generic: Vault Charged Date
+            - button [ref=e1447] [cursor=pointer]:
+              - img [ref=e1304]
+          - generic [ref=e1314]:
+            - textbox [ref=e1448]
+            - generic:
+              - generic:
+                - generic: Exhumed
+          - generic [ref=e1322]:
+            - textbox [ref=e1449]
+            - generic:
+              - generic:
+                - generic: testt
+          - generic [ref=e1324]:
+            - heading [level=5] [ref=e1450]: Headstone photo
+            - generic [ref=e1327]:
+              - generic [ref=e1331]:
+                - img [ref=e1333]:
+                  - img [ref=e1334]
+                - generic [ref=e1337]: Use AI to extract details from headstone
+                - img [ref=e1339]: close
+              - generic [ref=e1347] [cursor=pointer]:
+                - button [ref=e1451]:
+                  - generic [ref=e1349]:
+                    - img [ref=e1350]:
+                      - img [ref=e1351]
+                    - text: SELECT PHOTO
+                - paragraph [ref=e1354]: or drag it here
+          - generic [ref=e1359]:
+            - textbox [ref=e1452]
+            - generic:
+              - generic: Headstone inscription
+        - generic [ref=e1361]:
+          - generic [ref=e1362]:
+            - heading [level=4] [ref=e1453]: Right of Interment
+            - generic [ref=e1364] [cursor=pointer]:
+              - text: "[No Holder]"
+              - paragraph [ref=e1365]:
+                - generic [ref=e1366]: Both |
+                - text: Apr 24, 2026
+          - generic [ref=e1367]:
+            - generic [ref=e1368] [cursor=pointer]:
+              - heading [level=4] [ref=e1454]: Interments
+              - button [ref=e1455]:
+                - generic [ref=e1371]: Add
+            - generic [ref=e1374] [cursor=pointer]: Bagas Bagus
+          - button [ref=e1456] [cursor=pointer]: Send to Osiris
+          - button [ref=e1457] [cursor=pointer]:
+            - generic [ref=e1383]: Add Sale
+          - generic [ref=e1385]:
+            - generic [ref=e1386]:
+              - generic [ref=e1387]: Activity
+              - listbox [ref=e1458]:
+                - generic [ref=e1389]:
+                  - option [selected] [ref=e1459]: Notes
+                  - option [ref=e1460]: Changes
+                  - option [ref=e1461]: All
+              - button [ref=e1393] [cursor=pointer]:
+                - img [ref=e1395]:
+                  - img [ref=e1396]
+                - generic: "1"
+            - generic [ref=e1401]:
+              - textbox [ref=e1462]:
+                - /placeholder: Add Notes
+              - img [ref=e1405] [cursor=pointer]:
+                - img [ref=e1406]
+            - generic [ref=e1411]: No previous activity recorded in Chronicle.
+  - dialog "Unable to Delete Plot" [ref=e1466]:
+    - generic [ref=e1467]:
+      - heading "Unable to Delete Plot" [level=4] [ref=e1468]
+      - paragraph [ref=e1470]:
+        - text: Can't delete plot with related interment or roi. Contact
+        - link "support@chronicle.rip" [active] [ref=e1471] [cursor=pointer]:
+          - /url: mailto:support@chronicle.rip
+        - text: for help.
+      - button "GOT IT" [ref=e1473] [cursor=pointer]: GOT IT

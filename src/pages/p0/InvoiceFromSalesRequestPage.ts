@@ -4,7 +4,7 @@ import { NetworkHelper } from '../../utils/NetworkHelper.js';
 import { InvoiceFromSalesRequestSelectors as Sel } from '../../selectors/p0/invoice-from-sales-request/invoice-from-sales-request.selectors.js';
 
 // US org — independent from AUS global config
-const US_BASE_URL = process.env.BASE_URL || 'https://us.chronicle.rip';
+const US_BASE_URL = process.env.US_BASE_URL || 'https://us.chronicle.rip';
 
 export interface GenerateInvoiceResult {
   status: number;

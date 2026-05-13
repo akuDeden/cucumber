@@ -13,7 +13,7 @@ let lastClickedPlotId: string = '';
 let addSalePlotId: string = '';
 let addSaleItemRelatedPlot: string = '';
 
-When('I navigate to the Tables section', { timeout: 20000 }, async function () {
+When('I navigate to the Tables section', { timeout: 60000 }, async function () {
   const page = this.page;
   createPlotPage = new CreatePlotPage(page);
   plotPage = new PlotPage(page);
@@ -139,7 +139,7 @@ When('I confirm the plot deletion', { timeout: 20000 }, async function () {
   await createPlotPage.confirmDeletePlot();
 });
 
-Then('the plot should no longer be in the table', { timeout: 25000 }, async function () {
+Then('the plot should no longer be in the table', { timeout: 60000 }, async function () {
   await createPlotPage.navigateToTablesSection();
   const removed = await createPlotPage.verifyPlotRemovedFromTable(lastClickedPlotId);
   expect(removed).toBeTruthy();

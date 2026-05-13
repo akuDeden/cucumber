@@ -56,18 +56,24 @@ export class LoginPage {
 
   async waitForSuccessfulLogin(): Promise<void> {
     this.logger.info('Waiting for successful login');
-    // Production may redirect to /?ns=true (org selection landing) before the
-    // authenticated dashboard. Accept both as valid post-login states.
-    await this.page.waitForURL(/\/customer-|\?ns=true/, { waitUntil: 'domcontentloaded' });
-    // Wait for API requests to complete and dashboard to fully load
+    // Production login redirects through: map.chronicle.rip/login → aus.chronicle.rip/?a=JWT&r=JWT
+    // → /customer-organization → /customer-organization/{slug}
+    // The JWT token exchange page (?a=JWT) is an intermediate — wait past it to the final destination.
+    await this.page.waitForURL(/\/customer-|\/chronicle-admin|\?ns=true/, { waitUntil: 'domcontentloaded', timeout: 60000 });
+    // Allow any secondary redirect (/customer-organization → /customer-organization/slug) to settle
     await NetworkHelper.waitForApiRequestsComplete(this.page, 5000);
+    // Final URL guard: if still on the JWT exchange page, wait once more for the real destination
+    const urlAfterApi = this.page.url();
+    if (!urlAfterApi.includes('/customer-') && !urlAfterApi.includes('/chronicle-admin') && !urlAfterApi.includes('ns=true')) {
+      await this.page.waitForURL(/\/customer-|\/chronicle-admin|\?ns=true/, { timeout: 30000 });
+    }
     this.logger.success('Successfully logged in and dashboard loaded');
   }
 
   async isLoggedIn(): Promise<boolean> {
     try {
       const url = this.page.url();
-      return url.includes(LoginUrls.dashboardPattern) || url.includes('ns=true');
+      return url.includes(LoginUrls.dashboardPattern) || url.includes('ns=true') || url.includes('/chronicle-admin');
     } catch (error) {
       return false;
     }
